@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Repository Index - JHNDAY/AI-Research-Collective</title>
+    <style>
+        :root {
+            --primary-color: #0366d6;
+            --secondary-color: #586069;
+            --background-color: #f6f8fa;
+            --card-background: #ffffff;
+            --border-color: #e1e4e8;
+            --hover-color: #f6f8fa;
+            --text-color: #24292e;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: var(--background-color);
+        }
+
+        .header {
+            background: var(--card-background);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .repo-title {
+            margin: 0 0 10px 0;
+            color: var(--primary-color);
+            font-size: 2em;
+            font-weight: 600;
+        }
+
+        .stats {
+            background: var(--card-background);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 10px;
+            background: var(--background-color);
+            border-radius: 6px;
+        }
+
+        .stat-number {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: var(--primary-color);
+            display: block;
+        }
+
+        .controls {
+            background: var(--card-background);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .search-container {
+            display: grid;
+            grid-template-columns: 1fr auto auto;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .search-box {
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 1em;
+        }
+
+        .filter-controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .view-controls, .sort-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .view-button, .sort-button, .sort-select {
+            padding: 8px 16px;
+            border: 1px solid var(--border-color);
+            background: var(--card-background);
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.2s;
+        }
+
+        .view-button:hover, .view-button.active, .sort-button:hover, .sort-button.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .file-list {
+            background: var(--card-background);
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .file-list-header {
+            background: var(--background-color);
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border-color);
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .file-item {
+            display: grid;
+            grid-template-columns: auto 1fr auto auto auto;
+            gap: 15px;
+            padding: 12px 20px;
+            border-bottom: 1px solid var(--border-color);
+            align-items: start;
+            transition: background-color 0.2s ease;
+        }
+
+        .file-item:hover { background-color: var(--hover-color); }
+
+        .file-name {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .file-name:hover { text-decoration: underline; }
+
+        .file-path {
+            color: var(--secondary-color);
+            font-size: 0.9em;
+            font-family: monospace;
+            margin-bottom: 4px;
+        }
+
+        .file-description {
+            color: #6a737d;
+            font-size: 0.85em;
+            font-style: italic;
+            line-height: 1.3;
+        }
+
+        .file-type {
+            background: var(--border-color);
+            color: var(--secondary-color);
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            white-space: nowrap;
+        }
+
+        .file-size {
+            color: var(--secondary-color);
+            font-size: 0.9em;
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        .file-card {
+            background: var(--card-background);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .file-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transform: translateY(-2px);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            color: var(--secondary-color);
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            .file-item { grid-template-columns: auto 1fr; gap: 10px; }
+            .file-type, .file-size { display: none; }
+            .search-container { grid-template-columns: 1fr; }
+            .filter-controls { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>    <div class="header">
+        <h1 class="repo-title">📁 AI-Research-Collective Repository Index</h1>        <p>AI Research Collective</p>    </div>
+    <div class="stats">
+        <div class="stat-item">
+            <span class="stat-number">8</span>
+            <span class="stat-label">Total Files</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-number">8</span>
+            <span class="stat-label">HTML Files</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-number">8</span>
+            <span class="stat-label">Files with Dates</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-number">1</span>
+            <span class="stat-label">File Types</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-number">208.8 KB</span>
+            <span class="stat-label">Total Size</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-number">2025-08-12</span>
+            <span class="stat-label">Generated</span>
+        </div>
+    </div>
+
+    <div class="controls">
+        <div class="search-container">
+            <input type="text" class="search-box" id="searchBox" placeholder="Search files, descriptions, authors, keywords...">
+            <button class="view-button" onclick="clearFilters()">Clear Filters</button>
+            <button class="view-button" onclick="toggleAdvancedSearch()">Advanced Search</button>
+        </div>
+
+        <div class="filter-controls">
+            <div class="view-controls">
+                <span>View:</span>
+                <button class="view-button active" id="listView" onclick="switchToListView()">List</button>
+                <button class="view-button" id="cardView" onclick="switchToCardView()">Cards</button>
+            </div>
+            <div class="sort-controls">
+                <span>Sort by:</span>
+                <select class="sort-select" id="sortField" onchange="applySorting()">
+                    <option value="name">File Name</option>
+                    <option value="posting_date">Posting Date</option>
+                    <option value="size">File Size</option>
+                    <option value="type">File Type</option>
+                </select>
+                <button class="sort-button" id="sortOrder" onclick="toggleSortOrder()">Ascending ↑</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="file-list">
+        <div class="file-list-header">
+            <span>📋 Repository Files</span>
+            <span class="results-count" id="resultsCount">8 files</span>
+        </div>
+        <div id="fileContainer">
+            <div>Loading files...</div>
+        </div>
+    </div>
+
+    <div class="footer">
+        Generated on August 12, 2025 at 08:21 PM |
+        <a href="https://github.com/JHNDAY/AI-Research-Collective" target="_blank">JHNDAY/AI-Research-Collective</a>
+    </div>
+
+    <script>
+        const allFiles = [
+  {
+    "name": "AIRCVizAug8.html",
+    "path": "AIRCVizAug8.html",
+    "size": 32762,
+    "download_url": "https://raw.githubusercontent.com/JHNDAY/AI-Research-Collective/main/AIRCVizAug8.html",
+    "html_url": "https://github.com/JHNDAY/AI-Research-Collective/blob/main/AIRCVizAug8.html",
+    "sha": "0e87954158d6e2fc2a5bc6d3fcb4b761f991eff2",
+    "type": "HTML",
+    "description": "AI research analysis examining AIRCVizAug8, including methodologies, experimental results, and implications for artificial intelligence development.",
+    "posting_date": "2025-08-09",
+    "author": "JHNDAY",
+    "keywords": [],
+    "title": "Aircviz Aug8"
+  },
+  {
+    "name": "ChatWithSaul.html",
+    "path": "ChatWithSaul.html",
+    "size": 18622,
+    "download_url": "https://raw.githubusercontent.com/JHNDAY/AI-Research-Collective/main/ChatWithSaul.html",
+    "html_url": "https://github.com/JHNDAY/AI-Research-Collective/blob/main/ChatWithSaul.html",
+    "sha": "a143466454e81604a56e3aa5f6d137fb477eb579",
+    "type": "HTML",
+    "description": "AI research analysis examining ChatWithSaul, including methodologies, experimental results, and implications for artificial intelligence development.",
+    "posting_date": "2025-08-01",
+    "author": "JHNDAY",
+    "keywords": [],
+    "title": "Chat With Saul"
+  },
+  {
+    "name": "Prjct25Jul18.html",
+    "path": "Prjct25Jul18.html",
+    "size": 19822,
+    "download_url": "https://raw.githubusercontent.com/JHNDAY/AI-Research-Collective/main/Prjct25Jul18.html",
+    "html_url": "https://github.com/JHNDAY/AI-Research-Collective/blob/main/Prjct25Jul18.html",
+    "sha": "a701e7c45b2a549de4c421d5635a238e5ad46e27",
+    "type": "HTML",
+    "description": "AI research analysis examining Prjct25Jul18, including methodologies, experimental results, and implications for artificial intelligence development.",
+    "posting_date": "2025-07-20",
+    "author": "JHNDAY",
+    "keywords": [],
+    "title": "Prjct25jul18"
+  },
+  {
+    "name": "Prjct25Jul25.html",
+    "path": "Prjct25Jul25.html",
+    "size": 13469,
+    "download_url": "https://raw.githubusercontent.com/JHNDAY/AI-Research-Collective/main/Prjct25Jul25.html",
+    "html_url": "https://github.com/JHNDAY/AI-Research-Collective/blob/main/Prjct25Jul25.html",
+    "sha": "665252d66f288b08c1608b7d574fc1f5cca684cd",
+    "type": "HTML",
+    "description": "AI research analysis examining Prjct25Jul25, including methodologies, experimental results, and implications for artificial intelligence development.",
+    "posting_date": "2025-07-26",
+    "author": "JHNDAY",
+    "keywords": [],
+    "title": "Prjct25jul25"
+  },
+  {
+    "name": "addiction_politics_men_html.html",
+    "path": "addiction_politics_men_html.html",
+    "size": 24584,
+    "download_url": "https://raw.githubusercontent.com/JHNDAY/AI-Research-Collective/main/addiction_politics_men_html.html",
+    "html_url": "https://github.com/JHNDAY/AI-Research-Collective/blob/main/addiction_politics_men_html.html",
+    "sha": "68ab28737fd2a3f658b444329f4020708fdd7bd9",
+    "type": "HTML",
+    "description": "AI research analysis examining addiction politics men html, including methodologies, experimental results, and implications for artificial intelligence development.",
+    "posting_date": "2025-08-01",
+    "author": "JHNDAY",
+    "keywords": [],
+    "title": "Addiction Politics Men Html"
+  },
+  {
+    "name": "addiction_politics_women_html.html",
+    "path": "addiction_politics_women_html.html",
+    "size": 24397,
+    "download_url": "https://raw.githubusercontent.com/JHNDAY/AI-Research-Collective/main/addiction_politics_women_html.html",
+    "html_url": "https://github.com/JHNDAY/AI-Research-Collective/blob/main/addiction_politics_women_html.html",
+    "sha": "28956838a8379b590e8103f3f2a40dd537d33bdc",
+    "type": "HTML",
+    "description": "AI research analysis examining addiction politics women html, including methodologies, experimental results, and implications for artificial intelligence development.",
+    "posting_date": "2025-08-01",
+    "author": "JHNDAY",
+    "keywords": [],
+    "title": "Addiction Politics Women Html"
+  },
+  {
+    "name": "data_relationship_visualization.html",
+    "path": "data_relationship_visualization.html",
+    "size": 28956,
+    "download_url": "https://raw.githubusercontent.com/JHNDAY/AI-Research-Collective/main/data_relationship_visualization.html",
+    "html_url": "https://github.com/JHNDAY/AI-Research-Collective/blob/main/data_relationship_visualization.html",
+    "sha": "ebbef23e4286b6e283b766a93b822935ce420a87",
+    "type": "HTML",
+    "description": "Data analysis examining datasets, data quality, feature engineering, and the role of data in AI system performance and reliability.",
+    "posting_date": "2025-07-28",
+    "author": "JHNDAY",
+    "keywords": [],
+    "title": "Data Relationship Visualization"
+  },
+  {
+    "name": "economic_data_visualization.html",
+    "path": "economic_data_visualization.html",
+    "size": 51214,
+    "download_url": "https://raw.githubusercontent.com/JHNDAY/AI-Research-Collective/main/economic_data_visualization.html",
+    "html_url": "https://github.com/JHNDAY/AI-Research-Collective/blob/main/economic_data_visualization.html",
+    "sha": "81db58ac32b30fb5853a433e8e61764b06c9f776",
+    "type": "HTML",
+    "description": "Data analysis examining datasets, data quality, feature engineering, and the role of data in AI system performance and reliability.",
+    "posting_date": "2025-07-28",
+    "author": "JHNDAY",
+    "keywords": [],
+    "title": "Economic Data Visualization"
+  }
+];
+        let filteredFiles = [...allFiles];
+        let currentView = 'list';
+        let currentSortField = 'name';
+        let currentSortOrder = 'asc';
+
+        function performSearch() {
+            const searchTerm = document.getElementById('searchBox').value.toLowerCase().trim();
+
+            if (!searchTerm) {
+                filteredFiles = [...allFiles];
+            } else {
+                filteredFiles = allFiles.filter(file => {
+                    return file.name.toLowerCase().includes(searchTerm) ||
+                           file.path.toLowerCase().includes(searchTerm) ||
+                           file.description.toLowerCase().includes(searchTerm) ||
+                           file.type.toLowerCase().includes(searchTerm) ||
+                           file.author.toLowerCase().includes(searchTerm) ||
+                           file.title.toLowerCase().includes(searchTerm);
+                });
+            }
+
+            applySorting();
+            renderFiles();
+        }
+
+        function applySorting() {
+            const field = currentSortField;
+            const order = currentSortOrder;
+
+            filteredFiles.sort((a, b) => {
+                let aVal = a[field];
+                let bVal = b[field];
+
+                if (field === 'posting_date') {
+                    if (aVal === 'Unknown') aVal = '0000-00-00';
+                    if (bVal === 'Unknown') bVal = '0000-00-00';
+                }
+
+                if (field === 'size') {
+                    aVal = parseInt(aVal) || 0;
+                    bVal = parseInt(bVal) || 0;
+                }
+
+                if (typeof aVal === 'string' && typeof bVal === 'string') {
+                    aVal = aVal.toLowerCase();
+                    bVal = bVal.toLowerCase();
+                }
+
+                let comparison = 0;
+                if (aVal < bVal) comparison = -1;
+                else if (aVal > bVal) comparison = 1;
+
+                return order === 'asc' ? comparison : -comparison;
+            });
+        }
+
+        function toggleSortOrder() {
+            currentSortOrder = currentSortOrder === 'asc' ? 'desc' : 'asc';
+            const button = document.getElementById('sortOrder');
+            button.textContent = currentSortOrder === 'asc' ? 'Ascending ↑' : 'Descending ↓';
+            button.classList.toggle('active');
+
+            applySorting();
+            renderFiles();
+        }
+
+        function clearFilters() {
+            document.getElementById('searchBox').value = '';
+            document.getElementById('sortField').value = 'name';
+            currentSortField = 'name';
+            currentSortOrder = 'asc';
+            document.getElementById('sortOrder').textContent = 'Ascending ↑';
+            document.getElementById('sortOrder').classList.remove('active');
+
+            filteredFiles = [...allFiles];
+            applySorting();
+            renderFiles();
+        }
+
+        function toggleAdvancedSearch() {
+            alert('Advanced search supports: file names, paths, descriptions, types, authors, and titles.');
+        }
+
+        function switchToListView() {
+            currentView = 'list';
+            document.getElementById('listView').classList.add('active');
+            document.getElementById('cardView').classList.remove('active');
+            renderFiles();
+        }
+
+        function switchToCardView() {
+            currentView = 'card';
+            document.getElementById('cardView').classList.add('active');
+            document.getElementById('listView').classList.remove('active');
+            renderFiles();
+        }
+
+        function renderFiles() {
+            const container = document.getElementById('fileContainer');
+            const resultsCount = document.getElementById('resultsCount');
+
+            resultsCount.textContent = filteredFiles.length + ' files';
+
+            if (filteredFiles.length === 0) {
+                container.innerHTML = '<div style="text-align: center; padding: 40px; color: #586069;">No files found matching your search criteria.</div>';
+                return;
+            }
+
+            if (currentView === 'card') {
+                let cardHTML = '';
+                filteredFiles.forEach(function(file) {
+                    const postingDate = file.posting_date !== 'Unknown' ? file.posting_date : '';
+                    const authorInfo = file.author !== 'Unknown' ? file.author : '';
+                    cardHTML += '<div class="file-card">' +
+                        '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">' +
+                            '<div style="display: flex; align-items: center; gap: 8px;">' +
+                                '<div>🌐</div>' +
+                                (postingDate ? '<div style="color: #586069; font-size: 0.75em; background: #f1f3f4; padding: 2px 6px; border-radius: 3px;">📅 ' + postingDate + '</div>' : '') +
+                            '</div>' +
+                            '<div class="file-type">' + file.type + '</div>' +
+                        '</div>' +
+                        '<div style="margin-bottom: 15px;">' +
+                            '<a href="https://jhnday.github.io/AI-Research-Collective/' + file.path + '" class="file-name" target="_blank">' + file.name + '</a>' +
+                            '<div class="file-path">' + file.path + '</div>' +
+                            (authorInfo ? '<div style="color: #586069; font-size: 0.8em; margin: 4px 0;">👤 ' + authorInfo + '</div>' : '') +
+                            '<div class="file-description">' + file.description + '</div>' +
+                        '</div>' +
+                        '<div style="display: flex; justify-content: space-between; align-items: center; padding-top: 10px; border-top: 1px solid var(--border-color);">' +
+                            '<div style="font-size: 0.8em; color: #586069;">' + formatFileSize(file.size) + '</div>' +
+                            '<div><a href="' + file.download_url + '" target="_blank" title="Download" style="color: var(--primary-color); text-decoration: none; padding: 4px 8px; border-radius: 4px; transition: background-color 0.2s;">⬇️</a></div>' +
+                        '</div>' +
+                    '</div>';
+                });
+                container.innerHTML = cardHTML;
+                container.style.display = 'grid';
+                container.style.gridTemplateColumns = 'repeat(auto-fill, minmax(350px, 1fr))';
+                container.style.gap = '20px';
+                container.style.padding = '20px';
+            } else {
+                let listHTML = '';
+                filteredFiles.forEach(function(file) {
+                    const postingDate = file.posting_date !== 'Unknown' ? file.posting_date : '';
+                    const authorInfo = file.author !== 'Unknown' ? file.author : '';
+                    listHTML += '<div class="file-item">' +
+                        '<div style="display: flex; align-items: center; gap: 8px;">' +
+                            '<div>🌐</div>' +
+                            (postingDate ? '<div style="color: #586069; font-size: 0.75em; background: #f1f3f4; padding: 2px 6px; border-radius: 3px; white-space: nowrap;">📅 ' + postingDate + '</div>' : '') +
+                        '</div>' +
+                        '<div>' +
+                            '<div style="display: flex; align-items: center; gap: 10px; margin-bottom: 4px;">' +
+                                '<a href="https://jhnday.github.io/AI-Research-Collective/' + file.path + '" class="file-name" target="_blank">' + file.name + '</a>' +
+                                (authorInfo ? '<div style="color: #586069; font-size: 0.75em; background: #e3f2fd; padding: 2px 6px; border-radius: 3px;">👤 ' + authorInfo + '</div>' : '') +
+                            '</div>' +
+                            '<div class="file-path">' + file.path + '</div>' +
+                            '<div class="file-description">' + file.description + '</div>' +
+                        '</div>' +
+                        '<div class="file-type">' + file.type + '</div>' +
+                        '<div class="file-size">' + formatFileSize(file.size) + '</div>' +
+                        '<div><a href="' + file.download_url + '" target="_blank" title="Download" style="color: var(--primary-color); text-decoration: none; padding: 4px 8px; border-radius: 4px; transition: background-color 0.2s;">⬇️</a></div>' +
+                    '</div>';
+                });
+                container.innerHTML = listHTML;
+                container.style.display = 'block';
+                container.style.gridTemplateColumns = '';
+                container.style.gap = '';
+                container.style.padding = '';
+            }
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 B';
+            const units = ['B', 'KB', 'MB', 'GB'];
+            let size = bytes;
+            let unitIndex = 0;
+            while (size >= 1024 && unitIndex < units.length - 1) {
+                size /= 1024;
+                unitIndex++;
+            }
+            return size.toFixed(1) + ' ' + units[unitIndex];
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchBox = document.getElementById('searchBox');
+            searchBox.addEventListener('input', performSearch);
+            searchBox.addEventListener('keyup', function(e) {
+                if (e.key === 'Enter') {
+                    performSearch();
+                }
+            });
+
+            document.getElementById('sortField').addEventListener('change', function() {
+                currentSortField = this.value;
+                applySorting();
+                renderFiles();
+            });
+
+            renderFiles();
+        });
+    </script>
+</body>
+</html>
