@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenAI Media Partnerships Visualization</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 40px;
+            border-radius: 20px 20px 0 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.1)"/></svg>') repeat;
+            animation: float 20s linear infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            100% { transform: translateY(-100px); }
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .highlight-card {
+            background: linear-gradient(135deg, #ff6b6b, #ffa500);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            transform: scale(1);
+            transition: transform 0.3s ease;
+        }
+
+        .highlight-card:hover {
+            transform: scale(1.02);
+        }
+
+        .highlight-card h2 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .icon {
+            width: 30px;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .partnerships-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .partnership-card {
+            background: white;
+            border-left: 5px solid;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .partnership-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+            transform: translateX(-100%);
+            animation: shine 2s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .partnership-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .partnership-card.featured {
+            border-left-color: #ff6b6b;
+            background: linear-gradient(135deg, #fff5f5, #ffffff);
+        }
+
+        .partnership-card.hearst {
+            border-left-color: #3498db;
+            background: linear-gradient(135deg, #f0f8ff, #ffffff);
+        }
+
+        .partnership-card.conde {
+            border-left-color: #9b59b6;
+            background: linear-gradient(135deg, #f8f5ff, #ffffff);
+        }
+
+        .partnership-card.time {
+            border-left-color: #e74c3c;
+            background: linear-gradient(135deg, #fff0f0, #ffffff);
+        }
+
+        .partnership-card.newscorp {
+            border-left-color: #f39c12;
+            background: linear-gradient(135deg, #fffaf0, #ffffff);
+        }
+
+        .partnership-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .partnership-date {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .partnership-details {
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .stats-section {
+            background: linear-gradient(135deg, #74b9ff, #0984e3);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .stat-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+
+        .controversy-section {
+            background: linear-gradient(135deg, #fd79a8, #e84393);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+        }
+
+        .controversy-section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .timeline {
+            position: relative;
+            margin: 30px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, #3498db, #9b59b6);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-left: 50px;
+            margin-bottom: 30px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -35px;
+            top: 25px;
+            width: 12px;
+            height: 12px;
+            background: #3498db;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 0 0 3px #3498db;
+        }
+
+        .timeline-date {
+            font-weight: bold;
+            color: #3498db;
+            margin-bottom: 10px;
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .partnerships-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>OpenAI's Media Empire</h1>
+            <p>Building bridges between AI and journalism</p>
+            <div style="margin-top: 20px; padding: 15px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; backdrop-filter: blur(10px);">
+                <p style="font-size: 0.9rem; opacity: 0.9; margin-bottom: 8px;">Based on CNBC Article:</p>
+                <a href="https://www.cnbc.com/2025/04/22/chatgpt-adds-washington-post-openai-media-bezos-altman.html" 
+                   target="_blank" 
+                   style="color: #74b9ff; text-decoration: none; font-weight: 600; font-size: 1rem; display: flex; align-items: center; gap: 8px;"
+                   onmouseover="this.style.color='#ffffff'"
+                   onmouseout="this.style.color='#74b9ff'">
+                    "ChatGPT adds Washington Post content to growing list of OpenAI media deals"
+                    <span style="font-size: 0.8rem;">🔗</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="highlight-card pulse">
+                <h2>
+                    <span class="icon">🗞️</span>
+                    Latest: Washington Post Partnership
+                </h2>
+                <p><strong>April 22, 2025:</strong> The Washington Post, owned by Amazon founder Jeff Bezos, joins OpenAI's growing network of media partners. ChatGPT will now display summaries, quotes, and links from the Post's reporting with clear attribution and direct links to full articles.</p>
+            </div>
+
+            <div class="stats-section">
+                <h3>OpenAI's Media Network</h3>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-number">20+</span>
+                        <div class="stat-label">News Publishers</div>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">160+</span>
+                        <div class="stat-label">Media Outlets</div>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">100+</span>
+                        <div class="stat-label">Years of Time Magazine History</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="color: #2c3e50; margin-bottom: 20px; font-size: 1.8rem;">Major Partnership Timeline</h3>
+
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-date">April 2025</div>
+                    <div class="partnership-title">The Washington Post</div>
+                    <div class="partnership-details">Latest addition to OpenAI's media network, owned by Jeff Bezos. The Post has been embracing AI with tools like "Ask The Post AI" and "Climate Answers."</div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-date">October 2024</div>
+                    <div class="partnership-title">Hearst Media</div>
+                    <div class="partnership-details">Partnership includes 20+ magazine brands and 40+ newspapers including Houston Chronicle, San Francisco Chronicle, Esquire, Cosmopolitan, and Elle.</div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-date">August 2024</div>
+                    <div class="partnership-title">Condé Nast</div>
+                    <div class="partnership-details">Access to premium content from Vogue, The New Yorker, GQ, Vanity Fair, and Wired.</div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-date">June 2024</div>
+                    <div class="partnership-title">Time Magazine</div>
+                    <div class="partnership-details">Multi-year deal providing access to over 100 years of archived content to enhance OpenAI's products and train AI models.</div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-date">May 2024</div>
+                    <div class="partnership-title">News Corp.</div>
+                    <div class="partnership-details">Access to current and archived articles from The Wall Street Journal, MarketWatch, Barron's, and New York Post.</div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-date">May 2024</div>
+                    <div class="partnership-title">Reddit</div>
+                    <div class="partnership-details">Deal allowing OpenAI to train AI models on social media content from the platform.</div>
+                </div>
+            </div>
+
+            <div class="controversy-section">
+                <h3>
+                    <span class="icon">⚖️</span>
+                    Legal Challenges
+                </h3>
+                <p>Not all media companies are embracing AI partnerships. Several major publications have filed lawsuits against OpenAI and Microsoft:</p>
+                <ul style="margin-top: 15px; line-height: 1.8;">
+                    <li><strong>The New York Times:</strong> Filed suit alleging intellectual property violations and seeking "billions of dollars in damages"</li>
+                    <li><strong>Center for Investigative Reporting:</strong> Sued for alleged copyright infringement</li>
+                    <li><strong>Chicago Tribune & NY Daily News:</strong> Similar copyright infringement claims</li>
+                </ul>
+            </div>
+
+            <div style="background: #ecf0f1; padding: 30px; border-radius: 15px; margin-top: 30px;">
+                <h3 style="color: #2c3e50; margin-bottom: 15px;">The Bigger Picture</h3>
+                <p style="line-height: 1.8; color: #555;">OpenAI's aggressive pursuit of media partnerships represents a strategic effort to legitimize AI-generated content while addressing copyright concerns. By forming licensing deals, OpenAI aims to create a sustainable model that compensates content creators while expanding its training data and user experience capabilities.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
