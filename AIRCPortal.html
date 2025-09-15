@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -58,15 +59,42 @@
         }
 
         .header .motto {
-            font-size: 28px !important;
-            color: #343a40 !important;
+            font-size: 18pt;
+            color: #343a40;
             font-style: italic;
             font-family: 'Times New Roman', serif;
-            letter-spacing: 0.8px;
+            letter-spacing: 0.5px;
+            margin-top: 20px;
+            font-weight: 500;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .zoom-link {
+            display: inline-block;
+            background: linear-gradient(45deg, #cd853f, #d2691e);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
             margin-top: 25px;
-            font-weight: 600 !important;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-            display: block;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(205, 133, 63, 0.25);
+            font-family: 'Georgia', serif;
+            font-size: 1.1rem;
+        }
+
+        .zoom-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(205, 133, 63, 0.35);
+            background: linear-gradient(45deg, #d2691e, #daa520);
+        }
+
+        .next-meeting-header {
+            margin-top: 20px;
+            font-family: 'Georgia', serif;
+            font-size: 14pt;
+            color: #495057;
         }
 
         .content-grid {
@@ -74,11 +102,6 @@
             grid-template-columns: repeat(2, 1fr);
             gap: 35px;
             margin-top: 30px;
-        }
-
-        .content-grid:last-of-type {
-            grid-template-columns: 1fr;
-            margin-top: 20px;
         }
 
         .section {
@@ -125,16 +148,16 @@
             opacity: 0.6;
         }
 
-        .section[data-section="resources"] .empty-state::before {
-            content: "📚";
-        }
-
         .section[data-section="agenda"] .empty-state::before {
             content: "📋";
         }
 
         .section[data-section="sessions"] .empty-state::before {
             content: "🎓";
+        }
+
+        .section[data-section="colloquium"] .empty-state::before {
+            content: "🎭";
         }
 
         .section[data-section="articles"] .empty-state::before {
@@ -145,66 +168,6 @@
             font-size: 1.1rem;
             max-width: 250px;
             line-height: 1.4;
-        }
-
-        .zoom-link {
-            display: inline-block;
-            background: linear-gradient(45deg, #cd853f, #d2691e);
-            color: white;
-            padding: 12px 25px;
-            border-radius: 25px;
-            text-decoration: none;
-            font-weight: bold;
-            margin-top: 25px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(205, 133, 63, 0.25);
-            font-family: 'Georgia', serif;
-            font-size: 1.1rem;
-        }
-
-        .zoom-link:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(205, 133, 63, 0.35);
-            background: linear-gradient(45deg, #d2691e, #daa520);
-        }
-
-        .zoom-link:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(184, 134, 11, 0.35);
-            background: linear-gradient(45deg, #daa520, #ffd700);
-        }
-
-        .next-meeting-header {
-            margin-top: 20px;
-            font-family: 'Georgia', serif;
-            font-size: 14pt;
-            color: #495057;
-        }
-
-        .next-meeting {
-            margin-top: 25px;
-            padding-top: 20px;
-            border-top: 2px solid #4682b4;
-            font-family: 'Georgia', serif;
-            font-size: 18pt;
-            color: #495057;
-        }
-
-        .agenda-content {
-            font-family: 'Georgia', serif;
-            font-size: 18pt;
-            color: #495057;
-            line-height: 1.6;
-        }
-
-        .agenda-content ul {
-            list-style-type: disc;
-            padding-left: 30px;
-            margin: 0;
-        }
-
-        .agenda-content li {
-            margin-bottom: 15px;
         }
 
         .resource-item {
@@ -253,11 +216,29 @@
             transform: scale(1.05);
         }
 
-        .zoom-link:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(108, 117, 125, 0.35);
-            background: linear-gradient(45deg, #495057, #343a40);
+        .agenda-content {
+            font-family: 'Georgia', serif;
+            font-size: 18pt;
+            color: #495057;
+            line-height: 1.6;
         }
+
+        .agenda-content ul {
+            list-style-type: disc;
+            padding-left: 30px;
+            margin: 0;
+        }
+
+        .agenda-content li {
+            margin-bottom: 15px;
+        }
+
+        .content-grid:last-of-type {
+            grid-template-columns: 1fr;
+            margin-top: 20px;
+        }
+
+        /* Responsive Design */
         @media (max-width: 1024px) {
             .content-grid {
                 grid-template-columns: 1fr;
@@ -271,7 +252,7 @@
             }
             
             .header .motto {
-                font-size: 1rem;
+                font-size: 16pt;
             }
 
             .section {
@@ -323,37 +304,38 @@
     <div class="container">
         <div class="header">
             <h1>AI Research Collective</h1>
-            <p class="motto">Quaero Sensum, Non Solum Notitias</p>
+            <p class="motto">Quaerimus Sensum Verborum</p>
             <a href="https://brandeis.zoom.us/j/92280950998?pwd=Gh3aUvnhuE1G8jlYjABItw16T0hvJu.1" class="zoom-link" target="_blank" rel="noopener noreferrer">🎥 Zoom</a>
             <div class="next-meeting-header">
-                <strong>Next Meeting: TBD</strong>
+                <strong>Next Meeting: Friday Sep 19 : 9:00 - 10:30</strong>
             </div>
         </div>
 
         <div class="content-grid">
-            <div class="section" data-section="resources">
-                <h2>Resources</h2>
-                <div class="resource-item">
-                    <h3>AI Agents</h3>
-                    <div class="links">
-                        <a href="https://gemini.google.com/" class="link-btn" target="_blank" rel="noopener noreferrer">🤖 Gemini</a>
-                        <a href="https://chat.openai.com/" class="link-btn" target="_blank" rel="noopener noreferrer">💬 ChatGPT</a>
-                        <a href="https://claude.ai/chats" class="link-btn" target="_blank" rel="noopener noreferrer">🧠 Claude</a>
-                    </div>
-                </div>
-                <div class="resource-item">
-                    <h3>References</h3>
-                    <div class="links">
-                        <a href="https://jhnday.github.io/AI-Research-Collective/AICRIndex.html" class="link-btn" target="_blank" rel="noopener noreferrer">📊 Data Viz Index</a>
-                        <a href="https://drive.google.com/drive/folders/1Ditmlk8NEKS-t1S9l_cBoi3DEcyZhFo2?usp=drive_link" class="link-btn" target="_blank" rel="noopener noreferrer">📁 Information Repository</a>
-                    </div>
+            <div class="section" data-section="agenda">
+                <h2>Current Agenda</h2>
+                <div class="agenda-content">
+                    <ul>
+                        <li>Balanced Political Discourse</li>
+                        <li>Update on Saul's Course</li>
+                        <li>Further Conversations with Claude</li>
+                    </ul>
                 </div>
             </div>
 
-            <div class="section" data-section="agenda">
-                <h2>Current Agenda</h2>
-                <div class="empty-state">
-                    <p>Current agenda items and upcoming topics will appear here</p>
+            <div class="section" data-section="colloquium">
+                <h2>Colloquium Politicum Libratum</h2>
+                <div class="resource-item">
+                    <h3>Current Topics</h3>
+                    <div class="links">
+                        <a href="https://ground.news/article/most-trump-tariffs-are-not-legal-us-appeals-court-rules_7e1dc5" class="link-btn" target="_blank" rel="noopener noreferrer">📰 Ground News</a>
+                    </div>
+                    <div style="margin-top: 15px; color: #495057; font-style: italic;">
+                        ⚖️ <a href="https://jhnday.github.io/CrntEvnts/left_leaning_tariff_coverage" target="_blank" rel="noopener noreferrer" style="color: #cd853f; text-decoration: underline;">Left</a> and <a href="https://jhnday.github.io/CrntEvnts/tariff_ruling_right" target="_blank" rel="noopener noreferrer" style="color: #cd853f; text-decoration: underline;">Right</a> Views on Tariff Ruling
+                    </div>
+                    <div class="links" style="margin-top: 15px;">
+                        <a href="https://jhnday.github.io/CrntEvnts/muted_political_anger_comparison.html" class="link-btn" target="_blank" rel="noopener noreferrer">🤝 Across the Political Divide</a>
+                    </div>
                 </div>
             </div>
 
@@ -392,7 +374,9 @@
                     </div>
                 </div>
             </div>
+        </div>
 
+        <div class="content-grid">
             <div class="section" data-section="howto">
                 <h2>How To</h2>
                 <div class="resource-item">
@@ -401,6 +385,9 @@
                     </div>
                 </div>
             </div>
+        </div>
+
+        <div style="margin-top: 30px;">
         </div>
     </div>
 </body>
