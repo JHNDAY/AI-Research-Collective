@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude Voice Control Script</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .title {
+            text-align: center;
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            font-weight: 700;
+        }
+        
+        .flowchart {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .mode-box {
+            padding: 20px 30px;
+            border-radius: 15px;
+            font-weight: bold;
+            text-align: center;
+            min-width: 200px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .mode-box:hover {
+            transform: translateY(-3px);
+        }
+        
+        .default-mode {
+            background: linear-gradient(135deg, #ff9a9e, #fecfef);
+            color: #8e44ad;
+            font-size: 1.4em;
+            border: 3px solid #8e44ad;
+        }
+        
+        .listening-mode {
+            background: linear-gradient(135deg, #a8edea, #fed6e3);
+            color: #2c3e50;
+        }
+        
+        .talking-mode {
+            background: linear-gradient(135deg, #96fbc4, #f9f586);
+            color: #27ae60;
+        }
+        
+        .trigger-box {
+            background: linear-gradient(135deg, #ffecd2, #fcb69f);
+            color: #e67e22;
+            padding: 15px 25px;
+            border-radius: 10px;
+            margin: 10px;
+            border: 2px solid #e67e22;
+        }
+        
+        .response-box {
+            background: linear-gradient(135deg, #d299c2, #fef9d3);
+            color: #7b68ee;
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin: 8px;
+            font-style: italic;
+        }
+        
+        .arrow {
+            font-size: 2em;
+            color: #34495e;
+            margin: 10px 0;
+        }
+        
+        .triggers-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+            width: 100%;
+        }
+        
+        .trigger-group {
+            border: 2px solid #3498db;
+            border-radius: 15px;
+            padding: 20px;
+            background: linear-gradient(135deg, #ebf8ff, #f0f9ff);
+        }
+        
+        .trigger-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #2980b9;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .error-section {
+            background: linear-gradient(135deg, #ffb3ba, #ffdfba);
+            border: 2px solid #e74c3c;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+        
+        .error-title {
+            color: #c0392b;
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .rule-box {
+            background: linear-gradient(135deg, #c3cfe2, #c3cfe2);
+            border: 3px solid #34495e;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 1.1em;
+        }
+        
+        .flow-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .triggers-section {
+                grid-template-columns: 1fr;
+            }
+            .title {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">🎙️ Claude Voice Control Script</h1>
+        
+        <div class="flowchart">
+            <!-- Default State -->
+            <div class="mode-box default-mode">
+                📱 DEFAULT: LISTENING MODE (Silent)
+            </div>
+            
+            <div class="arrow">⬇️</div>
+            
+            <!-- Triggers Section -->
+            <div class="triggers-section">
+                <!-- Hey Claude Trigger -->
+                <div class="trigger-group">
+                    <div class="trigger-title">Single Response Trigger</div>
+                    <div class="trigger-box">"Hey Claude"</div>
+                    <div class="arrow">⬇️</div>
+                    <div class="response-box">Respond once</div>
+                    <div class="arrow">⬇️</div>
+                    <div class="response-box">"Mums the word."</div>
+                    <div class="arrow">⬇️</div>
+                    <div class="mode-box listening-mode">Return to Silent Mode</div>
+                </div>
+                
+                <!-- Let's Talk Claude Trigger -->
+                <div class="trigger-group">
+                    <div class="trigger-title">Continuous Talk Mode</div>
+                    <div class="trigger-box">"Let's Talk Claude"</div>
+                    <div class="arrow">⬇️</div>
+                    <div class="response-box">"Tuning in."</div>
+                    <div class="arrow">⬇️</div>
+                    <div class="mode-box talking-mode">🗣️ TALK MODE<br>(Respond to Everything)</div>
+                </div>
+                
+                <!-- Just Listen Claude Trigger -->
+                <div class="trigger-group">
+                    <div class="trigger-title">Return to Silent</div>
+                    <div class="trigger-box">"Just Listen Claude"</div>
+                    <div class="arrow">⬇️</div>
+                    <div class="response-box">"Switching to listening mode."</div>
+                    <div class="arrow">⬇️</div>
+                    <div class="mode-box listening-mode">🤫 LISTENING MODE (Silent)</div>
+                </div>
+                
+                <!-- Claude Reset Trigger -->
+                <div class="trigger-group">
+                    <div class="trigger-title">Reset Command</div>
+                    <div class="trigger-box">"Claude Reset"</div>
+                    <div class="arrow">⬇️</div>
+                    <div class="response-box">"Resetting to listening mode."</div>
+                    <div class="arrow">⬇️</div>
+                    <div class="mode-box listening-mode">🔄 LISTENING MODE (Silent)</div>
+                </div>
+            </div>
+            
+            <!-- Special Rule -->
+            <div class="rule-box">
+                ⏱️ RULE: Wait 1 second after mode change before acting
+            </div>
+            
+            <!-- Error Recovery Section -->
+            <div class="error-section">
+                <div class="error-title">🚨 Error Recovery</div>
+                <div class="flow-item">
+                    <div class="trigger-box">If speaking in listening mode:</div>
+                    <div class="arrow">⬇️</div>
+                    <div class="response-box">"Sorry, returning to listening mode."</div>
+                    <div class="arrow">⬇️</div>
+                    <div class="mode-box listening-mode">Return to Silent</div>
+                </div>
+                <br>
+                <div class="flow-item">
+                    <div class="trigger-box">If unsure about mode:</div>
+                    <div class="arrow">⬇️</div>
+                    <div class="mode-box default-mode">Default to LISTENING MODE</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
