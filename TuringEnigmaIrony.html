@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Enigma Weather Report Irony</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 50%, #2c3e50 100%);
+            min-height: 100vh;
+            color: #ecf0f1;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Animated radio waves background */
+        .radio-waves {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.1;
+        }
+        
+        .wave {
+            position: absolute;
+            border: 2px solid #3498db;
+            border-radius: 50%;
+            animation: radio-wave 8s infinite ease-out;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            background: rgba(44, 62, 80, 0.9);
+            padding: 50px;
+            border-radius: 25px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+            border: 3px solid rgba(52, 152, 219, 0.3);
+        }
+        
+        .header h1 {
+            color: #3498db;
+            font-size: 3.5rem;
+            margin-bottom: 25px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.5);
+            animation: ironic-glow 4s ease-in-out infinite alternate;
+        }
+        
+        .irony-banner {
+            background: rgba(231, 76, 60, 0.2);
+            border: 3px solid rgba(231, 76, 60, 0.4);
+            padding: 30px;
+            border-radius: 20px;
+            margin-top: 25px;
+            font-size: 1.3rem;
+            color: #ffb3ba;
+            line-height: 1.8;
+        }
+        
+        .irony-showcase {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 50px;
+            margin: 80px 0;
+            align-items: center;
+        }
+        
+        .german-side {
+            background: linear-gradient(135deg, #8b0000 0%, #a52a2a 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 20px 40px rgba(139,0,0,0.4);
+            border: 3px solid #cd5c5c;
+            min-height: 400px;
+        }
+        
+        .british-side {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 20px 40px rgba(30,60,114,0.4);
+            border: 3px solid #4682b4;
+            min-height: 400px;
+        }
+        
+        .side-title {
+            font-size: 2.2rem;
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .side-icon {
+            font-size: 4rem;
+            text-align: center;
+            margin: 25px 0;
+        }
+        
+        .ironic-arrow {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .arrow-symbol {
+            font-size: 5rem;
+            color: #f39c12;
+            animation: ironic-pulse 3s ease-in-out infinite;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.5);
+        }
+        
+        .arrow-text {
+            background: rgba(243, 156, 18, 0.3);
+            padding: 15px 25px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(243, 156, 18, 0.5);
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            color: #f1c40f;
+        }
+        
+        .weather-routine {
+            background: rgba(52, 152, 219, 0.1);
+            backdrop-filter: blur(15px);
+            padding: 50px;
+            border-radius: 25px;
+            margin: 60px 0;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+            border: 3px solid rgba(52, 152, 219, 0.3);
+        }
+        
+        .routine-demo {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 30px;
+            border-radius: 15px;
+            font-family: 'Courier New', monospace;
+            margin: 30px 0;
+            border: 2px solid #34495e;
+        }
+        
+        .transmission {
+            margin: 15px 0;
+            padding: 10px;
+            background: rgba(231, 76, 60, 0.2);
+            border-radius: 8px;
+            border-left: 4px solid #e74c3c;
+        }
+        
+        .predictable-pattern {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+        
+        .pattern-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+        
+        .pattern-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: #f39c12;
+        }
+        
+        .crib-method {
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+            color: white;
+            padding: 50px;
+            border-radius: 25px;
+            margin: 60px 0;
+            box-shadow: 0 25px 50px rgba(39,174,96,0.4);
+        }
+        
+        .crib-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+        
+        .crib-step {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+        
+        .step-number {
+            background: #e74c3c;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0 auto 15px auto;
+        }
+        
+        .turing-humor {
+            background: rgba(155, 89, 182, 0.2);
+            backdrop-filter: blur(20px);
+            padding: 60px;
+            border-radius: 30px;
+            margin: 60px 0;
+            border: 3px solid rgba(155,89,182,0.4);
+            text-align: center;
+        }
+        
+        .humor-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .humor-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 20px;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        
+        .humor-icon {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .ironies-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            padding: 50px;
+            border-radius: 25px;
+            margin: 60px 0;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+        }
+        
+        .ironies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .irony-card {
+            background: linear-gradient(135deg, #8e44ad 0%, #9b59b6 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(142,68,173,0.3);
+            transition: transform 0.3s ease;
+        }
+        
+        .irony-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .irony-title {
+            color: #f1c40f;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        
+        .dummkopf-section {
+            background: linear-gradient(135deg, #d35400 0%, #e67e22 100%);
+            color: white;
+            padding: 60px;
+            border-radius: 30px;
+            margin: 60px 0;
+            box-shadow: 0 30px 60px rgba(211,84,0,0.4);
+            text-align: center;
+        }
+        
+        .dummkopf-quote {
+            font-size: 2.5rem;
+            font-style: italic;
+            color: #ffeaa7;
+            line-height: 1.6;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 40px;
+        }
+        
+        .lesson-learned {
+            background: rgba(44, 62, 80, 0.9);
+            padding: 50px;
+            border-radius: 25px;
+            margin: 60px 0;
+            border: 3px solid #95a5a6;
+        }
+        
+        .lesson-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+        
+        .lesson-item {
+            background: rgba(149, 165, 166, 0.2);
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid rgba(149, 165, 166, 0.3);
+        }
+        
+        .lesson-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: #3498db;
+        }
+        
+        .final-wisdom {
+            background: rgba(39, 174, 96, 0.2);
+            backdrop-filter: blur(25px);
+            padding: 60px;
+            border-radius: 30px;
+            margin: 60px 0;
+            border: 3px solid rgba(39,174,96,0.4);
+            text-align: center;
+        }
+        
+        .wisdom-quote {
+            font-size: 2rem;
+            font-style: italic;
+            color: #2ecc71;
+            line-height: 1.6;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 30px;
+        }
+        
+        @keyframes radio-wave {
+            0% { transform: scale(0); opacity: 1; }
+            100% { transform: scale(4); opacity: 0; }
+        }
+        
+        @keyframes ironic-glow {
+            0% { text-shadow: 3px 3px 6px rgba(0,0,0,0.5); }
+            100% { text-shadow: 3px 3px 25px rgba(52,152,219,0.8); }
+        }
+        
+        @keyframes ironic-pulse {
+            0% { transform: scale(1) rotate(-5deg); }
+            50% { transform: scale(1.2) rotate(5deg); }
+            100% { transform: scale(1) rotate(-5deg); }
+        }
+        
+        @media (max-width: 968px) {
+            .irony-showcase {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            .ironic-arrow {
+                flex-direction: row;
+            }
+            .arrow-text {
+                writing-mode: horizontal-tb;
+                text-orientation: initial;
+            }
+            .arrow-symbol {
+                transform: rotate(90deg);
+            }
+            .header h1 {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="radio-waves" id="radioWaves"></div>
+    
+    <div class="container">
+        <div class="header">
+            <h1>😂 The Beautiful Irony</h1>
+            <p style="font-size: 1.4rem; color: #87ceeb; margin-top: 15px;">How German Precision Became Their Greatest Weakness</p>
+            <div class="irony-banner">
+                <strong>🌤️ The Ultimate Dummkopf Moment:</strong><br/>
+                The "unbreakable" Enigma code was cracked because the Germans couldn't resist giving daily weather reports! German bureaucratic precision literally handed the Allies the keys to their entire communication system.
+            </div>
+        </div>
+        
+        <div class="irony-showcase">
+            <div class="german-side">
+                <div class="side-title">🇩🇪 German Engineering Pride</div>
+                <div class="side-icon">⚙️</div>
+                
+                <div style="font-size: 1.2rem; line-height: 1.8;">
+                    <p><strong>"Ordnung muss sein!"</strong></p>
+                    <ul style="margin: 20px 0; padding-left: 20px;">
+                        <li>Built the "unbreakable" Enigma machine</li>
+                        <li>Sophisticated mechanical engineering</li>
+                        <li>Millions of possible daily settings</li>
+                        <li>Confident in their mathematical superiority</li>
+                    </ul>
+                    
+                    <div style="background: rgba(255,255,255,0.2); padding: 20px; border-radius: 10px; margin-top: 25px; font-style: italic;">
+                        "Our encryption is mathematically perfect! <br/>No one can break our codes!"
+                    </div>
+                </div>
+            </div>
+            
+            <div class="ironic-arrow">
+                <div class="arrow-symbol">😂</div>
+                <div class="arrow-text">ROUTINE BETRAYS PERFECTION</div>
+                <div class="arrow-symbol">🎯</div>
+            </div>
+            
+            <div class="british-side">
+                <div class="side-title">🇬🇧 Turing's Insight</div>
+                <div class="side-icon">🧠</div>
+                
+                <div style="font-size: 1.2rem; line-height: 1.8;">
+                    <p><strong>"Achtung! Predictable humans!"</strong></p>
+                    <ul style="margin: 20px 0; padding-left: 20px;">
+                        <li>The machine is perfect...</li>
+                        <li>But humans use it predictably!</li>
+                        <li>Weather reports = known plaintext</li>
+                        <li>Routine = exploitable patterns</li>
+                    </ul>
+                    
+                    <div style="background: rgba(255,255,255,0.2); padding: 20px; border-radius: 10px; margin-top: 25px; font-style: italic;">
+                        "They're handing us the keys with their own bureaucratic precision!"
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="weather-routine">
+            <h2 style="color: #3498db; text-align: center; margin-bottom: 30px; font-size: 2.5rem;">🌤️ The Fatal Weather Report Routine</h2>
+            
+            <div style="text-align: center; font-size: 1.3rem; margin-bottom: 40px; color: #cfd8dc;">
+                <strong>Every morning, like clockwork, German weather stations transmitted routine reports:</strong>
+            </div>
+            
+            <div class="routine-demo">
+                <div style="color: #3498db; font-size: 1.1rem; margin-bottom: 20px;">📡 GERMAN WEATHER TRANSMISSIONS - DAILY ROUTINE</div>
+                
+                <div class="transmission">
+                    <strong>06:00 - Weather Station Alpha:</strong><br/>
+                    "WETTER HEUTE BEWÖLKT WIND NORDWEST DRUCK 1015 MILLIBAR"
+                </div>
+                
+                <div class="transmission">
+                    <strong>06:15 - Weather Station Beta:</strong><br/>
+                    "WETTER MORGEN REGEN WIND SÜDWEST DRUCK 1008 MILLIBAR"
+                </div>
+                
+                <div class="transmission">
+                    <strong>06:30 - Weather Station Gamma:</strong><br/>
+                    "WETTER KLAR SICHT GUT WIND NORDOST DRUCK 1020 MILLIBAR"
+                </div>
+                
+                <div style="color: #e74c3c; font-style: italic; margin-top: 20px; text-align: center;">
+                    ⚠️ Same words, same format, same time every day = PREDICTABLE PLAINTEXT!
+                </div>
+            </div>
+            
+            <div class="predictable-pattern">
+                <div class="pattern-item">
+                    <div class="pattern-icon">🕕</div>
+                    <h3 style="color: #f39c12; margin-bottom: 15px;">Same Time</h3>
+                    <p>Weather reports always at 06:00, 06:15, 06:30 - clockwork precision</p>
+                </div>
+                
+                <div class="pattern-item">
+                    <div class="pattern-icon">📝</div>
+                    <h3 style="color: #f39c12; margin-bottom: 15px;">Same Format</h3>
+                    <p>"WETTER" always first, followed by conditions, wind, pressure - bureaucratic consistency</p>
+                </div>
+                
+                <div class="pattern-item">
+                    <div class="pattern-icon">🔄</div>
+                    <h3 style="color: #f39c12; margin-bottom: 15px;">Same Words</h3>
+                    <p>Limited vocabulary: WETTER, WIND, DRUCK, BEWÖLKT, REGEN - predictable German efficiency</p>
+                </div>
+                
+                <div class="pattern-item">
+                    <div class="pattern-icon">🎯</div>
+                    <h3 style="color: #f39c12; margin-bottom: 15px;">Perfect Target</h3>
+                    <p>Known plaintext = codebreaker's dream. "If we know what they're saying..."</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="crib-method">
+            <h2 style="text-align: center; font-size: 2.8rem; margin-bottom: 30px;">🔓 The "Crib" Method Victory</h2>
+            
+            <div style="text-align: center; font-size: 1.4rem; margin-bottom: 40px;">
+                <strong>Turing's team turned German routine into cryptographic gold:</strong>
+            </div>
+            
+            <div class="crib-steps">
+                <div class="crib-step">
+                    <div class="step-number">1</div>
+                    <h3 style="color: #f1c40f; margin-bottom: 15px;">Predict Content</h3>
+                    <p>We know "WETTER" will appear at the start of weather reports</p>
+                </div>
+                
+                <div class="crib-step">
+                    <div class="step-number">2</div>
+                    <h3 style="color: #f1c40f; margin-bottom: 15px;">Match Patterns</h3>
+                    <p>Compare encrypted version to likely German plaintext</p>
+                </div>
+                
+                <div class="crib-step">
+                    <div class="step-number">3</div>
+                    <h3 style="color: #f1c40f; margin-bottom: 15px;">Test Settings</h3>
+                    <p>Use the Bombe machines to systematically test Enigma rotor positions</p>
+                </div>
+                
+                <div class="crib-step">
+                    <div class="step-number">4</div>
+                    <h3 style="color: #f1c40f; margin-bottom: 15px;">Break Daily Key</h3>
+                    <p>Once we find a match, the entire day's communications are compromised!</p>
+                </div>
+            </div>
+            
+            <div style="background: rgba(255,255,255,0.2); padding: 30px; border-radius: 20px; margin-top: 40px; font-size: 1.3rem; text-align: center;">
+                🎯 <strong>Result:</strong> "Cloudy with a chance of rain" became "Clear skies for Allied victory"
+            </div>
+        </div>
+        
+        <div class="turing-humor">
+            <h2 style="color: #9b59b6; font-size: 3rem; margin-bottom: 30px;">😄 What Turing Must Have Thought</h2>
+            
+            <div style="font-size: 1.4rem; margin-bottom: 40px;">
+                <strong>The irony must have been absolutely delicious to someone with Turing's wit:</strong>
+            </div>
+            
+            <div class="humor-grid">
+                <div class="humor-item">
+                    <div class="humor-icon">🏭</div>
+                    <h3 style="color: #e67e22; margin-bottom: 15px;">German Engineering</h3>
+                    <p>"They built the perfect encryption machine - and then used it in the most imperfect, predictable way possible!"</p>
+                </div>
+                
+                <div class="humor-item">
+                    <div class="humor-icon">📋</div>
+                    <h3 style="color: #e67e22; margin-bottom: 15px;">Bureaucratic Precision</h3>
+                    <p>"Their obsession with 'Ordnung' is literally ordering their own defeat!"</p>
+                </div>
+                
+                <div class="humor-item">
+                    <div class="humor-icon">🌤️</div>
+                    <h3 style="color: #e67e22; margin-bottom: 15px;">Weather Reports</h3>
+                    <p>"The same efficiency that makes them formidable is handing us their secrets every morning at 6 AM!"</p>
+                </div>
+                
+                <div class="humor-item">
+                    <div class="humor-icon">🎭</div>
+                    <h3 style="color: #e67e22; margin-bottom: 15px;">Human Nature</h3>
+                    <p>"They never realized that routine equals predictability equals vulnerability!"</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="ironies-section">
+            <h2 style="color: #3498db; text-align: center; margin-bottom: 30px; font-size: 2.5rem;">🎭 The Layers of Irony</h2>
+            
+            <div class="ironies-grid">
+                <div class="irony-card">
+                    <div class="irony-title">📋 Bureaucracy vs. Security</div>
+                    <p><strong>German thinking:</strong> "We must maintain proper procedures at all costs!"</p>
+                    <p style="margin-top: 10px;"><strong>Reality:</strong> Those procedures were handing the Allies the keys to victory.</p>
+                </div>
+                
+                <div class="irony-card">
+                    <div class="irony-title">🎯 Precision vs. Vulnerability</div>
+                    <p><strong>The paradox:</strong> Military discipline creating military vulnerability.</p>
+                    <p style="margin-top: 10px;"><strong>The result:</strong> Their greatest strength became their fatal weakness.</p>
+                </div>
+                
+                <div class="irony-card">
+                    <div class="irony-title">🤖 Machine vs. Human</div>
+                    <p><strong>German engineers:</strong> Built incredibly sophisticated encryption.</p>
+                    <p style="margin-top: 10px;"><strong>German operators:</strong> Undermined it completely through predictable behavior.</p>
+                </div>
+                
+                <div class="irony-card">
+                    <div class="irony-title">🧠 Intelligence vs. Routine</div>
+                    <p><strong>The insight:</strong> Sometimes the weakness isn't in the machine - it's in how humans use it.</p>
+                    <p style="margin-top: 10px;"><strong>Turing's genius:</strong> Exploiting psychology, not just mathematics.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="dummkopf-section">
+            <div class="dummkopf-quote">
+                "Achtung! Such fortunate Dummkopf behavior!"
+            </div>
+            
+            <div style="font-size: 1.4rem; line-height: 1.8; margin-bottom: 40px;">
+                <strong>Turing probably thought it quite funny that:</strong><br/>
+                • The same German precision that created beautiful engineering also created exploitable patterns<br/>
+                • Weather reports as mundane as "cloudy with rain" were helping win the war<br/>
+                • The Germans never seemed to realize that routine = predictability = game over
+            </div>
+            
+            <div style="background: rgba(255,255,255,0.2); padding: 30px; border-radius: 20px; font-size: 1.3rem;">
+                🎭 <strong>The Ultimate Irony:</strong> They were proud of their "unbreakable" Enigma, confident in their superior engineering, and completely blind to how their own routines were betraying them daily.
+            </div>
+        </div>
+        
+        <div class="lesson-learned">
+            <h2 style="color: #95a5a6; text-align: center; margin-bottom: 30px; font-size: 2.2rem;">📚 The Deeper Lessons</h2>
+            
+            <div class="lesson-grid">
+                <div class="lesson-item">
+                    <div class="lesson-icon">🧠</div>
+                    <h3 style="color: #3498db; margin-bottom: 15px;">Human Psychology</h3>
+                    <p>Human predictability can trump even the most sophisticated technology</p>
+                </div>
+                
+                <div class="lesson-item">
+                    <div class="lesson-icon">🔗</div>
+                    <h3 style="color: #3498db; margin-bottom: 15px;">Weakest Link</h3>
+                    <p>Security systems are only as strong as their most predictable component</p>
+                </div>
+                
+                <div class="lesson-item">
+                    <div class="lesson-icon">🎯</div>
+                    <h3 style="color: #3498db; margin-bottom: 15px;">Behavioral Intelligence</h3>
+                    <p>Understanding human nature can be more powerful than breaking mathematical codes</p>
+                </div>
+                
+                <div class="lesson-item">
+                    <div class="lesson-icon">⚖️</div>
+                    <h3 style="color: #3498db; margin-bottom: 15px;">Balance</h3>
+                    <p>Mechanical perfection vs. behavioral unpredictability - the eternal tension</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="final-wisdom">
+            <div class="wisdom-quote">
+                "They built the perfect encryption machine and then proceeded to use it in the most imperfect, predictable way possible!"
+            </div>
+            
+            <div style="font-size: 1.3rem; margin-top: 30px;">
+                <strong>The weather reports weren't just giving away German military plans - they were revealing the fundamental tension between mechanical perfection and human predictability that would become central to all of Turing's work on intelligence, both human and artificial.</strong>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Create radio wave animation
+        function createRadioWaves() {
+            const container = document.getElementById('radioWaves');
+            
+            setInterval(() => {
+                const wave = document.createElement('div');
+                wave.className = 'wave';
+                wave.style.left = Math.random() * 100 + '%';
+                wave.style.top = Math.random() * 100 + '%';
+                wave.style.width = '20px';
+                wave.style.height = '20px';
+                container.appendChild(wave);
+                
+                // Remove wave after animation completes
+                setTimeout(() => {
+                    if (wave.parentNode) {
+                        wave.parentNode.removeChild(wave);
+                    }
+                }, 8000);
+            }, 2000);
+        }
+        
+        createRadioWaves();
+    </script>
+</body>
+</html>
