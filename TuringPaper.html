@@ -69,7 +69,7 @@
         }
         
         .intent-section {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
             color: white;
         }
         
@@ -79,7 +79,7 @@
         }
         
         .approach-section {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            background: linear-gradient(135deg, #5a67d8 0%, #4c51bf 100%);
             color: white;
         }
         
@@ -89,7 +89,7 @@
         }
         
         .conclusions-section {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            background: linear-gradient(135deg, #38b2ac 0%, #2c7a7b 100%);
             color: white;
         }
         
@@ -120,7 +120,7 @@
         
         .objections-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 20px;
             margin: 20px 0;
         }
@@ -142,6 +142,12 @@
             color: #ff4757;
             margin-bottom: 10px;
             font-size: 1.1rem;
+        }
+        
+        .objection p {
+            margin-bottom: 8px;
+            line-height: 1.4;
+            font-size: 0.9rem;
         }
         
         .prediction-box {
@@ -231,6 +237,7 @@
             .section { padding: 20px; }
             .timeline { flex-direction: column; }
             .arrow { transform: rotate(90deg); margin: 10px 0; }
+            .objections-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -260,50 +267,61 @@
             <h2>🔬 Methodological Approach</h2>
             
             <div class="key-insight">
-                <strong>Key Insight:</strong> Focus on digital computers as universal machines capable of simulating any discrete-state machine.
+                <strong>Theoretical Foundation:</strong> Based on Turing's earlier work on Turing Machines - the theoretical model of computation that showed any problem that can be computed can be solved by a machine following simple rules. This established that digital computers are "universal machines" capable of simulating any discrete-state machine.
             </div>
             
-            <h3>🏗️ Turing's Strategy</h3>
+            <h3>🗃️ Turing's Strategy</h3>
             <p><strong>1. Reframe the Question:</strong> Move from "Can machines think?" to "Can digital computers perform well in the imitation game?"</p>
             
-            <p><strong>2. Address Objections Systematically:</strong> Turing tackles 9 major objections to machine intelligence:</p>
+            <p><strong>2. Leverage Universality:</strong> Since all digital computers are equivalent in computational power (per Turing Machine theory), the question becomes whether <em>any</em> sufficiently powerful computer can be programmed to pass the test.</p>
+            
+            <p><strong>3. Address Objections Systematically:</strong> Turing tackles 9 major objections to machine intelligence:</p>
             
             <div class="objections-grid">
                 <div class="objection">
                     <h3>1. Theological</h3>
-                    <p>Thinking requires a soul; only God gives souls to humans.</p>
+                    <p><strong>Objection:</strong> Thinking requires a soul; only God gives souls to humans.</p>
+                    <p><strong>Turing's Response:</strong> This arbitrarily restricts God's omnipotence. If God can give souls to elephants when circumstances are suitable, why not machines? Building thinking machines might serve as "instruments of His will providing mansions for souls." Historical theological arguments have proven wrong (e.g., Galileo).</p>
                 </div>
                 <div class="objection">
                     <h3>2. "Heads in Sand"</h3>
-                    <p>We don't want machines to think - too threatening to human superiority.</p>
+                    <p><strong>Objection:</strong> We don't want machines to think - too threatening to human superiority.</p>
+                    <p><strong>Turing's Response:</strong> Not substantial enough to require serious refutation. "Consolation would be more appropriate: perhaps this should be sought in the transmigration of souls." This stems from humans wanting to feel superior.</p>
                 </div>
                 <div class="objection">
                     <h3>3. Mathematical</h3>
-                    <p>Gödel's theorem shows limits to what machines can do.</p>
+                    <p><strong>Objection:</strong> Gödel's theorem shows limits to what machines can do.</p>
+                    <p><strong>Turing's Response:</strong> While machines have limitations, no proof exists that humans lack these same limitations. We often give wrong answers ourselves. There might be men cleverer than any machine, but also machines cleverer than any man.</p>
                 </div>
                 <div class="objection">
                     <h3>4. Consciousness</h3>
-                    <p>Machines can't truly feel or be aware - only simulate.</p>
+                    <p><strong>Objection:</strong> Machines can't truly feel or be aware - only simulate.</p>
+                    <p><strong>Turing's Response:</strong> This leads to solipsism - only way to know someone thinks is to be that person. Through sophisticated conversation (like poetry analysis), we'd have to accept machine intelligence. The argument collapses into an unworkable position.</p>
                 </div>
                 <div class="objection">
                     <h3>5. Various Disabilities</h3>
-                    <p>"Machines can't be kind, creative, make mistakes," etc.</p>
+                    <p><strong>Objection:</strong> "Machines can't be kind, creative, make mistakes," etc.</p>
+                    <p><strong>Turing's Response:</strong> Based on faulty scientific induction from limited experience with simple machines. Machines can make "errors of conclusion" vs "errors of functioning." Machines often surprise him - appreciation of surprise requires the same "creative mental act" regardless of source.</p>
                 </div>
                 <div class="objection">
                     <h3>6. Lady Lovelace's</h3>
-                    <p>Machines can only do what they're programmed to do.</p>
+                    <p><strong>Objection:</strong> "The Analytical Engine has no pretensions to originate anything. It can do whatever we know how to order it to perform."</p>
+                    <p><strong>Turing's Response:</strong> Available evidence didn't encourage belief in creativity, but that doesn't prove impossibility. Machines frequently surprise him due to behavioral complexity. The assumption that "all consequences spring to mind simultaneously" is false.</p>
                 </div>
                 <div class="objection">
                     <h3>7. Continuity</h3>
-                    <p>Nervous system is continuous, not discrete like computers.</p>
+                    <p><strong>Objection:</strong> Nervous system is continuous, not discrete like computers.</p>
+                    <p><strong>Turing's Response:</strong> Under imitation game conditions, interrogator can't exploit this difference. A digital computer could approximate continuous machine answers well enough to be indistinguishable (e.g., giving π as 3.12, 3.13, etc. with appropriate probabilities).</p>
                 </div>
                 <div class="objection">
                     <h3>8. Informality</h3>
-                    <p>Human behavior is too complex for rules.</p>
+                    <p><strong>Objection:</strong> Human behavior is too complex for rules - we can't have rules for every situation.</p>
+                    <p><strong>Turing's Response:</strong> Logical fallacy ("undistributed middle"). Conflates "rules of conduct" (conscious precepts) with "laws of behavior" (natural laws). Absence of complete conduct rules doesn't prove absence of behavioral laws. We can never conclusively prove no such laws exist.</p>
                 </div>
                 <div class="objection">
                     <h3>9. Extra-Sensory</h3>
-                    <p>ESP gives humans abilities machines lack.</p>
+                    <p><strong>Objection:</strong> ESP gives humans abilities machines lack.</p>
+                    <p><strong>Turing's Response:</strong> Admits this is "quite a strong" argument. Suggests intriguing possibility: if machine has random number generator, interrogator's psychokinetic powers might influence it, making machine guess correctly more often than chance. Solution: conduct test in "telepathy-proof room."</p>
                 </div>
             </div>
             
