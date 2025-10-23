@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turing's Paper Visualization - Enhanced</title>
+    <title>Turing's Paper Visualization - Eye-Friendly</title>
     <style>
         * {
             margin: 0;
@@ -13,8 +13,9 @@
         
         body {
             font-family: 'Georgia', serif;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            color: #333;
+            background: #f7f5f2; /* Warm off-white background */
+            color: #3a3a3a; /* Soft dark gray instead of black */
+            line-height: 1.6;
             overflow-x: hidden;
         }
         
@@ -27,108 +28,115 @@
         .header {
             text-align: center;
             margin-bottom: 40px;
-            background: rgba(255, 255, 255, 0.95);
+            background: #ffffff;
             padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border-radius: 12px;
+            border: 1px solid #e5e2de;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
         
         .header h1 {
-            color: #1e3c72;
+            color: #4a5d6b; /* Muted blue-gray */
             font-size: 2.5rem;
             margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            text-shadow: none;
         }
         
         .header .subtitle {
-            color: #666;
+            color: #6b6b6b;
             font-size: 1.2rem;
             font-style: italic;
         }
         
         .section {
-            background: rgba(255, 255, 255, 0.95);
+            background: #ffffff;
             margin: 30px 0;
             padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            border-radius: 12px;
+            border: 1px solid #e5e2de;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         
         .section:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
         
         .section h2 {
-            color: #2a5298;
+            color: #4a5d6b;
             font-size: 1.8rem;
             margin-bottom: 20px;
-            border-bottom: 3px solid #2a5298;
+            border-bottom: 2px solid #d4c5b9;
             padding-bottom: 10px;
         }
         
         .intent-section {
-            background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
-            color: white;
+            background: #f5f3f0;
+            color: #3a3a3a;
+            border: 1px solid #d4c5b9;
         }
         
         .intent-section h2 {
-            color: white;
-            border-bottom-color: white;
+            color: #4a5d6b;
+            border-bottom-color: #d4c5b9;
         }
         
         .approach-section {
-            background: linear-gradient(135deg, #5a67d8 0%, #4c51bf 100%);
-            color: white;
+            background: #f0f3f5;
+            color: #3a3a3a;
+            border: 1px solid #c5d4d9;
         }
         
         .approach-section h2 {
-            color: white;
-            border-bottom-color: white;
+            color: #4a5d6b;
+            border-bottom-color: #c5d4d9;
         }
         
         .conclusions-section {
-            background: linear-gradient(135deg, #38b2ac 0%, #2c7a7b 100%);
-            color: white;
+            background: #f0f5f3;
+            color: #3a3a3a;
+            border: 1px solid #c5d9d4;
         }
         
         .conclusions-section h2 {
-            color: white;
-            border-bottom-color: white;
+            color: #4a5d6b;
+            border-bottom-color: #c5d9d4;
         }
         
         .central-question {
-            background: #ff6b6b;
-            color: white;
+            background: #f9e8e8; /* Soft pink instead of bright red */
+            color: #6b4a4a;
             padding: 20px;
             border-radius: 10px;
             font-size: 1.4rem;
             text-align: center;
             margin: 20px 0;
-            box-shadow: 0 5px 15px rgba(255,107,107,0.3);
+            border: 1px solid #e5c5c5;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
         }
         
         .imitation-game {
-            background: #4ecdc4;
-            color: white;
+            background: #e8f5f4; /* Soft teal instead of bright cyan */
+            color: #4a6b68;
             padding: 25px;
             border-radius: 10px;
             margin: 20px 0;
-            box-shadow: 0 5px 15px rgba(78,205,196,0.3);
+            border: 1px solid #c5e5e2;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
         }
         
-        /* New Styles for Improved Strategy Section */
+        /* Updated Strategy Section */
         .strategy-overview {
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid rgba(255, 255, 255, 0.3);
+            background: rgba(74, 93, 107, 0.05);
+            border: 1px solid #d4c5b9;
             border-radius: 10px;
             padding: 20px;
             margin-bottom: 30px;
         }
         
         .strategy-overview h3 {
-            color: white;
+            color: #4a5d6b;
             margin-bottom: 15px;
             font-size: 1.3rem;
         }
@@ -136,6 +144,7 @@
         .strategy-overview p {
             line-height: 1.6;
             margin-bottom: 10px;
+            color: #3a3a3a;
         }
         
         .objections-container {
@@ -143,8 +152,8 @@
         }
         
         .objection-item {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: #fafafa;
+            border: 1px solid #e5e2de;
             border-radius: 10px;
             margin-bottom: 15px;
             overflow: hidden;
@@ -152,8 +161,9 @@
         }
         
         .objection-item:hover {
-            background: rgba(255, 255, 255, 0.15);
-            transform: translateX(5px);
+            background: #f7f5f2;
+            transform: translateX(2px);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
         }
         
         .objection-header {
@@ -172,7 +182,7 @@
         }
         
         .objection-number {
-            background: #ff4757;
+            background: #d4a574; /* Warm brown instead of bright red */
             color: white;
             width: 35px;
             height: 35px;
@@ -181,24 +191,22 @@
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            font-size: 1.1rem;
         }
         
         .objection-name {
-            color: white;
-            font-size: 1.1rem;
             font-weight: bold;
+            color: #4a5d6b;
         }
         
         .objection-statement {
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 0.9rem;
+            color: #6b6b6b;
+            font-style: italic;
             margin-top: 5px;
+            font-size: 0.95rem;
         }
         
         .expand-icon {
-            color: white;
-            font-size: 1.5rem;
+            color: #8a8a8a;
             transition: transform 0.3s ease;
         }
         
@@ -207,161 +215,186 @@
         }
         
         .objection-response {
-            padding: 0 20px;
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.3s ease, padding 0.3s ease;
-            background: rgba(0, 0, 0, 0.1);
+            transition: max-height 0.3s ease;
+            background: #fafafa;
+            border-top: 1px solid #e5e2de;
         }
         
         .objection-item.expanded .objection-response {
             max-height: 500px;
-            padding: 20px;
         }
         
         .response-content {
-            color: rgba(255, 255, 255, 0.9);
-            line-height: 1.6;
+            padding: 20px;
+            line-height: 1.7;
+            color: #4a4a4a;
         }
         
         .response-content strong {
-            color: #4ecdc4;
+            color: #4a5d6b;
             display: block;
             margin-bottom: 10px;
         }
         
-        /* Rest of the original styles */
-        .prediction-box {
-            background: #ffeaa7;
-            color: #2d3436;
+        .learning-machine {
+            background: #f5f3f0;
             padding: 25px;
             border-radius: 10px;
-            margin: 20px 0;
-            box-shadow: 0 5px 15px rgba(255,234,167,0.3);
+            margin-top: 30px;
+            border: 1px solid #d4c5b9;
         }
         
-        .key-insight {
-            background: rgba(255, 255, 255, 0.15);
-            padding: 20px;
-            border-radius: 10px;
-            margin: 15px 0;
-            border-left: 5px solid #4ecdc4;
+        .learning-machine h3 {
+            color: #4a5d6b;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
         }
         
-        .quote {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 20px;
+        .learning-machine p {
+            margin-bottom: 10px;
+            color: #3a3a3a;
+        }
+        
+        .learning-machine ul {
+            color: #4a4a4a;
+        }
+        
+        .prediction-box {
+            background: #f0f3f5;
+            padding: 25px;
             border-radius: 10px;
-            margin: 20px 0;
-            border-left: 5px solid #ffeaa7;
-            font-style: italic;
-            font-size: 1.1rem;
+            border: 1px solid #c5d4d9;
+            margin-bottom: 30px;
+        }
+        
+        .prediction-box h3 {
+            color: #4a5d6b;
+            margin-bottom: 15px;
         }
         
         .timeline {
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
-            margin: 30px 0;
-            gap: 20px;
-            flex-wrap: wrap;
+            margin: 40px 0;
+            padding: 30px 0;
         }
         
         .timeline-item {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 20px;
-            border-radius: 10px;
             text-align: center;
-            min-width: 120px;
+            flex: 1;
         }
         
         .timeline-year {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             font-weight: bold;
-            color: #ffeaa7;
+            color: #4a5d6b;
             margin-bottom: 10px;
         }
         
         .timeline-event {
             font-size: 0.9rem;
-            line-height: 1.3;
+            color: #6b6b6b;
         }
         
         .arrow {
             font-size: 2rem;
-            color: #ffeaa7;
+            color: #d4c5b9;
+            margin: 0 20px;
         }
         
-        .learning-machine {
-            background: rgba(78, 205, 196, 0.2);
-            padding: 25px;
-            border-radius: 10px;
-            margin: 20px 0;
-            border: 2px solid #4ecdc4;
-        }
-        
-        .learning-machine h3 {
-            color: #4ecdc4;
+        .key-insight {
+            background: #fafafa;
+            padding: 20px;
+            border-radius: 8px;
             margin-bottom: 15px;
+            border-left: 4px solid #d4a574;
+            color: #3a3a3a;
         }
         
-        .floating {
-            animation: float 6s ease-in-out infinite;
+        .key-insight strong {
+            color: #4a5d6b;
         }
         
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-            100% { transform: translateY(0px); }
+        .quote {
+            font-style: italic;
+            padding: 20px;
+            border-left: 4px solid #d4c5b9;
+            margin: 20px 0;
+            background: #fafafa;
+            color: #4a4a4a;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        /* Typography improvements for readability */
+        p {
+            margin-bottom: 15px;
+            line-height: 1.7;
+        }
+        
+        ul {
+            line-height: 1.8;
+        }
+        
+        /* Reduce animation intensity */
+        * {
+            transition: all 0.2s ease;
+        }
+        
+        /* Add a subtle max-width for better line length */
+        .response-content,
+        .strategy-overview p,
+        .learning-machine p,
+        .prediction-box p {
+            max-width: 65ch;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header floating">
+        <div class="header">
             <h1>Computing Machinery and Intelligence</h1>
-            <div class="subtitle">A. M. Turing (1950) - Visual Analysis</div>
+            <p class="subtitle">Alan Turing (1950) - A Visual Summary</p>
         </div>
         
         <div class="section intent-section">
-            <h2>🎯 Intent & Central Question</h2>
+            <h2>📋 Turing's Intent</h2>
+            <p>This groundbreaking paper, published in <em>Mind</em> journal, revolutionized our thinking about machine intelligence by proposing a practical test rather than engaging in endless philosophical debates.</p>
+            
             <div class="central-question">
-                "Can machines think?"
-            </div>
-            <div style="background: rgba(255, 107, 107, 0.2); border: 2px solid #ff6b6b; border-radius: 10px; padding: 20px; margin: 20px 0; color: white;">
-                <p style="font-style: italic; margin-bottom: 10px;">"The original question, 'Can machines think?' I believe to be too meaningless to deserve discussion."</p>
-                <p style="font-size: 0.9rem;">— A. M. Turing</p>
-            </div>
-            <p><strong>Turing's Revolutionary Approach:</strong> Rather than getting bogged down in philosophical definitions of "thinking," Turing proposes to replace this question with a more practical, testable one through the famous "Imitation Game."</p>
-            
-            <div style="background: rgba(255, 255, 255, 0.1); border-left: 4px solid white; padding: 15px; margin: 20px 0;">
-                <p><strong>Why "meaningless"?</strong> Turing recognized that defining "machine" and "think" would lead to endless semantic debates based on dictionary definitions and common usage, rather than scientific progress. Instead of asking "Can machines think?", he proposes asking "Can machines do what we (as thinking entities) can do?" - a question that can be empirically tested.</p>
+                "Can Machines Think?" → "Can machines do what we (as thinking entities) can do?"
             </div>
             
-            <div class="imitation-game">
-                <h3>🎭 The Imitation Game (Turing Test)</h3>
-                <p><strong>Setup:</strong> A human interrogator converses (via text) with both a human and a machine, trying to determine which is which.</p>
-                <p><strong>Success Criterion:</strong> If the interrogator cannot reliably distinguish the machine from the human, we can say the machine demonstrates intelligence.</p>
-                <p><strong>Genius of this approach:</strong> It sidesteps the need to define consciousness or thinking by focusing on observable, intelligent behavior.</p>
-            </div>
+            <p>Turing argues that the question "Can machines think?" is too vague and loaded with philosophical baggage. Instead, he proposes replacing it with a clear, operational test: the Imitation Game.</p>
         </div>
         
         <div class="section approach-section">
-            <h2>🔬 Methodological Approach</h2>
+            <h2>🎭 The Approach: The Imitation Game</h2>
             
-            <div class="key-insight">
-                <strong>Theoretical Foundation:</strong> Based on Turing's earlier work on Turing Machines - the theoretical model of computation that showed any problem that can be computed can be solved by a machine following simple rules. This established that digital computers are "universal machines" capable of simulating any discrete-state machine.
+            <div class="imitation-game">
+                <h3>The Test Setup</h3>
+                <p><strong>Players:</strong> A (Man), B (Woman), C (Interrogator)</p>
+                <p><strong>Original Game:</strong> C must determine which is the man and which is the woman through typed questions only.</p>
+                <p><strong>Modified Game:</strong> Replace A with a machine. Can C still distinguish correctly?</p>
             </div>
+            
+            <h3>Why This Approach?</h3>
+            <ul>
+                <li>Avoids defining "thinking" or "consciousness"</li>
+                <li>Focuses on observable behavior</li>
+                <li>Provides a clear, measurable criterion</li>
+                <li>Separates intelligence from physical form</li>
+            </ul>
             
             <div class="strategy-overview">
-                <h3>🗃️ Turing's Strategy: A Three-Part Framework</h3>
-                <p><strong>1. Reframe the Question:</strong> Transform the philosophical "Can machines think?" into the empirical "Can digital computers perform well in the imitation game?"</p>
-                <p><strong>2. Leverage Computational Universality:</strong> Since all digital computers share equivalent computational power, success depends on programming, not hardware limitations.</p>
-                <p><strong>3. Systematically Address Objections:</strong> Turing anticipates and refutes 9 major categories of objections to machine intelligence, ranging from theological concerns to mathematical limitations.</p>
+                <h3>Turing's Strategy: Addressing Objections</h3>
+                <p>Rather than building a positive case for machine intelligence, Turing systematically dismantles nine major objections. This defensive strategy is brilliant - by showing that common arguments against machine thinking are flawed, he clears the path for accepting the possibility.</p>
+                <p>Each objection represents a different angle of attack: theological, psychological, mathematical, consciousness-based, and practical. Turing's responses reveal both his deep understanding of computation and his philosophical sophistication.</p>
             </div>
             
-            <h3 style="color: white; margin-top: 30px; margin-bottom: 20px;">📋 Nine Objections to Machine Intelligence</h3>
-            <p style="margin-bottom: 20px;">Click each objection to explore Turing's detailed response:</p>
+            <h3>The Nine Objections</h3>
             
             <div class="objections-container">
                 <div class="objection-item" onclick="toggleObjection(this)">
@@ -371,7 +404,7 @@
                                 <div class="objection-number">1</div>
                                 <div>
                                     <div class="objection-name">Theological Objection</div>
-                                    <div class="objection-statement">"Thinking requires a soul; only God gives souls to humans"</div>
+                                    <div class="objection-statement">"Thinking requires a soul given by God to humans"</div>
                                 </div>
                             </div>
                         </div>
@@ -380,9 +413,11 @@
                     <div class="objection-response">
                         <div class="response-content">
                             <strong>Turing's Response:</strong>
-                            This arbitrarily restricts God's omnipotence. If God can give souls to elephants when circumstances are suitable, why not machines? Building thinking machines might serve as "instruments of His will providing mansions for souls." 
+                            This argument would restrict God's omnipotence - why couldn't an omnipotent God grant a soul to a machine if He wished? 
                             
-                            Furthermore, historical theological arguments have repeatedly proven wrong (e.g., Galileo's support of heliocentrism). We should be cautious about using theological grounds to limit what is possible in the natural world.
+                            Moreover, theological arguments have historically been used to deny various capabilities (like thought) to women, non-Europeans, and animals. These views are now recognized as prejudiced. The same theological flexibility that eventually acknowledged these errors should apply to machines.
+                            
+                            Turing suggests such objections often stem from the desire to maintain human superiority rather than genuine theological necessity.
                         </div>
                     </div>
                 </div>
@@ -393,8 +428,8 @@
                             <div class="objection-title">
                                 <div class="objection-number">2</div>
                                 <div>
-                                    <div class="objection-name">"Heads in Sand" Objection</div>
-                                    <div class="objection-statement">"Machine intelligence would be too dreadful to contemplate"</div>
+                                    <div class="objection-name">'Heads in the Sand' Objection</div>
+                                    <div class="objection-statement">"Machine thinking would be too dreadful to contemplate"</div>
                                 </div>
                             </div>
                         </div>
@@ -403,9 +438,11 @@
                     <div class="objection-response">
                         <div class="response-content">
                             <strong>Turing's Response:</strong>
-                            This objection is not substantial enough to require serious refutation. "Consolation would be more appropriate: perhaps this should be sought in the transmigration of souls." 
+                            This is an emotional reaction masquerading as an argument. The psychological discomfort with an idea has no bearing on its truth.
                             
-                            This stems from humans wanting to feel superior and unique. However, scientific progress has repeatedly shown that humans are not as special as we once believed (e.g., we're not at the center of the universe). Machine intelligence would be another step in this humbling but enlightening journey.
+                            Many scientific discoveries have been initially "dreadful" to contemplate - the Earth not being the center of the universe, humans evolving from other species, etc. Our emotional reactions don't determine reality.
+                            
+                            "We like to believe that Man is in some subtle way superior to the rest of creation... This belief is not more justified than the similar belief held by medieval thinkers about the Earth's special position in the cosmos."
                         </div>
                     </div>
                 </div>
@@ -417,7 +454,7 @@
                                 <div class="objection-number">3</div>
                                 <div>
                                     <div class="objection-name">Mathematical Objection</div>
-                                    <div class="objection-statement">"Gödel's theorem shows fundamental limits to what machines can prove"</div>
+                                    <div class="objection-statement">"Gödel's theorem shows machines have fundamental limitations"</div>
                                 </div>
                             </div>
                         </div>
@@ -426,9 +463,11 @@
                     <div class="objection-response">
                         <div class="response-content">
                             <strong>Turing's Response:</strong>
-                            While Gödel's incompleteness theorems do show that any sufficiently powerful formal system has limitations, there is no proof that human intelligence lacks these same limitations. Humans often give wrong answers and fail to solve problems too.
+                            Yes, Gödel's incompleteness theorem shows that any sufficiently powerful formal system has statements it cannot prove. But this limitation applies to human mathematicians too!
                             
-                            Moreover, there might be men cleverer than any given machine, but conversely, there might also be machines cleverer than any given man. The existence of mathematical limitations doesn't preclude machines from achieving human-level performance in the imitation game.
+                            There's no evidence that humans can consistently transcend these limitations in ways machines cannot. We too are bound by logical constraints and make errors in reasoning. The existence of undecidable propositions for machines doesn't prove human superiority - it might simply show that both humans and machines face fundamental limitations in formal reasoning.
+                            
+                            Furthermore, being unable to answer certain questions doesn't equate to lack of intelligence - it might just mean being honest about one's limitations.
                         </div>
                     </div>
                 </div>
@@ -440,7 +479,7 @@
                                 <div class="objection-number">4</div>
                                 <div>
                                     <div class="objection-name">Consciousness Objection</div>
-                                    <div class="objection-statement">"Machines can't truly feel or be aware - only simulate"</div>
+                                    <div class="objection-statement">"Machines cannot have feelings or consciousness"</div>
                                 </div>
                             </div>
                         </div>
@@ -449,9 +488,11 @@
                     <div class="objection-response">
                         <div class="response-content">
                             <strong>Turing's Response:</strong>
-                            This argument leads to solipsism - the only way to know if someone truly thinks is to be that person. We can never directly access another's consciousness, human or machine.
+                            This objection leads to solipsism - the view that only one's own mind is sure to exist. If we demand proof of consciousness, we can never be certain anyone else is conscious except ourselves.
                             
-                            Through sophisticated conversation (such as discussing poetry or analyzing emotions), we would have to accept machine intelligence by the same standards we accept human intelligence. If a machine can engage meaningfully in discussions about beauty, emotion, and meaning, denying its intelligence becomes an unworkable philosophical position.
+                            In practice, we infer consciousness in others from their behavior and verbal reports. The Imitation Game precisely tests whether a machine can exhibit behavior indistinguishable from a conscious being. If it can discuss poetry, express preferences, and engage in complex conversation, on what grounds do we deny it consciousness while granting it to humans who exhibit the same behaviors?
+                            
+                            The mystery of consciousness doesn't uniquely disqualify machines - it's equally mysterious in humans.
                         </div>
                     </div>
                 </div>
@@ -462,8 +503,8 @@
                             <div class="objection-title">
                                 <div class="objection-number">5</div>
                                 <div>
-                                    <div class="objection-name">Various Disabilities Objection</div>
-                                    <div class="objection-statement">"Machines can't be kind, creative, make mistakes, fall in love, etc."</div>
+                                    <div class="objection-name">Disability Arguments</div>
+                                    <div class="objection-statement">"Machines can't be kind, beautiful, friendly, have humor, make mistakes, fall in love..."</div>
                                 </div>
                             </div>
                         </div>
@@ -472,9 +513,14 @@
                     <div class="objection-response">
                         <div class="response-content">
                             <strong>Turing's Response:</strong>
-                            These claims are based on faulty scientific induction from limited experience with simple machines. It's like saying "I've never seen a pink elephant, therefore pink elephants cannot exist."
+                            These claims are largely unfounded assertions based on limited experience with primitive machines. Many of these supposed limitations are already being overcome:
                             
-                            Machines can make "errors of conclusion" (logical mistakes) versus "errors of functioning" (mechanical failures). Machines often surprise their programmers - and the appreciation of surprise requires the same "creative mental act" regardless of whether the source is human or machine. The complexity of machine behavior already exceeds what we can fully predict.
+                            - Machines can exhibit humor (through programmed wit or unexpected outputs)
+                            - They can make mistakes (in fact, programming them not to is often the challenge!)
+                            - They can learn from experience (Turing describes specific learning mechanisms)
+                            - They can have "tastes" (preferences in their operations)
+                            
+                            The claim that machines "cannot be the subject of their own thoughts" is particularly questionable. A machine could certainly track and report on its internal states, just as humans introspect. The real question is whether we'd accept such reports as genuine self-reflection.
                         </div>
                     </div>
                 </div>
