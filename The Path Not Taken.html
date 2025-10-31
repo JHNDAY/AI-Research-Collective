@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Path Not Taken: Turing and Neural Networks</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #7e22ce 100%);
+            color: #333;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #ffffff, #f0f0f0);
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            color: #1e3c72;
+            margin-bottom: 15px;
+        }
+        
+        .header .subtitle {
+            font-size: 1.3em;
+            color: #7e22ce;
+            font-style: italic;
+        }
+        
+        .two-paths {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .path-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        
+        .path-turing {
+            border-top: 8px solid #e63946;
+        }
+        
+        .path-neural {
+            border-top: 8px solid #06d6a0;
+        }
+        
+        .path-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .path-icon {
+            font-size: 3em;
+        }
+        
+        .path-title {
+            font-size: 1.8em;
+            font-weight: bold;
+        }
+        
+        .turing-title {
+            color: #e63946;
+        }
+        
+        .neural-title {
+            color: #06d6a0;
+        }
+        
+        .philosophy {
+            background: #fff3cd;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 5px solid #ffc107;
+        }
+        
+        .philosophy h3 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+        
+        .key-ideas {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+        
+        .key-ideas ul {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+        
+        .key-ideas li {
+            margin: 8px 0;
+        }
+        
+        .quote {
+            background: #e9ecef;
+            padding: 20px;
+            border-radius: 10px;
+            font-style: italic;
+            margin: 15px 0;
+            border-left: 4px solid #6c757d;
+        }
+        
+        .timeline-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        
+        .timeline-header {
+            text-align: center;
+            font-size: 2em;
+            color: #1e3c72;
+            margin-bottom: 30px;
+        }
+        
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, #e63946, #06d6a0);
+        }
+        
+        .timeline-item {
+            display: flex;
+            margin: 30px 0;
+            position: relative;
+        }
+        
+        .timeline-item.left {
+            justify-content: flex-end;
+            padding-right: 52%;
+        }
+        
+        .timeline-item.right {
+            justify-content: flex-start;
+            padding-left: 52%;
+        }
+        
+        .timeline-content {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            width: 100%;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .timeline-item.left .timeline-content {
+            border: 3px solid #e63946;
+        }
+        
+        .timeline-item.right .timeline-content {
+            border: 3px solid #06d6a0;
+        }
+        
+        .timeline-year {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #1e3c72;
+            margin-bottom: 8px;
+        }
+        
+        .timeline-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        
+        .timeline-item.left .timeline-title {
+            color: #e63946;
+        }
+        
+        .timeline-item.right .timeline-title {
+            color: #06d6a0;
+        }
+        
+        .pioneers-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        
+        .pioneers-header {
+            text-align: center;
+            font-size: 2em;
+            color: #1e3c72;
+            margin-bottom: 30px;
+        }
+        
+        .pioneers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        
+        .pioneer-card {
+            background: linear-gradient(135deg, #06d6a0, #00b894);
+            padding: 25px;
+            border-radius: 15px;
+            color: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .pioneer-name {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .pioneer-year {
+            background: rgba(255,255,255,0.3);
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9em;
+        }
+        
+        .pioneer-contribution {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        
+        .pioneer-details {
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+        
+        .contrast-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        
+        .contrast-header {
+            text-align: center;
+            font-size: 2em;
+            color: #1e3c72;
+            margin-bottom: 30px;
+        }
+        
+        .contrast-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .contrast-table th {
+            padding: 20px;
+            text-align: left;
+            font-size: 1.3em;
+        }
+        
+        .contrast-table th:first-child {
+            background: #e63946;
+            color: white;
+            border-radius: 10px 10px 0 0;
+        }
+        
+        .contrast-table th:last-child {
+            background: #06d6a0;
+            color: white;
+            border-radius: 10px 10px 0 0;
+        }
+        
+        .contrast-table td {
+            padding: 20px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .contrast-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .contrast-row-header {
+            font-weight: bold;
+            background: #f8f9fa;
+            color: #1e3c72;
+        }
+        
+        .irony-section {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            color: white;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        
+        .irony-header {
+            text-align: center;
+            font-size: 2.2em;
+            margin-bottom: 25px;
+        }
+        
+        .irony-content {
+            font-size: 1.2em;
+            line-height: 1.8;
+            text-align: center;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .irony-highlight {
+            background: rgba(255,255,255,0.2);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .legacy-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        
+        .legacy-header {
+            text-align: center;
+            font-size: 2em;
+            color: #1e3c72;
+            margin-bottom: 30px;
+        }
+        
+        .legacy-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        .legacy-card {
+            padding: 25px;
+            border-radius: 15px;
+        }
+        
+        .legacy-symbolic {
+            background: linear-gradient(135deg, #ffeaa7, #fdcb6e);
+            border-left: 8px solid #e63946;
+        }
+        
+        .legacy-neural {
+            background: linear-gradient(135deg, #a8e6cf, #56cc9d);
+            border-left: 8px solid #06d6a0;
+        }
+        
+        .legacy-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #2d3436;
+        }
+        
+        .legacy-list {
+            margin-left: 20px;
+        }
+        
+        .legacy-list li {
+            margin: 10px 0;
+            color: #2d3436;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧠 The Path Not Taken</h1>
+            <div class="subtitle">How Turing Dismissed Neural Networks While His Contemporaries Built the Foundation of Modern AI</div>
+        </div>
+        
+        <div class="two-paths">
+            <div class="path-card path-turing">
+                <div class="path-header">
+                    <div class="path-icon">🤖</div>
+                    <div class="path-title turing-title">Turing's Approach</div>
+                </div>
+                
+                <div class="philosophy">
+                    <h3>Core Philosophy</h3>
+                    <p><strong>"Intelligence is computation"</strong></p>
+                    <p>The brain's physical structure is irrelevant - what matters is the logical operations it performs.</p>
+                </div>
+                
+                <div class="key-ideas">
+                    <h3>Key Ideas:</h3>
+                    <ul>
+                        <li><strong>Universal machines:</strong> Any digital computer can mimic any other</li>
+                        <li><strong>Programming over architecture:</strong> Intelligence through clever algorithms</li>
+                        <li><strong>Symbolic reasoning:</strong> Logic, rules, and explicit instructions</li>
+                        <li><strong>Discrete states:</strong> Clear, definable computational steps</li>
+                    </ul>
+                </div>
+                
+                <div class="quote">
+                    "The use of electricity cannot be of theoretical importance... If we wish to find similarities we should look rather for mathematical analogies of function."
+                    <div style="text-align: right; margin-top: 10px; font-weight: bold;">— Turing, 1950</div>
+                </div>
+                
+                <div style="background: #ffe5e5; padding: 15px; border-radius: 10px; margin-top: 20px;">
+                    <strong>❌ What Turing Missed:</strong> That the brain's architecture of interconnected neurons learning through experience might itself be the key to intelligence
+                </div>
+            </div>
+            
+            <div class="path-card path-neural">
+                <div class="path-header">
+                    <div class="path-icon">🧠</div>
+                    <div class="path-title neural-title">Neural Network Approach</div>
+                </div>
+                
+                <div class="philosophy">
+                    <h3>Core Philosophy</h3>
+                    <p><strong>"Intelligence emerges from structure"</strong></p>
+                    <p>Mimic the brain's architecture: interconnected neurons that learn through experience and adjustment.</p>
+                </div>
+                
+                <div class="key-ideas">
+                    <h3>Key Ideas:</h3>
+                    <ul>
+                        <li><strong>Brain-inspired architecture:</strong> Networks of simple processing units</li>
+                        <li><strong>Learning through connections:</strong> Adjust weights based on experience</li>
+                        <li><strong>Parallel processing:</strong> Many neurons working simultaneously</li>
+                        <li><strong>Pattern recognition:</strong> Intelligence from statistical patterns, not explicit rules</li>
+                    </ul>
+                </div>
+                
+                <div class="quote">
+                    "A logical calculus of the ideas immanent in nervous activity"
+                    <div style="text-align: right; margin-top: 10px; font-weight: bold;">— McCulloch & Pitts, 1943</div>
+                </div>
+                
+                <div style="background: #e5ffe5; padding: 15px; border-radius: 10px; margin-top: 20px;">
+                    <strong>✅ What They Saw:</strong> That copying the brain's structure and learning mechanisms could be as important as copying its logical functions
+                </div>
+            </div>
+        </div>
+        
+        <div class="timeline-section">
+            <div class="timeline-header">📅 Parallel Development: 1943-1962</div>
+            
+            <div class="timeline">
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <div class="timeline-year">1943</div>
+                        <div class="timeline-title">McCulloch & Pitts: Artificial Neurons</div>
+                        <p>Published "A Logical Calculus of Ideas Immanent in Nervous Activity" - the first mathematical model of artificial neurons showing how networks of simple units could compute logical functions.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <div class="timeline-year">1936-1937</div>
+                        <div class="timeline-title">Turing: Universal Machine</div>
+                        <p>Turing develops the concept of the Universal Machine and computability - focusing on abstract computation rather than brain structure.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <div class="timeline-year">1949</div>
+                        <div class="timeline-title">Hebb: Learning Theory</div>
+                        <p>Donald Hebb publishes "The Organization of Behavior" proposing that neurons that "fire together wire together" - the foundation of neural network learning.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <div class="timeline-year">1950</div>
+                        <div class="timeline-title">Turing: Computing Machinery and Intelligence</div>
+                        <p>Turing publishes his famous paper but explicitly dismisses the importance of mimicking the nervous system's electrical structure, arguing it's "not of theoretical importance."</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <div class="timeline-year">1951</div>
+                        <div class="timeline-title">Minsky & Edmonds: First Neural Net Computer</div>
+                        <p>Marvin Minsky builds SNARC (Stochastic Neural Analog Reinforcement Calculator) - the first artificial neural network machine with 40 neurons that could learn through reinforcement.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <div class="timeline-year">1958</div>
+                        <div class="timeline-title">Rosenblatt: The Perceptron</div>
+                        <p>Frank Rosenblatt creates the Perceptron - the first machine that could learn to recognize patterns through a brain-inspired architecture. Demonstrated on image recognition.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <div class="timeline-year">1954</div>
+                        <div class="timeline-title">Turing's Death</div>
+                        <p>Turing dies, never seeing the explosion of neural network research that would follow in the late 1950s and prove the viability of brain-inspired architectures.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <div class="timeline-year">1960s</div>
+                        <div class="timeline-title">Neural Networks Gain Momentum</div>
+                        <p>Widrow develops ADALINE, Werbos conceives backpropagation - neural networks begin to show promise in pattern recognition and adaptive learning tasks.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="pioneers-section">
+            <div class="pioneers-header">🔬 The Neural Network Pioneers (While Turing Looked Away)</div>
+            
+            <div class="pioneers-grid">
+                <div class="pioneer-card">
+                    <div class="pioneer-name">
+                        <span>Warren McCulloch & Walter Pitts</span>
+                        <span class="pioneer-year">1943</span>
+                    </div>
+                    <div class="pioneer-contribution">The Mathematical Neuron</div>
+                    <div class="pioneer-details">
+                        Created the first computational model of artificial neurons. Showed that networks of simple threshold units could perform any logical computation. Their work proved that brain-like architectures could be mathematically rigorous.
+                    </div>
+                </div>
+                
+                <div class="pioneer-card">
+                    <div class="pioneer-name">
+                        <span>Donald Hebb</span>
+                        <span class="pioneer-year">1949</span>
+                    </div>
+                    <div class="pioneer-contribution">The Learning Rule</div>
+                    <div class="pioneer-details">
+                        Proposed that synaptic connections strengthen when neurons fire together - "cells that fire together wire together." This became the foundation for how neural networks learn from experience rather than explicit programming.
+                    </div>
+                </div>
+                
+                <div class="pioneer-card">
+                    <div class="pioneer-name">
+                        <span>Marvin Minsky</span>
+                        <span class="pioneer-year">1951</span>
+                    </div>
+                    <div class="pioneer-contribution">First Neural Net Hardware</div>
+                    <div class="pioneer-details">
+                        Built SNARC, the first artificial neural network using 40 neurons and 3,000 vacuum tubes. It could learn through trial and error - demonstrating that brain-inspired machines could actually be built and taught, not just programmed.
+                    </div>
+                </div>
+                
+                <div class="pioneer-card">
+                    <div class="pioneer-name">
+                        <span>Frank Rosenblatt</span>
+                        <span class="pioneer-year">1958</span>
+                    </div>
+                    <div class="pioneer-contribution">The Perceptron</div>
+                    <div class="pioneer-details">
+                        Created the first machine that could learn to classify patterns through a learning algorithm inspired by the brain. The Mark I Perceptron could recognize letters and shapes - proving neural networks could handle real-world tasks.
+                    </div>
+                </div>
+                
+                <div class="pioneer-card">
+                    <div class="pioneer-name">
+                        <span>Bernard Widrow</span>
+                        <span class="pioneer-year">1960</span>
+                    </div>
+                    <div class="pioneer-contribution">ADALINE & Practical Applications</div>
+                    <div class="pioneer-details">
+                        Developed ADALINE (Adaptive Linear Neuron) which used a more sophisticated learning rule. His work showed that neural networks could be applied to real engineering problems like adaptive filters and signal processing.
+                    </div>
+                </div>
+                
+                <div class="pioneer-card">
+                    <div class="pioneer-name">
+                        <span>Oliver Selfridge</span>
+                        <span class="pioneer-year">1959</span>
+                    </div>
+                    <div class="pioneer-contribution">Pandemonium Architecture</div>
+                    <div class="pioneer-details">
+                        Proposed "Pandemonium" - a hierarchical neural-inspired system where many "demons" (simple pattern detectors) competed to recognize features. Anticipated modern deep learning's hierarchical structure.
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="contrast-section">
+            <div class="contrast-header">⚖️ The Fundamental Divide</div>
+            
+            <table class="contrast-table">
+                <thead>
+                    <tr>
+                        <th>Turing's Symbolic AI</th>
+                        <th>Neural Network Approach</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="contrast-row-header" colspan="2">How Intelligence Works</td>
+                    </tr>
+                    <tr>
+                        <td>Intelligence is <strong>computation</strong> - manipulating symbols according to rules</td>
+                        <td>Intelligence <strong>emerges</strong> from patterns of activation in interconnected units</td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="contrast-row-header" colspan="2">The Brain's Role</td>
+                    </tr>
+                    <tr>
+                        <td>The brain's <strong>structure is irrelevant</strong> - only its logical functions matter</td>
+                        <td>The brain's <strong>architecture is the key</strong> - copy its structure to copy its intelligence</td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="contrast-row-header" colspan="2">How Machines Learn</td>
+                    </tr>
+                    <tr>
+                        <td>Through <strong>programming</strong> - humans write explicit instructions and rules</td>
+                        <td>Through <strong>experience</strong> - adjust connection weights based on examples</td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="contrast-row-header" colspan="2">Knowledge Representation</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Explicit symbols</strong> - clear, interpretable rules and logic</td>
+                        <td><strong>Distributed patterns</strong> - knowledge spread across weighted connections</td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="contrast-row-header" colspan="2">Best Suited For</td>
+                    </tr>
+                    <tr>
+                        <td>Logic, reasoning, chess, theorem proving, formal systems</td>
+                        <td>Pattern recognition, vision, speech, motor control, statistical learning</td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="contrast-row-header" colspan="2">Development Method</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Top-down</strong> - analyze the problem, write clever algorithms</td>
+                        <td><strong>Bottom-up</strong> - build simple units, let intelligence emerge from interactions</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="irony-section">
+            <div class="irony-header">💭 The Great Irony</div>
+            
+            <div class="irony-content">
+                <p>While Turing was busy proving that the brain's electrical nature was "not of theoretical importance," researchers like Rosenblatt were building machines that could <strong>learn to see</strong> by mimicking that very structure.</p>
+                
+                <div class="irony-highlight">
+                    <p><strong>Turing's Prediction (1950):</strong> "In about fifty years' time" (by 2000) computers would pass the imitation game through clever programming.</p>
+                    
+                    <p style="margin-top: 15px;"><strong>What Actually Happened:</strong> By 2000, symbolic AI had largely stalled. The breakthrough came from neural networks - precisely the approach Turing dismissed. Modern AI that passes many versions of Turing's test (image recognition, language models, game playing) all use neural architectures.</p>
+                </div>
+                
+                <p style="margin-top: 20px;">Turing was so focused on abstract computation that he missed that <strong>how we compute</strong> might be as important as <strong>what we compute</strong>.</p>
+            </div>
+        </div>
+        
+        <div class="legacy-section">
+            <div class="legacy-header">🌟 The Legacy: Both Paths Led to Modern AI</div>
+            
+            <div class="legacy-grid">
+                <div class="legacy-card legacy-symbolic">
+                    <div class="legacy-title">Turing's Symbolic AI Legacy</div>
+                    <ul class="legacy-list">
+                        <li><strong>Expert systems</strong> (1970s-80s)</li>
+                        <li><strong>Logic programming</strong> and theorem provers</li>
+                        <li><strong>Computer chess</strong> (culminating in Deep Blue)</li>
+                        <li><strong>Planning and reasoning</strong> systems</li>
+                        <li><strong>Formal verification</strong> and proof systems</li>
+                        <li><strong>Symbolic mathematics</strong> (Mathematica, Maple)</li>
+                    </ul>
+                </div>
+                
+                <div class="legacy-card legacy-neural">
+                    <div class="legacy-title">Neural Network Legacy</div>
+                    <ul class="legacy-list">
+                        <li><strong>Image recognition</strong> (surpassed humans by 2015)</li>
+                        <li><strong>Speech recognition</strong> (Siri, Alexa, Google)</li>
+                        <li><strong>Machine translation</strong> (Google Translate)</li>
+                        <li><strong>Autonomous driving</strong> (Tesla, Waymo)</li>
+                        <li><strong>Game playing</strong> (AlphaGo, AlphaZero)</li>
+                        <li><strong>Large language models</strong> (GPT, Claude)</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 15px; margin-top: 30px; color: white; text-align: center;">
+                <h3 style="font-size: 1.8em; margin-bottom: 20px;">The Modern Synthesis</h3>
+                <p style="font-size: 1.2em; line-height: 1.8;">
+                    Today's most powerful AI systems combine <strong>both approaches</strong>: neural networks for perception and pattern recognition, symbolic systems for reasoning and planning. Turing was right that universal computation matters - but his contemporaries were also right that brain-inspired architectures unlock capabilities that pure programming struggles to achieve.
+                </p>
+                <p style="margin-top: 20px; font-size: 1.1em; font-style: italic;">
+                    The path Turing didn't take became the highway to modern AI.
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
