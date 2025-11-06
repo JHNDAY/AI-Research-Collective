@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What Turing Hath Wrought - Visual Summary</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #7e22ce 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: drift 20s linear infinite;
+        }
+        @keyframes drift {
+            from { transform: translate(0, 0); }
+            to { transform: translate(50px, 50px); }
+        }
+        .hero h1 {
+            font-size: 3.5em;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .hero .subtitle {
+            font-size: 1.3em;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Stats Bar */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0;
+            background: #2d3748;
+            color: white;
+        }
+        .stat {
+            padding: 30px;
+            text-align: center;
+            border-right: 1px solid rgba(255,255,255,0.1);
+        }
+        .stat:last-child {
+            border-right: none;
+        }
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #fbbf24;
+            margin-bottom: 10px;
+        }
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        /* Timeline */
+        .timeline-section {
+            padding: 60px 40px;
+            background: linear-gradient(to bottom, #f7fafc 0%, #edf2f7 100%);
+        }
+        .section-title {
+            text-align: center;
+            font-size: 2.5em;
+            color: #2d3748;
+            margin-bottom: 50px;
+            position: relative;
+        }
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            margin: 20px auto;
+            border-radius: 2px;
+        }
+        .timeline {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, #667eea, #764ba2);
+        }
+        .timeline-item {
+            display: flex;
+            justify-content: flex-end;
+            padding-right: calc(50% + 60px);
+            position: relative;
+            margin-bottom: 40px;
+        }
+        .timeline-item:nth-child(even) {
+            justify-content: flex-start;
+            padding-left: calc(50% + 60px);
+            padding-right: 0;
+        }
+        .timeline-content {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        .timeline-year {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #667eea;
+            color: white;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1em;
+            border: 4px solid white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+        .timeline-content h3 {
+            color: #764ba2;
+            margin-bottom: 10px;
+            font-size: 1.4em;
+        }
+        .timeline-content p {
+            color: #4a5568;
+            line-height: 1.6;
+        }
+        
+        /* Grid Sections */
+        .grid-section {
+            padding: 60px 40px;
+            background: white;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .card {
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 2px solid transparent;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(102,126,234,0.3);
+            border-color: #667eea;
+        }
+        .card-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+            display: block;
+        }
+        .card h3 {
+            color: #2d3748;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+        .card p, .card ul {
+            color: #4a5568;
+            line-height: 1.6;
+        }
+        .card ul {
+            padding-left: 20px;
+        }
+        .card li {
+            margin-bottom: 8px;
+        }
+        
+        /* Avatar Section */
+        .avatar-section {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            padding: 60px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        .avatar-section::before {
+            content: '🤖';
+            position: absolute;
+            font-size: 20em;
+            opacity: 0.05;
+            top: -50px;
+            right: -50px;
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        .avatar-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            max-width: 1200px;
+            margin: 40px auto 0;
+        }
+        .avatar-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .avatar-card h3 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            color: #fbbf24;
+        }
+        .avatar-card ul {
+            list-style: none;
+        }
+        .avatar-card li {
+            padding-left: 30px;
+            margin-bottom: 12px;
+            position: relative;
+        }
+        .avatar-card li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #34d399;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        
+        /* Hybrid Setup Visual */
+        .hybrid-visual {
+            background: #f7fafc;
+            padding: 60px 40px;
+        }
+        .setup-diagram {
+            max-width: 1000px;
+            margin: 40px auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 30px;
+            text-align: center;
+        }
+        .setup-box {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-top: 4px solid #667eea;
+        }
+        .setup-icon {
+            font-size: 4em;
+            margin-bottom: 15px;
+        }
+        .setup-box h4 {
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        .setup-box p {
+            color: #718096;
+            font-size: 0.95em;
+        }
+        
+        /* Interest Meter */
+        .interest-section {
+            padding: 60px 40px;
+            background: white;
+        }
+        .interest-bars {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .interest-item {
+            margin-bottom: 30px;
+        }
+        .interest-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2d3748;
+        }
+        .interest-bar {
+            height: 40px;
+            background: #e2e8f0;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+        .interest-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            padding-left: 20px;
+            color: white;
+            font-weight: bold;
+            transition: width 1s ease-out;
+        }
+        
+        /* Key Insights Boxes */
+        .insights-section {
+            padding: 60px 40px;
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+        }
+        .insight-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            margin: 40px auto 0;
+        }
+        .insight-box {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 5px solid #f59e0b;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .insight-box h4 {
+            color: #92400e;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        .insight-box p {
+            color: #78350f;
+            line-height: 1.6;
+        }
+        
+        /* Footer */
+        .footer {
+            background: #1a202c;
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        .footer h3 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: #fbbf24;
+        }
+        .footer p {
+            font-size: 1.1em;
+            line-height: 1.8;
+            max-width: 900px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2em; }
+            .timeline::before { left: 30px; }
+            .timeline-item { padding-right: 0; padding-left: 80px; }
+            .timeline-item:nth-child(even) { padding-left: 80px; }
+            .timeline-year { left: 30px; transform: translateX(0); }
+            .avatar-grid, .setup-diagram { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1>🧠 What Turing Hath Wrought</h1>
+            <div class="subtitle">Interactive Journey Through AI's Foundation</div>
+            <div class="subtitle" style="margin-top: 10px; font-size: 0.9em;">Presenter: John Day</div>
+        </div>
+        
+        <!-- Stats Bar -->
+        <div class="stats-bar">
+            <div class="stat">
+                <div class="stat-number">3</div>
+                <div class="stat-label">Presentation Parts</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">1936-1950</div>
+                <div class="stat-label">Key Era Covered</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">Hybrid</div>
+                <div class="stat-label">Zoom Format</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">1</div>
+                <div class="stat-label">AI Avatar</div>
+            </div>
+        </div>
+        
+        <!-- Timeline Section -->
+        <div class="timeline-section">
+            <h2 class="section-title">⏱️ Turing's Journey Through Time</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-year">1936</div>
+                    <div class="timeline-content">
+                        <h3>🔢 The Turing Machine</h3>
+                        <p>Introduced universal computing architecture to address the "decision problem" in mathematics. Demonstrated that one machine can simulate any other machine—meaning hardware doesn't matter, it's all about software and algorithms. This became the foundation of ALL modern computer programming.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-year">1940s</div>
+                    <div class="timeline-content">
+                        <h3>🔐 Breaking Enigma at Bletchley Park</h3>
+                        <p>Created electromechanical device that cracked the German Enigma code. Estimated to have shortened WWII by a year or more, saving countless lives. Demonstrated practical application of computational theory to real-world problems of immense consequence.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-year">1950</div>
+                    <div class="timeline-content">
+                        <h3>🤔 Computing Machinery and Intelligence</h3>
+                        <p>Published seminal paper asking "Can machines think?" Introduced the Imitation Game (Turing Test) as a practical measure of machine intelligence. Proposed "learning machines" that would be like children learning through experience. Made 50-year prediction that proved remarkably accurate.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-year">Today</div>
+                    <div class="timeline-content">
+                        <h3>🚀 The AI Revolution</h3>
+                        <p>Turing's vision realized through modern AI, though via the path he rejected—neural networks rather than symbolic AI. His fundamental insights about machine learning and observable behavior remain the bedrock of contemporary artificial intelligence.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Key Insights Grid -->
+        <div class="grid-section">
+            <h2 class="section-title">💡 Turing's Revolutionary Insights</h2>
+            <div class="grid">
+                <div class="card">
+                    <span class="card-icon">🎯</span>
+                    <h3>Reframing the Question</h3>
+                    <p>Turing argued that "Can machines think?" was "too meaningless to deserve discussion." Instead, he proposed measuring intelligence through observable behavior—a scientific rather than philosophical approach.</p>
+                </div>
+                
+                <div class="card">
+                    <span class="card-icon">🎮</span>
+                    <h3>The Imitation Game</h3>
+                    <p>Created a clear, measurable test that separates intelligence from physical form. If a machine's responses are indistinguishable from a human's, it demonstrates intelligence regardless of how it's implemented.</p>
+                </div>
+                
+                <div class="card">
+                    <span class="card-icon">👶</span>
+                    <h3>Learning Machines</h3>
+                    <p>Proposed creating "child machines" that learn through experience rather than programming adult intelligence directly. This insight presaged modern machine learning approaches.</p>
+                </div>
+                
+                <div class="card">
+                    <span class="card-icon">🔮</span>
+                    <h3>Prescient Prediction</h3>
+                    <p>Predicted 70% success rate for machines passing the test by 2000—remarkably accurate. Saw the trajectory of AI development decades before the technology existed.</p>
+                </div>
+                
+                <div class="card">
+                    <span class="card-icon">⚠️</span>
+                    <h3>The Path Not Taken</h3>
+                    <p>Turing dismissed neural networks and brain structure as models for AI, favoring symbolic reasoning. Ironically, neural networks became the key to modern AI success.</p>
+                </div>
+                
+                <div class="card">
+                    <span class="card-icon">🌐</span>
+                    <h3>Universal Machine</h3>
+                    <p>Demonstrated that computation is universal—any computer can simulate any other. This means software and algorithms are what truly matter, not hardware specifications.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Hybrid Setup Visual -->
+        <div class="hybrid-visual">
+            <h2 class="section-title">📡 Hybrid Zoom Environment</h2>
+            <div class="setup-diagram">
+                <div class="setup-box">
+                    <div class="setup-icon">🏠</div>
+                    <h4>Remote Presenter</h4>
+                    <p>John Day presented from remote location with screen sharing and visual demonstrations</p>
+                </div>
+                <div class="setup-box">
+                    <div class="setup-icon">🏢</div>
+                    <h4>In-Room Audience</h4>
+                    <p>~50% of participants in LCC 237 physical space with shared viewing</p>
+                </div>
+                <div class="setup-box">
+                    <div class="setup-icon">💻</div>
+                    <h4>Remote Audience</h4>
+                    <p>~50% of participants joining from various remote locations</p>
+                </div>
+            </div>
+            
+            <div class="grid" style="margin-top: 40px;">
+                <div class="card">
+                    <span class="card-icon">✅</span>
+                    <h3>What Worked Well</h3>
+                    <ul>
+                        <li>Natural discussion flow between both groups</li>
+                        <li>Organic questions from in-room and remote participants</li>
+                        <li>Effective screen sharing for presentation content</li>
+                        <li>Collaborative atmosphere across locations</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <span class="card-icon">🔧</span>
+                    <h3>Challenges Identified</h3>
+                    <ul>
+                        <li>Avatar interaction required manual facilitation</li>
+                        <li>Some coordination needed for turn-taking</li>
+                        <li>No direct platform integration for AI avatar</li>
+                        <li>Slight delays in mediated responses</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Avatar Section -->
+        <div class="avatar-section">
+            <h2 class="section-title" style="color: white;">🎭 The AI Avatar: Alan Turing</h2>
+            <div style="text-align: center; max-width: 800px; margin: 0 auto 40px; font-size: 1.1em;">
+                An innovative interactive component where participants engaged in dialogue with an AI avatar representing Alan Turing himself—bringing historical perspective to contemporary AI discussions.
+            </div>
+            
+            <div class="avatar-grid">
+                <div class="avatar-card">
+                    <h3>✨ Positive Integration Aspects</h3>
+                    <ul>
+                        <li>Sophisticated understanding of complex questions</li>
+                        <li>Authentic, character-consistent responses</li>
+                        <li>Successfully sparked deep ethical discussions</li>
+                        <li>Treated as genuine discussion partner, not novelty</li>
+                        <li>Provided unique historical perspective</li>
+                        <li>Engaged participants on philosophical AI topics</li>
+                    </ul>
+                </div>
+                
+                <div class="avatar-card">
+                    <h3>🔨 Enhancement Opportunities</h3>
+                    <ul>
+                        <li>Voice synthesis with British accent</li>
+                        <li>Animated facial expressions and lip-sync</li>
+                        <li>Direct Zoom platform integration</li>
+                        <li>Autonomous participation capabilities</li>
+                        <li>Enhanced character depth and nuance</li>
+                        <li>Multi-modal meeting awareness</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div style="max-width: 900px; margin: 50px auto 0; background: rgba(255,255,255,0.15); padding: 30px; border-radius: 15px; backdrop-filter: blur(10px);">
+                <h3 style="color: #fbbf24; font-size: 1.5em; margin-bottom: 20px; text-align: center;">Key Discussion Topics with Avatar</h3>
+                <div class="grid" style="grid-template-columns: 1fr 1fr;">
+                    <div style="color: white; padding: 15px;">
+                        <strong style="color: #fbbf24;">🧠 AI Consciousness</strong>
+                        <p style="margin-top: 8px; opacity: 0.9;">Can AI truly be conscious or merely simulate consciousness?</p>
+                    </div>
+                    <div style="color: white; padding: 15px;">
+                        <strong style="color: #fbbf24;">⚖️ Ethics & Bias</strong>
+                        <p style="margin-top: 8px; opacity: 0.9;">Privacy concerns and appropriate use of AI technology</p>
+                    </div>
+                    <div style="color: white; padding: 15px;">
+                        <strong style="color: #fbbf24;">🔄 Neural vs Symbolic</strong>
+                        <p style="margin-top: 8px; opacity: 0.9;">Why Turing missed the neural network revolution</p>
+                    </div>
+                    <div style="color: white; padding: 15px;">
+                        <strong style="color: #fbbf24;">🚀 Future of AI</strong>
+                        <p style="margin-top: 8px; opacity: 0.9;">Predictions about autonomous systems and human-AI interaction</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Interest Meter -->
+        <div class="interest-section">
+            <h2 class="section-title">📊 Topics of Greatest Participant Interest</h2>
+            <div class="interest-bars">
+                <div class="interest-item">
+                    <div class="interest-label">
+                        <span>🤖 AI Avatar Development & Capabilities</span>
+                        <span>Highest Interest</span>
+                    </div>
+                    <div class="interest-bar">
+                        <div class="interest-fill" style="width: 95%;">95%</div>
+                    </div>
+                </div>
+                
+                <div class="interest-item">
+                    <div class="interest-label">
+                        <span>🧩 Neural Networks vs. Symbolic AI</span>
+                        <span>Very High Interest</span>
+                    </div>
+                    <div class="interest-bar">
+                        <div class="interest-fill" style="width: 90%;">90%</div>
+                    </div>
+                </div>
+                
+                <div class="interest-item">
+                    <div class="interest-label">
+                        <span>💭 AI Consciousness & Ethics</span>
+                        <span>Very High Interest</span>
+                    </div>
+                    <div class="interest-bar">
+                        <div class="interest-fill" style="width: 88%;">88%</div>
+                    </div>
+                </div>
+                
+                <div class="interest-item">
+                    <div class="interest-label">
+                        <span>🛠️ Practical AI Applications</span>
+                        <span>High Interest</span>
+                    </div>
+                    <div class="interest-bar">
+                        <div class="interest-fill" style="width: 82%;">82%</div>
+                    </div>
+                </div>
+                
+                <div class="interest-item">
+                    <div class="interest-label">
+                        <span>👥 Meeting Facilitation Tools</span>
+                        <span>High Interest</span>
+                    </div>
+                    <div class="interest-bar">
+                        <div class="interest-fill" style="width: 78%;">78%</div>
+                    </div>
+                </div>
+                
+                <div class="interest-item">
+                    <div class="interest-label">
+                        <span>📚 Historical Details & Technical Specs</span>
+                        <span>Moderate Interest</span>
+                    </div>
+                    <div class="interest-bar">
+                        <div class="interest-fill" style="width: 60%;">60%</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="max-width: 900px; margin: 40px auto 0; padding: 30px; background: #f7fafc; border-radius: 15px; border-left: 5px solid #667eea;">
+                <h4 style="color: #2d3748; margin-bottom: 15px; font-size: 1.3em;">🎯 Engagement Pattern</h4>
+                <p style="color: #4a5568; font-size: 1.05em; line-height: 1.8;">Participants were most engaged when discussing the <strong>intersection of historical insight and contemporary application</strong>—specifically, how Turing's foundational ideas translate to modern challenges and opportunities in AI development and deployment.</p>
+            </div>
+        </div>
+        
+        <!-- Participant Tone -->
+        <div class="grid-section" style="background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);">
+            <h2 class="section-title">🎭 Participant Tone & Engagement Style</h2>
+            <div class="grid">
+                <div class="card" style="background: white;">
+                    <span class="card-icon">🧠</span>
+                    <h3>Intellectually Curious</h3>
+                    <p>Questions were thoughtful and demonstrated genuine interest in both historical and contemporary AI issues. Participants wanted to understand the "why" behind developments.</p>
+                </div>
+                
+                <div class="card" style="background: white;">
+                    <span class="card-icon">🔍</span>
+                    <h3>Constructively Critical</h3>
+                    <p>Balanced enthusiasm for technology with realistic assessment of limitations. Participants identified enhancement opportunities while appreciating current capabilities.</p>
+                </div>
+                
+                <div class="card" style="background: white;">
+                    <span class="card-icon">🤝</span>
+                    <h3>Collaborative</h3>
+                    <p>Discussion built on previous comments, with participants adding to each other's ideas. Created a synergistic conversation rather than isolated questions.</p>
+                </div>
+                
+                <div class="card" style="background: white;">
+                    <span class="card-icon">⚙️</span>
+                    <h3>Pragmatic</h3>
+                    <p>Focus on practical applications and realistic implementation challenges. Participants wanted to know how to apply these concepts in their own contexts.</p>
+                </div>
+                
+                <div class="card" style="background: white;">
+                    <span class="card-icon">🎓</span>
+                    <h3>Respectful</h3>
+                    <p>Engagement with the AI avatar was serious and genuine, not dismissive or purely playful. Treated the avatar as a legitimate discussion participant.</p>
+                </div>
+                
+                <div class="card" style="background: white;">
+                    <span class="card-icon">🌉</span>
+                    <h3>Bridge-Building</h3>
+                    <p>Sought connections between historical precedents and future possibilities. Interested in understanding how past insights inform present choices.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Key Insights -->
+        <div class="insights-section">
+            <h2 class="section-title" style="color: #92400e;">🔑 Critical Takeaways</h2>
+            <div class="insight-grid">
+                <div class="insight-box">
+                    <h4>💡 Avatar as Educational Tool</h4>
+                    <p>AI avatars proved valuable for bringing historical perspectives to contemporary discussions, making complex topics more engaging and accessible through interactive dialogue.</p>
+                </div>
+                
+                <div class="insight-box">
+                    <h4>🔄 Historical Irony</h4>
+                    <p>Turing's dismissal of neural networks—the very technology that enabled modern AI success—demonstrates the unpredictability of technological progress and the importance of exploring multiple paths.</p>
+                </div>
+                
+                <div class="insight-box">
+                    <h4>🎯 Integration Opportunities</h4>
+                    <p>Multiple participants identified specific enhancements (voice, animation, platform integration) showing strong interest in evolving this technology for practical applications.</p>
+                </div>
+                
+                <div class="insight-box">
+                    <h4>🌐 Hybrid Format Success</h4>
+                    <p>The mixed in-person/remote format worked well, with natural discussion flow across both groups, though avatar interaction required some facilitation coordination.</p>
+                </div>
+                
+                <div class="insight-box">
+                    <h4>💭 Creativity Catalyst</h4>
+                    <p>While skeptical about AI generating truly original thoughts, participants recognized significant value in AI's ability to spark ideas through broad informational synthesis.</p>
+                </div>
+                
+                <div class="insight-box">
+                    <h4>🎪 Use Case Diversity</h4>
+                    <p>Discussion revealed wide-ranging applications: town meetings, educational settings, business contexts, meeting facilitation—showing enthusiasm for customized avatar deployment.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Learning Infographics Section -->
+        <div class="grid-section" style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);">
+            <h2 class="section-title" style="color: #166534;">📚 Points of Learning: Key Takeaways</h2>
+            
+            <!-- Three-Part Methodology -->
+            <div style="max-width: 1000px; margin: 0 auto 50px;">
+                <h3 style="text-align: center; color: #166534; margin-bottom: 30px; font-size: 1.8em;">🎯 The Three-Part Presentation Method</h3>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+                    <div style="text-align: center;">
+                        <div style="background: linear-gradient(135deg, #22c55e, #16a34a); color: white; width: 100px; height: 100px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; font-size: 3em; box-shadow: 0 4px 15px rgba(34,197,94,0.3);">1</div>
+                        <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                            <h4 style="color: #166534; margin-bottom: 10px;">📖 The Story</h4>
+                            <p style="color: #15803d; font-size: 0.95em;">Tell the narrative using visual infographics to make complex history accessible and engaging</p>
+                        </div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="background: linear-gradient(135deg, #22c55e, #16a34a); color: white; width: 100px; height: 100px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; font-size: 3em; box-shadow: 0 4px 15px rgba(34,197,94,0.3);">2</div>
+                        <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                            <h4 style="color: #166534; margin-bottom: 10px;">🔬 The Demo</h4>
+                            <p style="color: #15803d; font-size: 0.95em;">Show how AI tools create the analysis and visualizations, teaching methodology</p>
+                        </div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="background: linear-gradient(135deg, #22c55e, #16a34a); color: white; width: 100px; height: 100px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; font-size: 3em; box-shadow: 0 4px 15px rgba(34,197,94,0.3);">3</div>
+                        <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                            <h4 style="color: #166534; margin-bottom: 10px;">💬 The Interaction</h4>
+                            <p style="color: #15803d; font-size: 0.95em;">Engage with an AI avatar for dynamic Q&A, bringing the subject to life</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Process Flow: Creating AI-Powered Analysis -->
+            <div style="max-width: 1100px; margin: 0 auto 50px; background: white; padding: 40px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                <h3 style="text-align: center; color: #166534; margin-bottom: 30px; font-size: 1.8em;">⚙️ AI-Powered Research & Visualization Process</h3>
+                <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 150px; text-align: center; margin: 10px;">
+                        <div style="background: #dcfce7; padding: 20px; border-radius: 10px; border: 3px solid #22c55e;">
+                            <div style="font-size: 2.5em; margin-bottom: 10px;">📄</div>
+                            <div style="color: #166534; font-weight: bold; margin-bottom: 5px;">Source Docs</div>
+                            <div style="color: #15803d; font-size: 0.85em;">Original papers & research</div>
+                        </div>
+                    </div>
+                    <div style="font-size: 2em; color: #22c55e; margin: 0 10px;">→</div>
+                    <div style="flex: 1; min-width: 150px; text-align: center; margin: 10px;">
+                        <div style="background: #dcfce7; padding: 20px; border-radius: 10px; border: 3px solid #22c55e;">
+                            <div style="font-size: 2.5em; margin-bottom: 10px;">🤖</div>
+                            <div style="color: #166534; font-weight: bold; margin-bottom: 5px;">AI Analysis</div>
+                            <div style="color: #15803d; font-size: 0.85em;">Extract key concepts & patterns</div>
+                        </div>
+                    </div>
+                    <div style="font-size: 2em; color: #22c55e; margin: 0 10px;">→</div>
+                    <div style="flex: 1; min-width: 150px; text-align: center; margin: 10px;">
+                        <div style="background: #dcfce7; padding: 20px; border-radius: 10px; border: 3px solid #22c55e;">
+                            <div style="font-size: 2.5em; margin-bottom: 10px;">📊</div>
+                            <div style="color: #166534; font-weight: bold; margin-bottom: 5px;">Visualizations</div>
+                            <div style="color: #15803d; font-size: 0.85em;">Create infographics & charts</div>
+                        </div>
+                    </div>
+                    <div style="font-size: 2em; color: #22c55e; margin: 0 10px;">→</div>
+                    <div style="flex: 1; min-width: 150px; text-align: center; margin: 10px;">
+                        <div style="background: #dcfce7; padding: 20px; border-radius: 10px; border: 3px solid #22c55e;">
+                            <div style="font-size: 2.5em; margin-bottom: 10px;">🎨</div>
+                            <div style="color: #166534; font-weight: bold; margin-bottom: 5px;">Story Assembly</div>
+                            <div style="color: #15803d; font-size: 0.85em;">Weave narrative through visuals</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Key Learning Outcomes Grid -->
+            <div style="max-width: 1200px; margin: 0 auto 50px;">
+                <h3 style="text-align: center; color: #166534; margin-bottom: 30px; font-size: 1.8em;">🎓 Core Learning Outcomes</h3>
+                <div class="grid">
+                    <div class="card" style="background: white; border-top: 4px solid #22c55e;">
+                        <span class="card-icon">🧠</span>
+                        <h3 style="color: #166534;">Historical Context Matters</h3>
+                        <p>Understanding the historical development of ideas helps us avoid repeating mistakes and identify overlooked opportunities (like neural networks).</p>
+                    </div>
+                    
+                    <div class="card" style="background: white; border-top: 4px solid #22c55e;">
+                        <span class="card-icon">🎯</span>
+                        <h3 style="color: #166534;">Reframe Questions Scientifically</h3>
+                        <p>Turing's approach of replacing philosophical questions with measurable criteria provides a model for tackling complex problems pragmatically.</p>
+                    </div>
+                    
+                    <div class="card" style="background: white; border-top: 4px solid #22c55e;">
+                        <span class="card-icon">🖼️</span>
+                        <h3 style="color: #166534;">Visual Storytelling</h3>
+                        <p>Complex technical concepts become accessible through infographics and visual narratives, enhancing comprehension and retention.</p>
+                    </div>
+                    
+                    <div class="card" style="background: white; border-top: 4px solid #22c55e;">
+                        <span class="card-icon">🤖</span>
+                        <h3 style="color: #166534;">AI as Research Partner</h3>
+                        <p>Modern AI tools can assist in analysis, visualization, and ideation—not replacing human insight but amplifying research capabilities.</p>
+                    </div>
+                    
+                    <div class="card" style="background: white; border-top: 4px solid #22c55e;">
+                        <span class="card-icon">🎭</span>
+                        <h3 style="color: #166534;">Interactive Learning</h3>
+                        <p>AI avatars can bring historical figures into contemporary discussions, creating engaging multi-perspective dialogues that deepen understanding.</p>
+                    </div>
+                    
+                    <div class="card" style="background: white; border-top: 4px solid #22c55e;">
+                        <span class="card-icon">⚠️</span>
+                        <h3 style="color: #166534;">Question Assumptions</h3>
+                        <p>Even brilliant thinkers miss crucial insights. Remaining open to alternative approaches is essential for innovation and progress.</p>
+                    </div>
+                    
+                    <div class="card" style="background: white; border-top: 4px solid #22c55e;">
+                        <span class="card-icon">⚡</span>
+                        <h3 style="color: #166534;">Impedance Matching for Ideas</h3>
+                        <p>Like electrical impedance matching ensures maximum power transfer, presenting AI-generated ideas graphically "matches the impedance" of human visual processing, enabling more efficient absorption and comprehension of complex concepts.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Comparison: Before & After AI Tools -->
+            <div style="max-width: 1000px; margin: 0 auto 50px;">
+                <h3 style="text-align: center; color: #166534; margin-bottom: 30px; font-size: 1.8em;">⚖️ Research Process: Traditional vs. AI-Enhanced</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                    <div style="background: #fee2e2; padding: 30px; border-radius: 15px; border: 2px solid #ef4444;">
+                        <h4 style="color: #991b1b; margin-bottom: 20px; text-align: center; font-size: 1.3em;">❌ Traditional Approach</h4>
+                        <ul style="list-style: none; padding: 0; color: #7f1d1d;">
+                            <li style="margin-bottom: 12px; padding-left: 25px; position: relative;">
+                                <span style="position: absolute; left: 0; color: #ef4444;">⏱️</span>
+                                Hours reading dense papers
+                            </li>
+                            <li style="margin-bottom: 12px; padding-left: 25px; position: relative;">
+                                <span style="position: absolute; left: 0; color: #ef4444;">📝</span>
+                                Manual note-taking & synthesis
+                            </li>
+                            <li style="margin-bottom: 12px; padding-left: 25px; position: relative;">
+                                <span style="position: absolute; left: 0; color: #ef4444;">🎨</span>
+                                Time-intensive visual design
+                            </li>
+                            <li style="margin-bottom: 12px; padding-left: 25px; position: relative;">
+                                <span style="position: absolute; left: 0; color: #ef4444;">🔍</span>
+                                Limited pattern recognition
+                            </li>
+                            <li style="margin-bottom: 12px; padding-left: 25px; position: relative;">
+                                <span style="position: absolute; left: 0; color: #ef4444;">💭</span>
+                                Single perspective analysis
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div style="background: #d1fae5; padding: 30px; border-radius: 15px; border: 2px solid #22c55e;">
+                        <h4 style="color: #065f46; margin-bottom: 20px; text-align: center; font-size: 1.3em;">✅ AI-Enhanced Approach</h4>
+                        <ul style="list-style: none; padding: 0; color: #064e3b;">
+                            <li style="margin-bottom: 12px; padding-left: 25px; position: relative;">
+                                <span style="position: absolute; left: 0; color: #22c55e;">⚡</span>
+                                Rapid document analysis & summarization
+                            </li>
+                            <li style="margin-bottom: 12px; padding-left: 25px; position: relative;">
+                                <span style="position: absolute; left: 0; color: #22c55e;">🤖</span>
+                                AI-assisted pattern identification
+                            </li>
+                            <li style="margin-bottom: 12px; padding-left: 25px; position: relative;">
+                                <span style="position: absolute; left: 0; color: #22c55e;">🎯</span>
+                                Automated infographic generation
+                            </li>
+                            <li style="margin-bottom: 12px; padding-left: 25px; position: relative;">
+                                <span style="position: absolute; left: 0; color: #22c55e;">🌐</span>
+                                Cross-reference multiple sources
+                            </li>
+                            <li style="margin-bottom: 12px; padding-left: 25px; position: relative;">
+                                <span style="position: absolute; left: 0; color: #22c55e;">💡</span>
+                                Multiple perspective synthesis
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Impedance Matching Analogy Infographic -->
+            <div style="max-width: 1100px; margin: 50px auto; background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%); padding: 40px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 3px solid #8b5cf6;">
+                <h3 style="text-align: center; color: #5b21b6; margin-bottom: 15px; font-size: 1.9em;">⚡ The Impedance Matching Analogy</h3>
+                <p style="text-align: center; color: #6b21a8; margin-bottom: 35px; font-size: 1.1em; max-width: 800px; margin-left: auto; margin-right: auto;">
+                    Just as electrical impedance matching maximizes power transfer between components, matching presentation format to cognitive processing maximizes idea transfer and comprehension.
+                </p>
+                
+                <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 20px; align-items: center; margin-bottom: 30px;">
+                    <!-- Source (AI) -->
+                    <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); text-align: center;">
+                        <div style="font-size: 3em; margin-bottom: 10px;">🤖</div>
+                        <h4 style="color: #5b21b6; margin-bottom: 10px; font-size: 1.2em;">Source: AI Output</h4>
+                        <div style="color: #6b21a8; font-size: 0.95em; line-height: 1.6;">
+                            Complex data, patterns, analysis, multi-dimensional insights
+                        </div>
+                        <div style="margin-top: 15px; padding: 10px; background: #f3f4f6; border-radius: 6px; font-weight: bold; color: #7c3aed;">
+                            High Information Density
+                        </div>
+                    </div>
+                    
+                    <!-- Impedance Matching -->
+                    <div style="text-align: center;">
+                        <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                            <div style="font-size: 2em; color: #8b5cf6;">⚡</div>
+                            <div style="background: #8b5cf6; color: white; padding: 15px 25px; border-radius: 25px; font-weight: bold; white-space: nowrap; box-shadow: 0 4px 10px rgba(139,92,246,0.3);">
+                                GRAPHICAL<br/>VISUALIZATION
+                            </div>
+                            <div style="font-size: 2em; color: #8b5cf6;">⚡</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Receiver (Human) -->
+                    <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); text-align: center;">
+                        <div style="font-size: 3em; margin-bottom: 10px;">👁️</div>
+                        <h4 style="color: #5b21b6; margin-bottom: 10px; font-size: 1.2em;">Receiver: Human Brain</h4>
+                        <div style="color: #6b21a8; font-size: 0.95em; line-height: 1.6;">
+                            Visual cortex, pattern recognition, spatial reasoning
+                        </div>
+                        <div style="margin-top: 15px; padding: 10px; background: #f3f4f6; border-radius: 6px; font-weight: bold; color: #7c3aed;">
+                            Optimized for Visuals
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Comparison: Matched vs Mismatched -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px;">
+                    <div style="background: #fee2e2; padding: 25px; border-radius: 12px; border: 2px solid #ef4444;">
+                        <h4 style="color: #991b1b; margin-bottom: 15px; text-align: center; font-size: 1.2em;">❌ Impedance Mismatch</h4>
+                        <div style="text-align: center; margin-bottom: 15px; font-size: 2em;">📄</div>
+                        <div style="color: #7f1d1d; font-size: 0.95em; line-height: 1.7;">
+                            <strong>Dense text walls</strong> create cognitive resistance. The human brain must work harder to extract patterns, relationships, and insights from linear text format.
+                        </div>
+                        <div style="margin-top: 15px; padding: 12px; background: #fecaca; border-radius: 6px; text-align: center;">
+                            <strong style="color: #991b1b;">Result: Energy Loss</strong><br/>
+                            <span style="color: #7f1d1d; font-size: 0.9em;">Lower comprehension, slower processing, reduced retention</span>
+                        </div>
+                    </div>
+                    
+                    <div style="background: #d1fae5; padding: 25px; border-radius: 12px; border: 2px solid #22c55e;">
+                        <h4 style="color: #065f46; margin-bottom: 15px; text-align: center; font-size: 1.2em;">✅ Impedance Match</h4>
+                        <div style="text-align: center; margin-bottom: 15px; font-size: 2em;">📊</div>
+                        <div style="color: #064e3b; font-size: 0.95em; line-height: 1.7;">
+                            <strong>Visual infographics</strong> align with visual processing strengths. Patterns, relationships, and hierarchies become immediately apparent through spatial arrangement and color.
+                        </div>
+                        <div style="margin-top: 15px; padding: 12px; background: #a7f3d0; border-radius: 6px; text-align: center;">
+                            <strong style="color: #065f46;">Result: Maximum Transfer</strong><br/>
+                            <span style="color: #064e3b; font-size: 0.9em;">Higher comprehension, faster insights, better retention</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Key Formula -->
+                <div style="margin-top: 30px; text-align: center; padding: 25px; background: white; border-radius: 12px; border: 2px dashed #8b5cf6;">
+                    <div style="font-size: 1.3em; color: #5b21b6; margin-bottom: 10px; font-weight: bold;">The Presentation Formula</div>
+                    <div style="font-size: 1.5em; color: #7c3aed; font-family: 'Courier New', monospace; margin: 15px 0;">
+                        Idea Absorption = f(Content Quality × <span style="color: #8b5cf6; background: #f3e8ff; padding: 5px 15px; border-radius: 5px;">Format Match</span>)
+                    </div>
+                    <div style="color: #6b21a8; font-size: 0.95em; max-width: 700px; margin: 0 auto; line-height: 1.7;">
+                        Maximum learning occurs when the presentation format matches the cognitive processing mode of the learner. Graphics provide this match for complex, multi-dimensional information.
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Lessons from Turing's Miss -->
+            <div style="max-width: 900px; margin: 0 auto; background: white; padding: 40px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-left: 6px solid #ef4444;">
+                <h3 style="color: #991b1b; margin-bottom: 25px; font-size: 1.8em; display: flex; align-items: center; gap: 15px;">
+                    <span style="font-size: 1.5em;">💡</span>
+                    The Big Lesson: What Turing Missed and Why It Matters
+                </h3>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 25px;">
+                    <div style="background: #fef2f2; padding: 20px; border-radius: 10px;">
+                        <h4 style="color: #991b1b; margin-bottom: 10px;">❌ Turing's Path</h4>
+                        <p style="color: #7f1d1d; font-weight: bold; margin-bottom: 8px;">Symbolic AI & Logical Reasoning</p>
+                        <ul style="color: #7f1d1d; font-size: 0.95em; padding-left: 20px;">
+                            <li>LISP, Prolog programming</li>
+                            <li>Rule-based systems</li>
+                            <li>Explicit logic coding</li>
+                            <li>Limited success in 1980s-90s</li>
+                        </ul>
+                    </div>
+                    
+                    <div style="background: #d1fae5; padding: 20px; border-radius: 10px;">
+                        <h4 style="color: #065f46; margin-bottom: 10px;">✅ What Actually Worked</h4>
+                        <p style="color: #064e3b; font-weight: bold; margin-bottom: 8px;">Neural Networks & Brain-Inspired AI</p>
+                        <ul style="color: #064e3b; font-size: 0.95em; padding-left: 20px;">
+                            <li>Artificial neurons & layers</li>
+                            <li>Pattern learning from data</li>
+                            <li>Emergent behavior</li>
+                            <li>21st century AI revolution</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div style="background: #fef3c7; padding: 25px; border-radius: 10px; border: 2px solid #f59e0b;">
+                    <h4 style="color: #92400e; margin-bottom: 15px; font-size: 1.2em;">🎯 Key Takeaway for Innovation</h4>
+                    <p style="color: #78350f; line-height: 1.8; font-size: 1.05em;">
+                        Even the most brilliant minds can overlook revolutionary approaches. Turing dismissed neural networks as unimportant, yet they became the foundation of modern AI success. This teaches us to:
+                    </p>
+                    <ul style="color: #78350f; margin-top: 15px; line-height: 1.8;">
+                        <li><strong>Explore multiple paths</strong> rather than committing to one approach</li>
+                        <li><strong>Question assumptions</strong> even from authoritative sources</li>
+                        <li><strong>Stay open to unexpected solutions</strong> from different domains</li>
+                        <li><strong>Remember that innovation is unpredictable</strong> and non-linear</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <h3>🎓 Final Reflection</h3>
+            <p>The presentation successfully honored Alan Turing's legacy while demonstrating how his foundational work continues to evolve in unexpected ways. The AI avatar component, despite technical limitations, proved to be an engaging and thought-provoking addition that enhanced rather than distracted from the educational experience. Participants left with a deeper appreciation for both the historical roots of AI and its contemporary possibilities, as well as practical ideas for leveraging these technologies in their own contexts. The session demonstrated that when we look back at Turing's journey, we see not just what he created, but the entire world of possibility he opened—a world we're still exploring today.</p>
+        </div>
+    </div>
+</body>
+</html>
