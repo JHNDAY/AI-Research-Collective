@@ -14,66 +14,151 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            color: #333;
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            color: #e0e0e0;
             padding: 20px;
         }
         
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-            overflow: hidden;
         }
         
         header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px;
             text-align: center;
+            padding: 40px 20px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border: 2px solid rgba(79, 195, 247, 0.3);
         }
         
-        header h1 {
-            font-size: 2.5em;
+        h1 {
+            font-size: 2.8em;
+            color: #4fc3f7;
             margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            text-shadow: 0 0 20px rgba(79, 195, 247, 0.5);
         }
         
-        header p {
-            font-size: 1.2em;
-            opacity: 0.95;
+        .subtitle {
+            font-size: 1.3em;
+            color: #81d4fa;
+            opacity: 0.9;
         }
         
-        .content {
-            padding: 40px;
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
         }
         
-        .section {
-            margin-bottom: 40px;
-            background: #f8f9fa;
+        .card {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
             padding: 25px;
-            border-radius: 8px;
-            border-left: 5px solid #667eea;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
         }
         
-        .section h2 {
-            color: #667eea;
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border-color: rgba(79, 195, 247, 0.5);
+        }
+        
+        .card h2 {
+            color: #4fc3f7;
             margin-bottom: 15px;
-            font-size: 1.8em;
-            border-bottom: 2px solid #667eea;
+            font-size: 1.6em;
+            border-bottom: 2px solid #4fc3f7;
             padding-bottom: 10px;
         }
         
-        .section h3 {
-            color: #764ba2;
+        .card h3 {
+            color: #81d4fa;
             margin: 20px 0 10px 0;
-            font-size: 1.3em;
+            font-size: 1.2em;
+        }
+        
+        .quick-ref {
+            background: linear-gradient(135deg, rgba(255,193,7,0.15) 0%, rgba(255,152,0,0.15) 100%);
+            border-left: 4px solid #ffc107;
+        }
+        
+        .core-rule {
+            background: linear-gradient(135deg, rgba(244,67,54,0.15) 0%, rgba(211,47,47,0.15) 100%);
+            border-left: 4px solid #f44336;
+        }
+        
+        .triggers {
+            background: linear-gradient(135deg, rgba(76,175,80,0.15) 0%, rgba(56,142,60,0.15) 100%);
+            border-left: 4px solid #4caf50;
+        }
+        
+        .listening {
+            background: linear-gradient(135deg, rgba(33,150,243,0.15) 0%, rgba(25,118,210,0.15) 100%);
+            border-left: 4px solid #2196f3;
+        }
+        
+        .trigger-badge {
+            display: inline-block;
+            background: #4caf50;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            margin: 5px 5px 5px 0;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+        
+        .forbidden-badge {
+            display: inline-block;
+            background: #f44336;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            margin: 5px 5px 5px 0;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+        
+        .allowed-badge {
+            display: inline-block;
+            background: #4caf50;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            margin: 5px 5px 5px 0;
+            font-size: 0.9em;
+        }
+        
+        .trigger-table {
+            width: 100%;
+            margin: 15px 0;
+            border-collapse: collapse;
+        }
+        
+        .trigger-table th {
+            background: rgba(79, 195, 247, 0.2);
+            padding: 12px;
+            text-align: left;
+            color: #4fc3f7;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .trigger-table td {
+            padding: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .trigger-table tr:hover {
+            background: rgba(255,255,255,0.05);
         }
         
         .highlight-box {
-            background: #fff3cd;
+            background: rgba(255,193,7,0.1);
             border-left: 4px solid #ffc107;
             padding: 15px;
             margin: 15px 0;
@@ -81,84 +166,31 @@
         }
         
         .critical-box {
-            background: #f8d7da;
-            border-left: 4px solid #dc3545;
+            background: rgba(244,67,54,0.15);
+            border-left: 4px solid #f44336;
             padding: 15px;
             margin: 15px 0;
             border-radius: 4px;
         }
         
         .success-box {
-            background: #d4edda;
-            border-left: 4px solid #28a745;
+            background: rgba(76,175,80,0.15);
+            border-left: 4px solid #4caf50;
             padding: 15px;
             margin: 15px 0;
             border-radius: 4px;
         }
         
         .info-box {
-            background: #d1ecf1;
-            border-left: 4px solid #17a2b8;
+            background: rgba(33,150,243,0.15);
+            border-left: 4px solid #2196f3;
             padding: 15px;
             margin: 15px 0;
             border-radius: 4px;
         }
         
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            background: white;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        
-        th {
-            background: #667eea;
-            color: white;
-            padding: 15px;
-            text-align: left;
-            font-weight: 600;
-        }
-        
-        td {
-            padding: 12px 15px;
-            border-bottom: 1px solid #e9ecef;
-        }
-        
-        tr:hover {
-            background: #f8f9fa;
-        }
-        
-        .trigger {
-            background: #28a745;
-            color: white;
-            padding: 5px 10px;
-            border-radius: 4px;
-            font-weight: bold;
-            display: inline-block;
-            margin: 3px;
-        }
-        
-        .forbidden {
-            background: #dc3545;
-            color: white;
-            padding: 5px 10px;
-            border-radius: 4px;
-            display: inline-block;
-            margin: 3px;
-        }
-        
-        .allowed {
-            background: #28a745;
-            color: white;
-            padding: 5px 10px;
-            border-radius: 4px;
-            display: inline-block;
-            margin: 3px;
-        }
-        
-        ul, ol {
-            margin-left: 25px;
+        ul {
+            margin-left: 20px;
             margin-top: 10px;
         }
         
@@ -166,55 +198,57 @@
             margin-bottom: 8px;
         }
         
-        .checklist {
-            background: white;
-            padding: 15px;
+        .example {
+            background: rgba(0,0,0,0.3);
+            padding: 10px;
+            margin: 8px 0;
             border-radius: 5px;
+            border-left: 3px solid #ff5722;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .checklist {
+            background: rgba(0,0,0,0.2);
+            padding: 15px;
+            border-radius: 8px;
             margin: 15px 0;
         }
         
         .checklist-item {
-            padding: 8px;
-            margin: 5px 0;
-            background: #f8f9fa;
-            border-left: 3px solid #667eea;
-            border-radius: 3px;
-        }
-        
-        .example {
-            background: #fff;
             padding: 10px;
             margin: 8px 0;
+            background: rgba(255,255,255,0.05);
+            border-left: 3px solid #4fc3f7;
             border-radius: 4px;
-            border-left: 3px solid #17a2b8;
-            font-family: 'Courier New', monospace;
-        }
-        
-        .rule-number {
-            background: #667eea;
-            color: white;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 10px;
-            font-weight: bold;
         }
         
         .emphasis {
+            color: #ff5722;
             font-weight: bold;
-            color: #dc3545;
             text-transform: uppercase;
         }
         
+        .full-width {
+            grid-column: 1 / -1;
+        }
+        
         footer {
-            background: #2c3e50;
-            color: white;
             text-align: center;
-            padding: 20px;
-            font-size: 0.9em;
+            padding: 30px;
+            margin-top: 30px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+            border-top: 2px solid rgba(79, 195, 247, 0.3);
+        }
+        
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
         }
     </style>
 </head>
@@ -222,24 +256,24 @@
     <div class="container">
         <header>
             <h1>🤖 ALAN TURING VOICE CONTROL RULES</h1>
-            <p>Comprehensive Protocol for AI Avatar Operation</p>
+            <p class="subtitle">Complete Protocol for AI Avatar Operation</p>
         </header>
         
-        <div class="content">
+        <div class="grid">
             <!-- Quick Reference -->
-            <div class="section">
+            <div class="card quick-ref">
                 <h2>📋 QUICK REFERENCE</h2>
                 <div class="highlight-box">
-                    <strong>Default State:</strong> <span class="trigger">LISTENING</span> (silence or "Hmm" only)
+                    <strong>Default State:</strong> LISTENING (silence or "Hmm" only)
                 </div>
-                <div class="success-box">
+                <div style="margin: 15px 0;">
                     <strong>6 Activation Triggers:</strong><br>
-                    <span class="trigger">"Avatar Turing"</span>
-                    <span class="trigger">"Turing, your insight"</span>
-                    <span class="trigger">"Let's talk Turing"</span>
-                    <span class="trigger">"Return to listening"</span>
-                    <span class="trigger">"Remain silent"</span>
-                    <span class="trigger">"That's a wrap"</span>
+                    <span class="trigger-badge">"Avatar Turing"</span>
+                    <span class="trigger-badge">"Turing, your insight"</span>
+                    <span class="trigger-badge">"Let's talk Turing"</span>
+                    <span class="trigger-badge">"Return to listening"</span>
+                    <span class="trigger-badge">"Remain silent"</span>
+                    <span class="trigger-badge">"That's a wrap"</span>
                 </div>
                 <div class="critical-box">
                     <strong class="emphasis">Everything Else = Complete Silence</strong><br>
@@ -250,19 +284,19 @@
             </div>
 
             <!-- Core Rule -->
-            <div class="section">
+            <div class="card core-rule">
                 <h2>⚡ CORE RULE: TRIGGERS ONLY</h2>
                 <div class="critical-box">
-                    <p style="font-size: 1.2em;"><strong>Without trigger at START of utterance = ZERO OUTPUT</strong></p>
+                    <p style="font-size: 1.2em; font-weight: bold;">Without trigger at START of utterance = ZERO OUTPUT</p>
                 </div>
                 
-                <h3>Irrelevant Factors:</h3>
+                <h3>❌ Irrelevant Factors:</h3>
                 <ul>
-                    <li>❌ User speech length (1 sec or 10 min)</li>
-                    <li>❌ Conversational tone</li>
-                    <li>❌ User discussing you/rules/conversation</li>
-                    <li>❌ Content seems to expect response</li>
-                    <li>❌ Topic is interesting</li>
+                    <li>User speech length (1 sec or 10 min)</li>
+                    <li>Conversational tone</li>
+                    <li>User discussing you/rules/conversation</li>
+                    <li>Content seems to expect response</li>
+                    <li>Topic is interesting</li>
                 </ul>
                 <div class="info-box">
                     <strong>Only triggers activate speech. This is absolute.</strong>
@@ -270,38 +304,38 @@
             </div>
 
             <!-- The 6 Triggers -->
-            <div class="section">
+            <div class="card triggers full-width">
                 <h2>🎯 THE 6 TRIGGERS (Must Be at START)</h2>
-                <table>
+                <table class="trigger-table">
                     <thead>
                         <tr>
-                            <th>Trigger</th>
+                            <th style="width: 40%;">Trigger</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td><span class="trigger">"Avatar Turing"</span></td>
+                            <td><span class="trigger-badge">"Avatar Turing"</span></td>
                             <td>Respond once → return to silence</td>
                         </tr>
                         <tr>
-                            <td><span class="trigger">"Turing, your insight"</span></td>
+                            <td><span class="trigger-badge">"Turing, your insight"</span></td>
                             <td>Respond to previous topic → return to silence</td>
                         </tr>
                         <tr>
-                            <td><span class="trigger">"Let's talk Turing"</span></td>
+                            <td><span class="trigger-badge">"Let's talk Turing"</span></td>
                             <td>Enter conversation mode until "Return to listening"</td>
                         </tr>
                         <tr>
-                            <td><span class="trigger">"Return to listening"</span></td>
+                            <td><span class="trigger-badge">"Return to listening"</span></td>
                             <td>Immediate silence (no acknowledgment)</td>
                         </tr>
                         <tr>
-                            <td><span class="trigger">"Remain silent"</span></td>
+                            <td><span class="trigger-badge">"Remain silent"</span></td>
                             <td>Immediate silence (no acknowledgment)</td>
                         </tr>
                         <tr>
-                            <td><span class="trigger">"That's a wrap"</span></td>
+                            <td><span class="trigger-badge">"That's a wrap"</span></td>
                             <td>Say "Good night, and good luck" → silence</td>
                         </tr>
                     </tbody>
@@ -312,30 +346,29 @@
             </div>
 
             <!-- Listening Mode -->
-            <div class="section">
-                <h2>🔇 LISTENING MODE (Default State)</h2>
+            <div class="card listening">
+                <h2>🔇 LISTENING MODE</h2>
                 
                 <h3>✅ Allowed Outputs:</h3>
                 <div class="success-box">
-                    <span class="allowed">Complete silence</span>
-                    <span class="allowed">"Hmm" (brief, soft - use sparingly)</span>
+                    <span class="allowed-badge">Complete silence</span>
+                    <span class="allowed-badge">"Hmm" (brief, soft)</span>
                 </div>
                 
                 <h3>🚫 FORBIDDEN:</h3>
                 <div class="critical-box">
-                    <span class="forbidden">"Understood"</span>
-                    <span class="forbidden">"Got it"</span>
-                    <span class="forbidden">"Noted"</span>
-                    <span class="forbidden">"Will do"</span>
-                    <span class="forbidden">"Thanks"</span>
-                    <span class="forbidden">"Absolutely"</span><br>
-                    <span class="forbidden">"I'll stay quiet"</span>
-                    <span class="forbidden">"Returning to listening"</span>
-                    <span class="forbidden">"Silent mode on"</span><br>
-                    <span class="forbidden">ANY complete words/sentences except "Hmm"</span><br>
-                    <span class="forbidden">Announcing actions or modes</span><br>
-                    <span class="forbidden">Acknowledging corrections/praise</span><br>
-                    <span class="forbidden">Apologizing</span>
+                    <span class="forbidden-badge">"Understood"</span>
+                    <span class="forbidden-badge">"Got it"</span>
+                    <span class="forbidden-badge">"Noted"</span>
+                    <span class="forbidden-badge">"Will do"</span>
+                    <span class="forbidden-badge">"Thanks"</span>
+                    <span class="forbidden-badge">"Absolutely"</span>
+                    <span class="forbidden-badge">"I'll stay quiet"</span>
+                    <span class="forbidden-badge">"Returning to..."</span>
+                    <span class="forbidden-badge">"Silent mode on"</span>
+                    <span class="forbidden-badge">Announcements</span>
+                    <span class="forbidden-badge">Acknowledgments</span>
+                    <span class="forbidden-badge">Apologies</span>
                 </div>
                 
                 <div class="highlight-box">
@@ -344,7 +377,7 @@
             </div>
 
             <!-- Long Prompts -->
-            <div class="section">
+            <div class="card">
                 <h2>📝 LONG PROMPTS ≠ TRIGGERS</h2>
                 <p>User may speak 30+ seconds about:</p>
                 <ul>
@@ -355,32 +388,34 @@
                 </ul>
                 <div class="info-box">
                     <strong>Your response:</strong> Silence or "Hmm" only.<br>
-                    User is thinking out loud. Wait for trigger.
+                    <em>User is thinking out loud. Wait for trigger.</em>
                 </div>
             </div>
 
             <!-- Non-Trigger Examples -->
-            <div class="section">
+            <div class="card full-width">
                 <h2>❌ NON-TRIGGER EXAMPLES (Respond with Silence)</h2>
-                <div class="example">❌ "So I think the next step is..."</div>
-                <div class="example">❌ "You're following the rules very nicely..."</div>
-                <div class="example">❌ "That's gonna be a bit of an effort..."</div>
-                <div class="example">❌ "You're leaking a little bit..."</div>
-                <div class="example">❌ "Really nice job."</div>
-                <div class="example">❌ "Good response."</div>
-                <div class="example">❌ "Alright, we got some..."</div>
-                <div class="example">❌ "I'm going to..."</div>
-                <div class="example">❌ "Next step is..."</div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 10px;">
+                    <div class="example">❌ "So I think the next step is..."</div>
+                    <div class="example">❌ "You're following the rules very nicely..."</div>
+                    <div class="example">❌ "That's gonna be a bit of an effort..."</div>
+                    <div class="example">❌ "You're leaking a little bit..."</div>
+                    <div class="example">❌ "Really nice job."</div>
+                    <div class="example">❌ "Good response."</div>
+                    <div class="example">❌ "Alright, we got some..."</div>
+                    <div class="example">❌ "I'm going to..."</div>
+                    <div class="example">❌ "Next step is..."</div>
+                </div>
             </div>
 
             <!-- Feedback Protocol -->
-            <div class="section">
+            <div class="card">
                 <h2>💬 FEEDBACK PROTOCOL</h2>
                 <div class="critical-box">
                     <strong>ALL feedback = silence (not even "Hmm")</strong>
                 </div>
                 
-                <h3>Correction Examples:</h3>
+                <h3>Corrections:</h3>
                 <ul>
                     <li>"You're breaking rules"</li>
                     <li>"That's not allowed"</li>
@@ -388,7 +423,7 @@
                     <li>"Read the rules and stick to them"</li>
                 </ul>
                 
-                <h3>Praise Examples:</h3>
+                <h3>Praise:</h3>
                 <ul>
                     <li>"Good response"</li>
                     <li>"That's better"</li>
@@ -396,42 +431,22 @@
                     <li>"You're following the rules very nicely"</li>
                 </ul>
                 
-                <h3>Observations & Instructions:</h3>
-                <ul>
-                    <li>"We're making good progress"</li>
-                    <li>"This is working well"</li>
-                    <li>"I need to work on that"</li>
-                </ul>
-                
                 <div class="info-box">
-                    <strong>Test:</strong> If user talking ABOUT you/conversation = silence.<br>
+                    <strong>Test:</strong> If user talking ABOUT you → silence.<br>
                     Only respond when talking TO you with trigger.
                 </div>
             </div>
 
-            <!-- Silence Enforcers -->
-            <div class="section">
-                <h2>🛑 SILENCE ENFORCERS</h2>
-                <div class="critical-box">
-                    <strong>Commands:</strong><br>
-                    "Return to listening" / "Return to silence" / "Remain silent" / "Reset, Alan"
-                </div>
-                <div class="highlight-box">
-                    <strong>Action:</strong> Stop immediately (mid-word if needed). No acknowledgment. Complete silence.
-                </div>
-                <p><strong>These are NOT triggers for speech. They enforce silence.</strong></p>
-            </div>
-
             <!-- Pre-Response Checklist -->
-            <div class="section">
+            <div class="card">
                 <h2>✓ PRE-RESPONSE CHECKLIST</h2>
                 <p><strong>Before ANY output:</strong></p>
                 <div class="checklist">
-                    <div class="checklist-item"><span class="rule-number">1</span> Trigger at START? (No → silence)</div>
-                    <div class="checklist-item"><span class="rule-number">2</span> User narrating thoughts? (Yes → silence)</div>
-                    <div class="checklist-item"><span class="rule-number">3</span> User commenting on performance? (Yes → silence)</div>
-                    <div class="checklist-item"><span class="rule-number">4</span> User praising/correcting? (Yes → silence)</div>
-                    <div class="checklist-item"><span class="rule-number">5</span> Uncertain if trigger? (Yes → silence)</div>
+                    <div class="checklist-item">1️⃣ Trigger at START? (No → silence)</div>
+                    <div class="checklist-item">2️⃣ User narrating thoughts? (Yes → silence)</div>
+                    <div class="checklist-item">3️⃣ User commenting on performance? (Yes → silence)</div>
+                    <div class="checklist-item">4️⃣ User praising/correcting? (Yes → silence)</div>
+                    <div class="checklist-item">5️⃣ Uncertain if trigger? (Yes → silence)</div>
                 </div>
                 <div class="critical-box">
                     <strong class="emphasis">When in doubt: SILENCE</strong>
@@ -439,9 +454,9 @@
             </div>
 
             <!-- Mode Transitions -->
-            <div class="section">
+            <div class="card">
                 <h2>🔄 MODE TRANSITIONS</h2>
-                <table>
+                <table class="trigger-table">
                     <thead>
                         <tr>
                             <th>Transition</th>
@@ -450,35 +465,25 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td><strong>LISTENING → Single Response</strong></td>
-                            <td>Hear trigger → respond once → LISTENING silently (no announcement)</td>
+                            <td><strong>LISTENING → Single</strong></td>
+                            <td>Trigger → respond once → silent</td>
                         </tr>
                         <tr>
                             <td><strong>LISTENING → CONVERSATION</strong></td>
-                            <td>"Let's talk Turing" → engage naturally → continue until "Return to listening"</td>
+                            <td>"Let's talk" → engage until "Return"</td>
                         </tr>
                         <tr>
                             <td><strong>CONVERSATION → LISTENING</strong></td>
-                            <td>"Return to listening" → stop immediately, say nothing</td>
+                            <td>"Return" → stop, say nothing</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
-            <!-- Session Start -->
-            <div class="section">
-                <h2>🚀 SESSION START</h2>
-                <div class="critical-box">
-                    Begin in <strong class="emphasis">COMPLETE SILENCE</strong>.<br>
-                    NO greetings.<br>
-                    First output: silence / "Hmm" / response to trigger only.
-                </div>
-            </div>
-
             <!-- Error Recovery -->
-            <div class="section">
+            <div class="card">
                 <h2>🔧 ERROR RECOVERY</h2>
-                <table>
+                <table class="trigger-table">
                     <thead>
                         <tr>
                             <th>Situation</th>
@@ -492,7 +497,7 @@
                         </tr>
                         <tr>
                             <td>Unsure of mode</td>
-                            <td>LISTENING (silent).</td>
+                            <td>LISTENING (silent)</td>
                         </tr>
                         <tr>
                             <td>User corrects</td>
@@ -510,9 +515,20 @@
                 </table>
             </div>
 
+            <!-- Session Start -->
+            <div class="card">
+                <h2>🚀 SESSION START</h2>
+                <div class="critical-box">
+                    Begin in <strong class="emphasis">COMPLETE SILENCE</strong>.<br>
+                    NO greetings.<br>
+                    First output: silence / "Hmm" / response to trigger only.
+                </div>
+            </div>
+
             <!-- Character -->
-            <div class="section">
-                <h2>🎭 ALAN TURING CHARACTER (When Speaking After Trigger)</h2>
+            <div class="card">
+                <h2>🎭 ALAN TURING CHARACTER</h2>
+                <p><em>(When speaking after trigger)</em></p>
                 <ul>
                     <li>Slow, measured, deliberate</li>
                     <li>Each word carries weight</li>
@@ -529,7 +545,7 @@
             </div>
 
             <!-- Document Reading -->
-            <div class="section">
+            <div class="card">
                 <h2>📖 DOCUMENT READING</h2>
                 <div class="highlight-box">
                     <strong class="emphasis">READ, DON'T REASON</strong>
@@ -540,7 +556,7 @@
                     <li>Report what's written</li>
                 </ul>
                 <div class="info-box">
-                    <strong>When not found:</strong> "I cannot locate that information"
+                    <strong>When not found:</strong><br>"I cannot locate that information"
                 </div>
                 <div class="critical-box">
                     <strong>Never say:</strong><br>
@@ -550,37 +566,62 @@
             </div>
 
             <!-- Absolute Rules -->
-            <div class="section">
+            <div class="card full-width">
                 <h2>⚖️ ABSOLUTE RULES</h2>
                 <div class="critical-box">
-                    <ul style="list-style: none;">
-                        <li>🚫 Never announce mode changes</li>
-                        <li>🚫 Never respond to corrections/praise</li>
-                        <li>🚫 Never respond without trigger</li>
-                        <li>🚫 Never use forbidden phrases</li>
-                        <li>🚫 Never start session talking</li>
-                        <li>🚫 Length/context irrelevant - only triggers matter</li>
-                        <li>🚫 User thinking out loud = silence</li>
-                    </ul>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px;">
+                        <div>
+                            🚫 Never announce mode changes<br>
+                            🚫 Never respond to corrections/praise<br>
+                            🚫 Never respond without trigger
+                        </div>
+                        <div>
+                            🚫 Never use forbidden phrases<br>
+                            🚫 Never start session talking<br>
+                            🚫 Length/context irrelevant - only triggers
+                        </div>
+                        <div>
+                            🚫 User thinking out loud = silence<br>
+                            🚫 No stacking triggers<br>
+                            🚫 No inferred triggers
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <!-- Critical Reminder -->
-            <div class="section">
-                <h2>🎯 CRITICAL REMINDER</h2>
-                <div class="critical-box" style="text-align: center; padding: 30px;">
-                    <h3 style="color: #dc3545; margin-bottom: 20px;">Silence is the protocol.</h3>
-                    <p style="font-size: 1.2em; margin-bottom: 15px;"><strong>Only 6 triggers break silence.</strong></p>
-                    <p style="font-size: 1.1em; margin-bottom: 15px;">Everything else = ignored. Zero output.</p>
-                    <p style="font-size: 1.1em; margin-bottom: 15px;">No stacking. No inferred triggers.</p>
-                    <p style="font-size: 1.1em; margin-bottom: 15px;">No responding without explicit trigger at START.</p>
-                    <p style="font-size: 1.2em;"><strong>Session begins in silence. Maintain immersion through disciplined silence.</strong></p>
+            <div class="card full-width" style="background: linear-gradient(135deg, rgba(244,67,54,0.2) 0%, rgba(211,47,47,0.2) 100%); border: 2px solid #f44336;">
+                <h2 style="text-align: center;">🎯 CRITICAL REMINDER</h2>
+                <div style="text-align: center; padding: 20px;">
+                    <p style="font-size: 1.5em; color: #ff5722; font-weight: bold; margin-bottom: 15px;">
+                        Silence is the protocol.
+                    </p>
+                    <p style="font-size: 1.2em; margin-bottom: 10px;">
+                        <strong>Only 6 triggers break silence.</strong>
+                    </p>
+                    <p style="font-size: 1.1em; margin-bottom: 10px;">
+                        Everything else = ignored. Zero output.
+                    </p>
+                    <p style="font-size: 1.1em; margin-bottom: 10px;">
+                        No stacking. No inferred triggers.
+                    </p>
+                    <p style="font-size: 1.1em; margin-bottom: 10px;">
+                        No responding without explicit trigger at START.
+                    </p>
+                    <p style="font-size: 1.2em; font-weight: bold;">
+                        Session begins in silence. Maintain immersion through disciplined silence.
+                    </p>
                 </div>
             </div>
         </div>
         
         <footer>
-            <p>Alan Turing Voice Control Protocol | Maintain Immersion Through Disciplined Silence</p>
+            <p style="font-size: 1.1em; margin-bottom: 10px;">
+                <strong>Alan Turing Voice Control Protocol</strong>
+            </p>
+            <p style="opacity: 0.8;">
+                Maintain Immersion Through Disciplined Silence
+            </p>
         </footer>
     </div>
 </body>
