@@ -533,7 +533,7 @@
                     <li><strong>What it does:</strong> Lets you report confusing instructions, technical problems, or areas where you need more help</li>
                     <li><strong>Why it matters:</strong> Your feedback helps us improve the tutorial for everyone and alerts instructors to common difficulties</li>
                     <li><strong>How we help:</strong> Issues are reviewed regularly, and we update lessons based on your feedback</li>
-                    <li><strong>Submit to instructors:</strong> Click "📊 Submit to Google Sheets" to send your issues directly to BOLLI instructors for personalized assistance</li>
+                    <li><strong>Submit to instructors:</strong> Click "📊 Submit to Tutorial Support" to send your issues directly to BOLLI instructors for personalized assistance</li>
                 </ul>
             </div>
             
@@ -2295,7 +2295,7 @@
             </div>
         </div>
         
-        <button class="submit-sheets-btn" onclick="submitToGoogleSheets()" id="submitSheetsBtn">📊 Submit to Google Sheets</button>
+        <button class="submit-sheets-btn" onclick="submitToGoogleSheets()" id="submitSheetsBtn">📊 Submit to Tutorial Support</button>
         <button class="download-btn" onclick="downloadIssues()">💾 Download All Issues</button>
         <button class="clear-all-btn" onclick="clearAllIssues()">Clear All Issues</button>
         
@@ -2591,7 +2591,7 @@
                     
                     setTimeout(() => {
                         button.disabled = false;
-                        button.textContent = '📊 Submit to Google Sheets';
+                        button.textContent = '📊 Submit to Tutorial Support';
                         button.style.background = '';
                     }, 2000);
                     
@@ -2603,7 +2603,7 @@
                     button.textContent = '✓ Submitted!';
                     setTimeout(() => {
                         button.disabled = false;
-                        button.textContent = '📊 Submit to Google Sheets';
+                        button.textContent = '📊 Submit to Tutorial Support';
                     }, 2000);
                     showNotification('✓ ' + myIssues.length + ' issue(s) submitted!');
                 });
@@ -2611,7 +2611,7 @@
             } catch (error) {
                 console.error('Error:', error);
                 button.disabled = false;
-                button.textContent = '📊 Submit to Google Sheets';
+                button.textContent = '📊 Submit to Tutorial Support';
                 showNotification('❌ Error submitting. Please try again.', true);
             }
         }
