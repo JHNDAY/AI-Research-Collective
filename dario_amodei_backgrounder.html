@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dario Amodei — A Backgrounder</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Jost:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,700;0,900;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #f7f2ea;
+    --parchment: #ede7d9;
+    --warm-white: #faf7f2;
+    --terracotta: #c0614a;
+    --terra-light: #e8987e;
+    --terra-dim: rgba(192,97,74,0.1);
+    --gold: #b8872a;
+    --gold-light: #d4a84b;
+    --gold-dim: rgba(184,135,42,0.12);
+    --navy: #2b3a52;
+    --sage: #5a7a5e;
+    --sage-dim: rgba(90,122,94,0.12);
+    --charcoal: #2e2a24;
+    --mid: #5a5248;
+    --dim: #8a8278;
+    --border: rgba(90,82,72,0.15);
+    --border-strong: rgba(90,82,72,0.28);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--cream);
+    color: var(--charcoal);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.7;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--warm-white);
+    border-bottom: 1px solid var(--border-strong);
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 64px 48px 56px;
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 60px;
+    align-items: center;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 14px;
+    background: var(--terra-dim);
+    border: 1px solid rgba(192,97,74,0.25);
+    border-radius: 2px;
+    margin-bottom: 24px;
+  }
+
+  .hero-badge span {
+    font-family: 'Jost', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(44px, 6vw, 76px);
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--charcoal);
+    margin-bottom: 8px;
+  }
+
+  .hero-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--mid);
+    margin-bottom: 28px;
+  }
+
+  .hero-desc {
+    font-size: 18px;
+    font-weight: 300;
+    color: var(--mid);
+    max-width: 560px;
+    line-height: 1.75;
+  }
+
+  .hero-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .stat-card {
+    background: var(--parchment);
+    border: 1px solid var(--border-strong);
+    border-radius: 3px;
+    padding: 20px 24px;
+  }
+
+  .stat-card .s-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--terracotta);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .stat-card .s-label {
+    font-family: 'Jost', sans-serif;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+
+  .stat-card .s-sub {
+    font-size: 13px;
+    color: var(--mid);
+    font-style: italic;
+    margin-top: 2px;
+  }
+
+  /* ── RULE ACCENTS ── */
+  .rule-accent {
+    height: 4px;
+    background: linear-gradient(90deg, var(--terracotta), var(--gold-light), var(--sage));
+  }
+
+  /* ── MAIN LAYOUT ── */
+  .main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 48px;
+  }
+
+  /* ── SECTION HEADERS ── */
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 48px 0 28px;
+  }
+
+  .section-label .label-num {
+    font-family: 'Jost', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+  }
+
+  .section-label h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--charcoal);
+  }
+
+  .section-label .rule {
+    flex: 1;
+    height: 1px;
+    background: var(--border-strong);
+  }
+
+  /* ── ROOTS SECTION ── */
+  .roots-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    background: var(--border);
+    border: 1px solid var(--border-strong);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 32px;
+  }
+
+  .roots-cell {
+    background: var(--warm-white);
+    padding: 32px;
+    transition: background 0.2s;
+  }
+
+  .roots-cell:hover { background: var(--parchment); }
+
+  .roots-cell .flag {
+    font-size: 28px;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .roots-cell h3 {
+    font-family: 'Jost', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 8px;
+  }
+
+  .roots-cell .roots-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--charcoal);
+    margin-bottom: 6px;
+  }
+
+  .roots-cell p {
+    font-size: 15px;
+    color: var(--mid);
+    line-height: 1.65;
+    font-weight: 300;
+  }
+
+  .roots-cell .roots-detail {
+    margin-top: 12px;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--dim);
+  }
+
+  /* ── PULL QUOTE ── */
+  .pull-quote {
+    background: var(--navy);
+    color: #e8e0d0;
+    padding: 40px 48px;
+    border-radius: 4px;
+    margin-bottom: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .pull-quote::before {
+    content: '"';
+    position: absolute;
+    top: -20px;
+    left: 32px;
+    font-family: 'Playfair Display', serif;
+    font-size: 180px;
+    color: rgba(255,255,255,0.05);
+    line-height: 1;
+  }
+
+  .pull-quote blockquote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1.6;
+    position: relative;
+    z-index: 1;
+    margin-bottom: 14px;
+  }
+
+  .pull-quote .attrib {
+    font-family: 'Jost', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--terra-light);
+  }
+
+  /* ── EDUCATION TIMELINE ── */
+  .edu-timeline {
+    position: relative;
+    padding-left: 28px;
+  }
+
+  .edu-timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    bottom: 12px;
+    width: 2px;
+    background: linear-gradient(180deg, var(--terracotta), var(--gold-light), var(--sage));
+  }
+
+  .edu-item {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    gap: 20px;
+    margin-bottom: 32px;
+    position: relative;
+  }
+
+  .edu-item::before {
+    content: '';
+    position: absolute;
+    left: -34px;
+    top: 14px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--warm-white);
+    border: 2px solid var(--terracotta);
+  }
+
+  .edu-item.gold-dot::before { border-color: var(--gold); }
+  .edu-item.sage-dot::before { border-color: var(--sage); }
+
+  .edu-year {
+    font-family: 'Jost', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--dim);
+    letter-spacing: 0.08em;
+    padding-top: 2px;
+  }
+
+  .edu-content {
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 18px 22px;
+  }
+
+  .edu-content h4 {
+    font-family: 'Jost', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .edu-item.terra .edu-content h4 { color: var(--terracotta); }
+  .edu-item.gold-dot .edu-content h4 { color: var(--gold); }
+  .edu-item.sage-dot .edu-content h4 { color: var(--sage); }
+
+  .edu-content .edu-degree {
+    font-family: 'Playfair Display', serif;
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--charcoal);
+    margin-bottom: 4px;
+  }
+
+  .edu-content p {
+    font-size: 14px;
+    color: var(--mid);
+    font-weight: 300;
+    line-height: 1.55;
+  }
+
+  /* ── CAREER STEPS ── */
+  .career-steps {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 2px;
+    background: var(--border);
+    border: 1px solid var(--border-strong);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .career-step {
+    background: var(--warm-white);
+    padding: 24px 20px;
+    position: relative;
+    transition: background 0.2s;
+  }
+
+  .career-step:hover { background: var(--parchment); }
+
+  .career-step .cs-era {
+    font-family: 'Jost', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .career-step.c1 .cs-era { color: var(--terracotta); }
+  .career-step.c2 .cs-era { color: var(--gold); }
+  .career-step.c3 .cs-era { color: var(--sage); }
+  .career-step.c4 .cs-era { color: var(--navy); }
+  .career-step.c5 .cs-era { color: var(--terracotta); }
+
+  .career-step .cs-org {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--charcoal);
+    margin-bottom: 6px;
+    line-height: 1.2;
+  }
+
+  .career-step .cs-role {
+    font-size: 13px;
+    font-style: italic;
+    color: var(--dim);
+    margin-bottom: 10px;
+    font-weight: 300;
+  }
+
+  .career-step p {
+    font-size: 13.5px;
+    color: var(--mid);
+    line-height: 1.55;
+    font-weight: 300;
+  }
+
+  /* ── SIBLING SECTION ── */
+  .sibling-section {
+    background: var(--warm-white);
+    border: 1px solid var(--border-strong);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .sibling-top {
+    background: linear-gradient(135deg, #2b3a52 0%, #3d4f6e 100%);
+    padding: 36px 40px;
+    color: #dde4f0;
+  }
+
+  .sibling-top .s-eyebrow {
+    font-family: 'Jost', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--terra-light);
+    margin-bottom: 12px;
+  }
+
+  .sibling-top h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    line-height: 1.2;
+  }
+
+  .sibling-top p {
+    font-size: 16px;
+    font-weight: 300;
+    font-style: italic;
+    color: rgba(221,228,240,0.8);
+    max-width: 620px;
+    line-height: 1.7;
+  }
+
+  .sibling-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+
+  .sibling-col {
+    padding: 32px 36px;
+    border-right: 1px solid var(--border);
+  }
+
+  .sibling-col:last-child { border-right: none; }
+
+  .sibling-col .sc-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--charcoal);
+    margin-bottom: 4px;
+  }
+
+  .sibling-col .sc-title {
+    font-family: 'Jost', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 16px;
+  }
+
+  .sibling-col .sc-text {
+    font-size: 15px;
+    color: var(--mid);
+    font-weight: 300;
+    line-height: 1.65;
+  }
+
+  .trait-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 16px;
+  }
+
+  .trait-tag {
+    padding: 4px 12px;
+    border-radius: 2px;
+    font-family: 'Jost', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+  }
+
+  .tag-terra { background: var(--terra-dim); color: var(--terracotta); border: 1px solid rgba(192,97,74,0.2); }
+  .tag-gold { background: var(--gold-dim); color: var(--gold); border: 1px solid rgba(184,135,42,0.2); }
+  .tag-sage { background: var(--sage-dim); color: var(--sage); border: 1px solid rgba(90,122,94,0.2); }
+  .tag-navy { background: rgba(43,58,82,0.08); color: var(--navy); border: 1px solid rgba(43,58,82,0.2); }
+
+  .sibling-quote {
+    background: var(--parchment);
+    border-top: 1px solid var(--border);
+    padding: 24px 36px;
+    font-style: italic;
+    font-size: 16px;
+    color: var(--mid);
+    line-height: 1.65;
+  }
+
+  .sibling-quote cite {
+    display: block;
+    font-style: normal;
+    font-family: 'Jost', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-top: 8px;
+  }
+
+  /* ── HUMANISTIC VALUES ── */
+  .values-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    background: var(--border);
+    border: 1px solid var(--border-strong);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .value-cell {
+    background: var(--warm-white);
+    padding: 28px 26px;
+    border-radius: 0;
+    transition: background 0.2s;
+  }
+
+  .value-cell:hover { background: var(--parchment); }
+
+  .value-cell .vc-icon {
+    font-size: 26px;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .value-cell h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--charcoal);
+    margin-bottom: 8px;
+    line-height: 1.25;
+  }
+
+  .value-cell p {
+    font-size: 14.5px;
+    color: var(--mid);
+    font-weight: 300;
+    line-height: 1.65;
+  }
+
+  .value-cell .vc-cite {
+    margin-top: 10px;
+    font-family: 'Jost', sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--dim);
+    border-top: 1px solid var(--border);
+    padding-top: 10px;
+  }
+
+  /* ── SOCIAL CAPITAL / NETWORK ── */
+  .network-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    background: var(--border);
+    border: 1px solid var(--border-strong);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 32px;
+  }
+
+  .network-cell {
+    background: var(--warm-white);
+    padding: 22px 20px;
+    text-align: center;
+    transition: background 0.2s;
+  }
+
+  .network-cell:hover { background: var(--parchment); }
+
+  .network-cell .nc-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--charcoal);
+    margin-bottom: 4px;
+  }
+
+  .network-cell .nc-rel {
+    font-family: 'Jost', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 6px;
+  }
+
+  .network-cell p {
+    font-size: 12.5px;
+    color: var(--dim);
+    font-weight: 300;
+    line-height: 1.5;
+  }
+
+  /* ── PHILANTHROPY ── */
+  .phil-bar {
+    background: linear-gradient(135deg, #5a7a5e 0%, #3d5e42 100%);
+    border-radius: 4px;
+    padding: 36px 48px;
+    color: #e0ede2;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 32px;
+  }
+
+  .phil-item h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 34px;
+    font-weight: 700;
+    color: #c8e6cb;
+    margin-bottom: 4px;
+  }
+
+  .phil-item .pi-label {
+    font-family: 'Jost', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(200,230,203,0.7);
+    margin-bottom: 8px;
+  }
+
+  .phil-item p {
+    font-size: 14px;
+    font-weight: 300;
+    color: rgba(224,237,226,0.75);
+    line-height: 1.6;
+    font-style: italic;
+  }
+
+  /* ── SOURCES ── */
+  .sources-section {
+    border-top: 1px solid var(--border-strong);
+    padding: 40px 48px;
+    max-width: 1200px;
+    margin: 0 auto;
+    background: var(--parchment);
+  }
+
+  .sources-section h3 {
+    font-family: 'Jost', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 18px;
+  }
+
+  .sources-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 40px;
+    list-style: none;
+  }
+
+  .sources-list li {
+    font-size: 13px;
+    color: var(--dim);
+    font-weight: 300;
+    line-height: 1.5;
+    padding-left: 14px;
+    position: relative;
+  }
+
+  .sources-list li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--terracotta);
+    font-size: 11px;
+  }
+
+  .sources-list li a {
+    color: var(--terracotta);
+    text-decoration: none;
+  }
+
+  .sources-list li a:hover { text-decoration: underline; }
+
+  /* ── FOOTER ── */
+  .page-footer {
+    background: var(--charcoal);
+    color: rgba(247,242,234,0.5);
+    padding: 24px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .page-footer p {
+    font-family: 'Jost', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+  }
+
+  /* ── SPACERS ── */
+  .mb32 { margin-bottom: 32px; }
+  .mb48 { margin-bottom: 48px; }
+  .pb60 { padding-bottom: 60px; }
+
+  /* ── HIGHLIGHT ROW ── */
+  .highlight-row {
+    background: var(--parchment);
+    border: 1px solid var(--border-strong);
+    border-radius: 4px;
+    padding: 24px 28px;
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    margin-bottom: 32px;
+  }
+
+  .highlight-row .hr-icon {
+    font-size: 24px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .highlight-row .hr-text {
+    font-size: 15.5px;
+    color: var(--mid);
+    font-weight: 300;
+    line-height: 1.65;
+    font-style: italic;
+  }
+
+  .highlight-row .hr-text strong {
+    color: var(--charcoal);
+    font-weight: 600;
+    font-style: normal;
+  }
+
+  @media (max-width: 900px) {
+    .hero-inner { grid-template-columns: 1fr; }
+    .roots-grid { grid-template-columns: 1fr; }
+    .career-steps { grid-template-columns: 1fr 1fr; }
+    .sibling-grid { grid-template-columns: 1fr; }
+    .values-grid { grid-template-columns: 1fr 1fr; }
+    .network-strip { grid-template-columns: 1fr 1fr; }
+    .phil-bar { grid-template-columns: 1fr; }
+    .sources-list { grid-template-columns: 1fr; }
+    .main { padding: 0 24px; }
+    .sources-section, .page-footer { padding: 32px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="rule-accent"></div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-badge"><span>Backgrounder · March 2026</span></div>
+      <h1>Dario Amodei</h1>
+      <p class="hero-sub">Co-Founder &amp; CEO, Anthropic &nbsp;·&nbsp; AI Safety Pioneer</p>
+      <p class="hero-desc">The son of an Italian craftsman and a Chicago librarian's daughter, raised in San Francisco's Mission District, Amodei traveled from the USA Physics Olympiad to the heights of Silicon Valley — never losing sight of the human stakes of the technology he was building. His story is as much about character as capability.</p>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-card">
+        <div class="s-value">1983</div>
+        <div class="s-label">Born · San Francisco, CA</div>
+        <div class="s-sub">Italian–Jewish American heritage</div>
+      </div>
+      <div class="stat-card">
+        <div class="s-value">$380B</div>
+        <div class="s-label">Anthropic valuation, Feb 2026</div>
+        <div class="s-sub">Forbes est. net worth: $7 billion</div>
+      </div>
+      <div class="stat-card">
+        <div class="s-value">80%</div>
+        <div class="s-label">Of wealth pledged to philanthropy</div>
+        <div class="s-sub">Matching co-founders' pledges</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MAIN -->
+<div class="main pb60">
+
+  <!-- ROOTS -->
+  <div class="section-label">
+    <span class="label-num">01</span>
+    <h2>Immigrant Roots &amp; Family Origins</h2>
+    <div class="rule"></div>
+  </div>
+
+  <div class="roots-grid mb32">
+    <div class="roots-cell">
+      <span class="flag">🇮🇹</span>
+      <h3>The Father · Italian Side</h3>
+      <div class="roots-name">Riccardo Amodei</div>
+      <p>An Italian immigrant leather craftsman from <strong>Massa Marittima</strong>, a medieval hilltop town in Tuscany near the island of Elba. Riccardo brought to the Amodei household what one profile described as "hands-on craftsmanship" — a meticulous attention to materials and making. He died when Dario was a young adult, a loss that shaped the family profoundly.</p>
+      <p class="roots-detail">The family name "Amodei" is Tuscan in origin. The combination of artisanal precision and immigrant ambition would echo through his son's career.</p>
+    </div>
+    <div class="roots-cell">
+      <span class="flag">🇺🇸</span>
+      <h3>The Mother · American Side</h3>
+      <div class="roots-name">Elena Engel</div>
+      <p>Born in Chicago to a Jewish-American family, Elena Engel worked as a <strong>project manager for public libraries</strong> — a quietly powerful profession centered on democratizing access to knowledge. Her background gave the household a systematic, organized sensibility distinct from Riccardo's craft orientation.</p>
+      <p class="roots-detail">The blending of Old World Italian artisanship with Midwestern Jewish-American intellectual culture — in the cosmopolitan environment of San Francisco — formed a distinctive crucible.</p>
+    </div>
+    <div class="roots-cell">
+      <span class="flag">🌁</span>
+      <h3>Growing Up · Mission District</h3>
+      <div class="roots-name">San Francisco, CA</div>
+      <p>Dario grew up in San Francisco's <strong>Mission District</strong> — then a working- and middle-class neighborhood with deep Latino roots and strong community character. He attended <strong>Lowell High School</strong>, one of the oldest and most academically selective public schools in California, where he excelled in math and physics.</p>
+      <p class="roots-detail">"Writing some website had no interest to me whatsoever. I was interested in discovering fundamental scientific truth." — Amodei on his high school years</p>
+    </div>
+    <div class="roots-cell">
+      <span class="flag">🏅</span>
+      <h3>Early Achievement</h3>
+      <div class="roots-name">USA Physics Olympiad, 2000</div>
+      <p>While still a teenager at Lowell, Amodei was selected as a member of the <strong>USA Physics Olympiad team</strong> in 2000 — a distinction that places him among the very top student physicists in the country. This was not the result of private tutoring or elite prep schools; it was a working- and middle-class kid from a Mission District public school.</p>
+      <p class="roots-detail">The Physics Olympiad is a marker of exceptional analytical ability. It is a rare achievement even at well-funded private schools.</p>
+    </div>
+  </div>
+
+  <div class="pull-quote mb48">
+    <blockquote>"Born in San Francisco in 1983 to a Jewish mother and an Italian father, he was interested almost entirely in math and physics. When the dot-com boom exploded around him in his high school years, it barely registered."</blockquote>
+    <span class="attrib">— Alex Kantrowitz, Big Technology / Medium, 2025</span>
+  </div>
+
+  <!-- EDUCATION -->
+  <div class="section-label">
+    <span class="label-num">02</span>
+    <h2>An Extraordinary Education Trajectory</h2>
+    <div class="rule"></div>
+  </div>
+
+  <div class="highlight-row">
+    <span class="hr-icon">📐</span>
+    <p class="hr-text">Amodei's educational path is unusual: it spans <strong>four elite institutions</strong>, pivots between pure physics and computational biology, and ends with a postdoctoral fellowship studying how brains compute. Each step built a layer — physicist's rigor, biologist's curiosity about life, neuroscientist's drive to understand intelligence — that would later define his approach to AI.</p>
+  </div>
+
+  <div class="edu-timeline mb48">
+    <div class="edu-item terra">
+      <div class="edu-year">2001–2003</div>
+      <div class="edu-content">
+        <h4>Caltech</h4>
+        <div class="edu-degree">Physics (undergraduate, transferred)</div>
+        <p>Enrolled at the California Institute of Technology, working with physicist <strong>Tom Tombrello</strong> in the renowned Physics 11 research program — an unusual opportunity reserved for exceptional first-year students. Caltech's culture of rigorous quantitative thinking left a lasting imprint on Amodei's approach to problems.</p>
+      </div>
+    </div>
+    <div class="edu-item gold-dot">
+      <div class="edu-year">2003–2006</div>
+      <div class="edu-content">
+        <h4>Stanford University</h4>
+        <div class="edu-degree">B.S. in Physics</div>
+        <p>Transferred to Stanford and completed his undergraduate degree in physics. Stanford's proximity to Silicon Valley and its culture of applied ambition would shape his later career choices, though at the time Amodei remained focused on fundamental science rather than entrepreneurship.</p>
+      </div>
+    </div>
+    <div class="edu-item terra">
+      <div class="edu-year">2006–2011</div>
+      <div class="edu-content">
+        <h4>Princeton University</h4>
+        <div class="edu-degree">Ph.D. in Biophysics / Computational Neuroscience</div>
+        <p>The decisive intellectual pivot. Under the mentorship of <strong>Professor Michael Berry</strong> (whose primary research is in neural computation), Amodei studied the <strong>electrophysiology of neural circuits</strong> — how biological neurons fire, communicate, and collectively give rise to perception and cognition. He developed what colleagues describe as a deep hunger to understand how the brain actually works. This training would later inform everything from his views on AI consciousness to his design of Constitutional AI.</p>
+      </div>
+    </div>
+    <div class="edu-item sage-dot">
+      <div class="edu-year">2011–2014</div>
+      <div class="edu-content">
+        <h4>Stanford School of Medicine</h4>
+        <div class="edu-degree">Postdoctoral Scholar (also: consultant, Applied Minds)</div>
+        <p>A postdoctoral fellowship bridging neuroscience and clinical medicine, followed by consulting work at Applied Minds — a technology R&amp;D lab known for tackling unusually ambitious applied science problems. This period sharpened his ability to move between theoretical and applied modes of thinking.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CAREER PATH -->
+  <div class="section-label">
+    <span class="label-num">03</span>
+    <h2>From Lab to Frontier — The Career Arc</h2>
+    <div class="rule"></div>
+  </div>
+
+  <div class="highlight-row mb32">
+    <span class="hr-icon">🚀</span>
+    <p class="hr-text">Amodei's career follows an arc that is almost uncommon in Silicon Valley: he was <strong>not a CS graduate or a coder first</strong>. He came to AI from biophysics and neuroscience, via speech recognition and deep learning research — a path that gave him an empirical, scientific temperament quite different from the software-engineer founders who surround him.</p>
+  </div>
+
+  <div class="career-steps mb48">
+    <div class="career-step c1">
+      <div class="cs-era">2014–2015</div>
+      <div class="cs-org">Baidu AI Lab</div>
+      <div class="cs-role">Research Scientist</div>
+      <p>Joined Andrew Ng's Silicon Valley AI lab. Contributed to <strong>Deep Speech 2</strong>, a breakthrough end-to-end neural network for speech recognition named one of MIT Technology Review's top 10 breakthroughs of 2016. His first major AI credential beyond academia.</p>
+    </div>
+    <div class="career-step c2">
+      <div class="cs-era">2015–2016</div>
+      <div class="cs-org">Google Brain</div>
+      <div class="cs-role">Senior Research Scientist</div>
+      <p>Worked on deep learning and neural network scaling. Co-authored influential early work on AI accident prevention — the foundations of what would become his career-long focus on AI safety.</p>
+    </div>
+    <div class="career-step c3">
+      <div class="cs-era">2016–2020</div>
+      <div class="cs-org">OpenAI</div>
+      <div class="cs-role">VP of Research</div>
+      <p>Oversaw development of <strong>GPT-2 and GPT-3</strong>; co-authored the landmark 2020 <em>Scaling Laws for Neural Language Models</em> paper; pioneered RLHF techniques; recruited and led teams that defined the field. His sister Daniela joined in 2018. Grew increasingly alarmed by the gap between capability and safety.</p>
+    </div>
+    <div class="career-step c4">
+      <div class="cs-era">Late 2020</div>
+      <div class="cs-org">The Exodus</div>
+      <div class="cs-role">The founding decision</div>
+      <p>Departed OpenAI with Daniela and seven other senior researchers, citing "directional differences" about the pace and character of safety research. Eric Schmidt was among early investors, backing Amodei the person before the concept. The departure was one of the most significant talent transitions in AI history.</p>
+    </div>
+    <div class="career-step c5">
+      <div class="cs-era">2021–present</div>
+      <div class="cs-org">Anthropic</div>
+      <div class="cs-role">Co-Founder &amp; CEO</div>
+      <p>Built from a $124M Series A into a company valued at <strong>$380 billion</strong> as of early 2026, generating projected $10B in 2025 revenue. Introduced Constitutional AI, the Responsible Scaling Policy, and Claude. Time100 AI (2023), Time100 (2025).</p>
+    </div>
+  </div>
+
+  <!-- SIBLING PARTNERSHIP -->
+  <div class="section-label">
+    <span class="label-num">04</span>
+    <h2>The Sibling Partnership — Daniela Amodei</h2>
+    <div class="rule"></div>
+  </div>
+
+  <div class="sibling-section mb48">
+    <div class="sibling-top">
+      <div class="s-eyebrow">The Partnership at the Center of Anthropic</div>
+      <h3>A Physicist CEO and an English-Major President</h3>
+      <p>"As siblings go, Dario and Daniela Amodei agree more than most. Their partnership — technical visionary and operational executor — has proven remarkably effective in building Anthropic into an AI powerhouse." The division of labor is precise, complementary, and deliberate.</p>
+    </div>
+    <div class="sibling-grid">
+      <div class="sibling-col">
+        <div class="sc-name">Dario Amodei</div>
+        <div class="sc-title">CEO · Technical Vision · Research Direction</div>
+        <p class="sc-text">Focuses on AI research strategy, scaling laws, Constitutional AI, external policy representation, and long-range vision. Writes the essays (including the trilogy analyzed elsewhere in this portal). Sets the philosophical direction of Claude's character and values. "Great at pushing me to think about the big picture," as Daniela says. Named to <em>Time</em> 100 Most Influential (2025) and Person of the Year "Architects of AI" shortlist.</p>
+        <div class="trait-tags">
+          <span class="trait-tag tag-terra">Physics PhD</span>
+          <span class="trait-tag tag-gold">Scaling Laws</span>
+          <span class="trait-tag tag-terra">Constitutional AI</span>
+          <span class="trait-tag tag-navy">Policy Advocate</span>
+        </div>
+      </div>
+      <div class="sibling-col">
+        <div class="sc-name">Daniela Amodei</div>
+        <div class="sc-title">President · Operations · Culture · Commercial</div>
+        <p class="sc-text">Born 1987, four years younger; an English major by background — a striking anomaly in a field dominated by physics PhDs. Formerly VP of Safety &amp; Policy at OpenAI. At Anthropic she leads day-to-day operations, culture-building, talent acquisition, and the company's commercial B2B strategy. Married to Holden Karnofsky (Open Philanthropy co-founder, former OpenAI board member). "I am helpful in thinking about how do we build an organization that is enduring, that's sustainable." Named to TIME100 AI alongside Dario (2023).</p>
+        <div class="trait-tags">
+          <span class="trait-tag tag-sage">English Major</span>
+          <span class="trait-tag tag-gold">Operations</span>
+          <span class="trait-tag tag-navy">Enterprise Strategy</span>
+          <span class="trait-tag tag-sage">Culture Builder</span>
+        </div>
+      </div>
+    </div>
+    <div class="sibling-quote">
+      "It's genuinely a privilege to run Anthropic with my sibling. We've known each other our whole lives — or my whole life, at least. He had four years without me, poor guy. Dario and I really help each other. He's great at pushing me to think about the big picture... I am helpful in thinking about how do we build an organization that is enduring, that's sustainable, that's filled with great people."
+      <cite>— Daniela Amodei, CNBC interview, January 2026</cite>
+    </div>
+  </div>
+
+  <!-- HUMANISTIC VALUES -->
+  <div class="section-label">
+    <span class="label-num">05</span>
+    <h2>The Humanistic Thread — An Unusual Tech Leader</h2>
+    <div class="rule"></div>
+  </div>
+
+  <div class="highlight-row mb32">
+    <span class="hr-icon">🧭</span>
+    <p class="hr-text">What distinguishes Amodei in the AI landscape is not just technical ability — it is a <strong>persistent, carefully articulated concern for the human stakes</strong> of the technology. This is not PR positioning; it predates Anthropic, it shapes the company's structure and mission, and it appears consistently across a decade of writing and decision-making.</p>
+  </div>
+
+  <div class="values-grid mb32">
+    <div class="value-cell">
+      <span class="vc-icon">⚖️</span>
+      <h4>"Anthropic" as a Name</h4>
+      <p>Daniela has explained that "anthropic" was chosen because it means <em>relating to humans</em>. "A lot of what has been important for us is wanting to make sure that humans are still at the center of that story." The company name is a deliberate philosophical statement about whose interests the technology should serve.</p>
+      <p class="vc-cite">Source: Stripe interview with Daniela Amodei, 2023</p>
+    </div>
+    <div class="value-cell">
+      <span class="vc-icon">📜</span>
+      <h4>Constitutional AI &amp; Claude's Character</h4>
+      <p>Rather than giving Claude a list of rules, Amodei insisted on building an AI with a coherent <em>identity, values, and character</em> — explained through a constitution described as "a letter from a deceased parent, sealed until adulthood." The approach treats moral development as an analogue of human moral formation, not software compliance.</p>
+      <p class="vc-cite">Source: "The Adolescence of Technology," Amodei, January 2026</p>
+    </div>
+    <div class="value-cell">
+      <span class="vc-icon">🌍</span>
+      <h4>Global Poverty &amp; the Developing World</h4>
+      <p>Unusually for a tech CEO, Amodei's "Machines of Loving Grace" devotes an entire section to global inequality, explicitly framing AI's potential failure to benefit the developing world as "a terrible moral failure." He cites GiveWell, PEPFAR, and malaria eradication as models for what AI-enabled global health could accomplish.</p>
+      <p class="vc-cite">Source: "Machines of Loving Grace," Amodei, October 2024</p>
+    </div>
+    <div class="value-cell">
+      <span class="vc-icon">🧠</span>
+      <h4>Mental Health as a First-Class Concern</h4>
+      <p>His trilogy devotes as much attention to mental illness, depression, and cognitive freedom as to cancer — treating psychic suffering as equally important to physical disease. "AI-accelerated neuroscience is likely to vastly improve treatments for, or even cure, most mental illness." This is not a throwaway line; it reflects his biophysics training.</p>
+      <p class="vc-cite">Source: "Machines of Loving Grace," Section 2, Amodei, 2024</p>
+    </div>
+    <div class="value-cell">
+      <span class="vc-icon">🏛️</span>
+      <h4>Democracy as a Non-Negotiable</h4>
+      <p>In a tech landscape where many founders are indifferent to or dismissive of liberal democracy, Amodei has consistently and publicly argued that ensuring democracies lead in AI is among the most urgent moral imperatives of our time — and has accepted political costs by opposing the Trump administration on chip exports and military ethics restrictions.</p>
+      <p class="vc-cite">Source: Wikipedia, "The Adolescence of Technology," 2026</p>
+    </div>
+    <div class="value-cell">
+      <span class="vc-icon">💼</span>
+      <h4>A Public Benefit Corporation</h4>
+      <p>Anthropic is structured as a <strong>Public Benefit Corporation</strong>, with a Long-Term Benefit Trust and Constitutional AI commitments built into its governance — not its marketing. All co-founders have pledged to donate 80% of their wealth. Amodei describes this as ensuring "the market for good things and the market for AI are not fundamentally in tension."</p>
+      <p class="vc-cite">Source: Founderoo profile; "Machines of Loving Grace," 2024</p>
+    </div>
+    <div class="value-cell">
+      <span class="vc-icon">🔬</span>
+      <h4>Personal Stakes: AI and Medical Diagnosis</h4>
+      <p>Daniela Amodei has mentioned that Claude once helped diagnose her with a bacterial infection that multiple doctors missed — and that during her own difficult pregnancy, Claude provided both better diagnosis and better bedside manner than her physicians. For Amodei, the humanitarian case for AI is not abstract; it is personal and familial.</p>
+      <p class="vc-cite">Source: CNBC interview, Daniela Amodei, January 2026</p>
+    </div>
+    <div class="value-cell">
+      <span class="vc-icon">📣</span>
+      <h4>Speaking Uncomfortable Truths</h4>
+      <p>In 2025–2026, Amodei publicly predicted 50% displacement of entry-level white-collar jobs, called for AI regulation opposed by most of his industry, advocated chip export controls against Nvidia's objections, and maintained ethics restrictions on military AI use despite government pressure. A tech titan willing to be unpopular is genuinely unusual.</p>
+      <p class="vc-cite">Source: Kantrowitz/Medium profile 2025; Wikipedia; Fortune 2026</p>
+    </div>
+    <div class="value-cell">
+      <span class="vc-icon">🌱</span>
+      <h4>The "Biological Freedom" Vision</h4>
+      <p>His vision of the AI-enabled future explicitly includes what he calls "biological freedom" — the idea that people should be able to control their own weight, appearance, reproduction, and biology, freed from conditions they didn't choose. It is a deeply humanistic expansion of the Enlightenment idea of individual autonomy into the biological domain.</p>
+      <p class="vc-cite">Source: "Machines of Loving Grace," Section 1, 2024</p>
+    </div>
+  </div>
+
+  <!-- PHILANTHROPIC COMMITMENT -->
+  <div class="section-label">
+    <span class="label-num">06</span>
+    <h2>Philanthropic Commitments</h2>
+    <div class="rule"></div>
+  </div>
+
+  <div class="phil-bar">
+    <div class="phil-item">
+      <div class="pi-label">Wealth Pledged</div>
+      <h4>80%</h4>
+      <p>All Anthropic co-founders have pledged to donate 80% of their personal wealth. Anthropic matches employee share donations, with staff individually pledging billions at current valuations.</p>
+    </div>
+    <div class="phil-item">
+      <div class="pi-label">Corporate Structure</div>
+      <h4>PBC</h4>
+      <p>Organized as a Public Benefit Corporation with a Long-Term Benefit Trust — legal structures that put the mission of humanity-benefiting AI into the company's governance, not just its marketing.</p>
+    </div>
+    <div class="phil-item">
+      <div class="pi-label">Stated Model</div>
+      <h4>Gates + PEPFAR</h4>
+      <p>Amodei explicitly cites the Gates Foundation and PEPFAR as models showing that private philanthropy and public programs together can save "tens of millions of lives" — and that the AI era demands the same ambition.</p>
+    </div>
+  </div>
+
+  <!-- KEY RELATIONSHIPS -->
+  <div class="section-label">
+    <span class="label-num">07</span>
+    <h2>Key Mentors, Collaborators &amp; Network</h2>
+    <div class="rule"></div>
+  </div>
+
+  <div class="network-strip">
+    <div class="network-cell">
+      <div class="nc-rel">Mentor · Baidu</div>
+      <div class="nc-name">Andrew Ng</div>
+      <p>Oversaw Amodei's work on Deep Speech 2 at Baidu's Silicon Valley AI lab — Amodei's entry point into large-scale applied AI research.</p>
+    </div>
+    <div class="network-cell">
+      <div class="nc-rel">Early Investor</div>
+      <div class="nc-name">Eric Schmidt</div>
+      <p>Former Google CEO; invested in Anthropic's founding round. "I invested in the person more than the concept," Schmidt said. "Dario is a brilliant scientist."</p>
+    </div>
+    <div class="network-cell">
+      <div class="nc-rel">Co-Founder · Interpretability</div>
+      <div class="nc-name">Chris Olah</div>
+      <p>Co-founded Anthropic; leads mechanistic interpretability research. Longtime collaborator whose vision for "understanding AI from the inside" is central to Anthropic's safety approach.</p>
+    </div>
+    <div class="network-cell">
+      <div class="nc-rel">Brother-in-Law · Safety</div>
+      <div class="nc-name">Holden Karnofsky</div>
+      <p>Daniela's husband; co-founder of Open Philanthropy; former OpenAI board member. Now on Anthropic's technical staff for safety strategy — bringing the effective altruism network into the family enterprise.</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- SOURCES -->
+<div class="sources-section">
+  <h3>Sources &amp; Citations</h3>
+  <ul class="sources-list">
+    <li>Wikipedia, "Dario Amodei" — <a href="https://en.wikipedia.org/wiki/Dario_Amodei" target="_blank">en.wikipedia.org</a> (accessed March 2026)</li>
+    <li>Wikipedia, "Daniela Amodei" — <a href="https://en.wikipedia.org/wiki/Daniela_Amodei" target="_blank">en.wikipedia.org</a> (accessed March 2026)</li>
+    <li>Kantrowitz, Alex. "The Making of Anthropic CEO Dario Amodei." <em>Medium / Big Technology</em>, July 2025</li>
+    <li>CNBC. "Anthropic's Amodei Siblings May Hold the Key to Generative AI." January 2026</li>
+    <li>Founders File. "Dario Amodei" profile — <a href="https://ff.co/profile/dario-amodei" target="_blank">ff.co</a></li>
+    <li>Stripe Newsroom. "Daniela Amodei of Anthropic" interview, 2023</li>
+    <li>Fortune. "What to Know About Anthropic Co-founder Daniela Amodei." December 2025</li>
+    <li>Fortune. "Anthropic Hired President Daniela Amodei's Husband." February 2025</li>
+    <li>KITRUM. "The Inspiring Story: Dario Amodei CEO of Anthropic." August 2025</li>
+    <li>KITRUM. "The Inspiring Story of Daniela Amodei." August 2025</li>
+    <li>Digidai. "Daniela Amodei: Anthropic President Deep Analysis." November 2025</li>
+    <li>Amodei, Dario. "Machines of Loving Grace." <em>darioamodei.com</em>, October 2024</li>
+    <li>Amodei, Dario. "The Adolescence of Technology." <em>darioamodei.com</em>, January 2026</li>
+    <li>Amodei, Dario. "The Urgency of Interpretability." <em>darioamodei.com</em>, April 2025</li>
+    <li>Time Magazine. TIME100 AI List, 2023 (both Dario and Daniela Amodei)</li>
+    <li>Time Magazine. TIME100 Most Influential People, 2025 (Dario Amodei)</li>
+  </ul>
+</div>
+
+<!-- FOOTER -->
+<div class="page-footer">
+  <p>Backgrounder prepared for BOLLI Current Events Discussion Group &nbsp;·&nbsp; jhnday.github.io/CrntEvnts &nbsp;·&nbsp; March 2026</p>
+  <p>All facts cited to sources above &nbsp;·&nbsp; Visualization by Claude (Anthropic)</p>
+</div>
+
+</body>
+</html>
