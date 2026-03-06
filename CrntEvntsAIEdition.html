@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Current Events Special Editions</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 50px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            opacity: 0.95;
+            margin-bottom: 20px;
+        }
+
+        .header-meta {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .header-meta .meta-item {
+            color: white;
+            font-size: 0.95em;
+        }
+
+        .header-meta .meta-item a:hover {
+            text-decoration: underline;
+            opacity: 0.9;
+        }
+
+        .course-narratives-btn {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 12px 30px;
+            background: white;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .course-narratives-btn:hover {
+            background: #764ba2;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        .session-card {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border-top: 5px solid #667eea;
+        }
+
+        .session-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .session-number {
+            font-size: 3em;
+            color: #667eea;
+            font-weight: bold;
+            margin-right: 20px;
+            min-width: 80px;
+        }
+
+        .session-title-group {
+            flex: 1;
+        }
+
+        .session-title {
+            font-size: 1.8em;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .session-meta {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            color: #666;
+            font-size: 0.95em;
+        }
+
+        .meta-icon {
+            margin-right: 8px;
+            font-size: 1.2em;
+        }
+
+        .session-section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 1.3em;
+            color: #667eea;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .section-title.collapsible {
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title.collapsible:hover {
+            color: #764ba2;
+        }
+
+        .toggle-icon {
+            font-size: 0.8em;
+            transition: transform 0.3s ease;
+        }
+
+        .toggle-icon.collapsed {
+            transform: rotate(-90deg);
+        }
+
+        .collapsible-content {
+            max-height: 2000px;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .collapsible-content.collapsed {
+            max-height: 0;
+        }
+
+        .objectives-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .objectives-list li {
+            margin-bottom: 10px;
+        }
+
+        .objective-header {
+            padding: 12px 0;
+            padding-left: 35px;
+            position: relative;
+            color: #555;
+            line-height: 1.6;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .objective-header:hover {
+            color: #667eea;
+        }
+
+        .objective-header:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .objective-toggle {
+            margin-left: 8px;
+            font-size: 0.7em;
+            transition: transform 0.3s ease;
+            display: inline-block;
+        }
+
+        .objective-toggle.collapsed {
+            transform: rotate(-90deg);
+        }
+
+        .objective-details {
+            max-height: 1000px;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            padding-left: 35px;
+            margin-top: 10px;
+        }
+
+        .objective-details.collapsed {
+            max-height: 0;
+            margin-top: 0;
+        }
+
+        .objective-details-content {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 3px solid #667eea;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .activities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .activity-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #764ba2;
+        }
+
+        .activity-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .activity-icon {
+            margin-right: 10px;
+            font-size: 1.3em;
+        }
+
+        .activity-description {
+            color: #666;
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+
+        .activity-time {
+            margin-top: 10px;
+            font-size: 0.85em;
+            color: #764ba2;
+            font-weight: 600;
+        }
+
+        .tools-section {
+            background: #fff5e6;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .tools-title {
+            font-weight: 600;
+            color: #e67e22;
+            margin-bottom: 10px;
+        }
+
+        .tools-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .tool-tag {
+            background: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            color: #e67e22;
+            font-size: 0.9em;
+            border: 2px solid #e67e22;
+            transition: all 0.3s ease;
+        }
+
+        a.tool-tag:hover {
+            background: #e67e22;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(230, 126, 34, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .session-card {
+                padding: 25px;
+            }
+
+            .session-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .session-number {
+                margin-bottom: 15px;
+            }
+
+            .activities-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Current Events</h1>
+            <p class="subtitle">AI Edition</p>
+            <div class="header-meta">
+                <div class="meta-item">
+                    <span class="meta-icon">🖥️</span>
+                    <a href="https://90f5b62a.streak-link.com/CxElBlZ2dmKQCo50KQALgmDx/https%3A%2F%2Fbrandeis.zoom.us%2Fj%2F92280950998%3Fpwd%3DGh3aUvnhuE1G8jlYjABItw16T0hvJu.1" target="_blank" style="color: white; text-decoration: none;">Online (Zoom)</a>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-icon">📅</span>
+                    <span>Mar 10</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-icon">🕐</span>
+                    <span>4:00-5:00 PM</span>
+                </div>
+            </div>
+
+        </header>
+
+        <div class="session-card">
+            <div class="session-section">
+            <div class="session-section">
+                <div class="section-title collapsible" onclick="toggleSection('rag')">
+                    <span class="toggle-icon collapsed" id="rag-icon">▼</span>
+                    <span>Understand AI works : from Generative to RAG</span>
+                </div>
+                <div class="collapsible-content collapsed" id="rag-content">
+                    <div class="activities-grid">
+                        <div class="activity-card">
+                            <div class="activity-title">
+                                <span class="activity-icon">🧠</span>
+                                <span><a href="https://jhnday.github.io/JhndayRprts/intelligence_foundations_sgl" target="_blank" style="color: #333; text-decoration: none;">Foundations: Intelligence & Conversation</a></span>
+                            </div>
+                        </div>
+                        <div class="activity-card">
+                            <div class="activity-title">
+                                <span class="activity-icon">⚡</span>
+                                <span><a href="https://jhnday.github.io/JhndayRprts/generative_ai_rag_comparison" target="_blank" style="color: #333; text-decoration: none;">From Generative AI to Retrieval Augmented Generation RAG</a></span>
+                            </div>
+                        </div>
+                        <div class="activity-card">
+                            <div class="activity-title">
+                                <span class="activity-icon">📖</span>
+                                <span><a href="https://jhnday.github.io/JhndayRprts/ai_two_modes" target="_blank" style="color: #333; text-decoration: none;">How to Use AI</a></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+
+            <div class="session-section">
+                <div class="section-title collapsible" onclick="toggleSection('activities')">
+                    <span class="toggle-icon collapsed" id="activities-icon">▼</span>
+                    <span>Session Activities</span>
+                </div>
+                <div class="collapsible-content collapsed" id="activities-content">
+                    <div class="activities-grid">
+                    <div class="activity-card">
+                        <div class="activity-title">
+                            <span class="activity-icon">💬</span>
+                            <span>Basic Prompting</span>
+                        </div>
+                        <div class="activity-description">
+                            Create a response with source citations to a question about a current event
+                        </div>
+                    </div>
+
+                    <div class="activity-card">
+                        <div class="activity-title">
+                            <span class="activity-icon">🔧</span>
+                            <span>Visualizing an Online Media Story</span>
+                        </div>
+                        <div class="activity-description">
+                            NYTimes Article: <a href="https://www.nytimes.com/interactive/2026/03/03/upshot/trump-funding-lawsuits.html" target="_blank" style="color: #667eea; font-weight: 600;">Trump: The Serial Delayer</a>
+                        </div>
+                    </div>
+
+                    <div class="activity-card">
+                        <div class="activity-title">
+                            <span class="activity-icon">📚</span>
+                            <span>Trending Data Visualization</span>
+                        </div>
+                        <div class="activity-description">
+                            See the prompts <a href="https://drive.google.com/drive/folders/12OeiGFGc_dAG5L4As5DNgDW7n-WxjNv4" target="_blank" style="color: #667eea; font-weight: 600;">here</a> and how they work.
+                        </div>
+                    </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="session-section">
+                <div class="section-title collapsible" onclick="toggleSection('news')">
+                    <span class="toggle-icon collapsed" id="news-icon">▼</span>
+                    <span>AI In the News</span>
+                </div>
+                <div class="collapsible-content collapsed" id="news-content">
+                    <div class="activities-grid">
+                        <div class="activity-card">
+                            <div class="activity-title">
+                                <span class="activity-icon">⚖️</span>
+                                <span><a href="https://jhnday.github.io/CrntEvnts/ai-visualization-comparison" target="_blank" style="color: #333; text-decoration: none;">AI Pros and Cons</a></span>
+                            </div>
+                        </div>
+                        <div class="activity-card">
+                            <div class="activity-title">
+                                <span class="activity-icon">🏛️</span>
+                                <span><a href="https://jhnday.github.io/CrntEvnts/pentagon-anthropic-standoff" target="_blank" style="color: #333; text-decoration: none;">Claude Pentagon Standoff</a></span>
+                            </div>
+                        </div>
+                        <div class="activity-card">
+                            <div class="activity-title">
+                                <span class="activity-icon">🤖</span>
+                                <span><a href="https://jhnday.github.io/CrntEvnts/pentagon-anthropic-standoff" target="_blank" style="color: #333; text-decoration: none;">Claude's Unique Corporate Personality</a></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tools-section">
+                <div class="tools-title">🛠️ Tools Covered</div>
+                <div class="tools-list">
+                    <a href="https://claude.ai" target="_blank" class="tool-tag" style="text-decoration: none;">Claude</a>
+                    <a href="https://scratchpad.cc/" target="_blank" class="tool-tag" style="text-decoration: none;">ScratchPad</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleSection(sectionId) {
+            const content = document.getElementById(sectionId + '-content');
+            const icon = document.getElementById(sectionId + '-icon');
+            
+            content.classList.toggle('collapsed');
+            icon.classList.toggle('collapsed');
+        }
+
+        function toggleObjective(objId) {
+            const details = document.getElementById(objId + '-details');
+            const icon = document.getElementById(objId + '-icon');
+            
+            details.classList.toggle('collapsed');
+            icon.classList.toggle('collapsed');
+        }
+    </script>
+</body>
+</html>
