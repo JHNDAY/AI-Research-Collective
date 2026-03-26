@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alan Turing — Profile</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Share+Tech+Mono&family=Libre+Baskerville:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0c0f;
+    --bg2: #0f1318;
+    --amber: #e8a020;
+    --amber-dim: #a06810;
+    --amber-glow: #f0c060;
+    --green: #4aad6a;
+    --red: #c04040;
+    --ink: #c8c0b0;
+    --ink-dim: #787060;
+    --rule: #2a2820;
+    --card: #12161c;
+    --card-border: #2a2820;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Libre Baskerville', Georgia, serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Subtle noise texture */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  /* Tape-feed perforations on sides */
+  .perforation-left, .perforation-right {
+    position: fixed;
+    top: 0; bottom: 0;
+    width: 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 18px;
+    padding-top: 12px;
+    z-index: 10;
+    pointer-events: none;
+    opacity: 0.18;
+  }
+  .perforation-left { left: 0; border-right: 1px solid var(--amber-dim); }
+  .perforation-right { right: 0; border-left: 1px solid var(--amber-dim); }
+  .hole {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    border: 1px solid var(--amber);
+    flex-shrink: 0;
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 50px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── HEADER ── */
+  header {
+    padding: 60px 0 40px;
+    border-bottom: 1px solid var(--rule);
+    position: relative;
+    animation: fadeDown 0.9s ease both;
+  }
+
+  .classification {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    color: var(--amber-dim);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .classification::before, .classification::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--amber-dim);
+    opacity: 0.4;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(48px, 8vw, 88px);
+    font-weight: 900;
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    color: #fff;
+  }
+  h1 em {
+    font-style: italic;
+    color: var(--amber);
+  }
+
+  .subtitle {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--ink-dim);
+    margin-top: 18px;
+    text-transform: uppercase;
+  }
+
+  .dates-bar {
+    display: flex;
+    gap: 32px;
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1px solid var(--rule);
+  }
+  .date-item {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-dim);
+  }
+  .date-item strong {
+    display: block;
+    font-size: 20px;
+    color: var(--amber);
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    letter-spacing: 0;
+    margin-bottom: 2px;
+  }
+
+  /* ── LEAD QUOTE ── */
+  .lead-quote {
+    padding: 48px 0;
+    border-bottom: 1px solid var(--rule);
+    animation: fadeDown 0.9s 0.15s ease both;
+  }
+  .lead-quote blockquote {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(18px, 2.5vw, 24px);
+    font-style: italic;
+    line-height: 1.6;
+    color: #e8e0d0;
+    padding-left: 24px;
+    border-left: 3px solid var(--amber);
+    max-width: 700px;
+  }
+  .lead-quote cite {
+    display: block;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--amber-dim);
+    margin-top: 14px;
+    font-style: normal;
+    padding-left: 24px;
+  }
+
+  /* ── SECTION HEADERS ── */
+  .section {
+    padding: 52px 0;
+    border-bottom: 1px solid var(--rule);
+    animation: fadeUp 0.7s ease both;
+  }
+
+  .section-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.35em;
+    color: var(--amber);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, var(--amber-dim), transparent);
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.15;
+    margin-bottom: 32px;
+  }
+
+  /* ── ACCOMPLISHMENTS GRID ── */
+  .accomplishments-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  @media(max-width: 640px) {
+    .accomplishments-grid { grid-template-columns: 1fr; }
+  }
+
+  .accom-card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s, transform 0.3s;
+    cursor: default;
+  }
+  .accom-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    right: 0; height: 2px;
+    background: var(--amber);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+  }
+  .accom-card:hover { border-color: var(--amber-dim); transform: translateY(-2px); }
+  .accom-card:hover::before { transform: scaleX(1); }
+
+  .accom-year {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    color: var(--amber-dim);
+    letter-spacing: 0.15em;
+    margin-bottom: 8px;
+  }
+  .accom-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--amber-glow);
+    margin-bottom: 10px;
+    line-height: 1.25;
+  }
+  .accom-desc {
+    font-size: 13px;
+    line-height: 1.65;
+    color: var(--ink);
+  }
+  .accom-number {
+    position: absolute;
+    bottom: 14px;
+    right: 18px;
+    font-family: 'Playfair Display', serif;
+    font-size: 52px;
+    font-weight: 900;
+    color: var(--rule);
+    line-height: 1;
+    user-select: none;
+  }
+
+  /* Spanning card */
+  .accom-card.span2 { grid-column: 1 / -1; }
+
+  /* ── WAR HERO ── */
+  .war-layout {
+    display: grid;
+    grid-template-columns: 1fr 240px;
+    gap: 32px;
+    align-items: start;
+  }
+  @media(max-width: 640px) { .war-layout { grid-template-columns: 1fr; } }
+
+  .war-text p {
+    font-size: 15px;
+    line-height: 1.8;
+    color: var(--ink);
+    margin-bottom: 16px;
+  }
+  .war-text p:last-child { margin-bottom: 0; }
+  .war-text strong { color: var(--amber-glow); font-weight: 700; }
+
+  .war-stat-box {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-left: 3px solid var(--amber);
+    padding: 24px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .war-stat {
+    font-family: 'Playfair Display', serif;
+  }
+  .war-stat .num {
+    font-size: 36px;
+    font-weight: 900;
+    color: var(--amber);
+    line-height: 1;
+    display: block;
+  }
+  .war-stat .label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--ink-dim);
+    margin-top: 4px;
+    display: block;
+    text-transform: uppercase;
+  }
+  .divider-rule {
+    height: 1px;
+    background: var(--rule);
+  }
+
+  /* Enigma rotor decoration */
+  .rotor-row {
+    display: flex;
+    gap: 8px;
+    margin: 24px 0;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-dim);
+    overflow: hidden;
+    position: relative;
+  }
+  .rotor-char {
+    width: 22px;
+    height: 22px;
+    border: 1px solid var(--rule);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    flex-shrink: 0;
+    transition: all 0.2s;
+    background: var(--card);
+  }
+  .rotor-char.lit {
+    background: var(--amber);
+    color: #000;
+    border-color: var(--amber);
+    font-weight: bold;
+  }
+
+  /* ── PRESCIENCE ── */
+  .prescience-timeline {
+    position: relative;
+    padding-left: 28px;
+  }
+  .prescience-timeline::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 8px; bottom: 8px;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--amber), var(--amber-dim) 60%, transparent);
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 32px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .timeline-item:last-child { border-bottom: none; margin-bottom: 0; }
+
+  .timeline-dot {
+    position: absolute;
+    left: -33px;
+    top: 6px;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--amber);
+    box-shadow: 0 0 8px var(--amber);
+  }
+
+  .timeline-then {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--amber-dim);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .timeline-then span.now {
+    color: var(--green);
+  }
+
+  .timeline-concept {
+    font-family: 'Playfair Display', serif;
+    font-size: 19px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 10px;
+  }
+
+  .timeline-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  @media(max-width: 640px) { .timeline-row { grid-template-columns: 1fr; } }
+
+  .timeline-col {
+    padding: 14px 16px;
+    border: 1px solid var(--rule);
+    background: var(--card);
+  }
+  .timeline-col-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    color: var(--ink-dim);
+    text-transform: uppercase;
+    margin-bottom: 7px;
+  }
+  .timeline-col-text {
+    font-size: 13px;
+    line-height: 1.65;
+    color: var(--ink);
+  }
+  .timeline-col.then-col { border-left: 2px solid var(--amber-dim); }
+  .timeline-col.now-col { border-left: 2px solid var(--green); }
+  .timeline-col-label.now { color: var(--green); }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 40px 0 60px;
+    text-align: center;
+    animation: fadeUp 0.7s 0.3s ease both;
+  }
+  .footer-inner {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    color: var(--ink-dim);
+    text-transform: uppercase;
+  }
+  .footer-inner a {
+    color: var(--amber-dim);
+    text-decoration: none;
+  }
+  .apple-symbol {
+    display: block;
+    font-size: 36px;
+    margin: 0 auto 16px;
+    opacity: 0.35;
+    filter: grayscale(1);
+    transition: opacity 0.3s;
+    cursor: default;
+  }
+  .apple-symbol:hover { opacity: 0.7; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  .section:nth-child(1) { animation-delay: 0.2s; }
+  .section:nth-child(2) { animation-delay: 0.35s; }
+  .section:nth-child(3) { animation-delay: 0.5s; }
+
+  /* ── BOMBE ANIMATION ── */
+  .bombe-container {
+    display: flex;
+    gap: 6px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+  }
+  .drum {
+    width: 32px; height: 32px;
+    border: 1px solid var(--amber-dim);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    color: var(--amber);
+    animation: spin 3s linear infinite;
+    position: relative;
+    flex-shrink: 0;
+    background: radial-gradient(circle at 35% 35%, #1a1408, #0a0c0f);
+  }
+  .drum::after {
+    content: '';
+    position: absolute;
+    inset: 3px;
+    border-radius: 50%;
+    border: 1px solid var(--rule);
+  }
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  .drum:nth-child(even) { animation-direction: reverse; animation-duration: 2.7s; }
+  .drum:nth-child(3n) { animation-duration: 4.1s; }
+
+  /* Highlighted pull quote */
+  .pull-quote {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-left: 4px solid var(--amber);
+    padding: 20px 24px;
+    margin: 28px 0;
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    font-style: italic;
+    color: #e8e0d0;
+    line-height: 1.6;
+  }
+
+  /* Turing machine tape viz */
+  .tape-viz {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin: 24px 0;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 13px;
+    overflow: hidden;
+  }
+  .tape-cell {
+    width: 36px; height: 36px;
+    border: 1px solid var(--rule);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--ink-dim);
+    flex-shrink: 0;
+    background: var(--card);
+    transition: all 0.3s;
+    position: relative;
+  }
+  .tape-cell.active {
+    background: var(--amber);
+    color: #000;
+    border-color: var(--amber);
+    font-weight: bold;
+    box-shadow: 0 0 12px rgba(232,160,32,0.4);
+  }
+  .tape-head {
+    position: absolute;
+    top: -10px; left: 50%; transform: translateX(-50%);
+    width: 0; height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 8px solid var(--amber);
+  }
+  .tape-label {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--ink-dim);
+    text-transform: uppercase;
+    margin-right: 12px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .tape-ellipsis {
+    font-size: 14px;
+    color: var(--ink-dim);
+    padding: 0 8px;
+    flex-shrink: 0;
+  }
+
+</style>
+</head>
+<body>
+
+<!-- Tape perforations -->
+<div class="perforation-left" id="perfLeft"></div>
+<div class="perforation-right" id="perfRight"></div>
+
+<div class="container">
+
+  <!-- HEADER -->
+  <header>
+    <div class="classification">Intellectual Portrait &nbsp;·&nbsp; 1912 – 1954 &nbsp;·&nbsp; Father of Computer Science</div>
+    <h1>Alan<br><em>Turing</em></h1>
+    <div class="subtitle">Mathematician &nbsp;·&nbsp; Logician &nbsp;·&nbsp; Cryptanalyst &nbsp;·&nbsp; Visionary</div>
+    <div class="dates-bar">
+      <div class="date-item"><strong>1912</strong>Born, London</div>
+      <div class="date-item"><strong>1936</strong>Turing Machine</div>
+      <div class="date-item"><strong>1939</strong>Bletchley Park</div>
+      <div class="date-item"><strong>1950</strong>Turing Test</div>
+      <div class="date-item"><strong>1954</strong>Died, Wilmslow</div>
+    </div>
+  </header>
+
+  <!-- LEAD QUOTE -->
+  <div class="lead-quote">
+    <blockquote>
+      "We can only see a short distance ahead, but we can see plenty there that needs to be done."
+    </blockquote>
+    <cite>— Alan Turing, Computing Machinery and Intelligence (1950)</cite>
+  </div>
+
+  <!-- SECTION 1: GENIUS -->
+  <section class="section">
+    <div class="section-label">I. The Genius</div>
+    <h2 class="section-title">Major Technical Accomplishments</h2>
+
+    <!-- Turing Machine tape visual -->
+    <div class="tape-viz">
+      <span class="tape-label">Turing Machine:</span>
+      <span class="tape-ellipsis">…</span>
+      <div class="tape-cell">1</div>
+      <div class="tape-cell">0</div>
+      <div class="tape-cell">1</div>
+      <div class="tape-cell active" id="activeCell">1<div class="tape-head"></div></div>
+      <div class="tape-cell">0</div>
+      <div class="tape-cell">0</div>
+      <div class="tape-cell">1</div>
+      <span class="tape-ellipsis">…</span>
+    </div>
+
+    <div class="accomplishments-grid">
+
+      <div class="accom-card">
+        <div class="accom-year">1936</div>
+        <div class="accom-title">On Computable Numbers</div>
+        <div class="accom-desc">In a single 1936 paper, Turing invented the theoretical computer before any electronic computer existed. His abstract "Turing Machine" — a read/write head moving over an infinite tape — defined the mathematical limits of computation itself, answering Hilbert's Entscheidungsproblem in the negative: no algorithm can decide all mathematical truths.</div>
+        <div class="accom-number">I</div>
+      </div>
+
+      <div class="accom-card">
+        <div class="accom-year">1936</div>
+        <div class="accom-title">The Halting Problem</div>
+        <div class="accom-desc">Turing proved there are problems no computer — regardless of speed or memory — can ever solve. By showing no program can reliably determine if another program will halt or run forever, he drew the boundary between the computable and the unknowable, founding theoretical computer science as a discipline.</div>
+        <div class="accom-number">II</div>
+      </div>
+
+      <div class="accom-card">
+        <div class="accom-year">1945</div>
+        <div class="accom-title">The ACE Computer Design</div>
+        <div class="accom-desc">Turing's design for the Automatic Computing Engine at the National Physical Laboratory was among the first detailed blueprints for a stored-program electronic computer — a machine that holds its own instructions in memory, the architecture underlying every computer built since. His design was technically ahead of its institutional surroundings.</div>
+        <div class="accom-number">III</div>
+      </div>
+
+      <div class="accom-card">
+        <div class="accom-year">1952</div>
+        <div class="accom-title">Morphogenesis & Reaction-Diffusion</div>
+        <div class="accom-desc">In a stunning departure, Turing published a mathematical model explaining how biological patterns — leopard spots, zebra stripes, embryonic differentiation — arise from uniform chemical systems through instability. His reaction-diffusion equations became foundational to mathematical biology and are still actively validated in labs today.</div>
+        <div class="accom-number">IV</div>
+      </div>
+
+      <div class="accom-card span2">
+        <div class="accom-year">1950</div>
+        <div class="accom-title">Computing Machinery and Intelligence — The Imitation Game</div>
+        <div class="accom-desc"><em style="display:block;font-family:'Playfair Display',serif;color:var(--amber-glow);font-size:13px;border-left:2px solid var(--amber-dim);padding-left:12px;margin-bottom:12px;">"The original question, 'Can machines think?' I believe to be too meaningless to deserve discussion."</em>In what may be the most cited paper in artificial intelligence, Turing asked "Can machines think?" — and immediately reframed it as an operational question. His Imitation Game proposed a behavioral test for machine intelligence that re-oriented the entire field: intelligence is not a metaphysical property but a functional capacity. The paper anticipated objections from theology to mathematics, dismantling each in turn with characteristic wit. It launched not one but three research programs: symbolic AI, machine learning, and philosophy of mind.</div>
+        <div class="accom-number">V</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION 2: WAR HERO -->
+  <section class="section">
+    <div class="section-label">II. The War Hero</div>
+    <h2 class="section-title">Bletchley Park &amp; the Breaking of Enigma</h2>
+
+    <!-- Enigma rotors animation -->
+    <div class="bombe-container" id="bombe"></div>
+
+    <div class="war-layout">
+      <div class="war-text">
+        <p>When Britain declared war in September 1939, Turing walked through the gates of <strong>Bletchley Park</strong> as one of its first civilian recruits. The German Enigma machine — with its astronomical number of possible settings — was encrypting virtually every Wehrmacht, Kriegsmarine, and Luftwaffe transmission. The Polish Biuro Szyfrów had made the initial break; the Germans then increased Enigma's complexity. Turing was handed the harder problem.</p>
+        <p>Turing took a mechanical predecessor and transformed it into something radically new: the <strong>Bombe</strong>, an electromechanical device that exploited cribs — known or guessed plaintext fragments — to eliminate impossible Enigma settings at machine speed. Where the Polish device needed known daily keys, Turing's Bombe needed only a likely phrase. It was a logical engine disguised as electrical engineering.</p>
+        <p>He then turned to the <strong>Naval Enigma</strong> — the hardest variant, used by U-boats hunting Allied convoys in the Atlantic. Turing's statistical technique, <em>Banburismus</em>, used overlapping coincidences in intercepted messages to narrow the search space. Working with seized codebooks from captured U-boats, his methods cracked naval communications and helped turn the Battle of the Atlantic.</p>
+        <div class="pull-quote">Historian Sir Harry Hinsley estimated that Turing's work shortened the war in Europe by at least two to four years — and that without it, the outcome itself might have been different.</div>
+        <p>Turing received the OBE in 1945. The full nature of his contribution — and of Bletchley Park itself — remained classified until the 1970s. He was not knighted. He was never publicly celebrated in his lifetime for the act that may have saved millions of lives.</p>
+      </div>
+      <div>
+        <div class="war-stat-box">
+          <div class="war-stat">
+            <span class="num">158</span>
+            <span class="label">Quintillion possible Enigma settings</span>
+          </div>
+          <div class="divider-rule"></div>
+          <div class="war-stat">
+            <span class="num">200+</span>
+            <span class="label">Bombes eventually built</span>
+          </div>
+          <div class="divider-rule"></div>
+          <div class="war-stat">
+            <span class="num">2–4</span>
+            <span class="label">Years estimated off the war (Hinsley)</span>
+          </div>
+          <div class="divider-rule"></div>
+          <div class="war-stat">
+            <span class="num">~14M</span>
+            <span class="label">Lives potentially saved</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3: PRESCIENCE -->
+  <section class="section">
+    <div class="section-label">III. The Prophet</div>
+    <h2 class="section-title">80 Years of Development He Saw Coming</h2>
+
+    <div class="prescience-timeline">
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-then">Turing, 1950 <span class="now">→ Now, 2025</span></div>
+        <div class="timeline-concept">The Imitation Game → Large Language Models</div>
+        <div class="timeline-row">
+          <div class="timeline-col then-col">
+            <div class="timeline-col-label">What Turing proposed</div>
+            <div class="timeline-col-text">A machine that produces text indistinguishable from a human's in open-ended conversation. He predicted a machine could fool a human judge at least 30% of the time by the year 2000 — not through understanding, but through learned statistical behavior.</div>
+          </div>
+          <div class="timeline-col now-col">
+            <div class="timeline-col-label now">What we have now</div>
+            <div class="timeline-col-text">GPT-4, Claude, Gemini — systems trained on billions of tokens that generate fluent text by predicting the next token. The architecture is wholly different from what Turing imagined; the behavioral outcome is precisely what he described. The Turing Test is now considered too easy a bar.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-then">Turing, 1950 <span class="now">→ Now, 2025</span></div>
+        <div class="timeline-concept">Child Machines → Machine Learning</div>
+        <div class="timeline-row">
+          <div class="timeline-col then-col">
+            <div class="timeline-col-label">What Turing proposed</div>
+            <div class="timeline-col-text">Rather than programming adult intelligence directly, build a "child machine" and subject it to a teaching process. The machine should be rewarded for correct responses and penalized for wrong ones — modifying its internal state through experience rather than explicit rules.</div>
+          </div>
+          <div class="timeline-col now-col">
+            <div class="timeline-col-label now">What we have now</div>
+            <div class="timeline-col-text">Reinforcement learning, backpropagation, RLHF. The training paradigm for every major AI system is structurally what Turing sketched: reward signals shaping internal representations. He was describing gradient descent 35 years before it was widely adopted.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-then">Turing, 1948 <span class="now">→ Now, 2025</span></div>
+        <div class="timeline-concept">Unorganised Machines → Neural Networks</div>
+        <div class="timeline-row">
+          <div class="timeline-col then-col">
+            <div class="timeline-col-label">What Turing proposed</div>
+            <div class="timeline-col-text">In an unpublished 1948 report, Turing described "B-type unorganised machines" — networks of simple connected units whose connection weights could be modified by experience. The network's behavior would emerge from the pattern of connections, not explicit programming.</div>
+          </div>
+          <div class="timeline-col now-col">
+            <div class="timeline-col-label now">What we have now</div>
+            <div class="timeline-col-text">Deep neural networks with billions of parameters. The transformer architecture underlying modern AI is precisely a large, differentiable network whose weights are updated by a learning signal. Turing did not predict the transformer — he predicted the paradigm it belongs to.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-then">Turing, 1950 <span class="now">→ Now, 2025</span></div>
+        <div class="timeline-concept">Objections to Machine Intelligence → AI Ethics & Alignment</div>
+        <div class="timeline-row">
+          <div class="timeline-col then-col">
+            <div class="timeline-col-label">What Turing proposed</div>
+            <div class="timeline-col-text">Turing catalogued nine objections to thinking machines — theological, mathematical, consciousness-based, Lady Lovelace's objection — and answered each. He explicitly addressed the fear that machines might "take over," and the question of whether machine judgment could be trusted to act within sanctioned boundaries.</div>
+          </div>
+          <div class="timeline-col now-col">
+            <div class="timeline-col-label now">What we have now</div>
+            <div class="timeline-col-text">The entire field of AI Safety and Alignment — ensuring AI systems behave as intended, remain under human control, and do not pursue unintended objectives. Every major lab now has an alignment team working on the questions Turing named in passing in a 14-page paper in 1950.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-then">Turing, 1952 <span class="now">→ Now, 2025</span></div>
+        <div class="timeline-concept">Morphogenesis → Computational Biology & Synthetic Patterning</div>
+        <div class="timeline-row">
+          <div class="timeline-col then-col">
+            <div class="timeline-col-label">What Turing proposed</div>
+            <div class="timeline-col-text">Simple chemical reaction-diffusion systems — two interacting agents with different diffusion rates — can spontaneously produce complex spatial patterns. Biology's visible complexity might be generated by relatively simple mathematical rules operating across cells.</div>
+          </div>
+          <div class="timeline-col now-col">
+            <div class="timeline-col-label now">What we have now</div>
+            <div class="timeline-col-text">Reaction-diffusion patterns have been confirmed in mouse digit spacing, fish stripe formation, and palate rugae development. Synthetic biologists use Turing's equations to engineer patterning in cells. His morphogenesis paper is more cited today than it was in his lifetime.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span class="apple-symbol" title="The apple. The legend persists.">🍎</span>
+    <div class="footer-inner">
+      Alan Mathison Turing &nbsp;·&nbsp; OBE, FRS &nbsp;·&nbsp; Pardoned 2013 &nbsp;·&nbsp; £50 Note, 2021<br>
+      <br>
+      "Sometimes it is the people no one imagines anything of<br>who do the things no one can imagine."
+    </div>
+  </footer>
+
+</div>
+
+<script>
+  // Generate perforations
+  function fillPerf(el) {
+    const count = Math.ceil(window.innerHeight / 30) + 5;
+    for (let i = 0; i < count; i++) {
+      const h = document.createElement('div');
+      h.className = 'hole';
+      el.appendChild(h);
+    }
+  }
+  fillPerf(document.getElementById('perfLeft'));
+  fillPerf(document.getElementById('perfRight'));
+
+  // Bombe drums
+  const bombe = document.getElementById('bombe');
+  const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  for (let i = 0; i < 26; i++) {
+    const d = document.createElement('div');
+    d.className = 'drum';
+    d.textContent = letters[i];
+    d.style.animationDelay = (i * 0.08) + 's';
+    bombe.appendChild(d);
+  }
+
+  // Turing machine tape animation
+  let pos = 3;
+  const cells = document.querySelectorAll('.tape-cell');
+  const tape = ['1','0','1','1','0','0','1'];
+  
+  setInterval(() => {
+    cells.forEach((c, i) => {
+      c.classList.remove('active');
+      const head = c.querySelector('.tape-head');
+      if (head) c.removeChild(head);
+    });
+    pos = (pos + 1) % cells.length;
+    cells[pos].classList.add('active');
+    // Randomly flip a bit
+    if (Math.random() < 0.4) {
+      cells[pos].textContent = cells[pos].textContent === '1' ? '0' : '1';
+    }
+    const h = document.createElement('div');
+    h.className = 'tape-head';
+    cells[pos].appendChild(h);
+  }, 900);
+</script>
+</body>
+</html>
