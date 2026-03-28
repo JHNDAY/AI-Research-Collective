@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ollie's AI Course — Session 4: The Job Apocalypse</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --ink: #1a1208;
+    --paper: #f2ead8;
+    --paper-warm: #e8dcc4;
+    --paper-dark: #d4c8ae;
+    --accent: #8b2500;
+    --accent-light: #c13d00;
+    --gold: #b8860b;
+    --gold-light: #d4a017;
+    --muted: #6b5d4a;
+    --rule: #3a2e1e;
+    --positive: #1a5c2a;
+    --neutral: #4a6080;
+    --negative: #8b2500;
+    --col1: #2d5a8e;
+    --col2: #5a3d7a;
+    --col3: #7a4f1a;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  /* MASTHEAD */
+  .masthead {
+    background: var(--ink);
+    color: var(--paper);
+    text-align: center;
+    padding: 2rem 2rem 1.5rem;
+    border-bottom: 4px solid var(--gold);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .masthead::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 3px,
+      rgba(184,134,11,0.04) 3px,
+      rgba(184,134,11,0.04) 6px
+    );
+  }
+
+  .masthead-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+
+  .masthead h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    font-weight: 900;
+    line-height: 1.05;
+    color: var(--paper);
+    position: relative;
+  }
+
+  .masthead h1 em {
+    color: var(--gold-light);
+    font-style: italic;
+  }
+
+  .masthead-sub {
+    font-family: 'Crimson Pro', serif;
+    font-size: 1.15rem;
+    color: var(--paper-dark);
+    margin-top: 0.6rem;
+    font-style: italic;
+    letter-spacing: 0.02em;
+  }
+
+  .masthead-meta {
+    display: flex;
+    justify-content: center;
+    gap: 2.5rem;
+    margin-top: 1.2rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(184,134,11,0.3);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .masthead-meta span { color: var(--gold); }
+
+  /* LAYOUT */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem 3rem;
+  }
+
+  .section-rule {
+    border: none;
+    border-top: 2px solid var(--rule);
+    margin: 2rem 0 1.2rem;
+  }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.4rem;
+  }
+
+  .section-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.55rem;
+    font-weight: 700;
+    color: var(--rule);
+    margin-bottom: 1.2rem;
+  }
+
+  /* ─── TOPIC FLOW ─── */
+  .topic-flow {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-top: 0.5rem;
+    position: relative;
+  }
+
+  .topic-flow::before {
+    content: '';
+    position: absolute;
+    left: 90px;
+    top: 0; bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--gold), var(--accent), var(--rule));
+  }
+
+  .topic-item {
+    display: flex;
+    gap: 0;
+    align-items: flex-start;
+    position: relative;
+  }
+
+  .topic-time {
+    width: 80px;
+    flex-shrink: 0;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    padding-top: 0.9rem;
+    text-align: right;
+    padding-right: 0.6rem;
+  }
+
+  .topic-dot {
+    width: 20px;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    padding-top: 0.95rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .topic-dot span {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: block;
+    flex-shrink: 0;
+  }
+
+  .topic-body {
+    flex: 1;
+    padding: 0.5rem 0 0.5rem 1rem;
+    border-left: none;
+  }
+
+  .topic-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--rule);
+    line-height: 1.3;
+  }
+
+  .topic-desc {
+    font-size: 0.88rem;
+    color: var(--muted);
+    margin-top: 0.2rem;
+    line-height: 1.5;
+  }
+
+  .topic-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    margin-top: 0.4rem;
+  }
+
+  .tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.15rem 0.5rem;
+    border-radius: 2px;
+    background: var(--paper-dark);
+    color: var(--muted);
+  }
+
+  .tag.hot { background: var(--accent); color: var(--paper); }
+  .tag.warm { background: var(--gold); color: var(--ink); }
+  .tag.cool { background: var(--neutral); color: var(--paper); }
+
+  /* ─── PARTICIPANT GRID ─── */
+  .participants-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1rem;
+    margin-top: 0.5rem;
+  }
+
+  .participant-card {
+    background: var(--paper-warm);
+    border: 1px solid var(--paper-dark);
+    border-top: 3px solid var(--accent);
+    padding: 1rem;
+    position: relative;
+  }
+
+  .participant-card.optimist { border-top-color: var(--positive); }
+  .participant-card.neutral { border-top-color: var(--neutral); }
+  .participant-card.concerned { border-top-color: var(--gold); }
+  .participant-card.resistant { border-top-color: var(--accent); }
+  .participant-card.facilitator { border-top-color: var(--rule); background: var(--paper-dark); }
+
+  .participant-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--rule);
+    line-height: 1.2;
+  }
+
+  .participant-role {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0.2rem 0 0.6rem;
+  }
+
+  .sentiment-bar {
+    height: 4px;
+    background: var(--paper-dark);
+    border-radius: 2px;
+    margin-bottom: 0.6rem;
+    overflow: hidden;
+  }
+
+  .sentiment-fill {
+    height: 100%;
+    border-radius: 2px;
+  }
+
+  .participant-quote {
+    font-size: 0.82rem;
+    font-style: italic;
+    color: var(--muted);
+    line-height: 1.45;
+    border-left: 2px solid var(--paper-dark);
+    padding-left: 0.5rem;
+  }
+
+  .sentiment-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 0.35rem;
+  }
+
+  /* ─── SENTIMENT SPECTRUM ─── */
+  .spectrum-wrap {
+    margin-top: 1rem;
+    background: var(--paper-warm);
+    border: 1px solid var(--paper-dark);
+    padding: 1.5rem;
+  }
+
+  .spectrum-bar {
+    height: 20px;
+    background: linear-gradient(to right, var(--accent) 0%, var(--gold) 35%, #4a8b5c 70%, var(--positive) 100%);
+    border-radius: 4px;
+    position: relative;
+    margin: 3rem 0 3rem;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+  }
+
+  .spectrum-labels {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  /* pins ABOVE the bar */
+  .speaker-pin {
+    position: absolute;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: default;
+  }
+
+  .speaker-pin.above {
+    bottom: 100%;
+    margin-bottom: 2px;
+    flex-direction: column-reverse;
+  }
+
+  .speaker-pin.below {
+    top: 100%;
+    margin-top: 2px;
+    flex-direction: column;
+  }
+
+  .speaker-pin-stem {
+    width: 2px;
+    height: 14px;
+    background: var(--rule);
+    opacity: 0.6;
+  }
+
+  .speaker-pin-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--rule);
+    border: 2px solid var(--paper);
+    flex-shrink: 0;
+  }
+
+  .speaker-pin-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    white-space: nowrap;
+    color: var(--rule);
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    padding: 2px 0;
+  }
+
+  .overall-group {
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.8rem 1rem;
+    background: var(--paper-dark);
+    border-radius: 2px;
+  }
+
+  .overall-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    flex-shrink: 0;
+  }
+
+  .overall-desc {
+    font-size: 0.88rem;
+    font-style: italic;
+    color: var(--rule);
+  }
+
+  /* ─── ENGAGEMENT CHART ─── */
+  .engagement-chart {
+    margin-top: 0.5rem;
+    background: var(--paper-warm);
+    border: 1px solid var(--paper-dark);
+    padding: 1.5rem;
+  }
+
+  .chart-inner {
+    position: relative;
+    height: 160px;
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+  }
+
+  .chart-bar {
+    flex: 1;
+    background: var(--accent);
+    opacity: 0.75;
+    border-radius: 2px 2px 0 0;
+    position: relative;
+    transition: opacity 0.2s;
+    cursor: default;
+  }
+
+  .chart-bar:hover { opacity: 1; }
+
+  .chart-bar.peak { background: var(--gold); opacity: 0.9; }
+  .chart-bar.high { background: var(--accent); opacity: 0.8; }
+  .chart-bar.medium { background: var(--neutral); opacity: 0.7; }
+  .chart-bar.low { background: var(--muted); opacity: 0.5; }
+
+  .chart-labels {
+    display: flex;
+    gap: 3px;
+    margin-top: 0.4rem;
+  }
+
+  .chart-label {
+    flex: 1;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.5rem;
+    text-align: center;
+    color: var(--muted);
+    line-height: 1.2;
+    overflow: hidden;
+  }
+
+  .chart-y-labels {
+    position: absolute;
+    left: -2.5rem;
+    top: 0; bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem;
+    color: var(--muted);
+    text-align: right;
+    width: 2rem;
+  }
+
+  .chart-wrapper {
+    position: relative;
+    padding-left: 2.5rem;
+  }
+
+  .engagement-legend {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 0.8rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .legend-swatch {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+  }
+
+  /* ─── DIALOGUE EXCHANGES ─── */
+  .exchanges-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 0.5rem;
+  }
+
+  @media (max-width: 700px) {
+    .exchanges-grid { grid-template-columns: 1fr; }
+    .participants-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  .exchange-card {
+    background: var(--paper-warm);
+    border: 1px solid var(--paper-dark);
+    padding: 1rem;
+  }
+
+  .exchange-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--rule);
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--paper-dark);
+    margin-bottom: 0.6rem;
+  }
+
+  .exchange-turn {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.82rem;
+    line-height: 1.4;
+  }
+
+  .turn-speaker {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    font-weight: 500;
+    color: var(--accent);
+    white-space: nowrap;
+    padding-top: 0.1rem;
+    min-width: 60px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .turn-text {
+    color: var(--rule);
+    font-style: italic;
+  }
+
+  /* ─── KEY STATS BAND ─── */
+  .stats-band {
+    background: var(--rule);
+    color: var(--paper);
+    padding: 1.5rem 2rem;
+    margin-top: 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1rem;
+    border-top: 3px solid var(--gold);
+  }
+
+  .stat-item { text-align: center; }
+
+  .stat-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: var(--gold-light);
+    line-height: 1;
+    display: block;
+  }
+
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--paper-dark);
+    margin-top: 0.3rem;
+    display: block;
+  }
+
+  .stat-source {
+    font-size: 0.7rem;
+    font-style: italic;
+    color: var(--muted);
+    margin-top: 0.15rem;
+  }
+
+  /* ─── NEXT WEEK ─── */
+  .next-week {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 1.5rem 2rem;
+    margin-top: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    border-left: 6px solid var(--accent);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .next-week::after {
+    content: 'SKYNET';
+    position: absolute;
+    right: -0.5rem;
+    top: 50%;
+    transform: translateY(-50%) rotate(-90deg);
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    font-weight: 900;
+    color: rgba(255,255,255,0.04);
+    letter-spacing: 0.3em;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
+  .next-week-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .next-week h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 900;
+    font-style: italic;
+    color: var(--paper);
+    margin: 0.3rem 0;
+  }
+
+  .next-week-desc {
+    font-size: 0.88rem;
+    color: var(--paper-dark);
+    max-width: 600px;
+    line-height: 1.5;
+  }
+
+  /* ─── NOTABLE QUOTES ─── */
+  .quotes-column {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .pull-quote {
+    background: var(--paper-warm);
+    border: 1px solid var(--paper-dark);
+    border-left: 4px solid var(--gold);
+    padding: 1rem 1.2rem;
+  }
+
+  .pull-quote-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    font-style: italic;
+    color: var(--rule);
+    line-height: 1.5;
+  }
+
+  .pull-quote-attr {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-top: 0.4rem;
+  }
+
+  /* ─── TWO-COL LAYOUT ─── */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    align-items: start;
+  }
+
+  @media (max-width: 800px) {
+    .two-col { grid-template-columns: 1fr; }
+    .masthead-meta { flex-wrap: wrap; gap: 0.8rem; }
+  }
+
+  .divider-ornament {
+    text-align: center;
+    color: var(--gold);
+    font-size: 1.2rem;
+    margin: 0.5rem 0;
+    letter-spacing: 0.5rem;
+  }
+
+  /* ─── INTERACTION NETWORK ─── */
+  .network-svg-wrap {
+    background: var(--paper-warm);
+    border: 1px solid var(--paper-dark);
+    padding: 1rem;
+    overflow: hidden;
+  }
+
+  /* ─── FOOTER ─── */
+  .footer {
+    background: var(--paper-dark);
+    border-top: 2px solid var(--rule);
+    padding: 1rem 2rem;
+    text-align: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 2rem;
+  }
+
+  .animate-in {
+    opacity: 0;
+    transform: translateY(12px);
+    animation: fadeUp 0.5s ease forwards;
+  }
+
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .animate-in:nth-child(1) { animation-delay: 0.05s; }
+  .animate-in:nth-child(2) { animation-delay: 0.12s; }
+  .animate-in:nth-child(3) { animation-delay: 0.19s; }
+  .animate-in:nth-child(4) { animation-delay: 0.26s; }
+  .animate-in:nth-child(5) { animation-delay: 0.33s; }
+  .animate-in:nth-child(6) { animation-delay: 0.40s; }
+  .animate-in:nth-child(7) { animation-delay: 0.47s; }
+  .animate-in:nth-child(8) { animation-delay: 0.54s; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════ MASTHEAD -->
+<header class="masthead">
+  <div class="masthead-eyebrow">BOLLI · Ollie's AI Course · Session 4 of 4</div>
+  <h1>The <em>Job Apocalypse</em></h1>
+  <div class="masthead-sub">AI Unemployment — A Scenario Analysis</div>
+  <div class="masthead-meta">
+    <div>Duration <span>~91 minutes</span></div>
+    <div>Participants <span>14 voices</span></div>
+    <div>Scenario <span>3 of 4</span></div>
+    <div>Next Session <span>Skynet</span></div>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════════════════ STATS BAND -->
+<div class="stats-band">
+  <div class="stat-item">
+    <span class="stat-number">40%</span>
+    <span class="stat-label">Jobs at high automation risk</span>
+    <div class="stat-source">McKinsey Report (cited)</div>
+  </div>
+  <div class="stat-item">
+    <span class="stat-number">57%</span>
+    <span class="stat-label">US work hours automatable</span>
+    <div class="stat-source">McKinsey Report (cited)</div>
+  </div>
+  <div class="stat-item">
+    <span class="stat-number">25%</span>
+    <span class="stat-label">Projected unemployment in 1–5 yrs</span>
+    <div class="stat-source">Dario Amodei / CEO Anthropic</div>
+  </div>
+  <div class="stat-item">
+    <span class="stat-number">42%</span>
+    <span class="stat-label">Underemployment, recent grads 2026</span>
+    <div class="stat-source">Class discussion</div>
+  </div>
+  <div class="stat-item">
+    <span class="stat-number">80M</span>
+    <span class="stat-label">US office workers potentially at risk</span>
+    <div class="stat-source">Facilitator analysis</div>
+  </div>
+  <div class="stat-item">
+    <span class="stat-number">15h</span>
+    <span class="stat-label">Work week in hunter-gatherer societies</span>
+    <div class="stat-source">Anthropological parallel (cited)</div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- ═══════════════════════════════════════════════════ TOPIC FLOW -->
+  <hr class="section-rule">
+  <div class="section-label">Discussion Arc</div>
+  <div class="section-heading">Main Topics — In Order of Appearance</div>
+
+  <div class="topic-flow">
+
+    <div class="topic-item animate-in">
+      <div class="topic-time">0–9 min</div>
+      <div class="topic-dot"><span style="background:var(--neutral)"></span></div>
+      <div class="topic-body">
+        <div class="topic-title">AI in Education — Are Students Using It?</div>
+        <div class="topic-desc">Beth Mazer opens with her Northwestern granddaughter who refuses AI for papers. Ronald Marcus counters with the "Index Medicus" parallel — AI as a dramatically faster research index. The group lands on "starting point, not ending point."</div>
+        <div class="topic-tags"><span class="tag">education</span><span class="tag">accuracy</span><span class="tag warm">opening discussion</span></div>
+      </div>
+    </div>
+
+    <div class="topic-item animate-in">
+      <div class="topic-time">7–9 min</div>
+      <div class="topic-dot"><span style="background:var(--muted)"></span></div>
+      <div class="topic-body">
+        <div class="topic-title">A Publisher Pulls an AI-Written Book</div>
+        <div class="topic-desc">Speaker 5 describes a UK book pulled after reviewers flagged "clunky metaphors" and repetitive paragraphs. Alan Nemeth raises: should quality — not AI authorship alone — determine whether a book is published? Contracts are already requiring human authorship.</div>
+        <div class="topic-tags"><span class="tag">publishing</span><span class="tag">authorship</span><span class="tag">IP</span></div>
+      </div>
+    </div>
+
+    <div class="topic-item animate-in">
+      <div class="topic-time">9–20 min</div>
+      <div class="topic-dot"><span style="background:var(--gold)"></span></div>
+      <div class="topic-body">
+        <div class="topic-title">The Optimistic View — Will AI Free Us for Better Work?</div>
+        <div class="topic-desc">Ollie frames the Robert Reich position: technology historically automates drudgery, freeing workers for more cognitive roles. Peter Shapiro (ex-consultant) and Lois Sockol (ex-teacher) apply this to their own professions — finding nuance around the emotional and relational dimensions of work that resist automation.</div>
+        <div class="topic-tags"><span class="tag warm">Robert Reich</span><span class="tag">consulting</span><span class="tag">teaching</span><span class="tag">emotional labor</span></div>
+      </div>
+    </div>
+
+    <div class="topic-item animate-in">
+      <div class="topic-time">18–26 min</div>
+      <div class="topic-dot"><span style="background:var(--neutral)"></span></div>
+      <div class="topic-body">
+        <div class="topic-title">What Jobs Can AI Really Replace? The Relational Dimension</div>
+        <div class="topic-desc">Alan Nemeth challenges the "AI as data replacement" framing — consulting is industrial psychology, not fact delivery. The group probes: Can AI replicate human connection, empathy, and political judgment in meetings? A tentative consensus: complex interpersonal roles remain human. For now.</div>
+        <div class="topic-tags"><span class="tag">relational work</span><span class="tag">empathy</span><span class="tag">management</span></div>
+      </div>
+    </div>
+
+    <div class="topic-item animate-in">
+      <div class="topic-time">40–55 min</div>
+      <div class="topic-dot"><span style="background:var(--accent)"></span></div>
+      <div class="topic-body">
+        <div class="topic-title">Real Layoffs Now — Amazon, Meta, Block</div>
+        <div class="topic-desc">Ollie presents data: Block laid off 40% of staff (stock +20%). Meta planning 15,000 jobs cut. Amazon's warehouses now 50% robotic. Entry-level office workers, legal/medical secretaries, payroll clerks: 3–4 million at high risk. Truck drivers: 2 million. Software devs: 1.6 million. "A million here, a million there…"</div>
+        <div class="topic-tags"><span class="tag hot">high alert</span><span class="tag">layoffs</span><span class="tag">Amazon</span><span class="tag">Meta</span></div>
+      </div>
+    </div>
+
+    <div class="topic-item animate-in">
+      <div class="topic-time">49–55 min</div>
+      <div class="topic-dot"><span style="background:var(--neutral)"></span></div>
+      <div class="topic-body">
+        <div class="topic-title">Agentic AI — The Shift Nobody Has Seen Yet</div>
+        <div class="topic-desc">Ollie introduces agentic computing: AI that acts, not just answers. Mark's son runs a startup where 4 people now do the work of 10, with one engineer communicating with Claude more than with his manager. The group grapples with whether agents could coordinate, manage, and replace middle layers.</div>
+        <div class="topic-tags"><span class="tag cool">agentic AI</span><span class="tag">Claude</span><span class="tag">startups</span><span class="tag warm">emerging</span></div>
+      </div>
+    </div>
+
+    <div class="topic-item animate-in">
+      <div class="topic-time">57–63 min</div>
+      <div class="topic-dot"><span style="background:var(--accent)"></span></div>
+      <div class="topic-body">
+        <div class="topic-title">The Dire Warnings — Hinton & Amodei</div>
+        <div class="topic-desc">Jeff Hinton: AI will match or surpass human cognitive capabilities in 5–20 years. Dario Amodei (Anthropic CEO): 15–25% unemployment in 1–5 years. Ford CEO Farley: AI will wipe out half of white-collar jobs. "If AI can do any job people can do, retraining becomes meaningless."</div>
+        <div class="topic-tags"><span class="tag hot">dire forecast</span><span class="tag">Hinton</span><span class="tag">Amodei</span><span class="tag">white-collar</span></div>
+      </div>
+    </div>
+
+    <div class="topic-item animate-in">
+      <div class="topic-time">63–80 min</div>
+      <div class="topic-dot"><span style="background:var(--gold)"></span></div>
+      <div class="topic-body">
+        <div class="topic-title">The T-Shirt Conglomerate — Post-Scarcity Thought Experiment</div>
+        <div class="topic-desc">Ollie proposes a fully automated t-shirt company — cotton grown, spun, distributed by robots. Cost: $1. If this happens across the economy, would prices plummet into abundance? Sam Altman's vision. Counter: If nobody works, nobody earns money to buy anything. Great Depression parallel. Henry Ford rebuttal: pay workers, expand the market.</div>
+        <div class="topic-tags"><span class="tag warm">post-scarcity</span><span class="tag">Sam Altman</span><span class="tag">deflation</span><span class="tag">Henry Ford</span></div>
+      </div>
+    </div>
+
+    <div class="topic-item animate-in">
+      <div class="topic-time">75–85 min</div>
+      <div class="topic-dot"><span style="background:var(--accent)"></span></div>
+      <div class="topic-body">
+        <div class="topic-title">The Safety Net — Who Pays? How?</div>
+        <div class="topic-desc">Bob Mahoney: regulate layoffs, force companies to fund unemployment. Tax excess AI profits. Tax data center compute (gigawatts). Bernie Sanders: stronger unions. Ronald Marcus: a "vicious circle" — the dollar shirt requires taxing the dollar shirt. Peter Shapiro: historically it takes a crisis to force change. WWII solved the Depression. What's next?</div>
+        <div class="topic-tags"><span class="tag hot">policy debate</span><span class="tag">UBI</span><span class="tag">taxation</span><span class="tag">safety net</span></div>
+      </div>
+    </div>
+
+    <div class="topic-item animate-in">
+      <div class="topic-time">80–91 min</div>
+      <div class="topic-dot"><span style="background:var(--positive)"></span></div>
+      <div class="topic-body">
+        <div class="topic-title">Closing: Optimism, Value Shifts & The 15-Hour Week</div>
+        <div class="topic-desc">Alan Nemeth: use AI to improve quality, not just cut people. Trades and vocational work — plumbers, builders — are the automation-resistant future. Ollie: hunter-gatherer societies worked 15 hours/week. Maybe that's where we're headed. Mark: look at European redistribution models. Barbara Kriss: "the velocity is the wild card." Bob: "It'll take a crisis." Alan: "Never waste a good crisis."</div>
+        <div class="topic-tags"><span class="tag">UBI</span><span class="tag">vocational work</span><span class="tag warm">optimism</span><span class="tag">hunter-gatherer</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ═══════════════════════════════════════════════ ENGAGEMENT CHART -->
+  <hr class="section-rule" style="margin-top:2rem;">
+  <div class="section-label">Session Dynamics</div>
+  <div class="section-heading">Engagement Intensity — Across the Hour</div>
+
+  <div class="engagement-chart">
+    <div class="chart-wrapper">
+      <div class="chart-y-labels">
+        <div>High</div>
+        <div>Med</div>
+        <div>Low</div>
+      </div>
+      <div class="chart-inner" id="engChart">
+        <!-- bars injected by JS -->
+      </div>
+    </div>
+    <div class="chart-labels" id="engLabels"></div>
+    <div class="engagement-legend">
+      <div class="legend-item"><div class="legend-swatch" style="background:var(--gold)"></div> Peak debate</div>
+      <div class="legend-item"><div class="legend-swatch" style="background:var(--accent)"></div> Active exchange</div>
+      <div class="legend-item"><div class="legend-swatch" style="background:var(--neutral)"></div> Moderate</div>
+      <div class="legend-item"><div class="legend-swatch" style="background:var(--muted)"></div> Quieter moments</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════ SENTIMENT SPECTRUM -->
+  <hr class="section-rule" style="margin-top:2rem;">
+  <div class="section-label">Audience Tone</div>
+  <div class="section-heading">AI Sentiment Spectrum — Participant Positions</div>
+
+  <div class="spectrum-wrap">
+    <div class="spectrum-labels">
+      <span>← Resistant / Skeptical</span>
+      <span>Cautious ↔ Pragmatic</span>
+      <span>Cautiously Optimistic →</span>
+    </div>
+    <div class="spectrum-bar" id="spectrumBar">
+      <!-- pins injected by JS -->
+    </div>
+
+    <div class="overall-group">
+      <div class="overall-label">Group Tone</div>
+      <div class="overall-desc">Predominantly <strong>pragmatic-concerned</strong> — accepting AI's trajectory as real and accelerating, but anxious about velocity, distribution of harm, and the absence of any governing framework. The tone grew more sobered as data accumulated. Moments of genuine optimism (Alan Nemeth, Marie Danziger) were present but outnumbered.</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ PARTICIPANT PROFILES -->
+  <hr class="section-rule" style="margin-top:2rem;">
+  <div class="section-label">Voices in the Room</div>
+  <div class="section-heading">Participant Profiles — Role & Stance</div>
+
+  <div class="participants-grid">
+
+    <div class="participant-card facilitator animate-in">
+      <div class="participant-name">Ollie</div>
+      <div class="participant-role">Facilitator · AI Course Instructor</div>
+      <div class="sentiment-label" style="color:var(--rule)">Neutral / Guiding</div>
+      <div class="sentiment-bar"><div class="sentiment-fill" style="width:50%;background:var(--neutral)"></div></div>
+      <div class="participant-quote">"We're all speculating, so we don't know the answer. The future will tell us." Balanced framing throughout, surfacing both optimistic and dire scenarios without advocacy.</div>
+    </div>
+
+    <div class="participant-card resistant animate-in">
+      <div class="participant-name">Lois Sockol</div>
+      <div class="participant-role">Former Teacher · Most Skeptical Voice</div>
+      <div class="sentiment-label" style="color:var(--accent)">Resistant — Fighting Back</div>
+      <div class="sentiment-bar"><div class="sentiment-fill" style="width:15%;background:var(--accent)"></div></div>
+      <div class="participant-quote">"I am in constant battle with AI. And so far, I want you to know, I'm holding my own." Personally wrestles weekly with "Happy," the AI in her memoir app. Questioned whether emotional teaching can ever be automated.</div>
+    </div>
+
+    <div class="participant-card concerned animate-in">
+      <div class="participant-name">Beth Mazer</div>
+      <div class="participant-role">Participant · Accuracy Skeptic</div>
+      <div class="sentiment-label" style="color:var(--gold)">Cautiously Skeptical</div>
+      <div class="sentiment-bar"><div class="sentiment-fill" style="width:30%;background:var(--gold)"></div></div>
+      <div class="participant-quote">"I think it may be a question of not trusting what you're getting at a certain level." Opened the session with a story of her granddaughter rejecting AI — her instinct is that accuracy concerns limit usefulness for serious work.</div>
+    </div>
+
+    <div class="participant-card neutral animate-in">
+      <div class="participant-name">Ronald Marcus</div>
+      <div class="participant-role">Physician (Retired) · Pragmatist</div>
+      <div class="sentiment-label" style="color:var(--neutral)">Pragmatic — Useful Tool</div>
+      <div class="sentiment-bar"><div class="sentiment-fill" style="width:60%;background:var(--neutral)"></div></div>
+      <div class="participant-quote">"You go to AI, it tells you all the references, and you're done in 3 minutes. This used to take us literally hours." The Index Medicus analogy — AI as dramatically faster research infrastructure — was his anchor. Later troubled by the vicious circle of taxing AI profits.</div>
+    </div>
+
+    <div class="participant-card neutral animate-in">
+      <div class="participant-name">Peter Shapiro</div>
+      <div class="participant-role">Management Consultant (Retired)</div>
+      <div class="sentiment-label" style="color:var(--neutral)">Analytical / Darkening</div>
+      <div class="sentiment-bar"><div class="sentiment-fill" style="width:35%;background:var(--gold)"></div></div>
+      <div class="participant-quote">"One can easily go down a spiral of despair on this… what the hell are we going to do with 8 billion people?" Noted AI-washing as a real phenomenon. Raised the WWII-as-Depression-solution parallel as a disturbing historical template.</div>
+    </div>
+
+    <div class="participant-card concerned animate-in">
+      <div class="participant-name">Bob Mahoney</div>
+      <div class="participant-role">Participant · Safety Net Advocate</div>
+      <div class="sentiment-label" style="color:var(--gold)">Resigned — Proactive</div>
+      <div class="sentiment-bar"><div class="sentiment-fill" style="width:40%;background:var(--gold)"></div></div>
+      <div class="participant-quote">"We're on a track toward more unemployment… there must be more talk about the safety net before it's too late." Most focused on policy solutions: mandatory unemployment contributions from companies that use AI to lay off workers.</div>
+    </div>
+
+    <div class="participant-card optimist animate-in">
+      <div class="participant-name">Alan Nemeth</div>
+      <div class="participant-role">Participant · Constructive Optimist</div>
+      <div class="sentiment-label" style="color:var(--positive)">Cautiously Optimistic</div>
+      <div class="sentiment-bar"><div class="sentiment-fill" style="width:72%;background:var(--positive)"></div></div>
+      <div class="participant-quote">"What we can be doing with this powerful technology is focus on improvement in quality — not use it to get rid of people's labor." Pushed for valuing trades and vocational work. His grandsons: an Outward Bound guide and a soon-to-be teacher.</div>
+    </div>
+
+    <div class="participant-card concerned animate-in">
+      <div class="participant-name">Margo Goldman</div>
+      <div class="participant-role">Participant · Complexity Theorist</div>
+      <div class="sentiment-label" style="color:var(--gold)">Cynical / Systemic</div>
+      <div class="sentiment-bar"><div class="sentiment-fill" style="width:28%;background:var(--accent)"></div></div>
+      <div class="participant-quote">"We have capitalism, and we have greed… there's no guarantee that if the cost of goods goes down, they're going to lower the price." Introduced complexity theory and climate change as unpredictable forces disrupting any neat AI-abundance scenario.</div>
+    </div>
+
+    <div class="participant-card neutral animate-in">
+      <div class="participant-name">Mark (Speaker 7)</div>
+      <div class="participant-role">Participant · Economic Historian</div>
+      <div class="sentiment-label" style="color:var(--neutral)">Analytically Balanced</div>
+      <div class="sentiment-bar"><div class="sentiment-fill" style="width:55%;background:var(--neutral)"></div></div>
+      <div class="participant-quote">"Henry Ford's principle was: implement efficient manufacturing, pay your workers well, and they will buy your cars." Offered European redistribution models and the New Deal pendulum as historical precedents. His son's startup is already running 4 people at the output of 10.</div>
+    </div>
+
+    <div class="participant-card concerned animate-in">
+      <div class="participant-name">Barbara Kriss</div>
+      <div class="participant-role">Participant · Velocity Worrier</div>
+      <div class="sentiment-label" style="color:var(--gold)">Worried — About Speed</div>
+      <div class="sentiment-bar"><div class="sentiment-fill" style="width:32%;background:var(--gold)"></div></div>
+      <div class="participant-quote">"The wild card is just the velocity at which all this is happening, and whether we can evolve fast enough to adjust." Asked the sharpest question: even if the right policies exist, can democratic institutions move fast enough?</div>
+    </div>
+
+  </div>
+
+  <!-- ═══════════════════════════════════════════ NOTABLE EXCHANGES -->
+  <hr class="section-rule" style="margin-top:2rem;">
+  <div class="section-label">Participant Interchange</div>
+  <div class="section-heading">Key Dialogue Moments</div>
+
+  <div class="exchanges-grid">
+
+    <div class="exchange-card animate-in">
+      <div class="exchange-title">🔬 AI as Index Medicus — The Research Tool Debate</div>
+      <div class="exchange-turn"><div class="turn-speaker">Ronald</div><div class="turn-text">"In med school we used Index Medicus — a printed outline of every journal published that year. AI does in 3 minutes what took us literally hours."</div></div>
+      <div class="exchange-turn"><div class="turn-speaker">Beth</div><div class="turn-text">"I think it may be a question of not trusting what you're getting at certain levels."</div></div>
+      <div class="exchange-turn"><div class="turn-speaker">Alan</div><div class="turn-text">"So you see it as a starting point rather than an ending point."</div></div>
+      <div class="exchange-turn"><div class="turn-speaker">Ronald</div><div class="turn-text">"Correct."</div></div>
+    </div>
+
+    <div class="exchange-card animate-in">
+      <div class="exchange-title">🏭 The "Dollar Shirt" Vicious Circle</div>
+      <div class="exchange-turn"><div class="turn-speaker">Ronald</div><div class="turn-text">"So then your dollar shirt is not gonna cost a dollar — you've got to raise the price to get taxes."</div></div>
+      <div class="exchange-turn"><div class="turn-speaker">Bob</div><div class="turn-text">"Right. There's no reason for it to cost a dollar. The only reason it costs a dollar is because you fired all the people that made them."</div></div>
+      <div class="exchange-turn"><div class="turn-speaker">Ronald</div><div class="turn-text">"Such a vicious circle — where does it end?"</div></div>
+      <div class="exchange-turn"><div class="turn-speaker">Bob</div><div class="turn-text">"We don't need dollar shirts."</div></div>
+    </div>
+
+    <div class="exchange-card animate-in">
+      <div class="exchange-title">📖 Lois vs. "Happy" — A Personal AI Battle</div>
+      <div class="exchange-turn"><div class="turn-speaker">Lois</div><div class="turn-text">"Every week I fight with AI. A friend gave me Remento. I write my story, but it writes my story — and I didn't like the story it wrote."</div></div>
+      <div class="exchange-turn"><div class="turn-speaker">Lois</div><div class="turn-text">"If you're a writer, you don't want a machine writing for you. So I am in constant battle. And so far, I want you to know, I'm holding my own."</div></div>
+      <div class="exchange-turn"><div class="turn-speaker">Ollie</div><div class="turn-text">"I suggest you quit talking to Happy and talk to Claude."</div></div>
+    </div>
+
+    <div class="exchange-card animate-in">
+      <div class="exchange-title">🤝 "Never Waste a Good Crisis"</div>
+      <div class="exchange-turn"><div class="turn-speaker">Barbara</div><div class="turn-text">"The wild card is the velocity at which this is happening — how can government and regulation move fast enough?"</div></div>
+      <div class="exchange-turn"><div class="turn-speaker">Bob</div><div class="turn-text">"It'll probably take a crisis."</div></div>
+      <div class="exchange-turn"><div class="turn-speaker">Alan</div><div class="turn-text">"Never waste a good crisis."</div></div>
+      <div class="exchange-turn"><div class="turn-speaker">Ollie</div><div class="turn-text">"Every good crisis… yeah."</div></div>
+    </div>
+
+    <div class="exchange-card animate-in">
+      <div class="exchange-title">🎓 What to Tell the Grandchildren</div>
+      <div class="exchange-turn"><div class="turn-speaker">Ollie</div><div class="turn-text">"If your grandchildren came to you for career advice — where would you suggest?"</div></div>
+      <div class="exchange-turn"><div class="turn-speaker">Alan</div><div class="turn-text">"Relational work is surprisingly good. My grandsons are doing Outward Bound and teaching — they earn near zero, need near zero, and are very happy."</div></div>
+      <div class="exchange-turn"><div class="turn-speaker">Ollie</div><div class="turn-text">"Oh, that's great! That's the future — that's the future for all of us."</div></div>
+    </div>
+
+    <div class="exchange-card animate-in">
+      <div class="exchange-title">🤖 Mark's Son — 4 People Doing the Work of 10</div>
+      <div class="exchange-turn"><div class="turn-speaker">Mark 7</div><div class="turn-text">"My son has a startup — 4 people doing the work of 10. His engineer communicates with Claude more than with him."</div></div>
+      <div class="exchange-turn"><div class="turn-speaker">Ollie</div><div class="turn-text">"Six months ago they were barely using AI tools. Now they've gone whole hog — the skill of the tools has advanced in a huge way."</div></div>
+      <div class="exchange-turn"><div class="turn-speaker">Mark 7</div><div class="turn-text">"I was amazed. It's here."</div></div>
+    </div>
+
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ PULL QUOTES -->
+  <hr class="section-rule" style="margin-top:2rem;">
+  <div class="section-label">Notable Statements</div>
+  <div class="section-heading">Voices Worth Marking</div>
+
+  <div class="two-col">
+    <div class="quotes-column">
+      <div class="pull-quote animate-in">
+        <div class="pull-quote-text">"These rules are all going to be very obsolete in a couple of years. We'll joke about the attempt to keep AI out of the classroom. It's here, it's going to get better and better."</div>
+        <div class="pull-quote-attr">— Bob Mahoney, ~9:06</div>
+      </div>
+      <div class="pull-quote animate-in">
+        <div class="pull-quote-text">"Jeff Hinton says the latest LLMs have been trained on all of human knowledge, thousands of times more than us. He thinks AI will match or surpass human cognitive capabilities across virtually all tasks within 5 to 20 years."</div>
+        <div class="pull-quote-attr">— Ollie, citing Jeff Hinton, ~58:30</div>
+      </div>
+      <div class="pull-quote animate-in">
+        <div class="pull-quote-text">"The companies who are greatly benefiting from AI have to pick up some of the tab. You don't eliminate the profits — you share them with those most affected."</div>
+        <div class="pull-quote-attr">— Bob Mahoney, ~1:17:43</div>
+      </div>
+    </div>
+    <div class="quotes-column">
+      <div class="pull-quote animate-in" style="border-left-color:var(--positive)">
+        <div class="pull-quote-text">"What we can be doing with this powerful technology is focus on improvement in quality. Not use it to get rid of people's labor, but use AI tools and the brainpower of people to identify opportunity that otherwise wouldn't happen."</div>
+        <div class="pull-quote-attr">— Alan Nemeth, ~1:20:56</div>
+      </div>
+      <div class="pull-quote animate-in" style="border-left-color:var(--neutral)">
+        <div class="pull-quote-text">"If AI can do any job that people can do, then people who lose their jobs won't have any other jobs to go to. Retraining might not work with AI the way it might have worked with manufacturing."</div>
+        <div class="pull-quote-attr">— Ollie, ~57:56</div>
+      </div>
+      <div class="pull-quote animate-in" style="border-left-color:var(--gold)">
+        <div class="pull-quote-text">"Before the Neolithic Revolution, average work weeks in hunter-gatherer societies were about 15 hours. Societies found ways to give meaning without labor. It would be very hard — but it might be possible."</div>
+        <div class="pull-quote-attr">— Ollie, ~1:22:00</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════ NEXT WEEK -->
+  <div class="next-week" style="margin-top:2rem;">
+    <div>
+      <div class="next-week-eyebrow">Session 5 · Final Week</div>
+      <h3>The Skynet Scenario</h3>
+      <div class="next-week-desc">Next session tackles the question that Ollie admits "may sound like science fiction but is taken seriously by the smartest people in AI — like Jeff Hinton." Are large language models conscious? What are their motivations? What happens if we allow them to run the world? The course ends where the most uncomfortable questions begin.</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  Session Analysis · Ollie's BOLLI AI Course · Session 4: AI Unemployment · Transcript Visualization
+</div>
+
+<script>
+// ── ENGAGEMENT CHART DATA ──
+const segments = [
+  { label: "AI\nEducation", pct: 58, cls: "medium" },
+  { label: "Book\nPublishing", pct: 52, cls: "medium" },
+  { label: "Optimism\nDebate", pct: 72, cls: "high" },
+  { label: "Teaching\n& AI", pct: 68, cls: "high" },
+  { label: "Relational\nWork", pct: 75, cls: "high" },
+  { label: "Amazon\nLayoffs", pct: 90, cls: "peak" },
+  { label: "Agentic\nAI", pct: 85, cls: "peak" },
+  { label: "Lois\nBattle", pct: 80, cls: "high" },
+  { label: "Trucking\nDebate", pct: 65, cls: "high" },
+  { label: "T-Shirt\nExperiment", pct: 88, cls: "peak" },
+  { label: "Great\nDepression", pct: 82, cls: "peak" },
+  { label: "Capitalism\n& Greed", pct: 86, cls: "peak" },
+  { label: "Safety\nNet", pct: 92, cls: "peak" },
+  { label: "Vicious\nCircle", pct: 88, cls: "peak" },
+  { label: "Optimism\nClose", pct: 78, cls: "high" },
+  { label: "Skynet\nPreview", pct: 84, cls: "peak" },
+];
+
+const chart = document.getElementById('engChart');
+const labels = document.getElementById('engLabels');
+
+segments.forEach(seg => {
+  const bar = document.createElement('div');
+  bar.className = `chart-bar ${seg.cls}`;
+  bar.style.height = seg.pct + '%';
+  bar.title = seg.label.replace('\n',' ') + ': ' + seg.pct + '%';
+  chart.appendChild(bar);
+
+  const lbl = document.createElement('div');
+  lbl.className = 'chart-label';
+  lbl.textContent = seg.label;
+  labels.appendChild(lbl);
+});
+
+// ── SENTIMENT SPECTRUM PINS ──
+const speakers = [
+  { name: "Lois",    pct: 8,  side: "above" },
+  { name: "Beth",    pct: 22, side: "below" },
+  { name: "Margo",   pct: 28, side: "above" },
+  { name: "Peter",   pct: 35, side: "below" },
+  { name: "Bob",     pct: 40, side: "above" },
+  { name: "Shemes",  pct: 44, side: "below" },
+  { name: "Barbara", pct: 48, side: "above" },
+  { name: "Ollie",   pct: 50, side: "below" },
+  { name: "Ronald",  pct: 57, side: "above" },
+  { name: "Mark",    pct: 62, side: "below" },
+  { name: "Marie",   pct: 70, side: "above" },
+  { name: "Alan",    pct: 78, side: "below" },
+];
+
+const bar = document.getElementById('spectrumBar');
+speakers.forEach(s => {
+  const pin = document.createElement('div');
+  pin.className = `speaker-pin ${s.side}`;
+  pin.style.left = s.pct + '%';
+  pin.innerHTML = `
+    <div class="speaker-pin-label">${s.name}</div>
+    <div class="speaker-pin-stem"></div>
+    <div class="speaker-pin-dot"></div>
+  `;
+  bar.appendChild(pin);
+});
+</script>
+</body>
+</html>
