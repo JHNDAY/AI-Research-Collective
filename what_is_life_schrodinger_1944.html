@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What is Life? — Erwin Schrödinger (1944)</title>
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=IM+Fell+English:ital@0;1&family=IM+Fell+English+SC&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1510;
+    --ink-light: #3d3028;
+    --ink-faint: #7a6a5a;
+    --paper: #f7f2e8;
+    --paper-warm: #ede5d0;
+    --paper-mid: #e0d5be;
+    --rule: #c4b89a;
+    --accent: #1a4e3a;
+    --accent-light: #2a6e50;
+    --gold: #9b7b3a;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 18px; scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-weight: 400;
+    line-height: 1.75;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+  }
+
+  /* ---- PROGRESS BAR ---- */
+  #progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    background: var(--accent);
+    width: 0%;
+    z-index: 900;
+    transition: width 0.1s linear;
+  }
+
+  /* ---- MASTHEAD ---- */
+  .masthead {
+    background: var(--paper-warm);
+    border-bottom: 3px double var(--rule);
+    text-align: center;
+    padding: 2.5rem 2rem 2rem;
+  }
+
+  .journal-label {
+    font-family: 'IM Fell English SC', serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.25em;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+
+  .journal-name {
+    font-family: 'IM Fell English', serif;
+    font-size: 3.4rem;
+    letter-spacing: 0.12em;
+    line-height: 1;
+    color: var(--ink);
+    display: block;
+  }
+
+  .journal-subtitle {
+    font-family: 'IM Fell English SC', serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.12em;
+    color: var(--ink-faint);
+    margin: 0.4rem 0 0.2rem;
+  }
+
+  .journal-meta {
+    font-family: 'Crimson Pro', serif;
+    font-size: 0.82rem;
+    color: var(--ink-faint);
+    font-style: italic;
+    margin-top: 0.5rem;
+  }
+
+  .rule-ornament {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin: 1rem 0;
+    color: var(--rule);
+  }
+
+  .rule-ornament::before, .rule-ornament::after {
+    content: '';
+    flex: 1;
+    max-width: 120px;
+    height: 1px;
+    background: var(--rule);
+  }
+
+  .ornament-char { font-size: 1.2rem; color: var(--gold); }
+
+  /* ---- LAYOUT ---- */
+  .wrapper { max-width: 780px; margin: 0 auto; padding: 0 2rem; }
+
+  /* ---- ARTICLE HEADER ---- */
+  .article-header {
+    text-align: center;
+    padding: 3rem 0 2rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .article-label {
+    font-family: 'IM Fell English SC', serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  .article-title {
+    font-family: 'IM Fell English', serif;
+    font-size: 2.4rem;
+    line-height: 1.15;
+    color: var(--ink);
+    font-weight: normal;
+    margin-bottom: 0.5rem;
+  }
+
+  .article-subtitle {
+    font-family: 'IM Fell English', serif;
+    font-size: 1.1rem;
+    font-style: italic;
+    color: var(--ink-faint);
+    margin-bottom: 1.2rem;
+  }
+
+  .article-author {
+    font-family: 'Crimson Pro', serif;
+    font-size: 1rem;
+    letter-spacing: 0.08em;
+    color: var(--ink-light);
+    font-variant: small-caps;
+  }
+
+  .article-dedication {
+    font-family: 'Crimson Pro', serif;
+    font-size: 0.88rem;
+    font-style: italic;
+    color: var(--ink-faint);
+    margin-top: 0.6rem;
+  }
+
+  /* ---- TOC ---- */
+  .toc {
+    background: var(--paper-warm);
+    border: 1px solid var(--rule);
+    border-top: 3px solid var(--accent);
+    padding: 1.5rem 2rem;
+    margin: 2.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  .toc-title {
+    font-family: 'IM Fell English SC', serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    color: var(--ink-faint);
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+  }
+
+  .toc ol {
+    padding-left: 1.2rem;
+    line-height: 1;
+    list-style: none;
+    counter-reset: toc-counter;
+  }
+
+  .toc ol li {
+    counter-increment: toc-counter;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.45rem 0;
+    border-bottom: 1px dotted var(--paper-mid);
+  }
+
+  .toc ol li:last-child { border-bottom: none; }
+
+  .toc ol li::before {
+    content: counter(toc-counter) ".";
+    font-family: 'IM Fell English', serif;
+    font-style: italic;
+    color: var(--accent);
+    font-size: 0.85rem;
+    min-width: 1.4rem;
+  }
+
+  .toc ol li.toc-epi::before { content: "❧"; min-width: 1.4rem; }
+
+  .toc-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .toc a {
+    color: var(--ink-light);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--rule);
+    transition: color 0.2s, border-color 0.2s;
+    cursor: pointer;
+    font-size: 0.92rem;
+  }
+
+  .toc a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+  .toc-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+
+  .toc-wordcount {
+    font-family: 'Crimson Pro', serif;
+    font-size: 0.72rem;
+    color: var(--ink-faint);
+    font-style: italic;
+    white-space: nowrap;
+    letter-spacing: 0.02em;
+  }
+
+  .toc-ai-btn {
+    background: none;
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    padding: 0.1rem 0.35rem;
+    font-family: 'IM Fell English SC', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    color: var(--gold);
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    line-height: 1.6;
+  }
+
+  .toc-ai-btn:hover { background: var(--paper-mid); border-color: var(--gold); color: var(--accent); }
+
+  /* ---- AI POPUP ---- */
+  .ai-popup {
+    position: fixed;
+    z-index: 500;
+    background: var(--paper-warm);
+    border: 1px solid var(--rule);
+    border-top: 2px solid var(--gold);
+    box-shadow: 4px 6px 24px rgba(0,0,0,0.18);
+    padding: 1.2rem 1.4rem;
+    max-width: 380px;
+    min-width: 240px;
+    font-family: 'Crimson Pro', Georgia, serif;
+    display: none;
+    border-radius: 1px;
+  }
+
+  .ai-popup.visible { display: block; }
+
+  .ai-popup-label {
+    font-family: 'IM Fell English SC', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .ai-popup-label::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+
+  .ai-popup-title {
+    font-family: 'IM Fell English', serif;
+    font-size: 0.88rem;
+    font-style: italic;
+    color: var(--accent);
+    margin-bottom: 0.6rem;
+  }
+
+  .ai-popup-text { font-size: 0.88rem; line-height: 1.6; color: var(--ink-light); }
+
+  .ai-popup-close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.6rem;
+    background: none;
+    border: none;
+    font-size: 0.85rem;
+    color: var(--ink-faint);
+    cursor: pointer;
+    line-height: 1;
+    padding: 0.1rem 0.3rem;
+  }
+
+  .ai-popup-close:hover { color: var(--accent); }
+
+  /* ---- SECTION MODAL ---- */
+  .section-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(20,16,10,0.65);
+    z-index: 600;
+    display: none;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 3vh 1rem;
+    overflow-y: auto;
+  }
+
+  .section-modal-overlay.visible { display: flex; }
+
+  .section-modal {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-top: 3px double var(--accent);
+    max-width: 720px;
+    width: 100%;
+    padding: 2.5rem 2.5rem 2rem;
+    position: relative;
+    font-family: 'Crimson Pro', Georgia, serif;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.3);
+    min-height: 200px;
+    margin: auto;
+  }
+
+  .section-modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1.2rem;
+    background: none;
+    border: none;
+    font-family: 'IM Fell English SC', serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    color: var(--ink-faint);
+    cursor: pointer;
+    padding: 0.2rem 0.4rem;
+    transition: color 0.2s;
+  }
+
+  .section-modal-close:hover { color: var(--accent); }
+
+  .section-modal-num {
+    font-family: 'IM Fell English', serif;
+    font-size: 0.85rem;
+    font-style: italic;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 0.2rem;
+  }
+
+  .section-modal-heading {
+    font-family: 'IM Fell English', serif;
+    font-size: 1.6rem;
+    font-weight: normal;
+    color: var(--ink);
+    line-height: 1.2;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .section-modal-body p {
+    margin-bottom: 1rem;
+    font-size: 0.97rem;
+    line-height: 1.75;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  .section-modal-body .pull-quote {
+    margin: 1.5rem 0;
+    padding: 1.2rem 1.5rem;
+    border-top: 2px solid var(--accent);
+    border-bottom: 2px solid var(--accent);
+    text-align: center;
+    font-family: 'IM Fell English', serif;
+    font-size: 1.1rem;
+    font-style: italic;
+    color: var(--ink-light);
+  }
+
+  .section-modal-body .subsection-head {
+    font-family: 'IM Fell English SC', serif;
+    font-size: 0.82rem;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    margin: 1.5rem 0 0.5rem;
+    text-transform: uppercase;
+  }
+
+  .section-modal-wc {
+    font-family: 'Crimson Pro', serif;
+    font-size: 0.78rem;
+    font-style: italic;
+    color: var(--ink-faint);
+    margin-top: 1.5rem;
+    padding-top: 0.8rem;
+    border-top: 1px solid var(--rule);
+    text-align: right;
+  }
+
+  /* ---- BODY TEXT ---- */
+  .article-body { padding: 2rem 0 4rem; }
+
+  .article-body p {
+    margin-bottom: 1.1rem;
+    font-size: 1rem;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  .article-body > section:first-of-type > p:first-of-type::first-letter {
+    font-family: 'IM Fell English', serif;
+    font-size: 4.2rem;
+    line-height: 0.75;
+    float: left;
+    margin-right: 0.1em;
+    margin-top: 0.05em;
+    color: var(--accent);
+  }
+
+  section { margin-bottom: 2.5rem; }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    margin: 2.5rem 0 1.2rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .section-num {
+    font-family: 'IM Fell English', serif;
+    font-size: 0.9rem;
+    color: var(--accent);
+    min-width: 1.8rem;
+    font-style: italic;
+  }
+
+  .section-title {
+    font-family: 'IM Fell English', serif;
+    font-size: 1.25rem;
+    font-weight: normal;
+    color: var(--ink);
+    font-style: italic;
+  }
+
+  .subsection-head {
+    font-family: 'IM Fell English SC', serif;
+    font-size: 0.82rem;
+    letter-spacing: 0.14em;
+    color: var(--accent);
+    margin: 1.8rem 0 0.6rem;
+    text-transform: uppercase;
+  }
+
+  /* ---- PULL QUOTE ---- */
+  .pull-quote {
+    margin: 2rem 0;
+    padding: 1.5rem 2rem;
+    border-top: 2px solid var(--accent);
+    border-bottom: 2px solid var(--accent);
+    text-align: center;
+  }
+
+  .pull-quote p {
+    font-family: 'IM Fell English', serif;
+    font-size: 1.25rem;
+    line-height: 1.5;
+    color: var(--ink-light);
+    font-style: italic;
+    margin: 0 !important;
+    text-align: center !important;
+  }
+
+  /* ---- EPIGRAPH ---- */
+  .epigraph {
+    background: var(--paper-warm);
+    border-left: 3px solid var(--gold);
+    padding: 1.2rem 1.8rem;
+    margin: 1.5rem 0;
+    font-style: italic;
+  }
+
+  .epigraph p { margin-bottom: 0.3rem !important; font-size: 0.96rem; text-align: left !important; }
+
+  .epigraph .epigraph-source {
+    font-style: normal;
+    font-family: 'IM Fell English SC', serif;
+    font-size: 0.78rem;
+    color: var(--ink-faint);
+    letter-spacing: 0.08em;
+    margin-top: 0.5rem;
+    display: block;
+  }
+
+  /* ---- FORMULA BOX ---- */
+  .formula-box {
+    background: var(--paper-mid);
+    border: 1px solid var(--rule);
+    padding: 1rem 2rem;
+    margin: 1.5rem auto;
+    text-align: center;
+    font-family: 'Crimson Pro', serif;
+    font-size: 1.05rem;
+    max-width: 340px;
+    letter-spacing: 0.05em;
+  }
+
+  .formula-box .formula-label {
+    font-family: 'IM Fell English SC', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    color: var(--ink-faint);
+    display: block;
+    margin-bottom: 0.4rem;
+  }
+
+  /* ---- FOOTNOTE ---- */
+  .footnote {
+    font-size: 0.82rem;
+    color: var(--ink-faint);
+    font-style: italic;
+    border-top: 1px solid var(--rule);
+    margin-top: 1rem;
+    padding-top: 0.6rem;
+  }
+
+  /* ---- COLOPHON ---- */
+  .colophon {
+    background: var(--paper-warm);
+    border-top: 3px double var(--rule);
+    text-align: center;
+    padding: 2rem;
+    font-family: 'IM Fell English SC', serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    color: var(--ink-faint);
+    line-height: 2;
+  }
+
+  /* ---- RESPONSIVE ---- */
+  @media (max-width: 600px) {
+    .journal-name { font-size: 2.2rem; }
+    .article-title { font-size: 1.8rem; }
+    .wrapper { padding: 0 1rem; }
+    .toc-ai-btn { display: none; }
+    .toc-wordcount { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<!-- AI POPUP -->
+<div class="ai-popup" id="ai-popup" role="dialog" aria-modal="true">
+  <button class="ai-popup-close" id="ai-popup-close" aria-label="Close">✕</button>
+  <div class="ai-popup-label">Chapter Précis</div>
+  <div class="ai-popup-title" id="ai-popup-title"></div>
+  <div class="ai-popup-text" id="ai-popup-text"></div>
+</div>
+
+<!-- SECTION MODAL -->
+<div class="section-modal-overlay" id="section-modal-overlay" role="dialog" aria-modal="true">
+  <div class="section-modal">
+    <button class="section-modal-close" id="section-modal-close">Close ✕</button>
+    <span class="section-modal-num" id="modal-num"></span>
+    <h2 class="section-modal-heading" id="modal-title"></h2>
+    <div class="section-modal-body" id="modal-body"></div>
+    <div class="section-modal-wc" id="modal-wc"></div>
+  </div>
+</div>
+
+<!-- MASTHEAD -->
+<header class="masthead">
+  <span class="journal-label">Dublin Institute for Advanced Studies · Trinity College</span>
+  <span class="journal-name">What is Life?</span>
+  <p class="journal-subtitle">The Physical Aspect of the Living Cell</p>
+  <div class="rule-ornament"><span class="ornament-char">✦</span></div>
+  <p class="journal-meta">Lectures delivered February 1943 · First published Cambridge University Press, 1944</p>
+</header>
+
+<main>
+<div class="wrapper">
+
+  <!-- ARTICLE HEADER -->
+  <header class="article-header">
+    <span class="article-label">Monograph</span>
+    <h1 class="article-title">What is Life?</h1>
+    <p class="article-subtitle">The Physical Aspect of the Living Cell</p>
+    <p class="article-author">Erwin Schrödinger</p>
+    <p class="article-dedication">To the memory of My Parents</p>
+  </header>
+
+  <!-- TABLE OF CONTENTS -->
+  <nav class="toc" aria-label="Table of contents">
+    <div class="toc-title">Contents</div>
+    <ol>
+      <li>
+        <div class="toc-row">
+          <a class="toc-link" data-section="s1" href="#s1">The Classical Physicist's Approach to the Subject</a>
+        </div>
+        <div class="toc-meta">
+          <span class="toc-wordcount" id="wc-s1"></span>
+          <button class="toc-ai-btn" data-section="s1">Précis</button>
+        </div>
+      </li>
+      <li>
+        <div class="toc-row">
+          <a class="toc-link" data-section="s2" href="#s2">The Hereditary Mechanism</a>
+        </div>
+        <div class="toc-meta">
+          <span class="toc-wordcount" id="wc-s2"></span>
+          <button class="toc-ai-btn" data-section="s2">Précis</button>
+        </div>
+      </li>
+      <li>
+        <div class="toc-row">
+          <a class="toc-link" data-section="s3" href="#s3">Mutations</a>
+        </div>
+        <div class="toc-meta">
+          <span class="toc-wordcount" id="wc-s3"></span>
+          <button class="toc-ai-btn" data-section="s3">Précis</button>
+        </div>
+      </li>
+      <li>
+        <div class="toc-row">
+          <a class="toc-link" data-section="s4" href="#s4">The Quantum-Mechanical Evidence</a>
+        </div>
+        <div class="toc-meta">
+          <span class="toc-wordcount" id="wc-s4"></span>
+          <button class="toc-ai-btn" data-section="s4">Précis</button>
+        </div>
+      </li>
+      <li>
+        <div class="toc-row">
+          <a class="toc-link" data-section="s5" href="#s5">Delbrück's Model Discussed and Tested</a>
+        </div>
+        <div class="toc-meta">
+          <span class="toc-wordcount" id="wc-s5"></span>
+          <button class="toc-ai-btn" data-section="s5">Précis</button>
+        </div>
+      </li>
+      <li>
+        <div class="toc-row">
+          <a class="toc-link" data-section="s6" href="#s6">Order, Disorder and Entropy</a>
+        </div>
+        <div class="toc-meta">
+          <span class="toc-wordcount" id="wc-s6"></span>
+          <button class="toc-ai-btn" data-section="s6">Précis</button>
+        </div>
+      </li>
+      <li>
+        <div class="toc-row">
+          <a class="toc-link" data-section="s7" href="#s7">Is Life Based on the Laws of Physics?</a>
+        </div>
+        <div class="toc-meta">
+          <span class="toc-wordcount" id="wc-s7"></span>
+          <button class="toc-ai-btn" data-section="s7">Précis</button>
+        </div>
+      </li>
+      <li class="toc-epi">
+        <div class="toc-row">
+          <a class="toc-link" data-section="s8" href="#s8">Epilogue: On Determinism and Free Will</a>
+        </div>
+        <div class="toc-meta">
+          <span class="toc-wordcount" id="wc-s8"></span>
+          <button class="toc-ai-btn" data-section="s8">Précis</button>
+        </div>
+      </li>
+    </ol>
+  </nav>
+
+  <!-- PREFACE EPIGRAPH -->
+  <div class="epigraph" style="margin-bottom:2rem;">
+    <p>Homo liber nulla de re minus quam de morte cogitat; et ejus sapientia non mortis sed vitae meditatio est.</p>
+    <span class="epigraph-source">Spinoza's Ethics, Pt. IV, Prop. 67 — "There is nothing over which a free man ponders less than death; his wisdom is, to meditate not on death but on life."</span>
+  </div>
+
+  <article class="article-body">
+
+    <!-- CHAPTER 1 -->
+    <section id="s1">
+      <div class="section-header">
+        <span class="section-num">1.</span>
+        <h2 class="section-title">The Classical Physicist's Approach to the Subject</h2>
+      </div>
+
+      <p>This little book arose from a course of public lectures, delivered by a theoretical physicist to an audience of about four hundred which did not substantially dwindle, though warned at the outset that the subject-matter was a difficult one and that the lectures could not be termed popular, even though the physicist's most dreaded weapon, mathematical deduction, would hardly be utilized. The reason for this was not that the subject was simple enough to be explained without mathematics, but rather that it was much too involved to be fully accessible to mathematics.</p>
+
+      <p>The large and important and very much discussed question is: How can the events in space and time which take place within the spatial boundary of a living organism be accounted for by physics and chemistry? The preliminary answer which this little book will endeavor to expound and establish can be summarized as follows: The obvious inability of present-day physics and chemistry to account for such events is no reason at all for doubting that they can be accounted for by those sciences.</p>
+
+      <div class="subsection-head">Statistical Physics — The Fundamental Difference in Structure</div>
+
+      <p>The arrangements of the atoms in the most vital parts of an organism and the interplay of these arrangements differ in a fundamental way from all those arrangements of atoms which physicists and chemists have hitherto made the object of their experimental and theoretical research. Yet the difference which I have just termed fundamental is of such a kind that it might easily appear slight to anyone except a physicist who is thoroughly imbued with the knowledge that the laws of physics and chemistry are statistical throughout.</p>
+
+      <p>The most essential part of a living cell — the chromosome fibre — may suitably be called an <em>aperiodic crystal.</em> In physics we have dealt hitherto only with periodic crystals. The difference in structure is of the same kind as that between an ordinary wallpaper in which the same pattern is repeated again and again in regular periodicity and a masterpiece of embroidery, say a Raphael tapestry, which shows no dull repetition, but an elaborate, coherent, meaningful design traced by the great master.</p>
+
+      <div class="subsection-head">Why Are the Atoms So Small?</div>
+
+      <p>Why must our bodies be so large compared with the atom? The reason is that what we call thought is itself an orderly thing, and can only be applied to material which has a certain degree of orderliness. A physical organization, to be in close correspondence with thought, must be a very well-ordered organization, and that means that the events that happen within it must obey strict physical laws, at least to a very high degree of accuracy.</p>
+
+      <div class="subsection-head">The √n Rule</div>
+
+      <p>The laws of physics and physical chemistry are inaccurate within a probable relative error of the order of 1/√n, where n is the number of molecules that cooperate to bring about that law. You see from this again that an organism must have a comparatively gross structure in order to enjoy the benefit of fairly accurate laws, both for its internal life and for its interplay with the external world.</p>
+
+      <div class="pull-quote">
+        <p>"The most essential part of a living cell — the chromosome fibre — may suitably be called an aperiodic crystal."</p>
+      </div>
+    </section>
+
+    <!-- CHAPTER 2 -->
+    <section id="s2">
+      <div class="section-header">
+        <span class="section-num">2.</span>
+        <h2 class="section-title">The Hereditary Mechanism</h2>
+      </div>
+
+      <p>We have come to the conclusion that an organism and all the biologically relevant processes that it experiences must have an extremely 'many-atomic' structure and must be safeguarded against haphazard, 'single-atomic' events attaining too great importance. Today, we know that incredibly small groups of atoms, much too small to display exact statistical laws, do play a dominating role in the very orderly and lawful events within a living organism.</p>
+
+      <div class="subsection-head">The Hereditary Code-Script (Chromosomes)</div>
+
+      <p>It is the chromosomes, or probably only an axial skeleton fibre of what we actually see under the microscope as the chromosome, that contain in some kind of code-script the entire pattern of the individual's future development and of its functioning in the mature state. Every complete set of chromosomes contains the full code; so there are, as a rule, two copies of the latter in the fertilized egg cell.</p>
+
+      <p>In calling the structure of the chromosome fibres a code-script we mean that the all-penetrating mind, once conceived by Laplace, to which every causal connection lay immediately open, could tell from their structure whether the egg would develop, under suitable conditions, into a black cock or into a speckled hen, into a fly or a maize plant, a rhododendron, a beetle, a mouse or a woman. But the term code-script is, of course, too narrow. The chromosome structures are at the same time instrumental in bringing about the development they foreshadow. They are law-code and executive power — or, to use another simile, they are architect's plan and builder's craft — in one.</p>
+
+      <div class="subsection-head">Maximum Size of a Gene</div>
+
+      <p>A gene contains certainly not more than about a million or a few million atoms. That number is much too small to entail an orderly and lawful behaviour according to statistical physics — and that means according to physics. It is too small, even if all these atoms played the same role, as they do in a gas or in a drop of liquid. And the gene is most certainly not just a homogeneous drop of liquid. It is probably a large protein molecule, in which every atom, every radical, every heterocyclic ring plays an individual role, more or less different from that played by any of the other similar atoms, radicals, or rings.</p>
+
+      <div class="subsection-head">Permanence</div>
+
+      <p>The mere fact that we speak of hereditary properties indicates that we recognize the permanence to be of the almost absolute. What is passed on by the parent to the child is not just this or that peculiarity — it is the whole four-dimensional pattern of the phenotype, the all the visible and manifest nature of the individual, which is reproduced without appreciable change for generations, permanent within centuries though not within tens of thousands of years — and borne at each transmission by the material structure of the nuclei of the two cells which unite to form the fertilized egg cell. That is a marvel.</p>
+
+      <div class="pull-quote">
+        <p>"They are law-code and executive power — or, to use another simile, they are architect's plan and builder's craft — in one."</p>
+      </div>
+    </section>
+
+    <!-- CHAPTER 3 -->
+    <section id="s3">
+      <div class="section-header">
+        <span class="section-num">3.</span>
+        <h2 class="section-title">Mutations</h2>
+      </div>
+
+      <p>Darwin was mistaken in regarding the small, continuous, accidental variations, that are bound to occur even in the most homogeneous population, as the material on which natural selection works. For it has been proved that they are not inherited. About forty years ago the Dutchman de Vries discovered that in the offspring even of thoroughly pure-bred stocks, a very small number of individuals turn up with small but 'jump-like' changes. De Vries called that a <em>mutation.</em> The significant fact is the discontinuity. It reminds a physicist of quantum theory — no intermediate energies occurring between two neighbouring energy levels. He would be inclined to call de Vries's mutation theory, figuratively, the quantum theory of biology.</p>
+
+      <div class="subsection-head">They Breed True — Perfectly Inherited</div>
+
+      <p>Mutations are inherited as perfectly as the original, correctly unchanged characters were. A mutation is definitely a change in the hereditary treasure and has to be accounted for by some change in the hereditary substance. By virtue of their breeding true, mutations are a suitable material on which natural selection may work and produce the species as described by Darwin, by eliminating the unfit and letting the fittest survive.</p>
+
+      <div class="subsection-head">Mutations Induced by X-Rays</div>
+
+      <p>The percentage of mutations in the offspring, the so-called mutation rate, can be increased to a high multiple of the natural mutation rate by irradiating the parents with X-rays or γ-rays. The mutations produced in this way differ in no way — except by being more numerous — from those occurring spontaneously. The first law governing induced mutation rate states: the increase is exactly proportional to the dosage of rays. Mutation is thus not an accumulated effect, but consists in some single event occurring in one chromosome during irradiation. That single event must be an ionization, or similar process, which has to take place inside a critical volume of only about ten atomic-distances-cubed.</p>
+
+      <div class="subsection-head">The Necessity of Mutation Being a Rare Event</div>
+
+      <p>In order to be suitable material for the work of natural selection, mutations must be rare events, as they actually are. If they were so frequent that there was a considerable chance of a dozen different mutations occurring in the same individual, the injurious ones would, as a rule, predominate over the advantageous ones and the species, instead of being improved by selection, would remain unimproved, or would perish. The comparative conservatism which results from the high degree of permanence of the genes is essential.</p>
+
+      <div class="pull-quote">
+        <p>"De Vries's mutation theory — the quantum theory of biology. The mutations are actually due to quantum jumps in the gene molecule."</p>
+      </div>
+    </section>
+
+    <!-- CHAPTER 4 -->
+    <section id="s4">
+      <div class="section-header">
+        <span class="section-num">4.</span>
+        <h2 class="section-title">The Quantum-Mechanical Evidence</h2>
+      </div>
+
+      <p>We are now seriously faced with the question: How can we, from the point of view of statistical physics, reconcile the facts that the gene structure seems to involve only a comparatively small number of atoms and that nevertheless it displays a most regular and lawful activity with a durability or permanence that borders upon the miraculous?</p>
+
+      <div class="subsection-head">Explicable by Quantum Theory</div>
+
+      <p>In the light of present knowledge, the mechanism of heredity is closely related to, nay, founded on, the very basis of quantum theory. The great revelation of quantum theory was that features of a discreteness were discovered in the Book of Nature, in contexts in which anything other than continuity seemed to be absurd according to the views held until then. A small system can by its very nature possess only certain discrete amounts of energy, called its energy levels. The transition from one state to another is a rather mysterious event, which is usually called a quantum jump.</p>
+
+      <div class="subsection-head">Stability Dependent on Temperature</div>
+
+      <p>A group of atoms forming a molecule will of necessity have a certain stability; the configuration cannot change, unless at least the energy difference necessary to 'lift' it to the next higher level is supplied from outside. The best way to express this chance is to indicate the average time you will have to wait until the lift takes place — the 'time of expectation.' This depends on the ratio of two energies: the energy difference W required to effect the transition, and the characteristic thermal energy kT. The time of expectation depends on this ratio by an exponential function:</p>
+
+      <div class="formula-box">
+        <span class="formula-label">Polanyi–Wigner Formula</span>
+        <em>t</em> = τ · <em>e</em><sup>W/kT</sup>
+      </div>
+
+      <p>What is amazing is how enormously the time of expectation depends on comparatively small changes of the ratio W:kT. For W = 30 times kT the time of expectation might be as short as 1/10 second, but would rise to 16 months when W is 50 times kT, and to 30,000 years when W is 60 times kT.</p>
+
+      <div class="subsection-head">Isomeric Transitions as Mutations</div>
+
+      <p>The 'quantum jump' which we mean is the transition from one relatively stable molecular configuration to another. The energy supply required for the transition is not the actual level difference, but the step from the initial level up to the threshold — an energy barrier. These 'isomeric' transitions, occurring by a chance fluctuation of vibrational energy, can be a sufficiently rare event to be interpreted as a spontaneous mutation. Thus we account, by the very principles of quantum mechanics, for the most amazing fact about mutations: that they are 'jumping' variations, with no intermediate forms occurring.</p>
+
+      <div class="pull-quote">
+        <p>"The mechanism of heredity is closely related to, nay, founded on, the very basis of quantum theory."</p>
+      </div>
+    </section>
+
+    <!-- CHAPTER 5 -->
+    <section id="s5">
+      <div class="section-header">
+        <span class="section-num">5.</span>
+        <h2 class="section-title">Delbrück's Model Discussed and Tested</h2>
+      </div>
+
+      <p>We shall assume the structure of a gene to be that of a huge molecule, capable only of discontinuous change, which consists in a rearrangement of the atoms and leads to an isomeric molecule. The rearrangement may affect only a small region of the gene, and a vast number of different rearrangements may be possible. The energy thresholds, separating the actual configuration from any possible isomeric ones, have to be high enough (compared with the average heat energy of an atom) to make the change-over a rare event. These rare events we shall identify with spontaneous mutations.</p>
+
+      <div class="subsection-head">The Aperiodic Solid</div>
+
+      <p>A small molecule might be called 'the germ of a solid'. There seem to be two different ways of building up larger and larger associations. One is the comparatively dull way of repeating the same structure in three directions again and again — the way followed in a growing crystal. The other way is that of building up a more and more extended aggregate without the dull device of repetition. That is the case of the more and more complicated organic molecule — in which every atom, and every group of atoms, plays an individual role, not entirely equivalent to that of many others. We might quite properly call that an aperiodic crystal or solid, and express our hypothesis by saying: We believe a gene — or perhaps the whole chromosome fibre — to be an aperiodic solid.</p>
+
+      <div class="subsection-head">The Variety of Contents Compressed in the Miniature Code</div>
+
+      <p>A well-ordered association of atoms, endowed with sufficient resistivity to keep its order permanently, appears to be the only conceivable material structure that offers a variety of possible arrangements, sufficiently large to embody a complicated system of 'determinations' within a small spatial boundary. Think of the Morse code. The two different signs of dot and dash, in well-ordered groups of not more than four, allow thirty different specifications. With five signs and groups up to 25, the number reaches 372,529,029,846,191,405. The miniature code can precisely correspond with a highly complicated and specified plan of development.</p>
+
+      <div class="subsection-head">Comparison with Facts: X-rays and Reversible Mutations</div>
+
+      <p>An unstable mutant does not, on the average, show a much higher X-ray mutation rate than a stable one. With an explosion furnishing an energy of 30 electron-volts you would certainly not expect that it makes much difference whether the required threshold energy is a little larger or a little smaller. In some cases a transition was studied in both directions, say from a certain 'wild' gene to a specified mutant and back. The natural mutation rate is sometimes nearly the same, sometimes very different — because the threshold has to be measured from the energy level of the starting configuration, which may differ for wild and mutated gene.</p>
+
+      <div class="pull-quote">
+        <p>"We believe a gene — or perhaps the whole chromosome fibre — to be an aperiodic solid."</p>
+      </div>
+    </section>
+
+    <!-- CHAPTER 6 -->
+    <section id="s6">
+      <div class="section-header">
+        <span class="section-num">6.</span>
+        <h2 class="section-title">Order, Disorder and Entropy</h2>
+      </div>
+
+      <p>From Delbrück's general picture of the hereditary substance it emerges that living matter, while not eluding the 'laws of physics' as established up to date, is likely to involve 'other laws of physics' hitherto unknown, which, however, once they have been revealed, will form just as integral a part of this science as the former.</p>
+
+      <div class="subsection-head">Living Matter Evades the Decay to Equilibrium</div>
+
+      <p>When a system that is not alive is isolated or placed in a uniform environment, all motion usually comes to a standstill very soon as a result of various kinds of friction; differences of electric or chemical potential are equalized; temperature becomes uniform. After that the whole system fades away into a dead, inert lump of matter. The physicist calls this the state of thermodynamical equilibrium, or of 'maximum entropy.' It is by avoiding this rapid decay into the inert state of equilibrium that an organism appears so enigmatic.</p>
+
+      <div class="subsection-head">It Feeds on 'Negative Entropy'</div>
+
+      <p>How does the living organism avoid decay? By eating, drinking, breathing — metabolism. Every process, event, happening in Nature means an increase of the entropy of the part of the world where it is going on. A living organism continually increases its entropy — or, as you may say, produces positive entropy — and thus tends to approach the dangerous state of maximum entropy, which is death. It can only keep aloof from it, i.e., alive, by continually drawing from its environment negative entropy. What an organism feeds upon is negative entropy.</p>
+
+      <div class="formula-box">
+        <span class="formula-label">Boltzmann's Entropy Equation</span>
+        Entropy = <em>k</em> log <em>D</em>
+      </div>
+
+      <div class="subsection-head">Organization Maintained by Extracting 'Order' from the Environment</div>
+
+      <p>The device by which an organism maintains itself stationary at a fairly high level of orderliness (= fairly low level of entropy) really consists in continually sucking orderliness from its environment. In the case of higher animals we know the kind of orderliness they feed upon — the extremely well-ordered state of matter in more or less complicated organic compounds which serve them as foodstuffs. After utilizing it they return it in a very much degraded form. Plants have their most powerful supply of 'negative entropy' in sunlight.</p>
+
+      <div class="pull-quote">
+        <p>"What an organism feeds upon is negative entropy. Or, to put it less paradoxically: the organism sucks orderliness from its environment."</p>
+      </div>
+    </section>
+
+    <!-- CHAPTER 7 -->
+    <section id="s7">
+      <div class="section-header">
+        <span class="section-num">7.</span>
+        <h2 class="section-title">Is Life Based on the Laws of Physics?</h2>
+      </div>
+
+      <p>From all we have learnt about the structure of living matter, we must be prepared to find it working in a manner that cannot be reduced to the ordinary laws of physics. And that not on the ground that there is any 'new force' directing the behaviour of the single atoms within a living organism, but because the construction is different from anything we have yet tested in the physical laboratory.</p>
+
+      <div class="subsection-head">The Striking Contrast</div>
+
+      <p>In biology we are faced with an entirely different situation. A single group of atoms existing only in one copy produces orderly events, marvellously tuned in with each other and with the environment according to most subtle laws. The orderliness encountered in the unfolding of life springs from a different source than the statistical order of inanimate physics. It appears that there are two different 'mechanisms' by which orderly events can be produced: the 'statistical mechanism' which produces <em>order from disorder</em> and the new one, producing <em>order from order.</em></p>
+
+      <div class="subsection-head">Clockwork After All Statistical</div>
+
+      <p>'Physical clockworks' visibly display very prominent 'order-from-order' features — the type that aroused the physicist's excitement when he encountered them in the organism. Quantum theory has a very short answer to the question of when a physical system displays 'clockwork features': at the absolute zero of temperature. As zero temperature is approached the molecular disorder ceases to have any bearing on physical events. Ordinary clockworks made of solids function 'dynamically' because they are built of solids kept in shape by London-Heitler forces, strong enough to elude the disorderly tendency of heat motion at ordinary temperature.</p>
+
+      <div class="subsection-head">The New Principle Is Not Alien to Physics</div>
+
+      <p>The new principle that is involved is a genuinely physical one: it is, in my opinion, nothing else than the principle of quantum theory over again. The point of resemblance between a clockwork and an organism is simply and solely that the latter also hinges upon a solid — the aperiodic crystal forming the hereditary substance, largely withdrawn from the disorder of heat motion. But the most striking features that make the biological case novel and unprecedented are: first, the curious distribution of these 'cogs' through a many-celled organism; and second, the fact that the single 'cog' is not of coarse human make, but is the finest masterpiece ever achieved along the lines of the Lord's quantum mechanics.</p>
+
+      <div class="pull-quote">
+        <p>"We must be prepared to find a new type of physical law prevailing in living matter: order from order."</p>
+      </div>
+    </section>
+
+    <!-- EPILOGUE -->
+    <section id="s8">
+      <div class="section-header">
+        <span class="section-num">❧</span>
+        <h2 class="section-title">Epilogue: On Determinism and Free Will</h2>
+      </div>
+
+      <p>According to the evidence put forward in the preceding pages the space-time events in the body of a living being which correspond to the activity of its mind, to its self-conscious or any other actions, are — if not strictly deterministic — at any rate statistico-deterministic. To the physicist I wish to emphasize that in my opinion quantum indeterminacy plays no biologically relevant role in them, except perhaps by enhancing their purely accidental character in such events as meiosis, natural and X-ray-induced mutation.</p>
+
+      <p>Let me regard it as a fact that my body functions as a pure mechanism according to the Laws of Nature. Yet I know, by incontrovertible direct experience, that I am directing its motions, of which I foresee the effects, that may be fateful and all-important, in which case I feel and take full responsibility for them. The only possible inference from these two facts is that I — I in the widest meaning of the word, that is to say, every conscious mind that has ever said or felt 'I' — am the person, if any, who controls the 'motion of the atoms' according to the Laws of Nature.</p>
+
+      <div class="subsection-head">The Unity of Consciousness</div>
+
+      <p>Consciousness is never experienced in the plural, only in the singular. Even in the pathological cases of split consciousness or double personality the two persons alternate, they are never manifest simultaneously. From the earliest records of human thought — the great Upanishads — the recognition ATHMAN = BRAHMAN (the personal self equals the omnipresent, all-comprehending eternal self) was considered the quintessence of deepest insight. The mystics of many centuries, independently, yet in perfect harmony with each other, have described the unique experience of their lives in terms that can be condensed in the phrase: DEUS FACTUS SUM — I have become God.</p>
+
+      <div class="epigraph">
+        <p>The only possible alternative is simply to keep to the immediate experience that consciousness is a singular of which the plural is unknown; that there is only one thing and that what seems to be a plurality is merely a series of different aspects of this one thing, produced by a deception — the Indian <em>Maja.</em></p>
+        <span class="epigraph-source">— Schrödinger, concluding paragraph</span>
+      </div>
+
+      <div class="pull-quote">
+        <p>"If a man never contradicts himself, the reason must be that he virtually never says anything at all."</p>
+      </div>
+    </section>
+
+  </article>
+
+</div><!-- /wrapper -->
+</main>
+
+<footer class="colophon">
+  <p>Dublin Institute for Advanced Studies · Trinity College, Dublin</p>
+  <p>Lectures delivered February 1943 · First published by Cambridge University Press, 1944</p>
+  <p>Schrödinger, E. <em>What is Life? The Physical Aspect of the Living Cell.</em> Cambridge, 1944.</p>
+</footer>
+
+<script>
+  // ── SCROLL PROGRESS ──────────────────────────────────────────────────
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    document.getElementById('progress-bar').style.width = pct + '%';
+  });
+
+  // ── SECTION METADATA ─────────────────────────────────────────────────
+  const sectionMeta = {
+    s1: { num: '1.', title: 'The Classical Physicist\'s Approach' },
+    s2: { num: '2.', title: 'The Hereditary Mechanism' },
+    s3: { num: '3.', title: 'Mutations' },
+    s4: { num: '4.', title: 'The Quantum-Mechanical Evidence' },
+    s5: { num: '5.', title: 'Delbrück\'s Model Discussed and Tested' },
+    s6: { num: '6.', title: 'Order, Disorder and Entropy' },
+    s7: { num: '7.', title: 'Is Life Based on the Laws of Physics?' },
+    s8: { num: '❧', title: 'Epilogue: On Determinism and Free Will' },
+  };
+
+  // ── WORD COUNT ───────────────────────────────────────────────────────
+  function countWords(el) {
+    return (el.textContent || '').trim().split(/\s+/).filter(Boolean).length;
+  }
+  function formatWC(n) { return n.toLocaleString() + '\u202fwords'; }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    Object.keys(sectionMeta).forEach(id => {
+      const sec = document.getElementById(id);
+      if (!sec) return;
+      const el = document.getElementById('wc-' + id);
+      if (el) el.textContent = formatWC(countWords(sec));
+    });
+  });
+
+  // ── AI PRÉCIS ────────────────────────────────────────────────────────
+  const summaries = {
+    s1: 'Schrödinger opens with a frank confession: he, a theoretical physicist, is venturing into biology — a field outside his mastery. His justification is the old longing for unified, all-embracing knowledge, which the specialization of modern science threatens to extinguish. The central question is stark: how can the events within a living organism be accounted for by physics and chemistry? His provisional answer is equally stark — current physics cannot explain life, but the inability is itself explicable. The key insight is that living matter\'s governing structures are aperiodic crystals, unlike anything physicists have studied, and that the laws of physics are statistical throughout, which constrains how small a system can be while still obeying lawful behavior. The √n rule quantifies this: accurate physical law requires large numbers of cooperating atoms.',
+    s2: 'Schrödinger turns to the biological facts that must constrain any physical theory of life. The chromosomes contain a "code-script" that determines the entire four-dimensional developmental pattern of an organism — acting simultaneously as law and executive, architect\'s plan and builder\'s craft. The extraordinary durability of this code across centuries is established by tracking hereditary features through historical portraits. Geneticists\' crossing experiments, especially work on Drosophila, allow chromosome regions to be mapped; the estimated size of a gene — a cube of ~300 Å — contains perhaps a million atoms, far too few to obey statistical physics. Yet genes are almost miraculously stable. This tension — small number, long stability — is the book\'s central puzzle.',
+    s3: 'Darwin was wrong about the raw material of natural selection: small continuous variations are not inherited. De Vries\'s discovery of discontinuous "jump-like" mutations — rare, inherited perfectly, and analogous in their discreteness to quantum energy levels — provides the correct mechanism. Schrödinger shows how X-ray experiments illuminate the physics of mutation: the mutation rate is exactly proportional to dosage (a single event suffices), and that event is an ionization or excitation within a critical volume of roughly a thousand atoms. The first and second laws of X-ray mutagenesis together fix the size of the "target." Mutations must remain rare events; too high a mutation rate would accumulate injurious changes faster than selection could eliminate them, ending in species collapse rather than evolution.',
+    s4: 'Quantum theory, born in 1900 — the same year Mendel\'s paper was rediscovered — provides the explanatory framework Schrödinger has been seeking. A molecule is a system with discrete energy levels; transitions between configurations require surmounting an energy threshold W, and the expected waiting time grows exponentially as e^(W/kT). This Polanyi–Wigner result explains how a gene composed of a mere million atoms can remain unchanged for centuries at body temperature: the ratio W/kT for biologically stable configurations is large enough to make spontaneous isomeric transitions astronomically rare. Mutations correspond to quantum jumps between molecular isomers separated by such a threshold. The Heitler–London theory of chemical bonding, a consequence of quantum mechanics, is the first-principles foundation for this picture.',
+    s5: 'Schrödinger now presses Delbrück\'s molecular model against a full range of genetic observations. The model predicts: (a) high and quantifiable stability at physiological temperatures; (b) discontinuous, "all-or-none" mutations; (c) induced mutation rate proportional to ionization dose but independent of wavelength; (d) greater temperature-sensitivity in stable wild-type genes than in unstable mutants; (e) asymmetric natural mutation rates in the two directions of a reversible mutation. Each prediction matches the data. The deeper conceptual yield is the concept of the aperiodic solid — a molecular aggregate in which every atom plays an individual role — capable of encoding immense informational variety in a tiny volume, like Morse code scaled to atomic dimensions.',
+    s6: 'This chapter reframes life in thermodynamic terms. An organism evades the universal tendency toward maximum entropy (thermodynamic equilibrium = death) by continuously importing "negative entropy" — highly ordered matter — from its environment and exporting degraded, high-entropy waste. The statistical meaning of entropy (S = k log D, where D measures atomic disorder) connects the biological observation to Boltzmann\'s framework. Life does not violate the Second Law; it maintains a local, far-from-equilibrium steady state by metabolic throughput. Schrödinger notes a subtle but important point in the chapter\'s footnote: it is not merely free energy but the specific chemical order of foodstuffs that matters, as Simon correctly pointed out — an organism cannot feed on charcoal even though its free energy is comparable to organic compounds.',
+    s7: 'The final chapter resolves the book\'s central tension. Living matter follows two distinct principles of orderliness: "order from disorder" (the statistical physics of inanimate matter) and "order from order" (the deterministic transmission of atomic configurations). The second principle is not alien to physics — clocks and planetary orbits exemplify it — but it is unprecedented at the single-molecule scale that governs heredity. The connection to quantum theory is direct: aperiodic solids, held in shape by Heitler–London forces, behave like clockworks because room temperature is effectively absolute zero for their large energy gaps. Schrödinger concludes that we should expect genuinely new physical laws in organisms — not supernatural ones, but ones as integral to future physics as thermodynamics is to current physics.',
+    s8: 'Schrödinger closes with a philosophical coda he offers as personal rather than scientific. The body, he accepts, operates as a deterministic or statistico-deterministic mechanism. Yet consciousness experiences itself as the author of bodily action, bearing full moral responsibility. The paradox dissolves, he argues, only if the "I" — every conscious mind — is identified with the agency controlling atomic motion. This is the ancient Vedantic insight: ATHMAN = BRAHMAN, the personal self is the universal self. Consciousness is always singular; the apparent plurality of minds is an illusion (Maya). Schrödinger draws on Upanishadic thought and the mystic tradition to argue that a monistic view of mind is not blasphemous but the most intellectually coherent resolution of the puzzle — and the deepest reading of what it means to say that a living organism is a center of ordered experience in a disordered universe.',
+  };
+
+  // ── POPUP ─────────────────────────────────────────────────────────────
+  const popup      = document.getElementById('ai-popup');
+  const popupTitle = document.getElementById('ai-popup-title');
+  const popupText  = document.getElementById('ai-popup-text');
+
+  function closePopup() { popup.classList.remove('visible'); }
+
+  document.getElementById('ai-popup-close').addEventListener('click', closePopup);
+
+  function positionPopup(btn) {
+    const rect = btn.getBoundingClientRect();
+    const pw = 380;
+    let left = rect.right - pw;
+    if (left < 8) left = 8;
+    let top = rect.bottom + 8;
+    if (top + 280 > window.innerHeight) top = rect.top - 288;
+    popup.style.left = left + 'px';
+    popup.style.top  = top  + 'px';
+    popup.style.maxWidth = pw + 'px';
+  }
+
+  document.querySelectorAll('.toc-ai-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const sid  = btn.dataset.section;
+      const meta = sectionMeta[sid] || {};
+      if (popup.classList.contains('visible') && popup.dataset.section === sid) {
+        closePopup(); return;
+      }
+      popup.dataset.section = sid;
+      popupTitle.textContent = meta.title || sid;
+      popupText.textContent  = summaries[sid] || 'No précis available.';
+      popup.classList.add('visible');
+      positionPopup(btn);
+    });
+  });
+
+  document.addEventListener('click', e => {
+    if (!popup.contains(e.target) && !e.target.classList.contains('toc-ai-btn')) closePopup();
+  });
+
+  // ── SECTION MODAL ────────────────────────────────────────────────────
+  const overlay   = document.getElementById('section-modal-overlay');
+  const modalNum  = document.getElementById('modal-num');
+  const modalTitle = document.getElementById('modal-title');
+  const modalBody  = document.getElementById('modal-body');
+  const modalWC    = document.getElementById('modal-wc');
+
+  function openModal(sectionId) {
+    const sec  = document.getElementById(sectionId);
+    if (!sec) return;
+    const meta = sectionMeta[sectionId] || {};
+    modalNum.textContent   = meta.num   || '';
+    modalTitle.textContent = meta.title || sectionId;
+    const clone = sec.cloneNode(true);
+    const hdr = clone.querySelector('.section-header');
+    if (hdr) hdr.remove();
+    modalBody.innerHTML = clone.innerHTML;
+    modalWC.textContent = formatWC(countWords(sec));
+    overlay.classList.add('visible');
+    document.body.style.overflow = 'hidden';
+    overlay.scrollTop = 0;
+  }
+
+  function closeModal() {
+    overlay.classList.remove('visible');
+    document.body.style.overflow = '';
+  }
+
+  document.getElementById('section-modal-close').addEventListener('click', closeModal);
+  overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(); closePopup(); } });
+
+  document.querySelectorAll('.toc-link').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      openModal(link.dataset.section);
+    });
+  });
+</script>
+
+</body>
+</html>
