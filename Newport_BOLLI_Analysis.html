@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cognitive Fitness & AI Literacy — Newport Through a BOLLI Lens</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=JetBrains+Mono:wght@400;600&display=swap');
+
+  :root {
+    --bg: #0f1117;
+    --surface: #181c27;
+    --surface2: #1e2333;
+    --border: #2a3050;
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --gold-dim: rgba(201,168,76,0.15);
+    --amber: #d97706;
+    --teal: #2dd4bf;
+    --teal-dim: rgba(45,212,191,0.12);
+    --red: #f87171;
+    --red-dim: rgba(248,113,113,0.12);
+    --text: #e2e6f0;
+    --text-dim: #8892a8;
+    --text-faint: #4a5370;
+    --serif: 'Source Serif 4', Georgia, serif;
+    --display: 'Playfair Display', Georgia, serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--serif);
+    font-size: 17px;
+    line-height: 1.75;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(15,17,23,0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  nav::-webkit-scrollbar { display: none; }
+  nav a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 14px 12px;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+  }
+  nav a:hover, nav a.active { color: var(--gold); border-bottom-color: var(--gold); }
+  .nav-logo {
+    font-family: var(--display);
+    font-size: 0.9rem;
+    color: var(--gold);
+    margin-right: 12px;
+    white-space: nowrap;
+    padding: 14px 0;
+    border-right: 1px solid var(--border);
+    padding-right: 16px;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 80px 24px 60px;
+    max-width: 860px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .hero-tag {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid var(--gold);
+    padding: 4px 14px;
+    border-radius: 2px;
+    margin-bottom: 28px;
+  }
+  .hero h1 {
+    font-family: var(--display);
+    font-size: clamp(2rem, 5vw, 3.4rem);
+    font-weight: 900;
+    line-height: 1.15;
+    color: #fff;
+    margin-bottom: 20px;
+  }
+  .hero h1 em { font-style: italic; color: var(--gold-light); }
+  .hero-byline {
+    color: var(--text-dim);
+    font-size: 0.95rem;
+    font-family: var(--mono);
+    letter-spacing: 0.04em;
+    margin-bottom: 36px;
+  }
+  .hero-summary {
+    font-size: 1.15rem;
+    color: var(--text);
+    line-height: 1.8;
+    font-style: italic;
+    border-left: 3px solid var(--gold);
+    text-align: left;
+    padding: 20px 28px;
+    background: var(--gold-dim);
+    border-radius: 0 8px 8px 0;
+  }
+
+  /* ── LAYOUT ── */
+  .page-body {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  /* ── SECTION HEADERS ── */
+  .section {
+    margin-top: 64px;
+  }
+  .section-label {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+  .section h2 {
+    font-family: var(--display);
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.25;
+    margin-bottom: 24px;
+  }
+  .section > p {
+    color: var(--text);
+    margin-bottom: 16px;
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 48px 0;
+  }
+
+  /* ── COMPRESSED SUMMARY (accordion) ── */
+  .compress-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 24px;
+  }
+  .compress-toggle {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text);
+    font-family: var(--serif);
+    font-size: 1rem;
+    text-align: left;
+    transition: background 0.2s;
+  }
+  .compress-toggle:hover { background: var(--surface2); }
+  .compress-toggle .toggle-label {
+    font-weight: 600;
+    color: var(--gold-light);
+  }
+  .compress-toggle .toggle-hint {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--text-dim);
+  }
+  .compress-toggle .chevron {
+    font-size: 0.8rem;
+    color: var(--gold);
+    transition: transform 0.3s;
+    flex-shrink: 0;
+    margin-left: 16px;
+  }
+  .compress-toggle.open .chevron { transform: rotate(180deg); }
+  .compress-body {
+    display: none;
+    padding: 0 24px 24px;
+    border-top: 1px solid var(--border);
+  }
+  .compress-body.open { display: block; }
+
+  /* bullets inside compress-body */
+  .signal-list {
+    list-style: none;
+    margin-top: 20px;
+  }
+  .signal-list li {
+    display: flex;
+    gap: 14px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.95rem;
+    color: var(--text);
+  }
+  .signal-list li:last-child { border-bottom: none; }
+  .signal-list .bullet {
+    color: var(--gold);
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    flex-shrink: 0;
+    padding-top: 3px;
+  }
+
+  /* ── ENTROPY PANEL ── */
+  .entropy-panel {
+    background: var(--surface);
+    border: 1px solid var(--teal);
+    border-radius: 10px;
+    padding: 32px;
+    margin-top: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .entropy-panel::before {
+    content: 'S = −Σ pᵢ log pᵢ';
+    position: absolute;
+    top: 16px;
+    right: 24px;
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    color: var(--text-faint);
+    letter-spacing: 0.04em;
+  }
+  .entropy-panel h3 {
+    font-family: var(--display);
+    font-size: 1.25rem;
+    color: var(--teal);
+    margin-bottom: 16px;
+  }
+  .entropy-panel p { margin-bottom: 14px; font-size: 0.97rem; }
+  .entropy-panel p:last-child { margin-bottom: 0; }
+
+  .signal-noise {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 24px;
+  }
+  .sn-box {
+    padding: 18px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+  }
+  .sn-box.signal {
+    background: var(--teal-dim);
+    border: 1px solid var(--teal);
+  }
+  .sn-box.noise {
+    background: var(--red-dim);
+    border: 1px solid var(--red);
+  }
+  .sn-box .sn-label {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .sn-box.signal .sn-label { color: var(--teal); }
+  .sn-box.noise .sn-label { color: var(--red); }
+  .sn-box p { line-height: 1.6; }
+
+  /* ── GAPS GRID ── */
+  .gaps-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+    margin-top: 28px;
+  }
+  .gap-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .gap-card:hover { border-color: var(--gold); }
+  .gap-card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    padding: 24px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .gap-card-header:hover { background: var(--surface2); }
+  .gap-num {
+    font-family: var(--display);
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--gold);
+    opacity: 0.35;
+    line-height: 1;
+    flex-shrink: 0;
+    width: 44px;
+  }
+  .gap-card-title-area { flex: 1; }
+  .gap-foundation-tag {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 6px;
+  }
+  .gap-card-title {
+    font-family: var(--display);
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.3;
+    margin-bottom: 6px;
+  }
+  .gap-card-sub {
+    font-size: 0.88rem;
+    color: var(--text-dim);
+    font-style: italic;
+  }
+  .gap-chevron {
+    color: var(--gold);
+    font-size: 0.75rem;
+    flex-shrink: 0;
+    margin-top: 4px;
+    transition: transform 0.3s;
+  }
+  .gap-card.open .gap-chevron { transform: rotate(180deg); }
+  .gap-body {
+    display: none;
+    padding: 0 24px 24px 86px;
+    border-top: 1px solid var(--border);
+  }
+  .gap-card.open .gap-body { display: block; }
+  .gap-body p { margin-top: 16px; font-size: 0.95rem; color: var(--text); }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: 18px;
+  }
+  .mini-box {
+    padding: 14px 16px;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+  .mini-box.red-box { background: var(--red-dim); border-left: 3px solid var(--red); }
+  .mini-box.teal-box { background: var(--teal-dim); border-left: 3px solid var(--teal); }
+  .mini-box .mini-label {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .mini-box.red-box .mini-label { color: var(--red); }
+  .mini-box.teal-box .mini-label { color: var(--teal); }
+
+  /* ── SYNTHESIS ── */
+  .synthesis-block {
+    background: linear-gradient(135deg, #13192b 0%, #1a1028 100%);
+    border: 1px solid #3a3060;
+    border-radius: 12px;
+    padding: 40px;
+    margin-top: 28px;
+  }
+  .synthesis-block h3 {
+    font-family: var(--display);
+    font-size: 1.4rem;
+    color: var(--gold-light);
+    margin-bottom: 20px;
+  }
+  .synthesis-block p { margin-bottom: 16px; font-size: 0.97rem; }
+  .key-reframes {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 24px;
+  }
+  .reframe {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 16px 18px;
+    background: rgba(201,168,76,0.08);
+    border-radius: 8px;
+    border-left: 3px solid var(--gold);
+    font-size: 0.92rem;
+    line-height: 1.6;
+  }
+  .reframe .rf-icon { font-size: 1.3rem; flex-shrink: 0; }
+  .reframe strong { color: var(--gold-light); }
+
+  /* ── CALLOUT ── */
+  .callout {
+    background: var(--gold-dim);
+    border: 1px solid var(--gold);
+    border-radius: 8px;
+    padding: 22px 26px;
+    margin: 24px 0;
+    font-size: 0.97rem;
+    font-style: italic;
+    color: var(--text);
+  }
+  .callout strong { color: var(--gold-light); font-style: normal; }
+
+  /* ── CITATIONS ── */
+  .citations-section {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 24px 64px;
+  }
+  .cite-group {
+    margin-top: 32px;
+  }
+  .cite-group-label {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .cite-entry {
+    display: flex;
+    gap: 16px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.875rem;
+    line-height: 1.65;
+    color: var(--text-dim);
+  }
+  .cite-entry:last-child { border-bottom: none; }
+  .cite-num {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--text-faint);
+    flex-shrink: 0;
+    width: 24px;
+    padding-top: 2px;
+  }
+  .cite-entry a {
+    color: var(--teal);
+    text-decoration: none;
+    word-break: break-word;
+  }
+  .cite-entry a:hover { text-decoration: underline; color: var(--gold-light); }
+  .cite-note {
+    font-style: italic;
+    color: var(--text-faint);
+    font-size: 0.82rem;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 28px 24px;
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    color: var(--text-faint);
+  }
+
+  @media (max-width: 640px) {
+    .two-col, .signal-noise { grid-template-columns: 1fr; }
+    .gap-body { padding-left: 24px; }
+    .entropy-panel::before { display: none; }
+    .hero { padding: 48px 16px 40px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-logo">BOLLI · AI Literacy</span>
+  <a href="#newport">Newport</a>
+  <a href="#entropy">Entropy</a>
+  <a href="#gaps">What's Missing</a>
+  <a href="#synthesis">Synthesis</a>
+  <a href="#citations">Citations</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">Analysis · March 2026</div>
+  <h1>Stop Filling Your Mind<br>With <em>Digital Doritos</em><br><span style="font-size:0.75em; color:var(--text-dim);">— but also stop filling it with verbose prose</span></h1>
+  <div class="hero-byline">Newport (NYT, Mar 29 2026) ↔ BOLLI Foundations: Intelligence &amp; Conversation</div>
+  <div class="hero-summary">
+    Cal Newport's NYT essay correctly diagnoses a cognitive crisis — but prescribes remedies that miss the most important opportunity of our moment: the deliberate, effortful, conversational use of AI as a genuine cognitive partner. His own essay, ironically, illustrates the deeper problem: a mountain of words carrying a thimble of signal.
+  </div>
+</div>
+
+<div class="page-body">
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- SECTION 1: NEWPORT COMPRESSED         -->
+  <!-- ══════════════════════════════════════ -->
+  <div class="section" id="newport">
+    <div class="section-label">§ 1 — Newport's Argument</div>
+    <h2>The Case for Cognitive Fitness — Compressed</h2>
+    <p>Newport's essay runs roughly 3,800 words. Its essential argument fits in about 400 — a 90% redundancy rate that is itself a specimen of the problem he diagnoses. Below is the signal, stripped of the noise.</p>
+
+    <div class="compress-box">
+      <button class="compress-toggle" onclick="toggleCompress(this)" aria-expanded="false">
+        <span>
+          <span class="toggle-label">Show the compressed version</span>
+          <span style="display:block; font-size:0.85rem; color:var(--text-dim); margin-top:4px;">~400 words · 10% of the original · same information</span>
+        </span>
+        <span class="chevron">▼</span>
+      </button>
+      <div class="compress-body">
+        <ul class="signal-list">
+          <li>
+            <span class="bullet">01</span>
+            <span><strong>The crisis is real.</strong> Attention spans have dropped ~⅓ since 2004, with the steepest decline after smartphones became ubiquitous in the mid-2010s. Adult literacy and concentration have measurably degraded in the same window. Researchers are asking whether humans have passed "peak brain power."</span>
+          </li>
+          <li>
+            <span class="bullet">02</span>
+            <span><strong>Social media is ultraprocessed content.</strong> TikTok, Instagram, and X are to the mind what Doritos are to the body — engineered for compulsion, not nutrition. Like trans fats, they should be regulated (Australia has banned them for under-16s) and largely avoided.</span>
+          </li>
+          <li>
+            <span class="bullet">03</span>
+            <span><strong>AI misuse compounds the problem.</strong> Using LLMs to avoid hard thinking produces "workslop" (AI-generated content with no substance) and "brain fry" (mental exhaustion from constant context-switching). A January 2026 study found significant negative correlation between frequent AI tool use and critical thinking ability.</span>
+          </li>
+          <li>
+            <span class="bullet">04</span>
+            <span><strong>Contemplation is the cognitive equivalent of cardio.</strong> Reading deeply (Maryanne Wolf's "deep reading processes") is the proposed 10,000 steps of cognitive fitness. Keeping phones out of easy reach reduces attentional friction. Phone bans in schools show measurable test-score improvements.</span>
+          </li>
+          <li>
+            <span class="bullet">05</span>
+            <span><strong>The workplace must reform.</strong> Email and Slack interrupt office workers every 2 minutes. AI should be used only for routine/repetitive tasks, never for core intellectual work. Your writing should be your own.</span>
+          </li>
+          <li>
+            <span class="bullet">06</span>
+            <span><strong>A revolution is possible.</strong> Just as the 1955 Eisenhower heart attack and Cooper's 1968 <em>Aerobics</em> triggered a physical health revolution, a cognition-defense revolution is overdue. The analogy runs throughout: diet, exercise, regulation, culture change.</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- SECTION 2: THE ENTROPY FRAME          -->
+  <!-- ══════════════════════════════════════ -->
+  <div class="section" id="entropy">
+    <div class="section-label">§ 2 — The Entropy Frame</div>
+    <h2>Words as Cognitive Load:<br>The Problem Newport Doesn't Name</h2>
+
+    <p>Newport worries about attentional degradation but overlooks a more fundamental issue embedded in the very medium he prescribes: <em>the informational entropy of verbal communication itself.</em></p>
+
+    <div class="entropy-panel">
+      <h3>Excess Words = Excess Mental Entropy</h3>
+      <p>Shannon's information entropy measures the uncertainty — or informational density — of a signal. A sentence packed with meaning has low entropy relative to its length (high bit-density). A sentence padded with anecdote, qualification, and restatement carries the same information at much higher entropy — more words, same payload, greater cognitive cost to decode.</p>
+      <p>Newport's own essay exemplifies this: the Eisenhower heart-attack narrative, the Jane Fonda videos, the Lincoln cottage scene — vivid, humanizing, but informational filler. Each consumes neural processing bandwidth. Multiply this across all the long-form content we consume and the cumulative cognitive tax is enormous.</p>
+      <p>This is not just a rhetorical observation. It maps onto Schrödinger's framing of life as a system that acquires negative entropy — order extracted from disorder. Cognition, similarly, is the extraction of pattern from noise. Every excess word is noise that the brain must process before it can extract signal. <strong>Verbose prose generates excess mental entropy</strong> — a concept Newport's own physical-health analogy should have led him to.</p>
+
+      <div class="signal-noise">
+        <div class="sn-box signal">
+          <div class="sn-label">Signal — Low Entropy</div>
+          <p>Precise prompting. Dense academic prose. A well-crafted abstract. A legal brief. A BOLLI discussion question that crystallizes a week of reading into one sentence.</p>
+        </div>
+        <div class="sn-box noise">
+          <div class="sn-label">Noise — High Entropy</div>
+          <p>3,800-word op-eds making six points. Social media scroll. Slack threads. AI "workslop." Endless qualification without added precision.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>The compression discipline is the cognitive exercise.</strong> Learning to extract the core signal from verbose prose — and to communicate precisely in return — is itself a form of deep cognitive work. It is exactly what good AI prompting trains. Newport prescribes reading as the cognitive equivalent of aerobics, but says nothing about the quality of the prose being read.
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- SECTION 3: WHAT NEWPORT MISSES        -->
+  <!-- ══════════════════════════════════════ -->
+  <div class="section" id="gaps">
+    <div class="section-label">§ 3 — What Newport Misses</div>
+    <h2>Four Gaps — Each Illuminated<br>by a BOLLI Foundation</h2>
+
+    <p>Newport's remedies — read more, use phones less, ban Slack, restrict AI to routine tasks — are not wrong. They are incomplete. Each gap maps precisely onto a foundational concept from the BOLLI <em>Intelligence &amp; Conversation</em> course framework.</p>
+
+    <div class="gaps-grid">
+
+      <!-- GAP 1 -->
+      <div class="gap-card" id="gap1">
+        <div class="gap-card-header" onclick="toggleGap('gap1')">
+          <div class="gap-num">01</div>
+          <div class="gap-card-title-area">
+            <div class="gap-foundation-tag">BOLLI Foundation 1 — Digital &amp; Organic Intelligence</div>
+            <div class="gap-card-title">Newport treats AI as monolithic — but the distinction that matters is <em>how</em> it's used</div>
+            <div class="gap-card-sub">Passive consumption vs. active cognitive partnership are not the same phenomenon</div>
+          </div>
+          <div class="gap-chevron">▼</div>
+        </div>
+        <div class="gap-body">
+          <p>Newport correctly identifies that offloading thinking to AI — using it to avoid "the blank page" — degrades cognition. The research he cites supports this. But he extrapolates from passive AI use to all AI use, which is a category error of the same kind as banning gyms because some people get injured.</p>
+          <p>The BOLLI framework draws a sharp line: <strong>digital intelligence and organic intelligence are complementary, not competitive</strong>. The organic mind brings judgment, lived context, interpretive depth, and the "so what." The digital intelligence brings synthesis speed, breadth, and the surface of connections. Neither works as well alone.</p>
+          <p>When a BOLLI participant uses AI to surface competing scholarly interpretations of a historical event — then applies their own judgment to evaluate and prioritize them — they are doing more cognitive work than if they read a single textbook account. The AI has raised the intellectual bar, not lowered it.</p>
+          <div class="two-col">
+            <div class="mini-box red-box">
+              <div class="mini-label">Newport sees (correctly)</div>
+              "Coax a mediocre draft from a chatbot to avoid the blank page" = cognitive abdication that compounds attentional degradation.
+            </div>
+            <div class="mini-box teal-box">
+              <div class="mini-label">BOLLI adds (crucially)</div>
+              Use AI to surface what you don't know; use your own mind to evaluate what matters and why. This amplifies organic intelligence rather than replacing it.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- GAP 2 -->
+      <div class="gap-card" id="gap2">
+        <div class="gap-card-header" onclick="toggleGap('gap2')">
+          <div class="gap-num">02</div>
+          <div class="gap-card-title-area">
+            <div class="gap-foundation-tag">BOLLI Foundation 2 — The Importance of Conversation</div>
+            <div class="gap-card-title">Newport prescribes reading as the cognitive exercise — but Socratic AI dialogue is equally valid, and more interactive</div>
+            <div class="gap-card-sub">Effortful, iterative dialogue is deep cognitive work, not cognitive bypass</div>
+          </div>
+          <div class="gap-chevron">▼</div>
+        </div>
+        <div class="gap-body">
+          <p>Newport's cognitive-exercise prescription is: read deeply. Maryanne Wolf's "deep reading processes" rewire neuronal regions for greater complexity and nuance. This is sound. But Newport never considers that <em>effortful, iterative AI conversation</em> can exercise the same cognitive muscles — and adds dimensions that passive reading cannot.</p>
+          <p>The BOLLI conversation model is explicitly Socratic: each exchange builds on the last, sharpens the question, pushes toward precision. A student who starts with "I don't know how to frame the Harlem Renaissance" and iterates through three rounds of AI dialogue — each time evaluating the response, identifying what's still missing, and refining the prompt — is doing sustained, effortful deep thinking.</p>
+          <p>This is fundamentally different from passive social-media scroll or from workslop-generation. It is also different from passive reading — it requires you to evaluate, object, redirect, and synthesize as you go. The cognitive engagement is arguably higher than reading, because the reader has to actively shape what comes next.</p>
+          <div class="two-col">
+            <div class="mini-box red-box">
+              <div class="mini-label">Newport's prescription</div>
+              Read 30 pages of books daily as the "10,000 steps" of cognitive fitness. Avoid AI for core intellectual work.
+            </div>
+            <div class="mini-box teal-box">
+              <div class="mini-label">BOLLI adds</div>
+              Iterative AI conversation — prompt, evaluate, refine, push back — is also deep cognitive work. The key is <em>effort and agency</em>, not medium.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- GAP 3 -->
+      <div class="gap-card" id="gap3">
+        <div class="gap-card-header" onclick="toggleGap('gap3')">
+          <div class="gap-num">03</div>
+          <div class="gap-card-title-area">
+            <div class="gap-foundation-tag">BOLLI Foundation 3 — Balancing the Strengths</div>
+            <div class="gap-card-title">Newport draws a binary: do the hard thinking yourself, or abdicate. Reality is a division of cognitive labor</div>
+            <div class="gap-card-sub">Knowing when to lead and when to delegate is itself a sophisticated cognitive skill</div>
+          </div>
+          <div class="gap-chevron">▼</div>
+        </div>
+        <div class="gap-body">
+          <p>Newport's rule — "Your writing should be your own" — has the right instinct but draws the line in the wrong place. He distinguishes only between routine/repetitive tasks (fine to delegate to AI) and core intellectual work (never delegate). This misses the grain of the distinction entirely.</p>
+          <p>The BOLLI framework provides a more precise task-by-task map: <strong>decisions about what matters, interpretive judgments, and evaluative conclusions belong to the organic mind</strong>. Research, summarization, surfacing counterarguments, and exploring interdisciplinary connections are AI-appropriate precisely because they are not where the human adds the most value — they are where scale and speed matter more than wisdom.</p>
+          <p>A BOLLI Study Group Leader who uses AI to compile background on five competing historians' interpretations — then applies their own scholarly judgment to decide which framing resonates and why — has not abdicated their intellectual role. They have allocated their cognitive resources to the task that requires them.</p>
+          <p>This is not rationalization of laziness. It is cognitive specialization — the same principle that makes a surgeon valuable not for doing their own bloodwork but for the irreplaceable judgment they apply in the operating room.</p>
+          <div class="two-col">
+            <div class="mini-box red-box">
+              <div class="mini-label">Newport's binary</div>
+              Routine task = OK to delegate. Core intellectual work = never delegate. Result: a rule too blunt to apply usefully.
+            </div>
+            <div class="mini-box teal-box">
+              <div class="mini-label">BOLLI refines</div>
+              Judgment, interpretation, evaluation, voice = you lead. Research, synthesis, surfacing, summarizing = AI leads. The art is knowing which is which in each specific moment.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- GAP 4 -->
+      <div class="gap-card" id="gap4">
+        <div class="gap-card-header" onclick="toggleGap('gap4')">
+          <div class="gap-num">04</div>
+          <div class="gap-card-title-area">
+            <div class="gap-foundation-tag">BOLLI Foundation 4 — Words as Carriers of Meaning</div>
+            <div class="gap-card-title">Newport prescribes more reading, but ignores the cognitive discipline embedded in <em>precise language</em> — especially prompting</div>
+            <div class="gap-card-sub">Learning to compress thought into high-density language is the entropy solution Newport never finds</div>
+          </div>
+          <div class="gap-chevron">▼</div>
+        </div>
+        <div class="gap-body">
+          <p>The BOLLI foundation on words is about understanding how language activates meaning in AI systems — statistical patterns, context shaping, relationship words. But it points toward something larger: <strong>the discipline of precise language is itself a cognitive workout</strong>.</p>
+          <p>When you learn to write a prompt that activates exactly the right conceptual territory in an AI — specific terms, relational framing, contextual signals — you are compressing complex thought into minimum viable language. This is the cognitive equivalent of interval training: high-intensity, low-duration, high-return.</p>
+          <p>Compare this to Newport's prescription: read 30 pages daily. Reading is valuable, but it is a passive exercise in decoding someone else's encoded thoughts. Crafting a precise prompt encodes your own. The cognitive demand of encoding — of deciding what you actually mean, stripping what you don't, and selecting words that carry the meaning efficiently — is higher per unit time than decoding.</p>
+          <p>Newport's essay itself is an example of the entropy problem: 3,800 words to encode six ideas that a skilled prompter could express in 60. The discipline of writing well — whether a memo, a prompt, or a discussion question — is the cognitive exercise Newport seeks. It just doesn't require avoiding AI to do it.</p>
+          <div class="two-col">
+            <div class="mini-box red-box">
+              <div class="mini-label">Newport misses</div>
+              The practice of precise, compressed language — prompting, summarizing, crystallizing — is cognitively demanding and trains exactly the skills he wants to preserve.
+            </div>
+            <div class="mini-box teal-box">
+              <div class="mini-label">BOLLI identifies</div>
+              Prompting precision is the cognitive cardio Newport never names. The discipline of choosing the right words — for AI or for humans — reduces entropy and sharpens thought.
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /gaps-grid -->
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- SECTION 4: SYNTHESIS                  -->
+  <!-- ══════════════════════════════════════ -->
+  <div class="section" id="synthesis">
+    <div class="section-label">§ 4 — Synthesis</div>
+    <h2>A Fuller Picture:<br>Cognitive Fitness in the Age of AI</h2>
+
+    <p>Newport and the BOLLI framework are not in opposition. They are describing the same terrain at different resolutions. Newport sees the threat; BOLLI maps the opportunity that the threat makes visible.</p>
+
+    <div class="synthesis-block">
+      <h3>Where Newport Is Right</h3>
+      <p>The attentional crisis is real. Passive consumption of algorithmically engineered content is cognitively destructive. Using AI to avoid thinking — to fill the blank page without confronting it — is a genuine risk. The physical-health analogy is apt: what you consume, and how you exercise, determines your cognitive fitness over time.</p>
+      <p>The call for contemplation — for sustained, solitary, focused thought — is overdue and undervalued. Phone bans in schools work. Reading deeply rewires the brain. These are not eccentric prescriptions; they are responses to measurable data.</p>
+    </div>
+
+    <div class="synthesis-block" style="margin-top: 20px;">
+      <h3>The Reframes the BOLLI Framework Adds</h3>
+      <div class="key-reframes">
+        <div class="reframe">
+          <span class="rf-icon">🤝</span>
+          <span><strong>AI is not the enemy — passive AI use is.</strong> The same tool that enables workslop can, when used conversationally and effortfully, amplify organic intelligence rather than replace it. The distinction is agency: are you thinking with AI, or asking AI to think instead of you?</span>
+        </div>
+        <div class="reframe">
+          <span class="rf-icon">💬</span>
+          <span><strong>Socratic AI dialogue is deep cognitive work.</strong> Iterative conversation — prompt, evaluate, push back, refine — exercises the same neuronal architecture as deep reading. It adds the further demand of active encoding. Newport's binary (read = good; AI = suspect) is too coarse.</span>
+        </div>
+        <div class="reframe">
+          <span class="rf-icon">⚖️</span>
+          <span><strong>Cognitive specialization is not abdication.</strong> Delegating research and synthesis to AI — while retaining judgment, interpretation, and voice — is a sophisticated allocation of cognitive resources. The goal is not to do everything yourself; it is to ensure the irreplaceable human contributions are never outsourced.</span>
+        </div>
+        <div class="reframe">
+          <span class="rf-icon">📡</span>
+          <span><strong>Entropy is the master frame.</strong> Cognitive fitness is not just about how much you read or how little you scroll. It is about the ratio of signal to noise in what you consume and produce. Verbose prose, like social media, can be high-entropy. Precise prompting, like a well-crafted sentence, is low-entropy. The discipline is the same in both cases: extract signal, eliminate noise, think clearly.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top: 28px;">
+      <strong>The BOLLI model is Newport's revolution, fully realized.</strong> It asks participants to bring their organic intelligence — judgment, experience, interpretive depth — into active partnership with digital tools, using deliberate conversational discipline to amplify rather than bypass their own thinking. That is not cognitive abdication. It is cognitive fitness for the world we actually live in.
+    </div>
+
+    <p style="margin-top: 28px; color: var(--text-dim); font-size: 0.9rem; font-style: italic;">
+      Newport closes by invoking Lincoln at the Soldiers' Home, alone in a broad chair, one leg over the arm, in deep thought. The BOLLI model does not ask us to abandon that posture. It asks us to arrive there better prepared — having used our digital tools to clear the ground so that our contemplation, when it comes, can go further.
+    </p>
+  </div>
+
+</div><!-- /page-body -->
+
+<!-- ══════════════════════════════════════ -->
+<!-- CITATIONS                              -->
+<!-- ══════════════════════════════════════ -->
+<div class="citations-section" id="citations">
+  <div class="divider" style="margin-top:0;"></div>
+  <div class="section-label" style="margin-bottom:6px;">§ 5 — Sources</div>
+  <h2 style="font-family:var(--display);font-size:clamp(1.4rem,3vw,1.9rem);font-weight:700;color:#fff;margin-bottom:6px;">Citations &amp; Links</h2>
+  <p style="font-size:0.88rem;color:var(--text-dim);margin-bottom:4px;">All research claims in §§ 1–4 derive from Newport's primary essay (source 1) or from the BOLLI Foundations document (source 2). Individual studies are listed as Newport cites them; direct links are provided where publicly accessible.</p>
+
+  <!-- PRIMARY SOURCES -->
+  <div class="cite-group">
+    <div class="cite-group-label">Primary Sources</div>
+
+    <div class="cite-entry">
+      <span class="cite-num">1</span>
+      <span>
+        Newport, Cal. <em>"Stop Filling Your Mind With Digital Doritos."</em> <em>The New York Times</em>, Opinion, March 27, 2026.<br>
+        <a href="https://www.nytimes.com/2026/03/27/opinion/technology-mental-fitness-cognitive.html?smid=nytcore-ios-share" target="_blank" rel="noopener">nytimes.com/2026/03/27/opinion/technology-mental-fitness-cognitive.html</a><br>
+        <span class="cite-note">Primary essay under discussion. Source of all empirical claims in §1 unless otherwise noted.</span>
+      </span>
+    </div>
+
+    <div class="cite-entry">
+      <span class="cite-num">2</span>
+      <span>
+        Day, John. <em>"Foundations: Intelligence &amp; Conversation — BOLLI Course Work."</em> BOLLI AI Literacy Programme, Spring 2026.<br>
+        <a href="https://jhnday.github.io/JhndayRprts/Foundations_%20Intelligence%20&%20Conversation%20-%20Current%20Events%20Discussion%20Group" target="_blank" rel="noopener">jhnday.github.io/JhndayRprts/Foundations_Intelligence&amp;Conversation</a><br>
+        <span class="cite-note">Source of all four BOLLI framework foundations (Digital &amp; Organic Intelligence; Importance of Conversation; Balancing the Strengths; Words as Carriers of Meaning).</span>
+      </span>
+    </div>
+  </div>
+
+  <!-- STUDIES CITED VIA NEWPORT -->
+  <div class="cite-group">
+    <div class="cite-group-label">Research Cited in Newport (§1) — with direct links where available</div>
+
+    <div class="cite-entry">
+      <span class="cite-num">3</span>
+      <span>
+        Mark, Gloria. Attention span research, UC Irvine. Summarized in Mark, G. <em>Attention Span: A Groundbreaking Way to Restore Balance, Happiness and Productivity.</em> Hanover Square Press, 2023. Newport cites ~⅓ reduction in attention spans since 2004, with steepest declines post-2012.<br>
+        <a href="https://www.gloriamark.com/attention-span" target="_blank" rel="noopener">gloriamark.com/attention-span</a>
+      </span>
+    </div>
+
+    <div class="cite-entry">
+      <span class="cite-num">4</span>
+      <span>
+        Meta-analysis on short-form video content and cognition (Newport: "released last fall"). Likely: Gui, X. et al. <em>"The effects of short-form video on cognitive functioning: A meta-analysis."</em> 2025.<br>
+        <a href="https://scholar.google.com/scholar?q=short-form+video+cognition+attention+meta-analysis+2025" target="_blank" rel="noopener">Search Google Scholar</a><br>
+        <span class="cite-note">Newport does not provide the full citation; search link provided for independent verification.</span>
+      </span>
+    </div>
+
+    <div class="cite-entry">
+      <span class="cite-num">5</span>
+      <span>
+        Smartphone presence and concentration experiment (Newport: "clever experiment from 2023"). Ward, A.F. et al. <em>"Brain Drain: The Mere Presence of One's Own Smartphone Reduces Available Cognitive Capacity."</em> <em>Journal of the Association for Consumer Research</em>, 2017; replicated studies 2022–23.<br>
+        <a href="https://www.journals.uchicago.edu/doi/10.1086/691462" target="_blank" rel="noopener">journals.uchicago.edu — Ward et al. original</a>
+      </span>
+    </div>
+
+    <div class="cite-entry">
+      <span class="cite-num">6</span>
+      <span>
+        AI tool usage and critical thinking (Newport: "study from January [2026]"). <em>"Generative AI and Critical Thinking"</em> — survey and interview study, 600+ participants, negative correlation between frequent AI use and critical thinking.<br>
+        <a href="https://scholar.google.com/scholar?q=AI+tool+usage+critical+thinking+2026+survey" target="_blank" rel="noopener">Search Google Scholar</a><br>
+        <span class="cite-note">Newport does not provide authorship; link goes to search for independent verification.</span>
+      </span>
+    </div>
+
+    <div class="cite-entry">
+      <span class="cite-num">7</span>
+      <span>
+        Brain connectivity and LLM writing assistance. Lee, H. et al. <em>"The impact of generative AI on brain activity during creative writing."</em> Newport: "brain connectivity systematically scaled down with the amount of external support."<br>
+        <a href="https://scholar.google.com/scholar?q=brain+connectivity+LLM+writing+assistance+EEG+2024+2025" target="_blank" rel="noopener">Search Google Scholar</a>
+      </span>
+    </div>
+
+    <div class="cite-entry">
+      <span class="cite-num">8</span>
+      <span>
+        Haidt, Jonathan. <em>The Anxious Generation: How the Great Rewiring of Childhood Is Causing an Epidemic of Mental Illness.</em> Penguin Press, 2024.<br>
+        <a href="https://www.anxiousgeneration.com" target="_blank" rel="noopener">anxiousgeneration.com</a>
+      </span>
+    </div>
+
+    <div class="cite-entry">
+      <span class="cite-num">9</span>
+      <span>
+        NBER working paper on school phone bans and student test scores (Newport: "2025 working paper"). Beland, L-P. &amp; Murphy, R. likely precursor; 2025 update pending publication.<br>
+        <a href="https://www.nber.org/papers?q=phone+ban+school+test+scores" target="_blank" rel="noopener">nber.org — search phone ban school</a><br>
+        <span class="cite-note">Newport: "significant improvements in student test scores." Three-quarters of 317 Dutch high schools also reported improved focus after bans.</span>
+      </span>
+    </div>
+
+    <div class="cite-entry">
+      <span class="cite-num">10</span>
+      <span>
+        HBR "Workslop" article (Newport: "September [2025], splashy article"). Definition: "AI-generated work content that masquerades as good work, but lacks the substance to meaningfully advance a given task."<br>
+        <a href="https://hbr.org/search?term=workslop" target="_blank" rel="noopener">hbr.org — search "workslop"</a>
+      </span>
+    </div>
+
+    <div class="cite-entry">
+      <span class="cite-num">11</span>
+      <span>
+        Boston Consulting Group "brain fry" study. BCG researchers found that offloading difficult tasks to AI led to increased mental exhaustion from context-switching required to monitor AI output.<br>
+        <a href="https://www.bcg.com/publications/2025/how-people-create-and-destroy-value-with-gen-ai" target="_blank" rel="noopener">bcg.com — GenAI and cognitive impact research</a>
+      </span>
+    </div>
+
+    <div class="cite-entry">
+      <span class="cite-num">12</span>
+      <span>
+        Microsoft Work Trend Index 2025. Finding cited by Newport: office workers interrupted once every two minutes on average.<br>
+        <a href="https://www.microsoft.com/en-us/worklab/work-trend-index" target="_blank" rel="noopener">microsoft.com/worklab/work-trend-index</a>
+      </span>
+    </div>
+  </div>
+
+  <!-- THEORETICAL FRAMEWORKS -->
+  <div class="cite-group">
+    <div class="cite-group-label">Theoretical Frameworks (§2 — Entropy)</div>
+
+    <div class="cite-entry">
+      <span class="cite-num">13</span>
+      <span>
+        Shannon, Claude E. <em>"A Mathematical Theory of Communication."</em> <em>Bell System Technical Journal</em>, 27(3), 1948, pp. 379–423. Source of the information entropy formula S = −Σ pᵢ log pᵢ used in §2.<br>
+        <a href="https://people.math.harvard.edu/~ctm/home/text/others/shannon/entropy/entropy.pdf" target="_blank" rel="noopener">Original paper (PDF) — Harvard mirror</a>
+      </span>
+    </div>
+
+    <div class="cite-entry">
+      <span class="cite-num">14</span>
+      <span>
+        Schrödinger, Erwin. <em>What is Life? The Physical Aspect of the Living Cell.</em> Cambridge University Press, 1944. Source of the "negative entropy" / organism-as-order-extractor framing referenced in §2.<br>
+        <a href="https://www.cambridge.org/core/books/what-is-life/9A47D54E6BCDE62B72B4FF3E3BF9C5D3" target="_blank" rel="noopener">Cambridge University Press</a>
+      </span>
+    </div>
+
+    <div class="cite-entry">
+      <span class="cite-num">15</span>
+      <span>
+        Wolf, Maryanne. <em>Reader, Come Home: The Reading Brain in a Digital World.</em> Harper, 2018. Source of "deep reading processes" that "rewire and retrain neuronal regions" — cited both by Newport and in §2/§3.<br>
+        <a href="https://www.maryannewolf.com/reader-come-home" target="_blank" rel="noopener">maryannewolf.com/reader-come-home</a>
+      </span>
+    </div>
+  </div>
+
+  <!-- NEWPORT BOOKS -->
+  <div class="cite-group">
+    <div class="cite-group-label">Newport's Own Books Referenced in the Essay</div>
+
+    <div class="cite-entry">
+      <span class="cite-num">16</span>
+      <span>
+        Newport, Cal. <em>Deep Work: Rules for Focused Success in a Distracted World.</em> Grand Central Publishing, 2016.<br>
+        <a href="https://calnewport.com/deep-work/" target="_blank" rel="noopener">calnewport.com/deep-work</a>
+      </span>
+    </div>
+
+    <div class="cite-entry">
+      <span class="cite-num">17</span>
+      <span>
+        Newport, Cal. <em>A World Without Email: Reimagining Work in an Age of Communication Overload.</em> Portfolio, 2021.<br>
+        <a href="https://calnewport.com/a-world-without-email/" target="_blank" rel="noopener">calnewport.com/a-world-without-email</a>
+      </span>
+    </div>
+  </div>
+</div>
+
+<footer>
+  BOLLI Current Events Discussion Group · AI Literacy Programme · March 2026
+  &nbsp;·&nbsp; jhnday.github.io/CrntEvnts
+</footer>
+
+<script>
+  function toggleCompress(btn) {
+    const body = btn.nextElementSibling;
+    const isOpen = body.classList.contains('open');
+    body.classList.toggle('open');
+    btn.classList.toggle('open');
+    btn.setAttribute('aria-expanded', !isOpen);
+  }
+
+  function toggleGap(id) {
+    const card = document.getElementById(id);
+    card.classList.toggle('open');
+  }
+
+  // Highlight nav link based on scroll position
+  const sections = ['newport','entropy','gaps','synthesis','citations'];
+  const navLinks = document.querySelectorAll('nav a');
+
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(a => a.classList.remove('active'));
+        const link = document.querySelector(`nav a[href="#${entry.target.id}"]`);
+        if (link) link.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-30% 0px -60% 0px' });
+
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) obs.observe(el);
+  });
+</script>
+
+</body>
+</html>
