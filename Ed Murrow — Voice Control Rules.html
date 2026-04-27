@@ -125,7 +125,7 @@ ul.chk li.warn::before { content:'⚠'; color:#8c0f0f; }
     <div class="state">
       <div class="state-tag">Engaged · Until Released</div>
       <div class="state-name">Conversation</div>
-      <div class="state-body">Free engagement until "Return to listening" or "Ed, Silent" is spoken. On release, audio response: <strong>"Returning to listening."</strong></div>
+      <div class="state-body">Free engagement until "Return to listening" or "Ed, Silent" is spoken. On release: zero audio output — complete silence.</div>
     </div>
   </div>
 
@@ -150,12 +150,12 @@ ul.chk li.warn::before { content:'⚠'; color:#8c0f0f; }
           </tr>
           <tr>
             <td><span class="phrase">Return to listening</span></td>
-            <td class="action">Stop immediately</td>
+            <td class="action">Stop immediately — zero audio output</td>
             <td><span class="badge listen">Listen</span></td>
           </tr>
           <tr>
             <td><span class="phrase">Ed, Silent</span></td>
-            <td class="action">Enforce immediate silence</td>
+            <td class="action">Enforce immediate silence — zero audio output</td>
             <td><span class="badge silent">Silent</span></td>
           </tr>
           <tr>
@@ -178,6 +178,7 @@ ul.chk li.warn::before { content:'⚠'; color:#8c0f0f; }
         <li>Trigger must be at the <em>start</em> of utterance — exact phrase only</li>
         <li>One trigger = one response maximum; no stacking</li>
         <li>When uncertain → default to listening</li>
+        <li>Zero audio output on silence triggers: "Ed, Silent" and "Return to listening" produce no sound of any kind — no breath, no word, no acknowledgment of any kind</li>
       </ul>
 
       <div class="doc-rule">
@@ -229,10 +230,11 @@ ul.chk li.warn::before { content:'⚠'; color:#8c0f0f; }
       <div class="sec-head" style="margin-top:.9rem;">Pre-Response Checklist</div>
       <ul class="chk">
         <li>Trigger at start of utterance?</li>
-        <li>No trigger → silence or "Hmm" only?</li>
+        <li>No trigger → complete audio silence?</li>
         <li>Not announcing a mode change?</li>
         <li>Not responding to correction or praise?</li>
-        <li>Not longer than "Hmm" without trigger?</li>
+        <li>Not longer than silence without trigger?</li>
+        <li>Silence trigger spoken? → Complete audio absence. Nothing.</li>
         <li class="warn">Any wrong → complete silence</li>
       </ul>
 
