@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude → HTML: The Visualization Pipeline</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080c10;
+    --surface: #0d1520;
+    --surface2: #111d2e;
+    --amber: #f5a623;
+    --amber-dim: #a06a10;
+    --amber-glow: rgba(245,166,35,0.15);
+    --cyan: #4dd9e8;
+    --cyan-dim: #1a7a87;
+    --green: #48e59e;
+    --red: #ff5f6d;
+    --text: #c8d8e8;
+    --text-dim: #567088;
+    --border: rgba(245,166,35,0.2);
+    --mono: 'Space Mono', monospace;
+    --display: 'Bebas Neue', sans-serif;
+    --body: 'DM Sans', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--body);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Animated grid background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(245,166,35,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(245,166,35,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 60px 32px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Header */
+  header {
+    text-align: center;
+    margin-bottom: 72px;
+    animation: fadeDown 0.8s ease both;
+  }
+
+  .header-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    color: var(--amber);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  header h1 {
+    font-family: var(--display);
+    font-size: clamp(48px, 8vw, 90px);
+    line-height: 0.92;
+    letter-spacing: 0.02em;
+    background: linear-gradient(135deg, var(--amber) 0%, #fff8e8 50%, var(--cyan) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 20px;
+  }
+
+  header p {
+    font-size: 15px;
+    color: var(--text-dim);
+    max-width: 480px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  /* Step cards */
+  .pipeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .step {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 0 28px;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .step:nth-child(1) { animation-delay: 0.1s; }
+  .step:nth-child(2) { animation-delay: 0.2s; }
+  .step:nth-child(3) { animation-delay: 0.3s; }
+  .step:nth-child(4) { animation-delay: 0.4s; }
+  .step:nth-child(5) { animation-delay: 0.5s; }
+  .step:nth-child(6) { animation-delay: 0.6s; }
+  .step:nth-child(7) { animation-delay: 0.7s; }
+
+  /* Left column: number + connector line */
+  .step-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .step-number {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    border: 2px solid var(--amber);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--amber);
+    background: var(--amber-glow);
+    box-shadow: 0 0 20px rgba(245,166,35,0.2);
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+    transition: all 0.3s ease;
+  }
+
+  .step:hover .step-number {
+    background: var(--amber);
+    color: var(--bg);
+    box-shadow: 0 0 32px rgba(245,166,35,0.6);
+  }
+
+  .connector {
+    width: 2px;
+    flex: 1;
+    min-height: 32px;
+    background: linear-gradient(to bottom, var(--amber-dim), transparent);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .connector::after {
+    content: '';
+    position: absolute;
+    top: -100%;
+    left: 0;
+    width: 100%;
+    height: 40%;
+    background: linear-gradient(to bottom, transparent, var(--amber), transparent);
+    animation: flowDown 2s ease-in-out infinite;
+  }
+
+  .step:last-child .connector { display: none; }
+
+  /* Right column: card */
+  .step-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 28px;
+    margin-bottom: 28px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .step-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: var(--amber);
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 0.3s ease;
+  }
+
+  .step-card:hover {
+    border-color: rgba(245,166,35,0.5);
+    background: var(--surface2);
+    transform: translateX(4px);
+    box-shadow: -4px 0 24px rgba(245,166,35,0.1);
+  }
+
+  .step-card:hover::before { transform: scaleY(1); }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 12px;
+  }
+
+  .card-icon {
+    font-size: 22px;
+    width: 40px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .card-title {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--amber);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .card-body {
+    font-size: 14px;
+    color: var(--text-dim);
+    line-height: 1.65;
+    padding-left: 54px;
+  }
+
+  .card-body strong { color: var(--text); font-weight: 500; }
+
+  /* Tag pills */
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+    padding-left: 54px;
+  }
+
+  .tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+  }
+
+  .tag-amber { background: rgba(245,166,35,0.12); color: var(--amber); border: 1px solid rgba(245,166,35,0.3); }
+  .tag-cyan  { background: rgba(77,217,232,0.1);  color: var(--cyan);  border: 1px solid rgba(77,217,232,0.3); }
+  .tag-green { background: rgba(72,229,158,0.1);  color: var(--green); border: 1px solid rgba(72,229,158,0.3); }
+
+  /* Fork section — two paths side by side */
+  .fork-section {
+    margin: 0 0 28px 0;
+    animation: fadeUp 0.6s ease 0.35s both;
+  }
+
+  .fork-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    color: var(--text-dim);
+    text-align: center;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+  }
+
+  .fork-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-left: 108px;
+  }
+
+  .fork-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 22px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  .fork-card:hover {
+    border-color: rgba(77,217,232,0.5);
+    background: var(--surface2);
+    box-shadow: 0 0 24px rgba(77,217,232,0.08);
+  }
+
+  .fork-card-title {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--cyan);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .fork-card-title span { font-size: 16px; }
+
+  .fork-card p {
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  /* Pipeline flow diagram */
+  .flow-diagram {
+    margin: 0 0 48px 0;
+    animation: fadeUp 0.6s ease 0.45s both;
+  }
+
+  .flow-title {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    color: var(--text-dim);
+    text-align: center;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+  }
+
+  .flow-inner {
+    margin-left: 108px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 28px;
+    font-family: var(--mono);
+    font-size: 12px;
+    line-height: 2.2;
+    color: var(--text-dim);
+  }
+
+  .flow-step {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 4px 0;
+    opacity: 0;
+    animation: flowReveal 0.4s ease both;
+  }
+
+  .flow-step:nth-child(1) { animation-delay: 1.0s; }
+  .flow-step:nth-child(2) { animation-delay: 1.2s; }
+  .flow-step:nth-child(3) { animation-delay: 1.4s; }
+  .flow-step:nth-child(4) { animation-delay: 1.6s; }
+  .flow-step:nth-child(5) { animation-delay: 1.8s; }
+
+  .flow-arrow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-left: 16px;
+    color: var(--text-dim);
+    opacity: 0;
+    animation: flowReveal 0.4s ease both;
+  }
+  .flow-arrow:nth-child(2) { animation-delay: 1.1s; }
+  .flow-arrow:nth-child(4) { animation-delay: 1.3s; }
+  .flow-arrow:nth-child(6) { animation-delay: 1.5s; }
+  .flow-arrow:nth-child(8) { animation-delay: 1.7s; }
+
+  .flow-box {
+    padding: 5px 16px;
+    border-radius: 6px;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+  }
+
+  .fbox-amber { background: rgba(245,166,35,0.12); color: var(--amber); border: 1px solid rgba(245,166,35,0.25); }
+  .fbox-cyan  { background: rgba(77,217,232,0.1);  color: var(--cyan);  border: 1px solid rgba(77,217,232,0.2); }
+  .fbox-green { background: rgba(72,229,158,0.1);  color: var(--green); border: 1px solid rgba(72,229,158,0.2); }
+
+  .flow-arrow-icon { color: var(--text-dim); font-size: 14px; }
+
+  /* Special callout: Claude-in-Claude */
+  .callout {
+    margin: 0 0 28px 0;
+    margin-left: 108px;
+    background: linear-gradient(135deg, rgba(245,166,35,0.08), rgba(77,217,232,0.06));
+    border: 1px solid rgba(245,166,35,0.3);
+    border-radius: 12px;
+    padding: 22px 26px;
+    animation: fadeUp 0.6s ease 0.65s both;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .callout::after {
+    content: '⚡';
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 48px;
+    opacity: 0.08;
+  }
+
+  .callout-title {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--amber);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .callout p {
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.65;
+  }
+
+  .callout p strong { color: var(--text); }
+
+  /* Footer */
+  footer {
+    margin-top: 72px;
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    animation: fadeUp 0.6s ease 0.8s both;
+  }
+
+  /* Keyframes */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes flowDown {
+    0%   { top: -100%; }
+    100% { top: 200%; }
+  }
+  @keyframes flowReveal {
+    from { opacity: 0; transform: translateX(-8px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .fork-grid { grid-template-columns: 1fr; margin-left: 0; }
+    .flow-inner { margin-left: 0; }
+    .callout { margin-left: 0; }
+    .step { grid-template-columns: 56px 1fr; gap: 0 16px; }
+    .step-number { width: 40px; height: 40px; font-size: 15px; }
+    .card-body { padding-left: 36px; }
+    .tags { padding-left: 36px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="header-eyebrow">Technical Reference &nbsp;/&nbsp; Claude.ai</div>
+    <h1>Prompt<br>to Pixel</h1>
+    <p>The complete pipeline from user input to rendered HTML — every step Claude takes to turn language into a living interface.</p>
+  </header>
+
+  <div class="pipeline">
+
+    <!-- Step 1 -->
+    <div class="step">
+      <div class="step-left">
+        <div class="step-number">1</div>
+        <div class="connector"></div>
+      </div>
+      <div class="step-card">
+        <div class="card-header">
+          <div class="card-icon">🎯</div>
+          <div class="card-title">Prompt Interpretation</div>
+        </div>
+        <div class="card-body">
+          Claude parses <strong>intent and content type</strong> from your message. Visual signals ("show me," "build," "visualize") are weighted alongside implicit need — data that benefits from structure, charts, or interaction.
+        </div>
+        <div class="tags">
+          <span class="tag tag-amber">intent detection</span>
+          <span class="tag tag-amber">content classification</span>
+          <span class="tag tag-amber">signal weighting</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="step">
+      <div class="step-left">
+        <div class="step-number">2</div>
+        <div class="connector"></div>
+      </div>
+      <div class="step-card">
+        <div class="card-header">
+          <div class="card-icon">📐</div>
+          <div class="card-title">Skill File Consultation</div>
+        </div>
+        <div class="card-body">
+          Before writing a single line, Claude reads the relevant <strong>SKILL.md</strong> — a curated guide encoding environment constraints, available libraries, design tokens, and rendering quirks. This step is mandatory and shapes everything that follows.
+        </div>
+        <div class="tags">
+          <span class="tag tag-cyan">frontend-design</span>
+          <span class="tag tag-cyan">docx / pptx / pdf</span>
+          <span class="tag tag-cyan">environment constraints</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3: Fork -->
+    <div class="step">
+      <div class="step-left">
+        <div class="step-number">3</div>
+        <div class="connector"></div>
+      </div>
+      <div class="step-card">
+        <div class="card-header">
+          <div class="card-icon">🔀</div>
+          <div class="card-title">Routing Decision</div>
+        </div>
+        <div class="card-body">
+          Two distinct rendering paths based on output type. Claude selects based on whether the deliverable is <strong>inline and ephemeral</strong> or <strong>persistent and deployable</strong>.
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end pipeline -->
+
+  <!-- Fork grid -->
+  <div class="fork-section">
+    <div class="fork-label">↳ two paths</div>
+    <div class="fork-grid">
+      <div class="fork-card">
+        <div class="fork-card-title"><span>💬</span> Inline Artifact</div>
+        <p>Uses <code>show_widget</code> tool. HTML/SVG renders in a sandboxed iframe directly in the chat stream. Ideal for charts, diagrams, interactive tools, games.</p>
+      </div>
+      <div class="fork-card">
+        <div class="fork-card-title"><span>📁</span> File Output</div>
+        <p>Uses <code>create_file</code> + <code>present_files</code> tools. Writes a standalone <code>.html</code> to disk. Ideal for GitHub Pages, portals, downloadable deliverables.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="pipeline">
+
+    <!-- Step 4 -->
+    <div class="step">
+      <div class="step-left">
+        <div class="step-number">4</div>
+        <div class="connector"></div>
+      </div>
+      <div class="step-card">
+        <div class="card-header">
+          <div class="card-icon">🏗️</div>
+          <div class="card-title">Code Architecture Planning</div>
+        </div>
+        <div class="card-body">
+          Claude designs the HTML mentally before writing — laying out <strong>semantic structure</strong>, CSS custom properties for theming, JavaScript logic, and data embedding strategy. Single-file constraint means CSS and JS live inside the HTML.
+        </div>
+        <div class="tags">
+          <span class="tag tag-amber">HTML structure</span>
+          <span class="tag tag-amber">CSS variables</span>
+          <span class="tag tag-amber">JS event model</span>
+          <span class="tag tag-amber">data strategy</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 5 -->
+    <div class="step">
+      <div class="step-left">
+        <div class="step-number">5</div>
+        <div class="connector"></div>
+      </div>
+      <div class="step-card">
+        <div class="card-header">
+          <div class="card-icon">⚙️</div>
+          <div class="card-title">Code Generation</div>
+        </div>
+        <div class="card-body">
+          The full HTML is written using available libraries from <code>cdnjs.cloudflare.com</code>. Environment rules are strict: <strong>no localStorage</strong>, Tailwind utility classes only (no compiler), React hooks must be imported explicitly.
+        </div>
+        <div class="tags">
+          <span class="tag tag-green">cdnjs only</span>
+          <span class="tag tag-green">no localStorage</span>
+          <span class="tag tag-green">single file</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Render flow diagram -->
+  <div class="flow-diagram">
+    <div class="flow-title">↳ rendering pipeline (inline path)</div>
+    <div class="flow-inner">
+      <div class="flow-step">
+        <span class="flow-box fbox-amber">Claude generates HTML/SVG string</span>
+      </div>
+      <div class="flow-arrow">
+        <span class="flow-arrow-icon">↓</span>
+        <span style="font-size:10px; color: var(--text-dim);">passed to tool</span>
+      </div>
+      <div class="flow-step">
+        <span class="flow-box fbox-cyan">show_widget receives code</span>
+      </div>
+      <div class="flow-arrow">
+        <span class="flow-arrow-icon">↓</span>
+        <span style="font-size:10px; color: var(--text-dim);">sandboxed</span>
+      </div>
+      <div class="flow-step">
+        <span class="flow-box fbox-cyan">Claude.ai iframe renders output</span>
+      </div>
+      <div class="flow-arrow">
+        <span class="flow-arrow-icon">↓</span>
+        <span style="font-size:10px; color: var(--text-dim);">inline in chat</span>
+      </div>
+      <div class="flow-step">
+        <span class="flow-box fbox-green">User sees rendered visual ✓</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="pipeline">
+
+    <!-- Step 6 -->
+    <div class="step">
+      <div class="step-left">
+        <div class="step-number">6</div>
+        <div class="connector"></div>
+      </div>
+      <div class="step-card">
+        <div class="card-header">
+          <div class="card-icon">🔄</div>
+          <div class="card-title">Iteration Loop</div>
+        </div>
+        <div class="card-body">
+          The conversation is a refinement cycle. You see the render, request changes ("darker palette," "add a third column"), and Claude edits surgically via <code>str_replace</code> — or rewrites entirely. Each change produces a new render in the stream.
+        </div>
+        <div class="tags">
+          <span class="tag tag-amber">str_replace edits</span>
+          <span class="tag tag-amber">full rewrites</span>
+          <span class="tag tag-amber">conversational refinement</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 7 -->
+    <div class="step">
+      <div class="step-left">
+        <div class="step-number">7</div>
+        <div class="connector"></div>
+      </div>
+      <div class="step-card">
+        <div class="card-header">
+          <div class="card-icon">🤖</div>
+          <div class="card-title">Claude-in-Claude (Optional)</div>
+        </div>
+        <div class="card-body">
+          For AI-powered artifacts, the rendered HTML itself calls <strong>api.anthropic.com/v1/messages</strong> at runtime. The outer Claude builds the shell; the inner Claude responds to user actions inside the artifact. A live AI application, not static HTML.
+        </div>
+        <div class="tags">
+          <span class="tag tag-green">live API calls</span>
+          <span class="tag tag-green">runtime intelligence</span>
+          <span class="tag tag-green">stateful conversation</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Callout -->
+  <div class="callout">
+    <div class="callout-title">Key Constraint Surface</div>
+    <p>
+      All HTML artifacts run in a <strong>sandboxed iframe</strong> with no access to browser storage APIs. External scripts must load from <strong>cdnjs.cloudflare.com</strong>. Three.js CapsuleGeometry, localStorage, and sessionStorage are all off-limits. React artifacts use Tailwind's pre-compiled base stylesheet — no JIT, no custom classes.
+    </p>
+  </div>
+
+  <footer>
+    Claude Sonnet 4.6 &nbsp;·&nbsp; Anthropic &nbsp;·&nbsp; claude.ai
+  </footer>
+
+</div>
+</body>
+</html>
