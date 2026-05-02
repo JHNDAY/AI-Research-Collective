@@ -118,12 +118,49 @@
     margin-bottom: 22px;
   }
 
+  .header-lower {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 36px;
+    align-items: center;
+  }
+
   .header-mission {
     font-family: 'Lora', serif;
-    font-size: 16px;
-    color: rgba(255,255,255,0.82);
-    line-height: 1.65;
-    max-width: 600px;
+    font-size: 15px;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.7;
+  }
+
+  .collab-block {
+    border-left: 2px solid var(--gold);
+    padding-left: 22px;
+    flex-shrink: 0;
+  }
+
+  .collab-word {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 30px;
+    font-weight: 400;
+    color: var(--gold-light);
+    line-height: 1;
+    margin-bottom: 10px;
+  }
+
+  .collab-line {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+    padding: 4px 0;
+    border-bottom: 1px solid rgba(200,146,42,0.18);
+  }
+
+  .collab-line:last-child {
+    border-bottom: none;
   }
 
   /* ── DOMAINS ── */
@@ -360,10 +397,20 @@
       <span class="motto-gloss">We seek the meaning of words</span>
     </div>
     <div class="header-rule"></div>
-    <div class="header-mission">
-      An invitation to BOLLI members who are curious about using AI to deepen their engagement with
-      literature, history, science, current events, and the ideas that matter most —
-      through hands-on exploration, shared discovery, and creative output.
+    <div class="header-lower">
+      <div class="header-mission">
+        An invitation to BOLLI members who are curious about using AI to deepen their engagement with
+        literature, history, science, current events, and the ideas that matter most —
+        through hands-on exploration, shared discovery, and creative output.
+      </div>
+      <div class="collab-block">
+        <div class="collab-word">Together</div>
+        <div class="collab-lines">
+          <div class="collab-line">Explore &amp; Question</div>
+          <div class="collab-line">Share What You Find</div>
+          <div class="collab-line">Learn from Each Other</div>
+        </div>
+      </div>
     </div>
   </div>
 
