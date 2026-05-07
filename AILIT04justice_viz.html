@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Justice &amp; AI — Dialogue Analysis · AILIT04</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&family=Literata:ital,wght@0,400;1,400;1,600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:        #0b0f1a;
+  --bg2:       #111623;
+  --bg3:       #171e2e;
+  --border:    rgba(255,255,255,0.08);
+  --border2:   rgba(255,255,255,0.04);
+  --amber:     #e8a230;
+  --amber-dim: #a06e1a;
+  --amber-bg:  rgba(232,162,48,0.08);
+  --cyan:      #4abfd4;
+  --cyan-dim:  #2a7a8a;
+  --cyan-bg:   rgba(74,191,212,0.08);
+  --red:       #d45a4a;
+  --red-bg:    rgba(212,90,74,0.08);
+  --green:     #5abf8a;
+  --green-bg:  rgba(90,191,138,0.08);
+  --violet:    #9b7fe8;
+  --violet-bg: rgba(155,127,232,0.08);
+  --text:      #cdd6f4;
+  --text-dim:  #6c7a99;
+  --text-mid:  #9aa3bf;
+  --white:     #e8eaf2;
+  --ed-border: #4abfd4;
+  --ed-glow:   rgba(74,191,212,0.15);
+  --timeline:  rgba(255,255,255,0.1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Literata', Georgia, serif;
+  font-size: 16px;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* ── HEADER ── */
+.hero {
+  padding: 72px 0 64px;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border);
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 50% 80% at 90% 50%, rgba(74,191,212,0.07) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 60% at 10% 80%, rgba(232,162,48,0.06) 0%, transparent 60%);
+  pointer-events: none;
+}
+.hero-grid {
+  max-width: 1060px;
+  margin: 0 auto;
+  padding: 0 48px;
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 48px;
+  align-items: end;
+}
+.hero-eyebrow {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--cyan);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.hero-eyebrow::before {
+  content: '';
+  width: 28px;
+  height: 1px;
+  background: var(--cyan);
+}
+.hero h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(2rem, 4.5vw, 3.2rem);
+  font-weight: 800;
+  color: var(--white);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
+}
+.hero h1 em { color: var(--amber); font-style: normal; }
+.hero-desc {
+  font-family: 'Literata', serif;
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--text-mid);
+  max-width: 520px;
+}
+.hero-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 24px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+}
+.hero-stat {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border2);
+}
+.hero-stat:last-child { border-bottom: none; padding-bottom: 0; }
+.stat-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+.stat-value {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--amber);
+}
+
+/* ── BODY LAYOUT ── */
+.page {
+  max-width: 1060px;
+  margin: 0 auto;
+  padding: 0 48px 100px;
+}
+
+/* ── SECTION TITLES ── */
+.section-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 28px;
+  padding-top: 64px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ── PHASE MAP ── */
+.phase-map {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 2px;
+  margin-bottom: 48px;
+}
+.phase-block {
+  padding: 20px 16px;
+  background: var(--bg2);
+  border-top: 3px solid transparent;
+  cursor: default;
+  transition: background 0.2s;
+}
+.phase-block:hover { background: var(--bg3); }
+.phase-block[data-phase="1"] { border-top-color: #4a6abf; }
+.phase-block[data-phase="2"] { border-top-color: #7a7abf; }
+.phase-block[data-phase="3"] { border-top-color: var(--amber-dim); }
+.phase-block[data-phase="4"] { border-top-color: var(--amber); }
+.phase-block[data-phase="5"] { border-top-color: var(--cyan); }
+.phase-time {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  color: var(--text-dim);
+  letter-spacing: 0.1em;
+  margin-bottom: 6px;
+}
+.phase-name {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.3;
+  margin-bottom: 8px;
+}
+.phase-desc {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+.phase-count {
+  margin-top: 10px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 8.5px;
+  color: var(--text-dim);
+  letter-spacing: 0.06em;
+}
+.phase-count strong {
+  color: var(--amber);
+  font-size: 1.1rem;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  display: block;
+  line-height: 1.2;
+}
+
+/* ── PARTICIPATION BAR CHART ── */
+.bar-chart {
+  margin-bottom: 48px;
+}
+.bar-row {
+  display: grid;
+  grid-template-columns: 160px 1fr 40px;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.bar-speaker {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: var(--text-mid);
+  text-align: right;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.bar-speaker.instructor { color: var(--amber); }
+.bar-speaker.ed { color: var(--cyan); }
+.bar-track {
+  background: var(--bg2);
+  height: 22px;
+  position: relative;
+  overflow: hidden;
+}
+.bar-fill {
+  height: 100%;
+  position: relative;
+  transition: width 1s cubic-bezier(.17,.67,.4,1.02);
+  animation: growBar 1s cubic-bezier(.17,.67,.4,1.02) both;
+}
+@keyframes growBar {
+  from { width: 0 !important; }
+}
+.bar-fill.instructor { background: linear-gradient(90deg, #a06e1a, var(--amber)); }
+.bar-fill.ed         { background: linear-gradient(90deg, #2a7a8a, var(--cyan)); }
+.bar-fill.named      { background: linear-gradient(90deg, #3a5a8a, #5a8abf); }
+.bar-fill.participant{ background: linear-gradient(90deg, #2a3a4a, #4a6070); }
+.bar-count {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: var(--text-dim);
+}
+
+/* ── TIMELINE ── */
+.timeline {
+  position: relative;
+  padding-left: 32px;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, var(--timeline) 5%, var(--timeline) 95%, transparent);
+}
+
+.tl-phase-header {
+  position: relative;
+  margin-bottom: 4px;
+  padding: 16px 0 10px;
+}
+.tl-phase-header::before {
+  content: '';
+  position: absolute;
+  left: -32px;
+  top: 22px;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  border: 2px solid;
+}
+.tl-phase-header[data-p="1"]::before { border-color: #4a6abf; background: #0b0f1a; }
+.tl-phase-header[data-p="2"]::before { border-color: #7a7abf; background: #0b0f1a; }
+.tl-phase-header[data-p="3"]::before { border-color: var(--amber-dim); background: #0b0f1a; }
+.tl-phase-header[data-p="4"]::before { border-color: var(--amber); background: #0b0f1a; }
+.tl-phase-header[data-p="5"]::before { border-color: var(--cyan); background: #0b0f1a; }
+.tl-phase-label {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+.tl-phase-label span { font-weight: 400; }
+
+.tl-entry {
+  position: relative;
+  display: grid;
+  grid-template-columns: 70px 1fr;
+  gap: 16px;
+  margin-bottom: 2px;
+  padding: 10px 14px;
+  transition: background 0.15s;
+}
+.tl-entry:hover { background: var(--bg2); }
+.tl-entry::before {
+  content: '';
+  position: absolute;
+  left: -26px;
+  top: 18px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--border);
+}
+.tl-entry.ed-entry {
+  background: var(--ed-glow);
+  border: 1px solid rgba(74,191,212,0.2);
+  margin: 8px 0 8px -14px;
+  padding: 20px 24px;
+  grid-template-columns: 1fr;
+}
+.tl-entry.ed-entry::before { background: var(--cyan); width: 7px; height: 7px; left: -28px; top: 22px; }
+.tl-time {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  color: var(--text-dim);
+  letter-spacing: 0.06em;
+  padding-top: 3px;
+  line-height: 1.4;
+}
+.tl-speaker {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.tl-speaker.instructor { color: var(--amber); }
+.tl-speaker.ed { color: var(--cyan); display: flex; align-items: center; gap: 6px; }
+.tl-speaker.ed::before { content: '◉'; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+.tl-speaker.named  { color: #7aaad4; }
+.tl-speaker.participant { color: var(--text-dim); }
+.tl-text {
+  font-size: 0.92rem;
+  color: var(--text);
+  line-height: 1.65;
+}
+.tl-text.instructor { color: var(--text); }
+.tl-text.ed-text {
+  font-family: 'Literata', serif;
+  font-style: italic;
+  font-size: 0.97rem;
+  color: #c8dce8;
+  line-height: 1.8;
+}
+.tl-tag {
+  display: inline-block;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 8.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  margin-left: 6px;
+  vertical-align: middle;
+  border-radius: 2px;
+}
+.tl-tag.unjust  { background: var(--red-bg);    color: var(--red);   border: 1px solid rgba(212,90,74,0.3); }
+.tl-tag.just    { background: var(--green-bg);   color: var(--green); border: 1px solid rgba(90,191,138,0.3); }
+.tl-tag.concept { background: var(--violet-bg);  color: var(--violet);border: 1px solid rgba(155,127,232,0.3); }
+.tl-tag.pushback{ background: var(--amber-bg);   color: var(--amber); border: 1px solid rgba(232,162,48,0.3); }
+.tl-tag.meta    { background: var(--cyan-bg);    color: var(--cyan);  border: 1px solid rgba(74,191,212,0.3); }
+
+/* ── ED ROLE ANALYSIS ── */
+.ed-role-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  margin-bottom: 16px;
+}
+.ed-role-card {
+  background: var(--bg2);
+  padding: 24px;
+  border-left: 3px solid transparent;
+  position: relative;
+}
+.ed-role-card.opener  { border-left-color: var(--cyan-dim); }
+.ed-role-card.anchor  { border-left-color: var(--amber-dim); }
+.ed-role-card.mirror  { border-left-color: var(--violet); }
+.ed-role-card.synth   { border-left-color: var(--cyan); }
+.ed-role-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--border);
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  line-height: 1;
+}
+.ed-role-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.ed-role-body {
+  font-size: 0.88rem;
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+.ed-role-body strong { color: var(--text-mid); }
+
+/* ── CONCEPTS TABLE ── */
+.concepts-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 16px;
+}
+.concepts-table thead tr {
+  border-bottom: 2px solid var(--border);
+}
+.concepts-table th {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  padding: 10px 16px;
+  text-align: left;
+  font-weight: 500;
+}
+.concepts-table td {
+  font-size: 0.88rem;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border2);
+  vertical-align: top;
+  line-height: 1.55;
+}
+.concepts-table tr:hover td { background: var(--bg2); }
+.ct-speaker {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+.ct-speaker.named { color: #7aaad4; }
+.ct-speaker.instructor { color: var(--amber-dim); }
+.ct-time {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+.ct-text { color: var(--text); }
+.ct-significance { color: var(--text-dim); font-style: italic; font-size: 0.84rem; }
+
+/* ── ED RESPONSE BREAKDOWN ── */
+.ed-response {
+  background: var(--bg2);
+  border: 1px solid rgba(74,191,212,0.25);
+  margin: 12px 0;
+  position: relative;
+  overflow: hidden;
+}
+.ed-response::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+}
+.ed-response-head {
+  padding: 16px 24px 12px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.ed-response-head .label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--cyan);
+}
+.ed-response-head .time {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  color: var(--text-dim);
+  margin-left: auto;
+}
+.ed-response-body {
+  padding: 20px 24px;
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 24px;
+}
+.ed-quote {
+  font-family: 'Literata', serif;
+  font-style: italic;
+  font-size: 0.97rem;
+  color: #c8dce8;
+  line-height: 1.85;
+}
+.ed-analysis {
+  border-left: 1px solid var(--border);
+  padding-left: 24px;
+}
+.ed-analysis h5 {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 14px;
+}
+.ed-move {
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border2);
+}
+.ed-move:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+.ed-move-type {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 8.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cyan-dim);
+  margin-bottom: 3px;
+}
+.ed-move-text {
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  line-height: 1.55;
+}
+
+/* ── GROUP REACTION ── */
+.reaction-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+}
+.reaction-card {
+  background: var(--bg2);
+  padding: 18px 20px;
+}
+.reaction-who {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  color: var(--text-dim);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.reaction-quote {
+  font-family: 'Literata', serif;
+  font-size: 0.9rem;
+  color: var(--text-mid);
+  font-style: italic;
+  line-height: 1.55;
+  margin-bottom: 8px;
+}
+.reaction-read {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 28px 48px;
+  max-width: 1060px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9.5px;
+  color: var(--text-dim);
+  letter-spacing: 0.08em;
+}
+footer span { color: var(--amber-dim); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 760px) {
+  .hero-grid { grid-template-columns: 1fr; }
+  .hero-stats { display: none; }
+  .phase-map { grid-template-columns: 1fr 1fr; }
+  .ed-role-grid { grid-template-columns: 1fr; }
+  .ed-response-body { grid-template-columns: 1fr; }
+  .ed-analysis { border-left: none; padding-left: 0; border-top: 1px solid var(--border); padding-top: 16px; }
+  .reaction-grid { grid-template-columns: 1fr; }
+  .page { padding: 0 24px 60px; }
+  .hero-grid { padding: 0 24px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-grid">
+    <div>
+      <div class="hero-eyebrow">AILIT04 · Dialogue Analysis</div>
+      <h1>Justice, Injustice<br>&amp; <em>Ed Murrow</em></h1>
+      <p class="hero-desc">How a classroom acclimates to an AI interlocutor — tracing the arc of a group finding its voice alongside a machine persona, from first encounter to philosophical synthesis.</p>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <span class="stat-label">Time window</span>
+        <span class="stat-value">29–42 min</span>
+      </div>
+      <div class="hero-stat">
+        <span class="stat-label">Duration</span>
+        <span class="stat-value">~13 min</span>
+      </div>
+      <div class="hero-stat">
+        <span class="stat-label">Contributions</span>
+        <span class="stat-value">27 turns</span>
+      </div>
+      <div class="hero-stat">
+        <span class="stat-label">Unique voices</span>
+        <span class="stat-value">9 speakers</span>
+      </div>
+      <div class="hero-stat">
+        <span class="stat-label">Ed interventions</span>
+        <span class="stat-value">2 responses</span>
+      </div>
+      <div class="hero-stat">
+        <span class="stat-label">Key concepts raised</span>
+        <span class="stat-value">11 ideas</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="page">
+
+  <!-- ── PHASE MAP ── -->
+  <div class="section-label">Acclimatization Arc — Five Phases</div>
+  <div class="phase-map">
+    <div class="phase-block" data-phase="1">
+      <div class="phase-time">29:08 – 31:41</div>
+      <div class="phase-name">First Contact</div>
+      <div class="phase-desc">Ed responds. The room goes quiet with a mix of awe and slight unease.</div>
+      <div class="phase-count"><strong>3</strong> contributions<br>mostly reactions</div>
+    </div>
+    <div class="phase-block" data-phase="2">
+      <div class="phase-time">31:42 – 35:25</div>
+      <div class="phase-name">Orientation</div>
+      <div class="phase-desc">Participants ask what Ed <em>is</em> — facilitator? AI? — before risking ideas.</div>
+      <div class="phase-count"><strong>5</strong> contributions<br>questions dominate</div>
+    </div>
+    <div class="phase-block" data-phase="3">
+      <div class="phase-time">35:26 – 38:59</div>
+      <div class="phase-name">Warming Up</div>
+      <div class="phase-desc">Ideas start flowing. Multiple voices. John: "the juices are starting to flow."</div>
+      <div class="phase-count"><strong>9</strong> contributions<br>first real debate</div>
+    </div>
+    <div class="phase-block" data-phase="4">
+      <div class="phase-time">39:00 – 41:01</div>
+      <div class="phase-name">Full Engagement</div>
+      <div class="phase-desc">Humor, bold examples, personal experience — the group is fully in.</div>
+      <div class="phase-count"><strong>7</strong> contributions<br>humor &amp; boldness</div>
+    </div>
+    <div class="phase-block" data-phase="5">
+      <div class="phase-time">41:02 – 42:37</div>
+      <div class="phase-name">Ed Synthesizes</div>
+      <div class="phase-desc">Ed reframes everything. The reaction shifts from awe to meta-inquiry.</div>
+      <div class="phase-count"><strong>3</strong> contributions<br>"behind the curtain?"</div>
+    </div>
+  </div>
+
+  <!-- ── PARTICIPATION ── -->
+  <div class="section-label">Participation by Speaker</div>
+  <div class="bar-chart">
+    <div class="bar-row">
+      <div class="bar-speaker instructor">John Day · Instructor</div>
+      <div class="bar-track"><div class="bar-fill instructor" style="width:62%"></div></div>
+      <div class="bar-count">12</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-speaker ed">Ed Murrow · AI</div>
+      <div class="bar-track"><div class="bar-fill ed" style="width:20%"></div></div>
+      <div class="bar-count">2</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-speaker named">Bob Mahoney</div>
+      <div class="bar-track"><div class="bar-fill named" style="width:15%"></div></div>
+      <div class="bar-count">3</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-speaker named">Elaine (Sp. 2)</div>
+      <div class="bar-track"><div class="bar-fill named" style="width:15%"></div></div>
+      <div class="bar-count">3</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-speaker named">Scott (Sp. 5)</div>
+      <div class="bar-track"><div class="bar-fill named" style="width:10%"></div></div>
+      <div class="bar-count">2</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-speaker named">Marie Danziger</div>
+      <div class="bar-track"><div class="bar-fill named" style="width:5%"></div></div>
+      <div class="bar-count">1</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-speaker named">Jerry (Sp. 9)</div>
+      <div class="bar-track"><div class="bar-fill named" style="width:10%"></div></div>
+      <div class="bar-count">2</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-speaker named">Fred Kaplan</div>
+      <div class="bar-track"><div class="bar-fill named" style="width:10%"></div></div>
+      <div class="bar-count">2</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-speaker participant">Barbara / Sp. 7, 10</div>
+      <div class="bar-track"><div class="bar-fill participant" style="width:10%"></div></div>
+      <div class="bar-count">3</div>
+    </div>
+  </div>
+
+  <!-- ── TIMELINE ── -->
+  <div class="section-label">Full Dialogue Timeline</div>
+  <div class="timeline">
+
+    <!-- PHASE 1 -->
+    <div class="tl-phase-header" data-p="1">
+      <div class="tl-phase-label">Phase 1 · First Contact &nbsp;<span>29:08 – 31:41</span></div>
+    </div>
+
+    <div class="tl-entry">
+      <div class="tl-time">29:08</div>
+      <div>
+        <div class="tl-speaker instructor">John Day</div>
+        <div class="tl-text">Activates the avatar: <em>"Ed, let's talk."</em> Frames the inquiry around Plato's Republic Book IX — is the just person 729× happier than the unjust? Applied to AI tech moguls: "Is the just tech mogul happier than the unjust?" Asks Ed to weigh in on the framing. <span class="tl-tag concept">framing</span></div>
+      </div>
+    </div>
+
+    <div class="tl-entry">
+      <div class="tl-time">29:09</div>
+      <div>
+        <div class="tl-speaker named">Fred Kaplan</div>
+        <div class="tl-text">"He's on vacation." — first verbal reaction, a joke to relieve the tension of watching an AI boot up.</div>
+      </div>
+    </div>
+
+    <div class="tl-entry ed-entry">
+      <div>
+        <div class="tl-speaker ed">Ed Murrow &nbsp;·&nbsp; Response 1 <span style="font-family:'IBM Plex Mono';font-size:9px;color:var(--text-dim);margin-left:auto">30:27 – 31:28</span></div>
+        <div class="tl-text ed-text">"This is a worthy line of inquiry. Plato's claim rests on the assumption that justice is a state of the soul — right action produces internal order, injustice produces disorder. The difficulty lies here: Plato believed justice was its own reward. But modern life offers powerful counter evidence. An unjust mogul may sleep soundly and feel entirely satisfied. So the question becomes sharper: are we testing Plato's metaphysical claim, or examining what justice actually requires of those who wield technological power? Those may not be the same inquiry. What's your working definition of justice in this context — are we talking about legality, or something deeper?"</div>
+      </div>
+    </div>
+
+    <div class="tl-entry">
+      <div class="tl-time">31:29</div>
+      <div>
+        <div class="tl-speaker instructor">John Day</div>
+        <div class="tl-text">"Return to listening." Uses the voice command to pause Ed. Points out that Ed's response already opens up the conversation — the avatar functions as a warm-up engine, not the conclusion.</div>
+      </div>
+    </div>
+
+    <div class="tl-entry">
+      <div class="tl-time">31:42–31:46</div>
+      <div>
+        <div class="tl-speaker participant">Speaker 7 (Barbara)</div>
+        <div class="tl-text">"That's why it's scary." — first named emotional response. Awe edged with unease. <span class="tl-tag meta">reaction</span></div>
+      </div>
+    </div>
+
+    <div class="tl-entry">
+      <div class="tl-time">31:46</div>
+      <div>
+        <div class="tl-speaker named">Elaine (Sp. 2)</div>
+        <div class="tl-text">"I think Ed is… bringing up nuances in your question that might lead you to ask more questions." — First analytical observation about <em>what Ed is doing.</em> <span class="tl-tag meta">meta-observation</span></div>
+      </div>
+    </div>
+
+    <div class="tl-entry">
+      <div class="tl-time">32:01</div>
+      <div>
+        <div class="tl-speaker named">Fred Kaplan</div>
+        <div class="tl-text">"Remarkably sophisticated." — Zoom cohort reaction, relayed in. <span class="tl-tag meta">reaction</span></div>
+      </div>
+    </div>
+
+    <!-- PHASE 2 -->
+    <div class="tl-phase-header" data-p="2">
+      <div class="tl-phase-label">Phase 2 · Orientation &nbsp;<span>31:42 – 35:25</span></div>
+    </div>
+
+    <div class="tl-entry">
+      <div class="tl-time">32:19</div>
+      <div>
+        <div class="tl-speaker participant">Barbara (Sp. 7)</div>
+        <div class="tl-text">"What's different from that if you just ask Claude directly?" — Key orientation question. Still mapping the territory, not yet contributing substantive ideas. <span class="tl-tag meta">role question</span></div>
+      </div>
+    </div>
+
+    <div class="tl-entry">
+      <div class="tl-time">32:25</div>
+      <div>
+        <div class="tl-speaker instructor">John Day</div>
+        <div class="tl-text">Explains the character profile: slow, deliberate, never effusive, "don't over-compliment me." "This is not Ed Murrow — this is Claude playing Ed Murrow." Demystifies the persona while preserving its utility.</div>
+      </div>
+    </div>
+
+    <div class="tl-entry">
+      <div class="tl-time">34:07</div>
+      <div>
+        <div class="tl-speaker instructor">John Day</div>
+        <div class="tl-text">Seeds the first example: "I would say misrepresentation of news facts to push an ideological agenda is an unjust use of AI." Invites others: "Any reactions? Jerry?" <span class="tl-tag unjust">unjust use</span></div>
+      </div>
+    </div>
+
+    <div class="tl-entry">
+      <div class="tl-time">34:42</div>
+      <div>
+        <div class="tl-speaker named">Jerry (Sp. 9)</div>
+        <div class="tl-text">"Generally yes — but I could see nuances where the end is incredibly just, and the only means of getting there is misrepresentation. Perhaps that's just…" First real pushback — introduces a consequentialist counter-argument. <span class="tl-tag pushback">pushback / nuance</span></div>
+      </div>
+    </div>
+
+    <div class="tl-entry">
+      <div class="tl-time">35:28</div>
+      <div>
+        <div class="tl-speaker named">Elaine (Sp. 2)</div>
+        <div class="tl-text">"I'm trying to understand what you're doing with this discussion. Is Ed facilitating a classroom discussion about justice and injustice?" — Still orienting, but now orienting toward purpose, not just technology. <span class="tl-tag meta">role question</span></div>
+      </div>
+    </div>
+
+    <!-- PHASE 3 -->
+    <div class="tl-phase-header" data-p="3">
+      <div class="tl-phase-label">Phase 3 · Warming Up &nbsp;<span>35:26 – 38:59</span></div>
+    </div>
+
+    <div class="tl-entry">
+      <div class="tl-time">36:11</div>
+      <div>
+        <div class="tl-speaker participant">Barbara (Sp. 7)</div>
+        <div class="tl-text">"Should we define what we mean by justice first?" — Methodological challenge. Wants grounding before examples. <span class="tl-tag concept">definitional</span></div>
+      </div>
+    </div>
+
+    <div class="tl-entry">
+      <div class="tl-time">36:37</div>
+      <div>
+        <div class="tl-speaker named">Elaine (Sp. 2)</div>
+        <div class="tl-text">"How does unjust differ from unethical? I would characterize misrepresentation as unethical." — Sharpest conceptual move so far. Points to the terminological tension at the heart of the discussion. <span class="tl-tag concept">justice vs. ethics</span></div>
+      </div>
+    </div>
+
+    <div class="tl-entry">
+      <div class="tl-time">36:48</div>
+      <div>
+        <div class="tl-speaker participant">Speaker 10</div>
+        <div class="tl-text">"I would characterize it as unethical — but there's an overlap." — Affirms the distinction Elaine raised; the two terms are in play simultaneously now. <span class="tl-tag concept">ethics overlap</span></div>
+      </div>
+    </div>
+
+    <div class="tl-entry">
+      <div class="tl-time">37:04</div>
+      <div>
+        <div class="tl-speaker named">Bob Mahoney</div>
+        <div class="tl-text">"What if we asked AI how best to thwart the efforts of protesters? AI comes up with guns, police, fire hoses?" — First bold, dramatic example. The group's engagement is escalating. <span class="tl-tag unjust">unjust use</span></div>
+      </div>
+    </div>
+
+    <div class="tl-entry">
+      <div class="tl-time">37:36</div>
+      <div>
+        <div class="tl-speaker named">Marie Danziger</div>
+        <div class="tl-text">"Another unjust situation: if someone has AI and can use it, and someone else doesn't — there's an inequality there." — The only contribution that Ed will later identify as justice <em>proper</em> (distribution) vs. merely ethical. <span class="tl-tag unjust">unjust use</span> <span class="tl-tag concept">access / distribution</span></div>
+      </div>
+    </div>
+
+    <div class="tl-entry">
+      <div class="tl-time">37:58</div>
+      <div>
+        <div class="tl-speaker named">Jerry (Sp. 9)</div>
+        <div class="tl-text">"One is deliberately misrepresenting facts, and the other is selectively choosing facts — ignoring facts that might change the calculus." — Refines his own earlier nuance into a two-part taxonomy. <span class="tl-tag unjust">unjust use</span></div>
+      </div>
+    </div>
+
+    <div class="tl-entry">
+      <div class="tl-time">38:18</div>
+      <div>
+        <div class="tl-speaker instructor">John Day</div>
+        <div class="tl-text">"The juices are starting to flow. We're having this cross-conversation — that's really important." Acknowledges the momentum and pivots to <em>just</em> uses. Seeds: AI tutoring for students who can't afford private instruction. <span class="tl-tag just">just use</span></div>
+      </div>
+    </div>
+
+    <!-- PHASE 4 -->
+    <div class="tl-phase-header" data-p="4">
+      <div class="tl-phase-label">Phase 4 · Full Engagement &nbsp;<span>39:00 – 41:01</span></div>
+    </div>
+
+    <div class="tl-entry">
+      <div class="tl-time">39:01</div>
+      <div>
+        <div class="tl-speaker named">Elaine (Sp. 2)</div>
+        <div class="tl-text">"That would mean it's just for students to gain knowledge." — Affirms; increasingly comfortable. <span class="tl-tag just">just use</span></div>
+      </div>
+    </div>
+
+    <div class="tl-entry">
+      <div class="tl-time">39:12</div>
+      <div>
+        <div class="tl-speaker named">Bob Mahoney</div>
+        <div class="tl-text">"Let me be colorful — what about asking AI for proofs of the existence of God? I've done it, and it comes up with pretty good answers, and gives the flip side." — Humorous, then genuine. The group is now comfortable enough for wit. <span class="tl-tag just">just use</span></div>
+      </div>
+    </div>
+
+    <div class="tl-entry">
+      <div class="tl-time">39:35</div>
+      <div>
+        <div class="tl-speaker instructor">John Day</div>
+        <div class="tl-text">"An ethical use of AI is to probe the meaning of our existence — not to tell us what it is, but to help us think about it." <span class="tl-tag just">just use</span></div>
+      </div>
+    </div>
+
+    <div class="tl-entry">
+      <div class="tl-time">39:48</div>
+      <div>
+        <div class="tl-speaker named">Elaine (Sp. 2)</div>
+        <div class="tl-text">"Asking AI how to assassinate a political opponent." — Drops this as an obvious unjust example. By this point, participants are making forceful contributions without hedging. <span class="tl-tag unjust">unjust use</span></div>
+      </div>
+    </div>
+
+    <div class="tl-entry">
+      <div class="tl-time">40:03</div>
+      <div>
+        <div class="tl-speaker named">Scott (Sp. 5)</div>
+        <div class="tl-text">"Maybe it's terminology — I think of it as unethical rather than unjust. But selectively producing evidence that vaccines cause autism while suppressing studies showing the opposite — that's so deep. Whatever word — it's wrong." — Longest single contribution in the discussion. Scott has arrived fully. <span class="tl-tag unjust">unjust use</span> <span class="tl-tag pushback">terminology pushback</span></div>
+      </div>
+    </div>
+
+    <div class="tl-entry">
+      <div class="tl-time">40:44</div>
+      <div>
+        <div class="tl-speaker instructor">John Day</div>
+        <div class="tl-text">"Alright, this is a meaty topic. Let's pause and — Let's talk, Ed. Why don't you assess the conversation we've had for the last 5 or 10 minutes?" <span class="tl-tag meta">Ed invoked</span></div>
+      </div>
+    </div>
+
+    <!-- PHASE 5 -->
+    <div class="tl-phase-header" data-p="5">
+      <div class="tl-phase-label">Phase 5 · Ed Synthesizes &nbsp;<span>41:02 – 42:37</span></div>
+    </div>
+
+    <div class="tl-entry ed-entry">
+      <div>
+        <div class="tl-speaker ed">Ed Murrow &nbsp;·&nbsp; Response 2 &nbsp;— Synthesis <span style="font-family:'IBM Plex Mono';font-size:9px;color:var(--text-dim);margin-left:auto">41:04 – 42:24</span></div>
+        <div class="tl-text ed-text">"Let me step back and assess what's emerged here. You've moved from the abstract — Plato's claim about the soul — to the concrete. That's sound pedagogy. The group has identified several threads: misrepresentation of facts for ideological ends, suppression of dissent, unequal access, selective omission of evidence. But notice what's happened: you've begun to conflate justice with ethics. They're not identical. Ethics governs conduct, right action. Justice governs distribution — who gets what, and why? When one person asked about accessibility — that AI shouldn't be monopolized — they touched on justice proper. Unequal access to a transformative technology is a distribution problem. That's different from misusing AI to deceive, which is an ethical breach. You've also noted something important without quite naming it: does justice correlate with happiness? Plato assumed yes. Your group seems skeptical. That's the real question beneath the rest."</div>
+      </div>
+    </div>
+
+    <div class="tl-entry">
+      <div class="tl-time">42:27</div>
+      <div>
+        <div class="tl-speaker instructor">John Day</div>
+        <div class="tl-text">"Okay, so — you see how this works, right?"</div>
+      </div>
+    </div>
+
+    <div class="tl-entry">
+      <div class="tl-time">42:31</div>
+      <div>
+        <div class="tl-speaker named">Scott (Sp. 5)</div>
+        <div class="tl-text">"I mean, that is so incredible. What's actually happening behind the curtain?" — The discussion closes on a meta-question about how AI reasons. The group has moved from caution to full engagement to philosophical curiosity. <span class="tl-tag meta">meta-shift</span></div>
+      </div>
+    </div>
+
+  </div><!-- /timeline -->
+
+  <!-- ── ED'S TWO RESPONSES ── -->
+  <div class="section-label">Ed Murrow's Two Interventions — Rhetorical Analysis</div>
+
+  <div class="ed-response">
+    <div class="ed-response-head">
+      <span class="label">◉ Response 1 — The Opening Frame</span>
+      <span class="time">30:27 – 31:28</span>
+    </div>
+    <div class="ed-response-body">
+      <div class="ed-quote">
+        "This is a worthy line of inquiry. Plato's claim rests on the assumption that justice is a state of the soul… The difficulty lies here. Plato believed justice was its own reward. But modern life offers powerful counter evidence… So the question becomes sharper: are we testing Plato's metaphysical claim, or examining what justice actually requires of those who wield technological power? Those may not be the same inquiry."
+      </div>
+      <div class="ed-analysis">
+        <h5>Rhetorical Moves</h5>
+        <div class="ed-move">
+          <div class="ed-move-type">Validate → Complicate</div>
+          <div class="ed-move-text">Opens by affirming John's framing as "worthy," then immediately introduces a counter-tension: Plato's metaphysics vs. modern empirical reality.</div>
+        </div>
+        <div class="ed-move">
+          <div class="ed-move-type">Sharpen the Question</div>
+          <div class="ed-move-text">Splits John's single question into two separate inquiries — the metaphysical and the practical — creating conceptual space for the group to explore.</div>
+        </div>
+        <div class="ed-move">
+          <div class="ed-move-type">Return the Question</div>
+          <div class="ed-move-text">Ends with a question back to the group, not an answer. Performs the facilitator role John described: generating more questions.</div>
+        </div>
+        <div class="ed-move">
+          <div class="ed-move-type">Effect on Group</div>
+          <div class="ed-move-text">Produces awe ("scary," "remarkably sophisticated") and a wave of orientation questions: <em>what is Ed doing?</em></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ed-response">
+    <div class="ed-response-head">
+      <span class="label">◉ Response 2 — The Synthesis</span>
+      <span class="time">41:04 – 42:24</span>
+    </div>
+    <div class="ed-response-body">
+      <div class="ed-quote">
+        "You've moved from the abstract to the concrete. That's sound pedagogy. But notice what's happened — you've begun to conflate justice with ethics. They're not identical. Ethics governs conduct. Justice governs distribution… Unequal access to a transformative technology is a distribution problem. That's different from misusing AI to deceive, which is an ethical breach."
+      </div>
+      <div class="ed-analysis">
+        <h5>Rhetorical Moves</h5>
+        <div class="ed-move">
+          <div class="ed-move-type">Name the Arc</div>
+          <div class="ed-move-text">"You've moved from abstract to concrete" — Ed narrates the group's own intellectual journey back to them, creating a moment of self-recognition.</div>
+        </div>
+        <div class="ed-move">
+          <div class="ed-move-type">Introduce a Distinction</div>
+          <div class="ed-move-text">The justice/ethics split — which several participants had already intuited — is given sharp, canonical form. Names what the group "almost said."</div>
+        </div>
+        <div class="ed-move">
+          <div class="ed-move-type">Elevate One Contribution</div>
+          <div class="ed-move-text">Singles out Marie Danziger's accessibility point as the one contribution that touched <em>justice proper</em> — a distribution problem, not merely an ethical breach.</div>
+        </div>
+        <div class="ed-move">
+          <div class="ed-move-type">Name the Unspoken</div>
+          <div class="ed-move-text">"You've noted something important without quite naming it" — Ed identifies the latent Platonic question (does justice = happiness?) that animated the discussion but was never stated.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── ED's ROLE ── -->
+  <div class="section-label">Ed's Role in the Classroom Ecology</div>
+  <div class="ed-role-grid">
+    <div class="ed-role-card opener">
+      <div class="ed-role-num">01</div>
+      <div class="ed-role-title">The Provocation Engine</div>
+      <div class="ed-role-body">Ed's first response did not answer John's question — it <strong>multiplied it</strong>. By splitting John's single framing into two distinct inquiries (metaphysical vs. practical), it gave the group more territory to explore than they started with. This is the classical Socratic move.</div>
+    </div>
+    <div class="ed-role-card anchor">
+      <div class="ed-role-num">02</div>
+      <div class="ed-role-title">The Timing Device</div>
+      <div class="ed-role-body">Ed was used twice — once to <strong>open</strong> the discussion frame, and once to <strong>close and synthesize</strong> it. Between those two moments, the group talked entirely among themselves. This structure gave human dialogue room to breathe while Ed held the conceptual architecture.</div>
+    </div>
+    <div class="ed-role-card mirror">
+      <div class="ed-role-num">03</div>
+      <div class="ed-role-title">The Flattering Mirror</div>
+      <div class="ed-role-body">Ed's synthesis narrated the group's own journey back to them: "You've moved from abstract to concrete — that's sound pedagogy." It identified the best contribution (Marie's access point) and named what participants had <strong>almost said</strong> but hadn't quite articulated.</div>
+    </div>
+    <div class="ed-role-card synth">
+      <div class="ed-role-num">04</div>
+      <div class="ed-role-title">The Conceptual Organizer</div>
+      <div class="ed-role-body">The justice/ethics distinction — already present in the conversation in scattered form — was crystallized and named by Ed. The group had felt the tension; Ed made it <strong>legible and precise</strong>. This is generative AI working as a conceptual clarifier, not as an answer machine.</div>
+    </div>
+  </div>
+
+  <!-- ── GROUP REACTIONS ── -->
+  <div class="section-label">Group Reactions — Reading the Room</div>
+  <div class="reaction-grid">
+    <div class="reaction-card">
+      <div class="reaction-who">Barbara (Sp. 7) · 32:13</div>
+      <div class="reaction-quote">"Yes, it is. That's why it's scary."</div>
+      <div class="reaction-read">First emotional marker. Awe registered as mild threat — Ed's sophistication was legible but unsettling. This is the canonical first-contact response with a capable AI: <em>this thing understands things.</em></div>
+    </div>
+    <div class="reaction-card">
+      <div class="reaction-who">Elaine (Sp. 2) · 31:46</div>
+      <div class="reaction-quote">"Ed is bringing up nuances that might lead you to ask more questions."</div>
+      <div class="reaction-read">Immediately analytical — Elaine observed <em>what Ed was doing</em> rather than just reacting to it. Earliest sign of a participant treating Ed as an instrument to be studied, not just experienced.</div>
+    </div>
+    <div class="reaction-card">
+      <div class="reaction-who">Fred Kaplan · 32:01–32:12</div>
+      <div class="reaction-quote">"Remarkably sophisticated." (Zoom cohort reaction)</div>
+      <div class="reaction-read">Fred is relaying the Zoom room's consensus. The remote participants, who couldn't see the screen context as clearly, registered pure textual sophistication — which may have felt even more striking without the live demo framing.</div>
+    </div>
+    <div class="reaction-card">
+      <div class="reaction-who">Scott (Sp. 5) · 42:31</div>
+      <div class="reaction-quote">"What's actually happening behind the curtain?"</div>
+      <div class="reaction-read">The session's most significant acclimatization moment. Scott has moved from passive listener to active contributor to meta-inquirer in about 12 minutes. "Behind the curtain" signals the transition from using AI to wanting to <em>understand</em> it.</div>
+    </div>
+    <div class="reaction-card">
+      <div class="reaction-who">Barbara (Sp. 7) · 32:19</div>
+      <div class="reaction-quote">"What's different from that if you just ask Claude directly?"</div>
+      <div class="reaction-read">A practical orientation question that revealed the group hadn't yet absorbed the distinction between a raw Claude conversation and a curated persona. The question opened up John's explanation of character profiles — a crucial pedagogical moment.</div>
+    </div>
+    <div class="reaction-card">
+      <div class="reaction-who">Fred Kaplan · 29:08</div>
+      <div class="reaction-quote">"He's on vacation."</div>
+      <div class="reaction-read">The first utterance after Ed is activated — a joke. This is the classroom's adaptive mechanism: humor as a pressure-release valve while the room processes something new and unfamiliar. Ed hadn't spoken yet; the joke was about the <em>anticipation.</em></div>
+    </div>
+  </div>
+
+  <!-- ── CONCEPTS TABLE ── -->
+  <div class="section-label">All Major Points Raised</div>
+  <table class="concepts-table">
+    <thead>
+      <tr>
+        <th>Time</th>
+        <th>Speaker</th>
+        <th>Point</th>
+        <th>Significance</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="ct-time">29:17</td>
+        <td class="ct-speaker instructor">John Day</td>
+        <td class="ct-text">Is the just tech mogul happier than the unjust? (Plato Republic IX framing)</td>
+        <td class="ct-significance">Sets the philosophical scaffolding — anchors the AI ethics discussion in a 2,400-year-old inquiry about the soul</td>
+      </tr>
+      <tr>
+        <td class="ct-time">34:07</td>
+        <td class="ct-speaker instructor">John Day</td>
+        <td class="ct-text">Misrepresentation of news to push an ideological agenda = unjust use of AI</td>
+        <td class="ct-significance">Opening gambit — deliberately provocative enough to invite pushback</td>
+      </tr>
+      <tr>
+        <td class="ct-time">34:42</td>
+        <td class="ct-speaker named">Jerry</td>
+        <td class="ct-text">Consequentialist counter: if the end is just, could misrepresentation be justified?</td>
+        <td class="ct-significance">First real intellectual challenge; introduces ends/means tension</td>
+      </tr>
+      <tr>
+        <td class="ct-time">36:11</td>
+        <td class="ct-speaker">Sp. 7 (Barbara)</td>
+        <td class="ct-text">Should we define justice before using it as a criterion?</td>
+        <td class="ct-significance">Methodological challenge — pointing out the definitional gap the group was operating with</td>
+      </tr>
+      <tr>
+        <td class="ct-time">36:37</td>
+        <td class="ct-speaker named">Elaine</td>
+        <td class="ct-text">How does "unjust" differ from "unethical"? — They may not be the same thing</td>
+        <td class="ct-significance">Single most important conceptual contribution; Ed will later formalize this into justice vs. ethics</td>
+      </tr>
+      <tr>
+        <td class="ct-time">37:04</td>
+        <td class="ct-speaker named">Bob Mahoney</td>
+        <td class="ct-text">Asking AI how to thwart protesters (suggesting police, fire hoses)</td>
+        <td class="ct-significance">Escalates the stakes; suppression of civil expression as an unjust application</td>
+      </tr>
+      <tr>
+        <td class="ct-time">37:36</td>
+        <td class="ct-speaker named">Marie Danziger</td>
+        <td class="ct-text">Unequal access to AI = injustice; some can use it, others can't</td>
+        <td class="ct-significance">Ed later identifies this as the <em>only</em> contribution that touched justice proper — a distribution problem, not merely an ethical one</td>
+      </tr>
+      <tr>
+        <td class="ct-time">37:58</td>
+        <td class="ct-speaker named">Jerry</td>
+        <td class="ct-text">Distinction: deliberately misrepresenting vs. selectively omitting facts</td>
+        <td class="ct-significance">Refines his earlier point into a two-part taxonomy of informational injustice</td>
+      </tr>
+      <tr>
+        <td class="ct-time">39:12</td>
+        <td class="ct-speaker named">Bob Mahoney</td>
+        <td class="ct-text">AI as a tool for probing the existence of God — returns nuanced, balanced answers</td>
+        <td class="ct-significance">Introduces levity and expands "just use" toward the existential and philosophical</td>
+      </tr>
+      <tr>
+        <td class="ct-time">39:48</td>
+        <td class="ct-speaker named">Elaine</td>
+        <td class="ct-text">Asking AI to help assassinate a political opponent</td>
+        <td class="ct-significance">By this point, Elaine contributes without hedging — a marker of full acclimatization</td>
+      </tr>
+      <tr>
+        <td class="ct-time">40:03</td>
+        <td class="ct-speaker named">Scott</td>
+        <td class="ct-text">Selective vaccine data (suppressing studies showing safety = unjust); "whatever word, it's wrong"</td>
+        <td class="ct-significance">Longest contribution; also deepens the unjust/unethical ambiguity with a contemporary, politically charged example</td>
+      </tr>
+    </tbody>
+  </table>
+
+</div><!-- /page -->
+
+<footer>
+  <span>BOLLI · AI Literacy · Session 4</span> &nbsp;·&nbsp; Justice &amp; Injustice Discussion — Dialogue Analysis &nbsp;·&nbsp; 29:08 – 42:37
+  <span>Transcript: AILIT04</span>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session Four — BOLLI AI Literacy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,700;0,9..144,900;1,9..144,300;1,9..144,400;1,9..144,700&family=Karla:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Barlow+Condensed:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --ink:       #18130d;
+  --ink-mid:   #3a2e22;
+  --terra:     #b84a2f;
+  --terra-mid: #8a3520;
+  --terra-pale:#f0d8d0;
+  --ochre:     #c4912a;
+  --ochre-pale:#f5e8cc;
+  --cream:     #f4ede0;
+  --cream-mid: #e8dece;
+  --sage:      #5a7a5a;
+  --sage-pale: #dce8dc;
+  --slate:     #6a7a8a;
+  --white:     #faf7f2;
+  --rule:      rgba(24,19,13,0.1);
+  --rule-mid:  rgba(24,19,13,0.06);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--white);
+  color: var(--ink);
+  font-family: 'Karla', system-ui, sans-serif;
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+/* ───────────────────────────────
+   HERO
+─────────────────────────────── */
+.hero {
+  background: var(--ink);
+  color: var(--cream);
+  padding: 80px 0 72px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--terra), var(--ochre), var(--terra));
+}
+.hero-bg-text {
+  position: absolute;
+  bottom: -40px;
+  right: -20px;
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: clamp(120px, 18vw, 220px);
+  font-weight: 900;
+  color: rgba(255,255,255,0.03);
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+  letter-spacing: -0.04em;
+}
+.hero-inner {
+  max-width: 1020px;
+  margin: 0 auto;
+  padding: 0 52px;
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 260px;
+  gap: 52px;
+  align-items: end;
+}
+.hero-kicker {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--ochre);
+  margin-bottom: 22px;
+}
+.hero h1 {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: clamp(2.6rem, 5vw, 4rem);
+  font-weight: 700;
+  line-height: 1.05;
+  color: var(--white);
+  margin-bottom: 22px;
+  letter-spacing: -0.02em;
+}
+.hero h1 em {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--terra-pale);
+}
+.hero-lede {
+  font-family: 'Fraunces', Georgia, serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: 1.15rem;
+  color: rgba(244,237,224,0.75);
+  max-width: 560px;
+  line-height: 1.7;
+}
+.hero-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 24px;
+  border: 1px solid rgba(255,255,255,0.1);
+  align-self: end;
+}
+.hero-meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  gap: 12px;
+}
+.hero-meta-row:last-child { border-bottom: none; padding-bottom: 0; }
+.meta-k {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(244,237,224,0.4);
+}
+.meta-v {
+  font-family: 'Fraunces', serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--ochre);
+  text-align: right;
+}
+
+/* ───────────────────────────────
+   SHARED LAYOUT
+─────────────────────────────── */
+.page {
+  max-width: 1020px;
+  margin: 0 auto;
+  padding: 0 52px;
+}
+
+.section-rule {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-top: 72px;
+  margin-bottom: 44px;
+}
+.section-rule::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--rule);
+}
+.section-kicker {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--terra);
+  flex-shrink: 0;
+}
+.section-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: clamp(1.7rem, 3vw, 2.3rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin-bottom: 18px;
+}
+.section-prose {
+  font-size: 1rem;
+  color: var(--ink-mid);
+  line-height: 1.75;
+  max-width: 700px;
+}
+
+/* ───────────────────────────────
+   RHYTHM SECTION
+─────────────────────────────── */
+.rhythm-wrap {
+  margin: 0 0 0;
+}
+.rhythm-curve {
+  position: relative;
+  height: 120px;
+  margin-bottom: 0;
+}
+.rhythm-svg { width: 100%; height: 100%; }
+.rhythm-segments {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 2px;
+}
+.seg {
+  padding: 16px 14px;
+  background: var(--cream);
+  border-top: 3px solid transparent;
+  position: relative;
+  cursor: default;
+}
+.seg:hover { background: var(--cream-mid); }
+.seg[data-e="1"] { border-top-color: #a8a090; }
+.seg[data-e="2"] { border-top-color: #b8906a; }
+.seg[data-e="3"] { border-top-color: var(--terra); }
+.seg[data-e="4"] { border-top-color: #8a6a3a; }
+.seg[data-e="5"] { border-top-color: var(--ochre); }
+.seg[data-e="6"] { border-top-color: #8a6a3a; }
+.seg[data-e="7"] { border-top-color: var(--terra); }
+.seg[data-e="8"] { border-top-color: #7a9a7a; }
+.seg-time {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  color: var(--slate);
+  margin-bottom: 5px;
+  text-transform: uppercase;
+}
+.seg-label {
+  font-family: 'Fraunces', serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.3;
+  margin-bottom: 6px;
+}
+.seg-mood {
+  font-size: 0.76rem;
+  color: var(--slate);
+  line-height: 1.5;
+  font-style: italic;
+}
+.seg-heat {
+  margin-top: 10px;
+  display: flex;
+  gap: 2px;
+}
+.heat-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--rule);
+}
+.heat-dot.on { background: var(--terra); }
+.heat-dot.half { background: var(--ochre); }
+
+/* ───────────────────────────────
+   PULL QUOTES
+─────────────────────────────── */
+.pull-quote {
+  border-left: 4px solid var(--terra);
+  margin: 40px 0;
+  padding: 6px 0 6px 32px;
+}
+.pull-quote p {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 1.4rem;
+  font-style: italic;
+  font-weight: 300;
+  line-height: 1.55;
+  color: var(--ink);
+}
+.pull-quote cite {
+  display: block;
+  margin-top: 10px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--terra-mid);
+  font-style: normal;
+}
+.pull-quote-center {
+  text-align: center;
+  padding: 52px 40px;
+  background: var(--ink);
+  margin: 52px 0;
+  position: relative;
+  overflow: hidden;
+}
+.pull-quote-center::before {
+  content: '\201C';
+  position: absolute;
+  top: -20px;
+  left: 24px;
+  font-family: 'Fraunces', serif;
+  font-size: 200px;
+  font-weight: 900;
+  color: rgba(255,255,255,0.04);
+  line-height: 1;
+  pointer-events: none;
+}
+.pull-quote-center p {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+  font-style: italic;
+  font-weight: 300;
+  color: var(--cream);
+  line-height: 1.55;
+  max-width: 680px;
+  margin: 0 auto 16px;
+  position: relative;
+  z-index: 1;
+}
+.pull-quote-center cite {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ochre);
+  font-style: normal;
+}
+
+/* ───────────────────────────────
+   THE ROOM — MEMBER PORTRAITS
+─────────────────────────────── */
+.members-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  margin-top: 4px;
+}
+.member-card {
+  background: var(--cream);
+  padding: 24px;
+  position: relative;
+}
+.member-card::before {
+  content: attr(data-initial);
+  position: absolute;
+  top: 16px;
+  right: 18px;
+  font-family: 'Fraunces', serif;
+  font-size: 3rem;
+  font-weight: 900;
+  font-style: italic;
+  color: rgba(24,19,13,0.06);
+  line-height: 1;
+}
+.member-role {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--terra-mid);
+  margin-bottom: 6px;
+}
+.member-name {
+  font-family: 'Fraunces', serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 10px;
+}
+.member-sketch {
+  font-size: 0.88rem;
+  color: var(--ink-mid);
+  line-height: 1.65;
+}
+.member-quote {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--rule);
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 0.88rem;
+  color: var(--terra-mid);
+  line-height: 1.55;
+}
+
+/* ───────────────────────────────
+   THEMES — FEATURE ESSAYS
+─────────────────────────────── */
+.themes-stack { display: flex; flex-direction: column; gap: 2px; }
+
+.theme-block {
+  display: grid;
+  gap: 0;
+  background: var(--cream);
+  overflow: hidden;
+}
+.theme-block.variant-a { grid-template-columns: 280px 1fr; }
+.theme-block.variant-b { grid-template-columns: 1fr 280px; }
+.theme-accent {
+  padding: 40px 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+.theme-block.variant-a .theme-accent { background: var(--terra); }
+.theme-block.variant-b .theme-accent { background: var(--ink); }
+.theme-block:nth-child(3) .theme-accent { background: var(--sage); }
+.theme-accent-num {
+  font-family: 'Fraunces', serif;
+  font-size: 5rem;
+  font-weight: 900;
+  line-height: 1;
+  color: rgba(255,255,255,0.15);
+  letter-spacing: -0.04em;
+}
+.theme-accent-title {
+  font-family: 'Fraunces', serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.95);
+  line-height: 1.25;
+  margin-bottom: 8px;
+}
+.theme-accent-kicker {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+}
+.theme-body {
+  padding: 36px 40px;
+}
+.theme-body h3 {
+  font-family: 'Fraunces', serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 14px;
+  color: var(--ink);
+  display: none;
+}
+.theme-body p {
+  font-size: 0.95rem;
+  color: var(--ink-mid);
+  line-height: 1.78;
+  margin-bottom: 14px;
+}
+.theme-body p:last-child { margin-bottom: 0; }
+.theme-body strong { color: var(--ink); font-weight: 500; }
+
+/* ───────────────────────────────
+   TEXTURE — What made it this session
+─────────────────────────────── */
+.texture-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  margin-top: 4px;
+}
+.texture-cell {
+  background: var(--cream);
+  padding: 32px;
+}
+.texture-cell.full { grid-column: 1 / -1; background: var(--ochre-pale); }
+.texture-cell-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--terra-mid);
+  margin-bottom: 12px;
+}
+.texture-cell h4 {
+  font-family: 'Fraunces', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 10px;
+  line-height: 1.25;
+}
+.texture-cell p {
+  font-size: 0.9rem;
+  color: var(--ink-mid);
+  line-height: 1.72;
+}
+.texture-cell p + p { margin-top: 10px; }
+
+/* ───────────────────────────────
+   LOOKING FORWARD
+─────────────────────────────── */
+.forward-band {
+  background: var(--ink);
+  color: var(--cream);
+  padding: 60px 52px;
+  margin-top: 2px;
+}
+.forward-inner {
+  max-width: 1020px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 40px;
+}
+.forward-block h4 {
+  font-family: 'Fraunces', serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--ochre);
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.forward-block p {
+  font-size: 0.88rem;
+  color: rgba(244,237,224,0.65);
+  line-height: 1.72;
+}
+.forward-block ul {
+  list-style: none;
+  padding: 0;
+}
+.forward-block ul li {
+  font-size: 0.88rem;
+  color: rgba(244,237,224,0.65);
+  padding: 6px 0 6px 16px;
+  position: relative;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  line-height: 1.5;
+}
+.forward-block ul li:last-child { border-bottom: none; }
+.forward-block ul li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--terra);
+  font-size: 0.8rem;
+}
+
+/* ───────────────────────────────
+   FOOTER
+─────────────────────────────── */
+footer {
+  background: var(--cream-mid);
+  padding: 24px 52px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--slate);
+}
+footer span { color: var(--terra-mid); }
+
+/* ───────────────────────────────
+   RESPONSIVE
+─────────────────────────────── */
+@media (max-width: 820px) {
+  .hero-inner { grid-template-columns: 1fr; }
+  .hero-meta { display: none; }
+  .page { padding: 0 28px; }
+  .forward-inner { grid-template-columns: 1fr; }
+  .members-grid { grid-template-columns: 1fr; }
+  .theme-block.variant-a,
+  .theme-block.variant-b { grid-template-columns: 1fr; }
+  .rhythm-segments { grid-template-columns: repeat(4, 1fr); }
+  .texture-grid { grid-template-columns: 1fr; }
+  .texture-cell.full { grid-column: 1; }
+  footer { flex-direction: column; gap: 8px; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── HERO ── -->
+<header class="hero">
+  <div class="hero-bg-text">IV</div>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-kicker">BOLLI · Brandeis Osher Lifelong Learning Institute · AI Literacy</div>
+      <h1>A Room Full of<br><em>Accumulated Wisdom</em><br>Meets a Machine</h1>
+      <p class="hero-lede">Session Four was not a lecture. It was a living argument — about justice, memory, machines, and what it means to learn something new at any age.</p>
+    </div>
+    <div class="hero-meta">
+      <div class="hero-meta-row">
+        <span class="meta-k">Session</span>
+        <span class="meta-v">Four of Six</span>
+      </div>
+      <div class="hero-meta-row">
+        <span class="meta-k">Duration</span>
+        <span class="meta-v">111 minutes</span>
+      </div>
+      <div class="hero-meta-row">
+        <span class="meta-k">Format</span>
+        <span class="meta-v">Hybrid</span>
+      </div>
+      <div class="hero-meta-row">
+        <span class="meta-k">~1,500 yrs</span>
+        <span class="meta-v">Combined experience</span>
+      </div>
+      <div class="hero-meta-row">
+        <span class="meta-k">Instructor</span>
+        <span class="meta-v">John Day</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ── INTRO ESSAY ── -->
+<div class="page">
+  <div style="max-width:700px; padding-top:56px; padding-bottom:0">
+    <p class="section-prose" style="font-size:1.05rem; font-style:italic; font-family:'Fraunces',serif; font-weight:300; color:var(--ink); line-height:1.8;">
+      By the time Session Four opened, the group had moved past the question of <em>what AI is</em> and arrived at the harder one: <em>what do we do with it?</em> The answer, this day, turned out to be something close to philosophy, something close to literature, and — at one point — something close to a conversation Proust might have recognized.
+    </p>
+  </div>
+</div>
+
+<!-- ── RHYTHM ── -->
+<div class="page">
+  <div class="section-rule">
+    <span class="section-kicker">Session Rhythm</span>
+  </div>
+  <h2 class="section-title">The Shape of the Hour</h2>
+  <p class="section-prose">Every session has a pulse. Session Four moved from loose and social, through a slow technical warmup, into a genuine intellectual peak — then held that energy across a long demonstration stretch before closing on a reflective note about teaching and the future.</p>
+</div>
+
+<!-- rhythm chart -->
+<div class="page" style="margin-top:28px">
+
+  <!-- SVG curve representing energy arc -->
+  <div class="rhythm-curve">
+    <svg class="rhythm-svg" viewBox="0 0 920 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="curveGrad" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%"   stop-color="#a8a090"/>
+          <stop offset="20%"  stop-color="#b88060"/>
+          <stop offset="35%"  stop-color="#b84a2f"/>
+          <stop offset="50%"  stop-color="#8a6a3a"/>
+          <stop offset="62%"  stop-color="#c4912a"/>
+          <stop offset="75%"  stop-color="#8a6a3a"/>
+          <stop offset="88%"  stop-color="#b84a2f"/>
+          <stop offset="100%" stop-color="#6a8a6a"/>
+        </linearGradient>
+      </defs>
+      <!-- filled area -->
+      <path d="M0,90 C40,88 80,82 115,75 C150,68 185,65 230,60 C275,55 310,50 355,20 C400,-5 440,8 460,30 C480,50 500,40 535,35 C570,30 600,25 635,22 C670,18 700,20 730,28 C760,36 780,25 810,18 C840,10 870,30 920,50 L920,100 L0,100 Z"
+            fill="url(#curveGrad)" opacity="0.15"/>
+      <!-- stroke line -->
+      <path d="M0,90 C40,88 80,82 115,75 C150,68 185,65 230,60 C275,55 310,50 355,20 C400,-5 440,8 460,30 C480,50 500,40 535,35 C570,30 600,25 635,22 C670,18 700,20 730,28 C760,36 780,25 810,18 C840,10 870,30 920,50"
+            fill="none" stroke="url(#curveGrad)" stroke-width="2.5"/>
+      <!-- annotations -->
+      <text x="355" y="14" text-anchor="middle" font-family="Barlow Condensed, sans-serif" font-size="9" fill="#b84a2f" letter-spacing="2">ED MURROW PEAK</text>
+      <text x="810" y="12" text-anchor="middle" font-family="Barlow Condensed, sans-serif" font-size="9" fill="#b84a2f" letter-spacing="2">PROUST MOMENT</text>
+      <line x1="355" y1="18" x2="355" y2="22" stroke="#b84a2f" stroke-width="1" stroke-dasharray="2"/>
+      <line x1="810" y1="16" x2="810" y2="20" stroke="#b84a2f" stroke-width="1" stroke-dasharray="2"/>
+    </svg>
+  </div>
+
+  <div class="rhythm-segments">
+    <div class="seg" data-e="1">
+      <div class="seg-time">0 – 17 min</div>
+      <div class="seg-label">Pregame</div>
+      <div class="seg-mood">Tech help, warm chat, Leslie's password odyssey</div>
+      <div class="seg-heat"><div class="heat-dot half"></div><div class="heat-dot half"></div><div class="heat-dot"></div><div class="heat-dot"></div><div class="heat-dot"></div></div>
+    </div>
+    <div class="seg" data-e="2">
+      <div class="seg-time">17 – 27 min</div>
+      <div class="seg-label">Three Skills</div>
+      <div class="seg-mood">Framing, homework wins, deleting Claude history</div>
+      <div class="seg-heat"><div class="heat-dot half"></div><div class="heat-dot half"></div><div class="heat-dot half"></div><div class="heat-dot"></div><div class="heat-dot"></div></div>
+    </div>
+    <div class="seg" data-e="3">
+      <div class="seg-time">27 – 42 min</div>
+      <div class="seg-label">Ed &amp; Justice</div>
+      <div class="seg-mood">Peak energy — avatar demo, Plato, full group debate</div>
+      <div class="seg-heat"><div class="heat-dot on"></div><div class="heat-dot on"></div><div class="heat-dot on"></div><div class="heat-dot on"></div><div class="heat-dot on"></div></div>
+    </div>
+    <div class="seg" data-e="4">
+      <div class="seg-time">42 – 57 min</div>
+      <div class="seg-label">How AI Works</div>
+      <div class="seg-mood">Tokens, patterns, French experiment, entanglement</div>
+      <div class="seg-heat"><div class="heat-dot on"></div><div class="heat-dot on"></div><div class="heat-dot on"></div><div class="heat-dot half"></div><div class="heat-dot"></div></div>
+    </div>
+    <div class="seg" data-e="5">
+      <div class="seg-time">57 – 80 min</div>
+      <div class="seg-label">Visualization</div>
+      <div class="seg-mood">The magic incantation, split-screen setup, Dorothy Parker</div>
+      <div class="seg-heat"><div class="heat-dot on"></div><div class="heat-dot on"></div><div class="heat-dot on"></div><div class="heat-dot on"></div><div class="heat-dot half"></div></div>
+    </div>
+    <div class="seg" data-e="6">
+      <div class="seg-time">80 – 97 min</div>
+      <div class="seg-label">Deep Reading</div>
+      <div class="seg-mood">Parker analysis, original source, iterative prompting</div>
+      <div class="seg-heat"><div class="heat-dot on"></div><div class="heat-dot on"></div><div class="heat-dot on"></div><div class="heat-dot half"></div><div class="heat-dot"></div></div>
+    </div>
+    <div class="seg" data-e="7">
+      <div class="seg-time">97 – 103 min</div>
+      <div class="seg-label">The Madeleine</div>
+      <div class="seg-mood">Proust metaphor — the philosophical summit of the session</div>
+      <div class="seg-heat"><div class="heat-dot on"></div><div class="heat-dot on"></div><div class="heat-dot on"></div><div class="heat-dot on"></div><div class="heat-dot half"></div></div>
+    </div>
+    <div class="seg" data-e="8">
+      <div class="seg-time">103 – 111 min</div>
+      <div class="seg-label">Open Floor</div>
+      <div class="seg-mood">Education, assessment, oral presentations, warm close</div>
+      <div class="seg-heat"><div class="heat-dot on"></div><div class="heat-dot on"></div><div class="heat-dot half"></div><div class="heat-dot half"></div><div class="heat-dot"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── THE ROOM ── -->
+<div class="page">
+  <div class="section-rule">
+    <span class="section-kicker">The Room</span>
+  </div>
+  <h2 class="section-title">Who Was Here, and How They Showed Up</h2>
+  <p class="section-prose">The class was hybrid — some in the Brandeis room, others on Zoom — and every person brought a different way of being present. What emerged was a cast of characters, each with a distinct voice in the session's collective intelligence.</p>
+</div>
+
+<div class="page" style="margin-top:24px">
+  <div class="members-grid">
+
+    <div class="member-card" data-initial="J">
+      <div class="member-role">Instructor · In-person</div>
+      <div class="member-name">John Day</div>
+      <div class="member-sketch">The session's conductor and participant simultaneously. John seeded every discussion thread, then stepped back to let the group find its own footing. His instinct was always toward <em>doing</em> over telling — he stopped mid-demo to let a participant's question reshape the agenda. Self-deprecating about HTML, fluent in ideas.</div>
+      <div class="member-quote">"I'm borderline illiterate in HTML and happy to remain that way."</div>
+    </div>
+
+    <div class="member-card" data-initial="B">
+      <div class="member-role">Zoom · The Provocateur</div>
+      <div class="member-name">Bob Mahoney</div>
+      <div class="member-sketch">Consistently the boldest voice from Zoom. Bob introduced the session's two most theatrical examples — asking AI how to thwart protesters, and asking it for proofs of God's existence. The group needed someone willing to go there; Bob was that person every time. He also quietly formulated the clearest distinction about how and why questions map to generative vs. RAG.</div>
+      <div class="member-quote">"Let me be colorful."</div>
+    </div>
+
+    <div class="member-card" data-initial="M">
+      <div class="member-role">Zoom · The Enthusiast</div>
+      <div class="member-name">Marie Danziger</div>
+      <div class="member-sketch">Marie arrived with a genuine success story — her Verona travel visualization — and an important concern: Claude was learning too much about her, and it was "creeping her out." This moment opened the session's most candid conversation about AI memory and intimacy. Later, her point about unequal access to AI turned out to be the one contribution Ed singled out as touching justice <em>proper.</em></div>
+      <div class="member-quote">"I don't want to wind up having any kind of emotional connection to him or her."</div>
+    </div>
+
+    <div class="member-card" data-initial="E">
+      <div class="member-role">In-person · The Clarifier</div>
+      <div class="member-name">Elaine (Sp. 2)</div>
+      <div class="member-sketch">Elaine asked the questions that mattered. She was the one who noticed that "unjust" and "unethical" might not be the same word — the conceptual thread Ed would later crystallize into the session's most important distinction. She also asked about deleting Claude conversations, wanted to understand Ed's role precisely, and kept asking for better definitions. Not a skeptic — a rigorous thinker finding her footing.</div>
+      <div class="member-quote">"How does unjust differ from unethical? I would characterize it as unethical."</div>
+    </div>
+
+    <div class="member-card" data-initial="S">
+      <div class="member-role">In-person · The Intellectual</div>
+      <div class="member-name">Scott (Sp. 5)</div>
+      <div class="member-sketch">Scott brought the NYT article that opened the session's first real discussion — on AI and the workplace — and closed the justice segment with its most sustained contribution: a careful argument about vaccine misinformation, selective evidence, and what "wrong" means regardless of the word you use for it. His closing question — "what's actually happening behind the curtain?" — was the session's pivot into a new phase.</div>
+      <div class="member-quote">"Whatever word — it's wrong."</div>
+    </div>
+
+    <div class="member-card" data-initial="L">
+      <div class="member-role">In-person · The Relatable Struggler</div>
+      <div class="member-name">Leslie (Sp. 4)</div>
+      <div class="member-sketch">Leslie's fifteen-minute battle with her laptop password was not a digression — it was the session's most honest moment. "I use my iPad or iPhone. I haven't used this…" She embodied the real barrier that brings most people to a course like this: the gap between intention and execution. By the time she logged in, the room had been reminded of what actually makes technology hard.</div>
+      <div class="member-quote">"I know, this keeps happening."</div>
+    </div>
+
+    <div class="member-card" data-initial="J">
+      <div class="member-role">In-person · The Convert</div>
+      <div class="member-name">Jerry (Sp. 9)</div>
+      <div class="member-sketch">Jerry came in with a genuine success: he'd used the "magic incantation" (visualize this in HTML format) at home and gotten a beautiful visualization about the best NBA player in Newport history. He'd already internalized the skill enough to apply it independently. In the justice discussion, he also introduced the session's sharpest ethical nuance — a consequentialist argument about whether misrepresentation could ever be justified by a just end.</div>
+      <div class="member-quote">"Those are the magic words — visualize this in HTML format."</div>
+    </div>
+
+    <div class="member-card" data-initial="F">
+      <div class="member-role">Zoom · The Bridge</div>
+      <div class="member-name">Fred Kaplan</div>
+      <div class="member-sketch">Fred served as the Zoom cohort's liaison — relaying reactions ("remarkably sophisticated"), alerting John when he was muted, and interjecting the session's best joke: when John activated the Ed Murrow avatar and there was a pause, Fred said: "He's on vacation." It was exactly the joke the moment needed.</div>
+      <div class="member-quote">"He's on vacation."</div>
+    </div>
+
+    <div class="member-card" data-initial="T">
+      <div class="member-role">In-person · The Educator</div>
+      <div class="member-name">Speaker 10 · Retired English Teacher</div>
+      <div class="member-sketch">Brought the session's education discussion its professional weight. The research paper as a relic. Assessment as the real problem. Non-verbal classroom cues that AI cannot read. She was the most specific about what changes in practice, not just in theory, and her question about how to verify genuine learning — without having a computer in front of you — had no easy answer.</div>
+      <div class="member-quote">"The research paper is useless — kids are going to cut and paste."</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── THEMES ── -->
+<div class="page">
+  <div class="section-rule">
+    <span class="section-kicker">Major Themes</span>
+  </div>
+  <h2 class="section-title">What the Session Was Really About</h2>
+  <p class="section-prose">Three themes ran through everything else like load-bearing walls — present in the asides and the demos and the tangents, not just the formal discussion segments.</p>
+</div>
+
+<div class="page" style="margin-top:28px">
+<div class="themes-stack">
+
+  <div class="theme-block variant-a">
+    <div class="theme-accent">
+      <div class="theme-accent-num">01</div>
+      <div>
+        <div class="theme-accent-kicker">Theme One</div>
+        <div class="theme-accent-title">The Literati's<br>Revenge</div>
+      </div>
+    </div>
+    <div class="theme-body">
+      <p>The session's opening conversation — sparked by a New York Times article Scott brought in — crystallized something John had been arguing since Week One. AI is making <strong>technical skills more replicable and humanistic skills more scarce.</strong> The marketer who used to need three companies to produce campaign materials now does it himself. But the sales meeting, the empathy, the ability to read a room: those are beyond the machine.</p>
+      <p>John's framing — "The Revenge of the Literati" — is deliberate provocation. For decades, the cultural message was STEM above all. Now the people who trained themselves to compare texts, probe language, hold ambiguity, and understand people find their particular competencies suddenly premium. Bob made the sharpest formulation: <em>how and why questions</em> generate rich, generative AI responses. That's the territory of the humanities.</p>
+      <p>The theme ran through the session's later sections too — immersive reading, the Proust metaphor, the education discussion. Every one of those activities is about what language does in a human mind. The machine handles the synthesis; you handle the meaning.</p>
+    </div>
+  </div>
+
+  <div class="theme-block variant-b">
+    <div class="theme-body">
+      <p>When John introduced the Plato framing — is the just tech mogul 729 times happier than the unjust? — the room was quiet. Then it wasn't. Within eight minutes, eleven distinct ideas had surfaced from nine different voices. Bob's protesters, Marie's access gap, Jerry's consequentialist nuance, Elaine's question about what "unjust" even means.</p>
+      <p>The surprise was Ed. When asked to assess the group's conversation, Ed didn't summarize it — he <strong>reorganized it around a distinction the group had almost but not quite made:</strong> justice governs distribution, ethics governs conduct. Unequal access is a justice problem. Misrepresentation is an ethics problem. The group had conflated them, and Ed named that without condescension.</p>
+      <p>The deeper question — does the just person actually experience inner order, as Plato claimed, while the unjust person suffers inner disorder, even if they sleep soundly? — was left deliberately open. The group seemed skeptical, and Ed noted that skepticism. That's the question for next time.</p>
+    </div>
+    <div class="theme-accent">
+      <div class="theme-accent-num">02</div>
+      <div>
+        <div class="theme-accent-kicker">Theme Two</div>
+        <div class="theme-accent-title">Justice as a<br>Distribution Problem</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="theme-block variant-a">
+    <div class="theme-accent">
+      <div class="theme-accent-num">03</div>
+      <div>
+        <div class="theme-accent-kicker">Theme Three</div>
+        <div class="theme-accent-title">Memory,<br>Synthesis, New Thought</div>
+      </div>
+    </div>
+    <div class="theme-body">
+      <p>John saved the Proust metaphor for near the end, and it earned its place. Proust's madeleine — a biscuit dipped in tea, triggering an avalanche of long-dormant memory — is the right image for something that has no good technical name. Starting a conversation with AI and suddenly remembering something you read fifteen years ago. The machine doesn't remember it for you; it <strong>triggers your own recall</strong> through the texture of its responses.</p>
+      <p>But the metaphor extends. The interesting moment isn't just the triggering — it's the synthesis. You bring your questions, your intuitions, your half-formed ideas, your 70 or 80 years of accumulated experience. The machine brings its corpus, its cross-domain connections, its trillions of training texts. Neither alone produces the thought. Together, they sometimes do. "The sum of the parts is a whole lot greater than just the parts," as John put it — gesturing at a room of people who, collectively, carry something like 1,500 years of lived experience.</p>
+      <p>This is what the session modeled throughout, not just in the Proust section. The justice discussion was richer for having Jerry's perspective alongside Marie's alongside Bob's alongside Elaine's. The immersive reading was deeper for having a class full of people who have read things, lived things, and are ready to be surprised.</p>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ── CENTRAL QUOTE ── -->
+<div class="page">
+  <div class="pull-quote-center">
+    <p>"You start to dump your memory into the conversation. It brings in things from this wide corpus — unimaginable sources of data. The synthesis of the two makes it quite interesting, and allows you not only to explore something, but to start to think about new ideas."</p>
+    <cite>— John Day, on the Proust Metaphor · 98:15</cite>
+  </div>
+</div>
+
+<!-- ── TEXTURE ── -->
+<div class="page">
+  <div class="section-rule">
+    <span class="section-kicker">Texture &amp; Tone</span>
+  </div>
+  <h2 class="section-title">What Made This Session Feel Like Itself</h2>
+  <p class="section-prose">Beyond the content — the texture. The humor, the honesty, the small moments of surprise that marked this as a particular group of people on a particular afternoon.</p>
+</div>
+
+<div class="page" style="margin-top:28px">
+<div class="texture-grid">
+
+  <div class="texture-cell">
+    <div class="texture-cell-label">Tone · Humor</div>
+    <h4>The Jokes Were Real</h4>
+    <p>This was not a room performing engagement. When Fred said "he's on vacation" a beat before the Ed Murrow avatar responded, it got a laugh because it was funny and because the room was genuinely uncertain what was about to happen. Bob's offer to "be colorful" before proposing AI proofs of God's existence was the same: permission to be playful in the presence of something that can feel heavy.</p>
+    <p>John's self-deprecation about HTML — "I'm borderline illiterate in it and happy to remain that way" — was both honest and tactical: it gave the group permission not to know everything. The mute crises and the frozen screen and Leslie's password battle were absorbed with equanimity, because this is a group old enough to know that technology always does this, and it's never worth getting upset about.</p>
+  </div>
+
+  <div class="texture-cell">
+    <div class="texture-cell-label">Tone · Honesty</div>
+    <h4>People Said What They Actually Thought</h4>
+    <p>Marie's "it's creeping me out" about Claude's growing knowledge of her personal life landed with the directness of someone who didn't see the point in hedging. She wasn't performing concern — she was naming something she'd noticed and wanted addressed. John treated it with complete seriousness, gave it a name (intelligence entanglement), and turned it into one of the session's most grounded discussions.</p>
+    <p>The English teacher's opening shot — "the research paper is useless" — was the same kind of directness. Years of professional experience, retired from the classroom, and uninterested in soft-pedaling what she actually saw. This is a benefit of teaching older adults that rarely gets named: the social cost of honesty has dropped considerably.</p>
+  </div>
+
+  <div class="texture-cell">
+    <div class="texture-cell-label">Tone · Awe</div>
+    <h4>Sophistication Registered as Surprise</h4>
+    <p>Ed Murrow's synthesis — the justice/ethics distinction, the Plato question, the identification of Marie's contribution as the most legally precise — landed in a way that Bob later tried to articulate: "What's actually happening behind the curtain?" That's not a technical question. It's the question you ask when something appears to understand you.</p>
+    <p>Barbara called it "scary." Fred called it "remarkably sophisticated." Both were right, and both were responses to the same phenomenon: a machine that had listened to the group for ten minutes and found the shape of what they'd been trying to say. The awe wasn't uncritical — several people quickly moved to "but how is it actually doing that?" — but it was real.</p>
+  </div>
+
+  <div class="texture-cell">
+    <div class="texture-cell-label">Tone · Warmth</div>
+    <h4>The Group Was Good to Each Other</h4>
+    <p>Leslie's login struggle could have been awkward. Instead, it generated patient, collective problem-solving: John at the keyboard, others offering suggestions, the class holding the space. When Marie asked for a written summary of the split-screen demo because John had done it too quickly to follow, she got "I'll do it again" and a pointer to a QuickTime tutorial already posted. No impatience.</p>
+    <p>Jerry's homework report — "I used those magic words and got a really cool visualization" — was met with genuine celebration. This is a group that takes pleasure in each other's progress. The goal isn't to distinguish who already knows things from who doesn't. Everyone is learning something they didn't know before, and that shared position makes the room generous.</p>
+  </div>
+
+  <div class="texture-cell full">
+    <div class="texture-cell-label">Key Moment</div>
+    <h4>"We have about 1,500 years of experience in this room"</h4>
+    <p>Around the 47-minute mark, John made an observation that reframed everything that had come before and after it. The interesting thing about a BOLLI class — about any class of retired professionals — isn't just what they don't know about AI. It's what they do know about everything else. "If you do the math," John said, "and everyone in the room is probably older than 50, we have something like 1,500 years of accumulated experience here."</p>
+    <p>That number changes what the Proust metaphor means. When the machine triggers something, it's triggering a decade of professional work, a marriage, a language learned, a war remembered, a book read in 1978 that you haven't thought about since. The synthesis John describes — human memory meets AI corpus — is asymmetric in the group's favor. The machine has scale. The group has depth.</p>
+    <p>It's also why the discussion about justice was better than it might have been in a younger class. Jerry's consequentialist nuance came from somewhere. Marie's access point came from somewhere. The English teacher's assessment problem came from decades in classrooms. The conversation was richer because the people in it were.</p>
+  </div>
+
+</div>
+</div>
+
+<!-- ── LOOKING FORWARD ── -->
+<div class="forward-band">
+  <div class="forward-inner">
+    <div class="forward-block">
+      <h4>Session Five Preview</h4>
+      <p>John signaled next week will shift the ratio from demonstration to practice. The group has been watching; now the goal is for members to drive their own AI conversations and report back. The agenda is still forming, but the justice and injustice question will carry forward — the group needs to return to Ed with its evolved definitions.</p>
+    </div>
+    <div class="forward-block">
+      <h4>The SIG Proposal</h4>
+      <ul>
+        <li>A follow-on Special Interest Group for continued exploration</li>
+        <li>Monthly Zoom sessions for the full cohort</li>
+        <li>Supplementary in-person sessions for local participants</li>
+        <li>Each member builds a project around their own course or research interest</li>
+        <li>Start date: summer — details to be confirmed</li>
+      </ul>
+    </div>
+    <div class="forward-block">
+      <h4>Open Questions</h4>
+      <ul>
+        <li>Hybrid room disappears at semester's end — how to replace it?</li>
+        <li>Does the just person actually experience inner order? (Plato, unresolved)</li>
+        <li>How do educators assess genuine learning in the AI era?</li>
+        <li>At what point does AI memory become surveillance?</li>
+        <li>Is the website permanent? (Yes — "yeah, oh yeah, yeah.")</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <span>BOLLI · Brandeis University Osher Lifelong Learning Institute</span>
+  AI Literacy Course · Session 4 · Instructor: John Day · Transcript: AILIT04
+</footer>
+
+</body>
+</html>
