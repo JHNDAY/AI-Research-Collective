@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>No Struggle, No Mastery — AI in Medical Education</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Mono:wght@300;400;500&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0d1b2a;
+    --navy-mid: #152336;
+    --navy-light: #1e3251;
+    --gold: #c9a84c;
+    --gold-light: #e8c87a;
+    --cream: #f5f0e8;
+    --white: #ffffff;
+    --red: #c0392b;
+    --teal: #2a9d8f;
+    --muted: #8899aa;
+    --border: rgba(201,168,76,0.25);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--navy);
+    color: var(--cream);
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 80px 40px;
+    position: relative;
+    background: radial-gradient(ellipse at 50% 60%, #1a2f4a 0%, var(--navy) 70%);
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -100px; left: -100px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; right: -80px;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(42,157,143,0.07) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.2s forwards;
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 7vw, 6rem);
+    font-weight: 900;
+    line-height: 1.05;
+    color: var(--white);
+    margin-bottom: 16px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.4s forwards;
+  }
+
+  .hero h1 em {
+    color: var(--gold);
+    font-style: italic;
+  }
+
+  .hero-subtitle {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    font-style: italic;
+    color: var(--muted);
+    max-width: 560px;
+    margin-bottom: 40px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.6s forwards;
+  }
+
+  .hero-source {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.8s forwards;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 1.2s forwards;
+  }
+  .scroll-hint span {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .scroll-arrow {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    animation: scrollPulse 2s ease infinite;
+  }
+
+  /* ── SECTION WRAPPER ── */
+  section {
+    padding: 100px 40px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+    max-width: 80px;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.2;
+    margin-bottom: 48px;
+  }
+
+  /* ── RISK CARDS ── */
+  .risks-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 48px;
+    background: var(--border);
+  }
+
+  .risk-card {
+    background: var(--navy-mid);
+    padding: 40px 32px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s ease;
+  }
+  .risk-card:hover { background: var(--navy-light); }
+
+  .risk-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .risk-card.deskill::before { background: #e67e22; }
+  .risk-card.misskill::before { background: var(--red); }
+  .risk-card.neverskill::before { background: var(--gold); }
+
+  .risk-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 16px;
+    opacity: 0.12;
+    position: absolute;
+    top: 20px; right: 24px;
+  }
+  .risk-card.deskill .risk-number { color: #e67e22; }
+  .risk-card.misskill .risk-number { color: var(--red); }
+  .risk-card.neverskill .risk-number { color: var(--gold); }
+
+  .risk-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 2px;
+    display: inline-block;
+    margin-bottom: 16px;
+  }
+  .risk-card.deskill .risk-tag { background: rgba(230,126,34,0.15); color: #e67e22; }
+  .risk-card.misskill .risk-tag { background: rgba(192,57,43,0.15); color: #e74c3c; }
+  .risk-card.neverskill .risk-tag { background: rgba(201,168,76,0.15); color: var(--gold); }
+
+  .risk-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 12px;
+  }
+
+  .risk-desc {
+    font-size: 0.88rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  /* ── EXPERTISE REQUIREMENTS ── */
+  .requirements-section {
+    background: linear-gradient(135deg, var(--navy-mid) 0%, var(--navy) 100%);
+    padding: 100px 40px;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .req-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .req-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 40px;
+    margin-top: 48px;
+  }
+
+  .req-item {
+    position: relative;
+    padding-left: 28px;
+  }
+  .req-item::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 8px;
+    width: 3px;
+    height: calc(100% - 16px);
+    background: linear-gradient(to bottom, var(--teal), transparent);
+  }
+
+  .req-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--teal);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+  }
+
+  .req-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 10px;
+    line-height: 1.3;
+  }
+
+  .req-body {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  .req-threat {
+    margin-top: 16px;
+    padding: 12px 14px;
+    background: rgba(192,57,43,0.1);
+    border-left: 2px solid var(--red);
+    font-size: 0.78rem;
+    color: #e74c3c;
+    line-height: 1.6;
+  }
+  .req-threat strong {
+    font-weight: 700;
+    display: block;
+    margin-bottom: 2px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* ── STRATEGIES ── */
+  .strategies-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 48px;
+  }
+
+  .strategy-card {
+    background: var(--navy-mid);
+    border: 1px solid var(--border);
+    padding: 32px 28px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s, transform 0.2s;
+    cursor: default;
+  }
+  .strategy-card:hover {
+    border-color: var(--gold);
+    transform: translateY(-2px);
+  }
+
+  .strategy-icon {
+    font-size: 1.6rem;
+    margin-bottom: 14px;
+    display: block;
+  }
+
+  .strategy-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .strategy-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 10px;
+  }
+
+  .strategy-body {
+    font-size: 0.84rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  .strategy-card .highlight-pill {
+    margin-top: 14px;
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    padding: 4px 10px;
+    background: rgba(201,168,76,0.1);
+    color: var(--gold-light);
+    border-radius: 2px;
+  }
+
+  /* ── QUOTE BLOCK ── */
+  .quote-section {
+    padding: 80px 40px;
+    background: var(--navy-light);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    text-align: center;
+  }
+
+  blockquote {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.4rem, 3vw, 2.2rem);
+    font-style: italic;
+    color: var(--white);
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.4;
+    position: relative;
+  }
+  blockquote::before {
+    content: '\201C';
+    font-size: 8rem;
+    color: var(--gold);
+    opacity: 0.15;
+    position: absolute;
+    top: -40px;
+    left: -20px;
+    font-family: 'Playfair Display', serif;
+    line-height: 1;
+  }
+
+  .quote-source {
+    margin-top: 24px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  /* ── FOOTER ── */
+  .footer-note {
+    padding: 60px 40px;
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: flex-start;
+    gap: 40px;
+    border-top: 1px solid var(--border);
+  }
+
+  .footer-journal {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    line-height: 2;
+    flex: 1;
+  }
+
+  .footer-note .summary-box {
+    flex: 2;
+    background: var(--navy-mid);
+    border: 1px solid var(--border);
+    padding: 24px 28px;
+  }
+
+  .summary-box h4 {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .summary-box p {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.4; transform: scaleY(1); }
+    50% { opacity: 1; transform: scaleY(1.1); }
+  }
+
+  .fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .risks-grid, .req-grid, .strategies-grid { grid-template-columns: 1fr; }
+    section { padding: 60px 24px; }
+    .requirements-section { padding: 60px 24px; }
+    .footer-note { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">JAMA Viewpoint · May 7, 2026</div>
+  <h1>No Struggle,<br><em>No Mastery</em></h1>
+  <p class="hero-subtitle">Promoting Clinical Expertise in the Age of Artificial Intelligence</p>
+  <div class="hero-source">Keren · Desai · West &nbsp;|&nbsp; Children's Hospital of Philadelphia &amp; Penn Medicine</div>
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-arrow"></div>
+  </div>
+</div>
+
+<!-- SECTION 1: THE THREE RISKS -->
+<section class="fade-in">
+  <div class="section-label">The Problem</div>
+  <h2 class="section-title">Three Ways AI Undermines<br>Clinical Training</h2>
+
+  <div class="risks-grid">
+    <div class="risk-card deskill">
+      <div class="risk-number">1</div>
+      <span class="risk-tag">Risk One</span>
+      <div class="risk-title">Deskilling</div>
+      <p class="risk-desc">Established clinicians losing previously acquired skills through overreliance on AI systems for tasks they once performed themselves.</p>
+    </div>
+    <div class="risk-card misskill">
+      <div class="risk-number">2</div>
+      <span class="risk-tag">Risk Two</span>
+      <div class="risk-title">Mis-skilling</div>
+      <p class="risk-desc">Learning the wrong things from inaccurate AI systems — internalizing flawed reasoning patterns as if they were valid clinical knowledge.</p>
+    </div>
+    <div class="risk-card neverskill">
+      <div class="risk-number">3</div>
+      <span class="risk-tag">Risk Three · Most Consequential</span>
+      <div class="risk-title">Never-skilling</div>
+      <p class="risk-desc">Trainees who never acquire the cognitive foundations of clinical expertise because AI supplied the answers before the <em>struggle that produces mastery</em> could occur.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 2: REQUIREMENTS FOR EXPERTISE -->
+<div class="requirements-section">
+  <div class="req-inner fade-in">
+    <div class="section-label">How Expertise Develops</div>
+    <h2 class="section-title">Three Essential Requirements<br>for Mastery</h2>
+    <p style="color: var(--muted); font-size:0.9rem; max-width:600px; margin-bottom: 8px;">Drawing on Master Adaptive Learning Theory, Knowledge Encapsulation, and Dual Process Theory, the authors identify convergent requirements — each threatened by AI.</p>
+
+    <div class="req-grid">
+
+      <div class="req-item">
+        <div class="req-num">Requirement 01</div>
+        <div class="req-title">Effortful Engagement with Authentic Problems</div>
+        <p class="req-body">The learner must do the cognitive work themselves. A resident puzzling through why a patient with cirrhosis has low platelets — reasoning from portal hypertension → splenomegaly → splenic sequestration — reorganizes knowledge and builds pattern recognition through that effortful processing.</p>
+        <div class="req-threat">
+          <strong>AI Threat</strong>
+          When AI generates a differential diagnosis, the trainee receives an answer without the cognitive struggle that reorganizes knowledge.
+        </div>
+      </div>
+
+      <div class="req-item">
+        <div class="req-num">Requirement 02</div>
+        <div class="req-title">Accumulated Experience Over Time</div>
+        <p class="req-body">There are no shortcuts to expertise. Pattern libraries at the basis of expert intuition form over thousands of hours — hundreds of cases processed slowly before they become automatic. Each case adds to the learner's library and refines their illness scripts.</p>
+        <div class="req-threat">
+          <strong>AI Threat</strong>
+          AI interrupts the hypothesis-testing feedback loops that learners must cycle through hundreds of times before clinical reasoning becomes automatic.
+        </div>
+      </div>
+
+      <div class="req-item">
+        <div class="req-num">Requirement 03</div>
+        <div class="req-title">Metacognitive Awareness</div>
+        <p class="req-body">Experts don't just know more — they know what they know and what they don't know. They recognize when a situation is within their competence vs. when to slow down, seek help, or gather more information.</p>
+        <div class="req-threat">
+          <strong>AI Threat</strong>
+          AI tools provide answers with uniform, sycophantic confidence, preventing learners from calibrating their own sense of reliability across different clinical situations.
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- QUOTE -->
+<div class="quote-section fade-in">
+  <blockquote>
+    AI has the potential to accelerate learning, but only if designed to stimulate reasoning rather than replace it — to serve as coach rather than crutch.
+  </blockquote>
+  <div class="quote-source">Keren, Desai &amp; West · JAMA 2026</div>
+</div>
+
+<!-- SECTION 3: STRATEGIES -->
+<section class="fade-in">
+  <div class="section-label">The Path Forward</div>
+  <h2 class="section-title">Seven Design &amp; Implementation<br>Strategies</h2>
+
+  <div class="strategies-grid">
+
+    <div class="strategy-card">
+      <span class="strategy-icon">🔬</span>
+      <div class="strategy-label">Strategy 01</div>
+      <div class="strategy-title">AI as Expert Consultant</div>
+      <p class="strategy-body">Implement <strong>commit-then-compare</strong> protocols: trainees must commit to a differential diagnosis, workup, and treatment plan before seeing AI suggestions — mirroring how trainees present to attendings before orders are written.</p>
+      <span class="highlight-pill">Commit → Compare → Learn</span>
+    </div>
+
+    <div class="strategy-card">
+      <span class="strategy-icon">🧠</span>
+      <div class="strategy-label">Strategy 02</div>
+      <div class="strategy-title">AI as Coach</div>
+      <p class="strategy-body">Design AI tools to require engagement, not just provide answers. Ask questions like <em>"What's the most dangerous diagnosis to rule out?"</em> — shifting AI from answer-provider to reasoning coach. Enable AI-guided simulation and tailored assessments.</p>
+      <span class="highlight-pill">Socratic, Not Oracular</span>
+    </div>
+
+    <div class="strategy-card">
+      <span class="strategy-icon">🛡️</span>
+      <div class="strategy-label">Strategy 03</div>
+      <div class="strategy-title">AI as Guardian Angel</div>
+      <p class="strategy-body">Use AI to identify important issues the trainee overlooked, reduce cognitive biases, and prevent errors — without replacing the initial reasoning process that must occur first.</p>
+      <span class="highlight-pill">Safety Net, Not Scaffold</span>
+    </div>
+
+    <div class="strategy-card">
+      <span class="strategy-icon">🚫</span>
+      <div class="strategy-label">Strategy 04</div>
+      <div class="strategy-title">AI-Free Zones</div>
+      <p class="strategy-body">Designate learning environments — morning report, case conferences, bedside rounds — as AI-free zones. Trainees reason from their own knowledge, giving faculty the ability to assess developing stand-alone competence.</p>
+      <span class="highlight-pill">Preserve Unassisted Reasoning</span>
+    </div>
+
+    <div class="strategy-card">
+      <span class="strategy-icon">📈</span>
+      <div class="strategy-label">Strategy 05</div>
+      <div class="strategy-title">Incremental AI Access</div>
+      <p class="strategy-body">Stage AI availability across training: early trainees have limited access, increasing as foundational competencies are demonstrated. Minimum case volumes without AI — analogous to procedure volume requirements for technical competence.</p>
+      <span class="highlight-pill">Earned Access Model</span>
+    </div>
+
+    <div class="strategy-card">
+      <span class="strategy-icon">📊</span>
+      <div class="strategy-label">Strategy 06</div>
+      <div class="strategy-title">AI to Support Metacognition</div>
+      <p class="strategy-body">Record trainees' assessments before AI consultation, track reasoning accuracy over time, and prompt trainees to estimate confidence. Metacognitive awareness — how well confidence correlates with accuracy — can be monitored and fed back.</p>
+      <span class="highlight-pill">Track · Calibrate · Improve</span>
+    </div>
+
+    <div class="strategy-card" style="grid-column: 1 / -1; background: linear-gradient(135deg, var(--navy-light), var(--navy-mid));">
+      <span class="strategy-icon">📚</span>
+      <div class="strategy-label">Strategy 07</div>
+      <div class="strategy-title">AI Education for All</div>
+      <p class="strategy-body">Trainees must understand AI strengths, weaknesses, and failure modes — including training data biases and error types. Attending physicians need to learn to supervise in AI-augmented environments: probing whether trainees truly understand what they present or are merely relaying AI output, modeling appropriate AI skepticism.</p>
+      <span class="highlight-pill">Literacy for Trainees and Supervisors Alike</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<div class="footer-note fade-in">
+  <div class="footer-journal">
+    <strong style="color: var(--cream);">Source</strong><br>
+    JAMA Viewpoint<br>
+    Published May 7, 2026<br>
+    doi: 10.1001/jama.2026.6097<br><br>
+    <strong style="color: var(--cream);">Authors</strong><br>
+    Ron Keren, MD, MPH<br>
+    Bimal R. Desai, MD, MBI<br>
+    Daniel C. West, MD<br><br>
+    Children's Hospital of<br>Philadelphia &amp; Penn Medicine
+  </div>
+  <div class="summary-box">
+    <h4>Core Argument</h4>
+    <p>The most consequential risk AI poses to medicine is not deskilling seasoned clinicians but <em>never-skilling</em> trainees — failing to build the cognitive foundations of expertise because AI answers arrived before the productive struggle could occur. Clinical mastery requires effortful engagement, accumulated experience, and metacognitive calibration. AI threatens all three. Thoughtful design — AI as coach, not crutch — can harness AI's potential for precision education while preserving the conditions under which genuine expertise develops. These recommendations are <em>reasoned from theory</em>; the authors call for urgent empirical research to test which interventions truly work.</p>
+  </div>
+</div>
+
+<script>
+  // Intersection Observer for fade-in animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
