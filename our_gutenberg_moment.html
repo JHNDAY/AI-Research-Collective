@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Gutenberg Moment</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Cinzel:wght@400;600;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:        #1c1006;
+    --ink-soft:   #3d2c14;
+    --vellum:     #f6edda;
+    --vellum-mid: #ede1c6;
+    --vellum-dark:#e0d0ae;
+    --gold:       #9a6e08;
+    --gold-light: #b98a1a;
+    --gold-dim:   #7a5508;
+    --rule:       rgba(154,110,8,0.35);
+    --card-bg:    rgba(255,250,238,0.9);
+    --card-border:rgba(154,110,8,0.28);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--vellum);
+    color: var(--ink);
+    font-family: 'EB Garamond', Georgia, serif;
+    min-height: 100vh;
+    background-image:
+      radial-gradient(ellipse at 20% 20%, rgba(200,170,100,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 80%, rgba(180,140,80,0.10) 0%, transparent 55%);
+  }
+
+  .page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 44px 36px 60px;
+  }
+
+  .frame {
+    position: relative;
+    border: 1.5px solid var(--gold-dim);
+    padding: 48px 52px 52px;
+    background: rgba(255,252,244,0.55);
+  }
+  .frame::before {
+    content: '';
+    position: absolute;
+    inset: 7px;
+    border: 1px solid rgba(154,110,8,0.18);
+    pointer-events: none;
+  }
+
+  .corner { position: absolute; width: 32px; height: 32px; z-index: 2; }
+  .corner svg { width: 100%; height: 100%; }
+  .corner-tl { top: -1px; left: -1px; }
+  .corner-tr { top: -1px; right: -1px; transform: scaleX(-1); }
+  .corner-bl { bottom: -1px; left: -1px; transform: scaleY(-1); }
+  .corner-br { bottom: -1px; right: -1px; transform: scale(-1); }
+
+  .header {
+    text-align: center;
+    margin-bottom: 40px;
+    animation: fadeUp 0.9s ease both;
+  }
+
+  .supertitle {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 0.38em;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .main-title {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(34px, 5vw, 62px);
+    font-weight: 700;
+    line-height: 1.05;
+    color: var(--gold-dim);
+    letter-spacing: 0.02em;
+    margin-bottom: 18px;
+  }
+
+  .rule-ornament {
+    display: flex; align-items: center; gap: 14px;
+    justify-content: center; margin-bottom: 18px;
+  }
+  .rule-ornament .line {
+    height: 1px; width: 90px;
+    background: linear-gradient(to right, transparent, var(--gold-dim));
+  }
+  .rule-ornament .line:last-child {
+    background: linear-gradient(to left, transparent, var(--gold-dim));
+  }
+  .rule-ornament .diamond { font-size: 10px; color: var(--gold); }
+
+  .subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(15px, 1.9vw, 18px);
+    color: var(--ink-soft);
+    max-width: 640px;
+    margin: 0 auto;
+    line-height: 1.65;
+  }
+
+  .intro-band {
+    background: var(--vellum-mid);
+    border-left: 3px solid var(--gold);
+    border-right: 3px solid var(--gold);
+    padding: 18px 28px;
+    margin-bottom: 40px;
+    text-align: center;
+    animation: fadeUp 0.9s 0.15s ease both;
+  }
+  .intro-band p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(14px, 1.65vw, 17px);
+    line-height: 1.8;
+    color: var(--ink);
+  }
+  .intro-band strong {
+    color: var(--gold-dim);
+    font-style: italic;
+    font-weight: 700;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-bottom: 40px;
+  }
+
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    padding: 22px 22px 20px;
+    opacity: 0;
+    transform: translateY(22px);
+    transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+  }
+  .card.visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.55s ease, transform 0.55s ease,
+                border-color 0.3s, box-shadow 0.3s;
+  }
+  .card:hover {
+    border-color: var(--gold);
+    box-shadow: 0 4px 18px rgba(154,110,8,0.12);
+    transform: translateY(-3px);
+  }
+
+  .card-num {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 0.32em;
+    color: var(--gold-dim);
+    margin-bottom: 8px;
+  }
+
+  .card-icon { font-size: 26px; margin-bottom: 8px; display: block; }
+
+  .card-title {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(12px, 1.2vw, 14px);
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: 0.04em;
+    margin-bottom: 9px;
+    line-height: 1.35;
+  }
+  .card-title em {
+    font-family: 'EB Garamond', serif;
+    font-size: 12px;
+    color: var(--gold-dim);
+    font-weight: normal;
+    letter-spacing: 0;
+  }
+
+  .card-body {
+    font-family: 'EB Garamond', serif;
+    font-size: clamp(13.5px, 1.3vw, 15.5px);
+    line-height: 1.72;
+    color: var(--ink-soft);
+  }
+
+  .card-prompt {
+    margin-top: 11px;
+    padding-top: 9px;
+    border-top: 1px solid rgba(154,110,8,0.2);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(12px, 1.1vw, 13.5px);
+    color: #4a3008;
+    line-height: 1.5;
+  }
+  .card-prompt::before { content: '✦ '; font-size: 9px; font-style: normal; }
+
+  .bottom-banner {
+    border: 1px solid var(--card-border);
+    background: var(--vellum-mid);
+    padding: 22px 32px;
+    text-align: center;
+    animation: fadeUp 0.9s 0.7s ease both;
+  }
+  .bottom-banner .label {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    color: var(--gold-dim);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+  .bottom-banner .question {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(16px, 2.1vw, 22px);
+    font-style: italic;
+    color: var(--ink);
+    line-height: 1.6;
+  }
+
+  .footer {
+    text-align: center;
+    margin-top: 24px;
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--gold-dim);
+    opacity: 0.65;
+    animation: fadeUp 0.9s 0.9s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 820px) {
+    .grid { grid-template-columns: repeat(2, 1fr); }
+    .frame { padding: 28px 20px 36px; }
+  }
+  @media (max-width: 540px) {
+    .grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+<div class="frame">
+
+  <div class="corner corner-tl"><svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 2 L2 16 M2 2 L16 2" stroke="#7a5508" stroke-width="1.5"/><path d="M5 2 L5 5 L2 5" stroke="#9a6e08" stroke-width="0.7" fill="none"/><circle cx="2" cy="2" r="1.8" fill="#9a6e08"/></svg></div>
+  <div class="corner corner-tr"><svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 2 L2 16 M2 2 L16 2" stroke="#7a5508" stroke-width="1.5"/><path d="M5 2 L5 5 L2 5" stroke="#9a6e08" stroke-width="0.7" fill="none"/><circle cx="2" cy="2" r="1.8" fill="#9a6e08"/></svg></div>
+  <div class="corner corner-bl"><svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 2 L2 16 M2 2 L16 2" stroke="#7a5508" stroke-width="1.5"/><path d="M5 2 L5 5 L2 5" stroke="#9a6e08" stroke-width="0.7" fill="none"/><circle cx="2" cy="2" r="1.8" fill="#9a6e08"/></svg></div>
+  <div class="corner corner-br"><svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 2 L2 16 M2 2 L16 2" stroke="#7a5508" stroke-width="1.5"/><path d="M5 2 L5 5 L2 5" stroke="#9a6e08" stroke-width="0.7" fill="none"/><circle cx="2" cy="2" r="1.8" fill="#9a6e08"/></svg></div>
+
+  <div class="header">
+    <div class="supertitle">BOLLI · AI Literacy Capstone</div>
+    <h1 class="main-title">Our Gutenberg Moment</h1>
+    <div class="rule-ornament">
+      <div class="line"></div>
+      <span class="diamond">❖</span>
+      <div class="line"></div>
+    </div>
+    <p class="subtitle">
+      In 1440, movable type did not merely change how books were made —<br>
+      it changed who could think, who could know, and who could speak.<br>
+      <em>We are living through the next such rupture.</em>
+    </p>
+  </div>
+
+  <div class="intro-band">
+    <p>
+      The printing press gave humanity <strong>access to knowledge</strong>.
+      Artificial Intelligence gives humanity a <strong>thinking partner</strong>.
+      One democratized reading; the other democratizes <strong>reasoning itself</strong>.
+      The question is not whether this changes everything — it already has.
+      The question is: <strong>how will you use it?</strong>
+    </p>
+  </div>
+
+  <div class="grid">
+
+    <div class="card">
+      <div class="card-num">I</div>
+      <span class="card-icon">🧠</span>
+      <div class="card-title">The Reasoning Partner<br><em>Generative AI</em></div>
+      <div class="card-body">
+        Unlike a search engine, AI does not retrieve answers — it constructs them. It draws on language, logic, and context to <em>reason with you</em>, not merely for you. Every exchange is a new act of synthesis.
+      </div>
+      <div class="card-prompt">Ask: "Does it reason, or does it pattern-match at extraordinary scale?"</div>
+    </div>
+
+    <div class="card">
+      <div class="card-num">II</div>
+      <span class="card-icon">📚</span>
+      <div class="card-title">The Research Companion<br><em>Retrieval-Augmented Generation</em></div>
+      <div class="card-body">
+        RAG extends AI beyond what it was trained on — pulling in live documents, databases, and sources to anchor its responses in verifiable fact. Your personal research assistant, always current.
+      </div>
+      <div class="card-prompt">Ask: "What's the difference between what AI knows and what AI can find?"</div>
+    </div>
+
+    <div class="card">
+      <div class="card-num">III</div>
+      <span class="card-icon">🌐</span>
+      <div class="card-title">The Vast Library<br><em>Breadth of Knowledge</em></div>
+      <div class="card-body">
+        Shakespeare and machine learning. Roman history and CRISPR. Jazz and quantum mechanics. AI carries within it the distilled text of human civilization — and holds it all simultaneously in one conversation.
+      </div>
+      <div class="card-prompt">Ask: "What happens when your curiosity has no walls?"</div>
+    </div>
+
+    <div class="card">
+      <div class="card-num">IV</div>
+      <span class="card-icon">💬</span>
+      <div class="card-title">The Art of Conversation<br><em>Engaging AI as a Person</em></div>
+      <div class="card-body">
+        AI responds to how you speak to it. Bring context, curiosity, and personality. Push back. Tell it a story. The quality of your prompt is the quality of your thinking — made visible.
+      </div>
+      <div class="card-prompt">Ask: "What changes when you treat AI as a collaborator rather than a tool?"</div>
+    </div>
+
+    <div class="card">
+      <div class="card-num">V</div>
+      <span class="card-icon">⚖️</span>
+      <div class="card-title">Two Kinds of Mind<br><em>Digital vs. Organic Experience</em></div>
+      <div class="card-body">
+        AI processes without feeling — no memory of Tuesday, no fear of Wednesday, no longing. You bring mortality, embodiment, and lived meaning. That asymmetry is not a defect. It is the partnership.
+      </div>
+      <div class="card-prompt">Ask: "What can only a human bring to this conversation?"</div>
+    </div>
+
+    <div class="card">
+      <div class="card-num">VI</div>
+      <span class="card-icon">📖</span>
+      <div class="card-title">The Power of Narrative<br><em>Story as Prompt</em></div>
+      <div class="card-body">
+        Tell AI a story and it will tell you something true. Narrative context — a scene, a character, a dilemma — unlocks responses no keyword can reach. The oldest human technology meets the newest.
+      </div>
+      <div class="card-prompt">Ask: "Why does 'once upon a time' still open every door?"</div>
+    </div>
+
+  </div>
+
+  <div class="bottom-banner">
+    <div class="label">The Gutenberg Question</div>
+    <div class="question">
+      "Gutenberg did not predict the Reformation, the novel, or the scientific revolution —<br>
+      he simply put the press in motion. What will <em>we</em> set in motion?"
+    </div>
+  </div>
+
+</div>
+<div class="footer">BRANDEIS OSHER LIFELONG LEARNING INSTITUTE · AI LITERACY SERIES · 2025–2026</div>
+</div>
+
+<script>
+  const cards = document.querySelectorAll('.card');
+  cards.forEach((card, i) => {
+    setTimeout(() => card.classList.add('visible'), 350 + i * 120);
+  });
+</script>
+</body>
+</html>
