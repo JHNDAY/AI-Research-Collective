@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Just &amp; Unjust AI — Discussion Aid</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+
+body {
+  background: #0f0d0b;
+  color: #f0ebe2;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+
+/* ── TOP BANNER ── */
+.banner {
+  background: #0f0d0b;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  padding: 22px 48px 18px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 24px;
+}
+.banner-left {
+  font-family: 'Syne', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(240,235,226,0.35);
+}
+.plato-question {
+  text-align: center;
+}
+.plato-question p {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(0.85rem, 1.4vw, 1.1rem);
+  font-weight: 800;
+  color: #e8a230;
+  letter-spacing: 0.04em;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+.plato-question small {
+  display: block;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.72rem;
+  font-style: italic;
+  font-weight: 300;
+  color: rgba(232,162,48,0.6);
+  letter-spacing: 0.06em;
+  margin-top: 4px;
+  text-transform: none;
+}
+.banner-right {
+  text-align: right;
+  font-family: 'Syne', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(240,235,226,0.35);
+}
+
+/* ── MAIN ARENA ── */
+.arena {
+  display: grid;
+  grid-template-columns: 1fr 180px 1fr;
+  gap: 0;
+  padding: 0 0 0;
+  position: relative;
+}
+
+/* ── COLUMN HEADERS ── */
+.col-header {
+  padding: 18px 32px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.col-header.just   { background: rgba(72,160,100,0.12); border-bottom: 3px solid #3aaa68; }
+.col-header.unjust { background: rgba(196,70,50,0.12);  border-bottom: 3px solid #c44632; }
+.col-header h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(1.1rem, 2vw, 1.5rem);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+.col-header.just   h2 { color: #5ccf84; }
+.col-header.unjust h2 { color: #e05a42; }
+.col-header-icon {
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+/* center axis header */
+.axis-header {
+  background: #0f0d0b;
+  border-bottom: 3px solid rgba(232,162,48,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px 8px 14px;
+}
+.axis-header span {
+  font-family: 'Syne', sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(232,162,48,0.5);
+  writing-mode: horizontal-tb;
+}
+
+/* ── COLUMNS ── */
+.col {
+  padding: 20px 28px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.col.just   { background: rgba(72,160,100,0.04); }
+.col.unjust { background: rgba(196,70,50,0.04); }
+
+/* ── CARDS ── */
+.card {
+  padding: 13px 16px;
+  border-radius: 3px;
+  position: relative;
+  cursor: default;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.card:hover {
+  transform: translateX(3px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  z-index: 10;
+}
+.col.just   .card { background: rgba(58,170,104,0.1);  border-left: 3px solid #3aaa68; }
+.col.unjust .card { background: rgba(196,70,50,0.1);   border-left: 3px solid #c44632; }
+
+.card-who {
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+.col.just   .card-who { color: rgba(92,207,132,0.6); }
+.col.unjust .card-who { color: rgba(224,90,66,0.6); }
+
+.card-text {
+  font-size: clamp(0.82rem, 1.1vw, 0.93rem);
+  line-height: 1.5;
+  color: #d8d0c4;
+  font-weight: 400;
+}
+.card-text strong { color: #f0ebe2; font-weight: 500; }
+
+/* NUANCE card */
+.card.nuance {
+  background: rgba(232,162,48,0.08);
+  border-left-color: rgba(232,162,48,0.5);
+}
+.card.nuance .card-who { color: rgba(232,162,48,0.55); }
+
+/* ── AXIS ── */
+.axis {
+  background: #0f0d0b;
+  border-left: 1px solid rgba(255,255,255,0.06);
+  border-right: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 20px 10px;
+  gap: 14px;
+  position: relative;
+}
+.axis::before {
+  content: '';
+  position: absolute;
+  top: 20px;
+  bottom: 20px;
+  left: 50%;
+  width: 1px;
+  background: linear-gradient(to bottom,
+    transparent,
+    rgba(232,162,48,0.2) 10%,
+    rgba(232,162,48,0.2) 90%,
+    transparent
+  );
+  transform: translateX(-50%);
+}
+
+.axis-pip {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #1a1710;
+  border: 1px solid rgba(232,162,48,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: rgba(232,162,48,0.5);
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  cursor: default;
+}
+.axis-key {
+  padding: 12px 10px;
+  background: #221d10;
+  border: 1px solid rgba(232,162,48,0.4);
+  position: relative;
+  z-index: 1;
+  width: 100%;
+}
+.axis-key-label {
+  font-size: 9.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(232,162,48,0.65);
+  text-align: center;
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+.axis-key-text {
+  font-family: 'DM Sans', sans-serif;
+  font-style: italic;
+  font-size: 0.84rem;
+  color: #e8c87a;
+  text-align: center;
+  line-height: 1.45;
+}
+
+/* ── BOTTOM BAND ── */
+.bottom {
+  border-top: 1px solid rgba(255,255,255,0.08);
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0;
+}
+.bottom-cell {
+  padding: 16px 28px;
+  border-right: 1px solid rgba(255,255,255,0.06);
+}
+.bottom-cell:last-child { border-right: none; }
+.bottom-cell-label {
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(240,235,226,0.3);
+  margin-bottom: 8px;
+  font-family: 'Syne', sans-serif;
+}
+.spark {
+  font-size: 0.82rem;
+  color: rgba(240,235,226,0.65);
+  font-style: italic;
+  line-height: 1.5;
+  font-weight: 300;
+}
+.spark + .spark { margin-top: 5px; border-top: 1px dashed rgba(255,255,255,0.06); padding-top: 5px; }
+
+.distinction-box {
+  background: rgba(232,162,48,0.07);
+  border: 1px solid rgba(232,162,48,0.2);
+  padding: 12px 16px;
+}
+.distinction-box p {
+  font-size: 0.82rem;
+  color: rgba(232,162,48,0.85);
+  line-height: 1.6;
+}
+.distinction-box strong { font-weight: 600; color: #e8a230; }
+</style>
+</head>
+<body>
+
+<!-- ── TOP BANNER ── -->
+<div class="banner">
+  <div class="banner-left">BOLLI · AI Literacy · Session 4 → 5</div>
+  <div class="plato-question">
+    <p>Is the Just Tech Titan<br>Happier Than the Unjust?</p>
+    <small>Plato, Republic Book IX — 729× the happiness ratio</small>
+  </div>
+  <div class="banner-right">What would YOU add?</div>
+</div>
+
+<!-- ── ARENA ── -->
+<div class="arena">
+
+  <!-- JUST COLUMN HEADER -->
+  <div class="col-header just">
+    <span class="col-header-icon">✦</span>
+    <h2>Just Uses of AI</h2>
+  </div>
+  <div class="axis-header"><span>The Axis</span></div>
+  <!-- UNJUST COLUMN HEADER -->
+  <div class="col-header unjust">
+    <h2>Unjust Uses of AI</h2>
+    <span class="col-header-icon">◆</span>
+  </div>
+
+  <!-- ── JUST COLUMN ── -->
+  <div class="col just">
+
+    <div class="card">
+      <div class="card-who">John Day</div>
+      <div class="card-text"><strong>Tutoring students</strong> who cannot afford private instruction — democratizing access to expert guidance</div>
+    </div>
+
+    <div class="card">
+      <div class="card-who">John Day</div>
+      <div class="card-text"><strong>Probing the meaning of existence</strong> — not to dictate answers, but to help us think about the question</div>
+    </div>
+
+    <div class="card">
+      <div class="card-who">John Day</div>
+      <div class="card-text"><strong>Coaching people with autism</strong> in social development — endlessly patient where a human may not be</div>
+    </div>
+
+    <div class="card">
+      <div class="card-who">Bob Mahoney</div>
+      <div class="card-text"><strong>Exploring proofs of God's existence</strong> — AI presents the arguments and the counter-arguments with equal care</div>
+    </div>
+
+    <div class="card">
+      <div class="card-who">Bob Mahoney</div>
+      <div class="card-text"><strong>Real-time cross-language conversation</strong> — bridging people who share no common language</div>
+    </div>
+
+    <div class="card">
+      <div class="card-who">Marie Danziger</div>
+      <div class="card-text"><strong>Travel planning &amp; visualization</strong> — maps, logistics, local knowledge available to anyone</div>
+    </div>
+
+    <div class="card">
+      <div class="card-who">Elaine (Sp. 2)</div>
+      <div class="card-text"><strong>Pursuing knowledge</strong> — students using AI to genuinely understand, not just to produce</div>
+    </div>
+
+    <div class="card nuance">
+      <div class="card-who">Ed Murrow · Key Insight</div>
+      <div class="card-text">Unequal access to AI is a <strong>justice problem</strong> — a question of distribution, not merely ethics. One person cannot monopolize a transformative technology.</div>
+    </div>
+
+  </div>
+
+  <!-- ── AXIS ── -->
+  <div class="axis">
+    <div class="axis-pip">⚖</div>
+    <div class="axis-key">
+      <div class="axis-key-label">Justice</div>
+      <div class="axis-key-text">Who gets what, and why?</div>
+    </div>
+    <div class="axis-pip">vs</div>
+    <div class="axis-key">
+      <div class="axis-key-label">Ethics</div>
+      <div class="axis-key-text">Right action and conduct</div>
+    </div>
+    <div class="axis-pip">≠</div>
+    <div class="axis-key">
+      <div class="axis-key-label">Plato</div>
+      <div class="axis-key-text">Justice = state of the soul</div>
+    </div>
+    <div class="axis-pip">?</div>
+    <div class="axis-key">
+      <div class="axis-key-label">Counter</div>
+      <div class="axis-key-text">Unjust moguls sleep soundly</div>
+    </div>
+    <div class="axis-pip">729</div>
+    <div class="axis-key">
+      <div class="axis-key-label">The Claim</div>
+      <div class="axis-key-text">Just person is 729× happier</div>
+    </div>
+  </div>
+
+  <!-- ── UNJUST COLUMN ── -->
+  <div class="col unjust">
+
+    <div class="card">
+      <div class="card-who">John Day</div>
+      <div class="card-text"><strong>Misrepresenting news facts</strong> to push an ideological agenda — fabricating the information landscape</div>
+    </div>
+
+    <div class="card">
+      <div class="card-who">Bob Mahoney</div>
+      <div class="card-text"><strong>Asking AI how to suppress protesters</strong> — police, fire hoses, calculated crowd control</div>
+    </div>
+
+    <div class="card">
+      <div class="card-who">Jerry (Sp. 9)</div>
+      <div class="card-text"><strong>Deliberately misrepresenting facts</strong> — knowing the truth and choosing to distort it</div>
+    </div>
+
+    <div class="card">
+      <div class="card-who">Jerry (Sp. 9)</div>
+      <div class="card-text"><strong>Selectively omitting evidence</strong> — ignoring the facts that would change the calculus</div>
+    </div>
+
+    <div class="card">
+      <div class="card-who">Scott (Sp. 5)</div>
+      <div class="card-text"><strong>Vaccine misinformation</strong> — producing evidence that vaccines cause harm while suppressing the studies that prove otherwise</div>
+    </div>
+
+    <div class="card">
+      <div class="card-who">Elaine (Sp. 2)</div>
+      <div class="card-text"><strong>Asking AI to assist in assassination</strong> of a political opponent</div>
+    </div>
+
+    <div class="card">
+      <div class="card-who">Elaine (Sp. 2)</div>
+      <div class="card-text"><strong>Surveillance via AI records</strong> — search warrants for private conversations, monitoring under color of law</div>
+    </div>
+
+    <div class="card nuance">
+      <div class="card-who">Jerry (Sp. 9) · Nuance</div>
+      <div class="card-text">Could misrepresentation ever be justified if the <strong>end is genuinely just</strong>? The consequentialist counter — and the question Plato would reject.</div>
+    </div>
+
+  </div>
+
+</div><!-- /arena -->
+
+<!-- ── BOTTOM ── -->
+<div class="bottom">
+
+  <div class="bottom-cell">
+    <div class="bottom-cell-label">To Spark the Discussion</div>
+    <div class="spark">Does the unjust tech titan lose sleep — or merely lose their soul, unaware?</div>
+    <div class="spark">Can you build a just empire on unjust tools?</div>
+    <div class="spark">Where would you place your own AI use on this map?</div>
+  </div>
+
+  <div class="bottom-cell">
+    <div class="bottom-cell-label">The Key Distinction · Ed Murrow</div>
+    <div class="distinction-box">
+      <p><strong>Ethics</strong> governs conduct — right and wrong action.<br>
+      <strong>Justice</strong> governs distribution — who gets what, and why.<br>
+      They are <strong>not the same thing.</strong> Most of what we call "unjust" AI use is actually an <em>ethical</em> breach. True injustice is about access, power, and who is excluded.</p>
+    </div>
+  </div>
+
+  <div class="bottom-cell">
+    <div class="bottom-cell-label">Still Open</div>
+    <div class="spark">Does the <em>just</em> use of AI produce inner order — and the unjust use, inner disorder?</div>
+    <div class="spark">Or does the unjust titan simply <em>not notice</em>?</div>
+    <div class="spark">What's missing from this map? What would <em>you</em> add?</div>
+  </div>
+
+</div>
+
+</body>
+</html>
