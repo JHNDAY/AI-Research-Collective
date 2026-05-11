@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Turing's Wager — Prediction, Storage, Failure & Triumph</title>
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Share+Tech+Mono&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1209;
+    --paper: #f5efe0;
+    --aged: #e8dcc8;
+    --amber: #c8860a;
+    --amber-light: #f0b429;
+    --rust: #8b2500;
+    --green-term: #00c853;
+    --green-dim: #1a3a1a;
+    --blue-modern: #0d47a1;
+    --blue-light: #e3f2fd;
+    --red-fail: #b71c1c;
+    --neural-purple: #4a0080;
+    --neural-bright: #ce93d8;
+    --section-gap: 0;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--ink);
+    font-family: 'Libre Baskerville', Georgia, serif;
+    color: var(--paper);
+    overflow-x: hidden;
+  }
+
+  /* ── MASTHEAD ── */
+  .masthead {
+    background: var(--paper);
+    color: var(--ink);
+    text-align: center;
+    padding: 3rem 2rem 2rem;
+    border-bottom: 6px double var(--ink);
+    position: relative;
+  }
+
+  .masthead-rule {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .masthead-rule span {
+    font-family: 'Special Elite', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--amber);
+  }
+
+  .masthead-rule .line {
+    flex: 1;
+    max-width: 120px;
+    height: 1px;
+    background: var(--amber);
+  }
+
+  .masthead h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 6vw, 4.5rem);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin: 0.5rem 0;
+  }
+
+  .masthead h1 em {
+    font-style: italic;
+    color: var(--amber);
+  }
+
+  .masthead .road-not-taken {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.25rem;
+    color: var(--amber);
+    margin-top: 0.3rem;
+    letter-spacing: 0.04em;
+  }
+
+  .masthead .subtitle {
+    font-family: 'Libre Baskerville', serif;
+    font-style: italic;
+    font-size: 1.05rem;
+    color: #555;
+    margin-top: 0.5rem;
+    letter-spacing: 0.02em;
+  }
+
+  .byline {
+    font-family: 'Special Elite', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: #888;
+    margin-top: 1.2rem;
+    padding-top: 0.8rem;
+    border-top: 1px solid #ccc;
+  }
+
+  /* ── SECTION WRAPPERS ── */
+  .chapter {
+    padding: 4rem 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .chapter-label {
+    font-family: 'Special Elite', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+    opacity: 0.6;
+  }
+
+  .chapter h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.6rem, 4vw, 2.6rem);
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+  }
+
+  .chapter p {
+    font-size: 1rem;
+    line-height: 1.8;
+    margin-bottom: 1.2rem;
+    max-width: 680px;
+  }
+
+  /* ══════════════════════════════════════
+     SECTION 1 — THE PREDICTION
+  ══════════════════════════════════════ */
+  .section-prediction {
+    background: var(--paper);
+    color: var(--ink);
+    border-bottom: 4px solid var(--amber);
+  }
+
+  .section-prediction .chapter-label { color: var(--amber); }
+  .section-prediction h2 { color: var(--ink); }
+  .section-prediction p { color: #2a1f0d; }
+
+  .quote-block {
+    border-left: 4px solid var(--amber);
+    padding: 1.2rem 1.5rem;
+    background: var(--aged);
+    margin: 2rem 0;
+    font-style: italic;
+    font-size: 1.05rem;
+    line-height: 1.85;
+    color: var(--ink);
+    max-width: 680px;
+  }
+
+  .quote-block cite {
+    display: block;
+    margin-top: 0.8rem;
+    font-style: normal;
+    font-family: 'Special Elite', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    color: var(--amber);
+  }
+
+  .prediction-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 1.2rem;
+    margin: 2rem 0;
+    max-width: 700px;
+  }
+
+  .pred-card {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 1.2rem;
+    border: 1px solid var(--amber);
+    position: relative;
+  }
+
+  .pred-card .big-num {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 2rem;
+    color: var(--amber-light);
+    display: block;
+    margin-bottom: 0.3rem;
+  }
+
+  .pred-card .label {
+    font-family: 'Special Elite', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #aaa;
+  }
+
+  .pred-card .desc {
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+    line-height: 1.5;
+    color: #ddd;
+  }
+
+  /* ══════════════════════════════════════
+     SECTION 2 — STORAGE REALITY
+  ══════════════════════════════════════ */
+  .section-storage {
+    background: #0d1a0d;
+    color: var(--green-term);
+    border-bottom: 4px solid var(--green-term);
+  }
+
+  .section-storage .chapter-label { color: #4caf50; }
+  .section-storage h2 { color: #a5d6a7; }
+  .section-storage p { color: #c8e6c9; }
+
+  .storage-scale {
+    margin: 2.5rem 0;
+    max-width: 720px;
+  }
+
+  .scale-title {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    color: #4caf50;
+    margin-bottom: 1.2rem;
+    text-transform: uppercase;
+  }
+
+  .scale-row {
+    display: grid;
+    grid-template-columns: 180px 1fr 120px;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 0.9rem;
+  }
+
+  .scale-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8rem;
+    color: #a5d6a7;
+    text-align: right;
+    line-height: 1.3;
+  }
+
+  .scale-bar-track {
+    height: 22px;
+    background: #0a1a0a;
+    border: 1px solid #1b5e20;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .scale-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #1b5e20, #00c853);
+    transition: width 1.5s ease;
+    position: relative;
+  }
+
+  .scale-bar-fill.turing-ref {
+    background: linear-gradient(90deg, #f57f17, #ffca28);
+  }
+
+  .scale-bits {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--green-term);
+    white-space: nowrap;
+  }
+
+  .turing-marker {
+    background: #1a2a00;
+    border: 1px dashed #ffca28;
+    padding: 0.8rem 1rem;
+    margin: 1.5rem 0;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8rem;
+    color: #ffca28;
+    max-width: 720px;
+  }
+
+  .exceeded-badge {
+    display: inline-block;
+    background: var(--amber);
+    color: var(--ink);
+    font-family: 'Special Elite', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    padding: 0.15rem 0.5rem;
+    margin-left: 0.5rem;
+    text-transform: uppercase;
+    vertical-align: middle;
+  }
+
+  /* ══════════════════════════════════════
+     SECTION 3 — THE FAILED PATH
+  ══════════════════════════════════════ */
+  .section-failure {
+    background: #1a0000;
+    color: #ffcdd2;
+    border-bottom: 4px solid var(--red-fail);
+  }
+
+  .section-failure .chapter-label { color: #ef9a9a; }
+  .section-failure h2 { color: #ffcdd2; }
+  .section-failure p { color: #ffcdd2; opacity: 0.9; }
+
+  .timeline {
+    max-width: 720px;
+    margin: 2rem 0;
+    position: relative;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 70px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(180deg, var(--amber) 0%, var(--red-fail) 100%);
+  }
+
+  .timeline-item {
+    display: grid;
+    grid-template-columns: 70px 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.8rem;
+    position: relative;
+  }
+
+  .timeline-year {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.78rem;
+    color: #ef9a9a;
+    text-align: right;
+    padding-top: 0.1rem;
+    padding-right: 1rem;
+  }
+
+  .timeline-dot {
+    position: absolute;
+    left: 64px;
+    top: 4px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--red-fail);
+    border: 2px solid #ffcdd2;
+  }
+
+  .timeline-content {
+    padding-left: 1.2rem;
+  }
+
+  .timeline-content h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    color: #ffcdd2;
+    margin-bottom: 0.3rem;
+  }
+
+  .timeline-content p {
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: #ef9a9a;
+    opacity: 1;
+  }
+
+  .verdict-box {
+    border: 2px solid var(--red-fail);
+    padding: 1.2rem 1.5rem;
+    background: #2a0000;
+    margin: 2rem 0;
+    max-width: 680px;
+  }
+
+  .verdict-box .verdict-head {
+    font-family: 'Special Elite', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--red-fail);
+    margin-bottom: 0.6rem;
+  }
+
+  .verdict-box p {
+    font-size: 0.95rem;
+    color: #ffcdd2;
+    opacity: 1;
+  }
+
+  /* ══════════════════════════════════════
+     SECTION 4 — THE NEURAL TRIUMPH
+  ══════════════════════════════════════ */
+  .section-triumph {
+    background: #0d0015;
+    color: #e1bee7;
+    border-bottom: 4px solid var(--neural-bright);
+  }
+
+  .section-triumph .chapter-label { color: var(--neural-bright); }
+  .section-triumph h2 { color: #f3e5f5; }
+  .section-triumph p { color: #e1bee7; }
+
+  .neural-steps {
+    max-width: 720px;
+    margin: 2rem 0;
+    display: grid;
+    gap: 1rem;
+  }
+
+  .neural-step {
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    gap: 1rem;
+    border: 1px solid #4a0080;
+    padding: 1rem 1.2rem;
+    background: #0a0010;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .neural-step::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--neural-bright);
+  }
+
+  .neural-step.highlight {
+    border-color: var(--neural-bright);
+    background: #150025;
+  }
+
+  .neural-step.highlight::before {
+    background: #fff;
+    width: 4px;
+  }
+
+  .neural-year {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--neural-bright);
+    padding-top: 0.15rem;
+  }
+
+  .neural-content h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    color: #f3e5f5;
+    margin-bottom: 0.3rem;
+  }
+
+  .neural-content p {
+    font-size: 0.87rem;
+    line-height: 1.6;
+    color: #ce93d8;
+  }
+
+  .dumb-brilliant {
+    margin: 2.5rem 0;
+    max-width: 680px;
+    border: 2px solid var(--neural-bright);
+    padding: 1.8rem;
+    background: #0a0015;
+    position: relative;
+  }
+
+  .dumb-brilliant::after {
+    content: '★';
+    position: absolute;
+    top: -1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #0d0015;
+    padding: 0 0.5rem;
+    color: var(--neural-bright);
+    font-size: 1.2rem;
+  }
+
+  .dumb-brilliant h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-style: italic;
+    color: #f3e5f5;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+
+  .dumb-brilliant p {
+    font-size: 0.95rem;
+    line-height: 1.8;
+    color: #e1bee7;
+    text-align: center;
+  }
+
+  .contrast-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    max-width: 680px;
+    margin: 1.5rem 0;
+  }
+
+  .contrast-col {
+    padding: 1rem;
+    border: 1px solid;
+  }
+
+  .contrast-col.old {
+    border-color: var(--red-fail);
+    background: #1a0005;
+  }
+
+  .contrast-col.new {
+    border-color: var(--neural-bright);
+    background: #0a0015;
+  }
+
+  .contrast-col h4 {
+    font-family: 'Special Elite', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+  }
+
+  .contrast-col.old h4 { color: #ef9a9a; }
+  .contrast-col.new h4 { color: var(--neural-bright); }
+
+  .contrast-col ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .contrast-col ul li {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    padding: 0.25rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .contrast-col.old ul li { color: #ef9a9a; }
+  .contrast-col.old ul li::before { content: '✗  '; }
+  .contrast-col.new ul li { color: #ce93d8; }
+  .contrast-col.new ul li::before { content: '✓  '; }
+
+  /* ── CODA ── */
+  .section-coda {
+    background: var(--ink);
+    text-align: center;
+    padding: 4rem 2rem;
+  }
+
+  .coda-inner {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .coda-inner h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-style: italic;
+    color: var(--amber-light);
+    margin-bottom: 1.2rem;
+  }
+
+  .coda-inner p {
+    font-size: 0.95rem;
+    line-height: 1.8;
+    color: #bbb;
+    margin-bottom: 1rem;
+  }
+
+  .coda-inner .final-line {
+    font-family: 'Special Elite', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-top: 2rem;
+  }
+
+  /* ── DIVIDERS ── */
+  .section-divider {
+    height: 6px;
+  }
+
+  .div-amber { background: linear-gradient(90deg, transparent, var(--amber), transparent); }
+  .div-green { background: linear-gradient(90deg, transparent, var(--green-term), transparent); }
+  .div-red   { background: linear-gradient(90deg, transparent, var(--red-fail), transparent); }
+  .div-purple{ background: linear-gradient(90deg, transparent, var(--neural-bright), transparent); }
+
+  /* ── ANIMATIONS ── */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .fade-in.visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (max-width: 600px) {
+    .scale-row { grid-template-columns: 120px 1fr; }
+    .scale-bits { display: none; }
+    .contrast-grid { grid-template-columns: 1fr; }
+    .timeline::before { left: 55px; }
+    .timeline-item { grid-template-columns: 55px 1fr; }
+    .timeline-dot { left: 49px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     MASTHEAD
+═══════════════════════════════════════════ -->
+<div class="masthead">
+  <div class="masthead-rule">
+    <span class="line"></span>
+    <span>Computing Machinery and Intelligence · 1950</span>
+    <span class="line"></span>
+  </div>
+  <h1>Turing's <em>Wager</em></h1>
+  <p class="road-not-taken">The Road Not Taken</p>
+  <p class="subtitle">Prediction · Storage · Failure · Triumph</p>
+  <p class="byline">A.M. Turing, Mind, Vol. 59, No. 236 &nbsp;·&nbsp; Analysis prepared 2026</p>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 1 — THE PREDICTION
+═══════════════════════════════════════════ -->
+<div class="section-prediction">
+  <div class="chapter fade-in">
+    <div class="chapter-label">Chapter I</div>
+    <h2>The Wager: What Turing Predicted in 1950</h2>
+
+    <p>In the closing pages of his landmark 1950 paper, Alan Turing set aside philosophical abstraction and made a concrete, falsifiable prediction. He staked a claim not on the metaphysics of mind, but on observable behaviour — and gave it a timeline.</p>
+
+    <div class="quote-block">
+      "I believe that in about fifty years' time it will be possible to programme computers, with a storage capacity of about 10⁹, to make them play the imitation game so well that an average interrogator will not have more than 70 per cent chance of making the right identification after five minutes of questioning."
+      <cite>— A.M. Turing, "Computing Machinery and Intelligence," Mind, 1950</cite>
+    </div>
+
+    <p>Three distinct claims are embedded here: a <strong>timeline</strong> (fifty years, placing the target at roughly 2000), a <strong>hardware threshold</strong> (10⁹ units of storage), and a <strong>behavioural benchmark</strong> (≤70% interrogator accuracy after five minutes). Each would be tested differently — and the results were instructive.</p>
+
+    <div class="prediction-cards">
+      <div class="pred-card">
+        <span class="big-num">~2000</span>
+        <span class="label">Target Year</span>
+        <p class="desc">Fifty years from 1950. The millennium as deadline.</p>
+      </div>
+      <div class="pred-card">
+        <span class="big-num">10⁹</span>
+        <span class="label">Storage Threshold</span>
+        <p class="desc">One billion bits — roughly 125 megabytes in modern terms.</p>
+      </div>
+      <div class="pred-card">
+        <span class="big-num">≤70%</span>
+        <span class="label">Interrogator Accuracy</span>
+        <p class="desc">An average human judge, five minutes of questioning.</p>
+      </div>
+    </div>
+
+    <p>Turing then made a second, softer prediction: that by century's end, educated opinion would shift so that speaking of machines "thinking" would no longer invite contradiction. He was replacing a philosophical question with a sociological one — meaning is use, and use would change.</p>
+  </div>
+</div>
+
+<div class="section-divider div-amber"></div>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 2 — STORAGE REALITY
+═══════════════════════════════════════════ -->
+<div class="section-storage">
+  <div class="chapter fade-in">
+    <div class="chapter-label">Chapter II</div>
+    <h2>The Storage Reality: From 10⁹ to 10²³</h2>
+
+    <p>Turing's hardware threshold — 10⁹ bits, or approximately 125 megabytes — was crossed without ceremony sometime in the mid-1980s. Consumer computers had achieved it before the decade was out. What followed was an escalation of storage capacity beyond anything his 1950 imagination could have encompassed.</p>
+
+    <div class="turing-marker">
+      ◈ TURING THRESHOLD: 10⁹ bits ≈ 125 MB &nbsp;·&nbsp; Crossed: ~mid 1980s &nbsp;·&nbsp; Status: TRIVIALLY SURPASSED
+    </div>
+
+    <div class="storage-scale">
+      <div class="scale-title">▸ Storage Scale · Logarithmic (base 10, measured in bits)</div>
+
+      <div class="scale-row">
+        <div class="scale-label">Turing's<br>Threshold (1950)</div>
+        <div class="scale-bar-track">
+          <div class="scale-bar-fill turing-ref" style="width:6.5%"></div>
+        </div>
+        <div class="scale-bits">10⁹ bits</div>
+      </div>
+
+      <div class="scale-row">
+        <div class="scale-label">Consumer<br>RAM (2026)</div>
+        <div class="scale-bar-track">
+          <div class="scale-bar-fill" style="width:15%"></div>
+        </div>
+        <div class="scale-bits">~10¹¹–¹² bits</div>
+      </div>
+
+      <div class="scale-row">
+        <div class="scale-label">Consumer<br>SSD (2026)</div>
+        <div class="scale-bar-track">
+          <div class="scale-bar-fill" style="width:28%"></div>
+        </div>
+        <div class="scale-bits">~10¹³ bits</div>
+      </div>
+
+      <div class="scale-row">
+        <div class="scale-label">LLM Model<br>Weights</div>
+        <div class="scale-bar-track">
+          <div class="scale-bar-fill" style="width:42%"></div>
+        </div>
+        <div class="scale-bits">~3×10¹³ bits</div>
+      </div>
+
+      <div class="scale-row">
+        <div class="scale-label">LLM Training<br>Data</div>
+        <div class="scale-bar-track">
+          <div class="scale-bar-fill" style="width:58%"></div>
+        </div>
+        <div class="scale-bits">~10¹⁵ bits</div>
+      </div>
+
+      <div class="scale-row">
+        <div class="scale-label">Global Digital<br>Storage</div>
+        <div class="scale-bar-track">
+          <div class="scale-bar-fill" style="width:100%"></div>
+        </div>
+        <div class="scale-bits">~10²³ bits</div>
+      </div>
+    </div>
+
+    <p>Modern frontier language models carry roughly 30,000 times Turing's entire storage threshold in their weights alone. The training data that shaped those weights represents 10¹⁵ bits — a million times his benchmark. Global digital storage exceeds it by a factor of 100 trillion.</p>
+
+    <p>And yet — crossing 10⁹ bits in the 1980s produced no intelligent machine. Crossing 10¹² in the 1990s produced no intelligent machine. The storage threshold was necessary but nowhere near sufficient. Turing had misidentified the bottleneck.</p>
+  </div>
+</div>
+
+<div class="section-divider div-green"></div>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 3 — THE FAILED PATH
+═══════════════════════════════════════════ -->
+<div class="section-failure">
+  <div class="chapter fade-in">
+    <div class="chapter-label">Chapter III</div>
+    <h2>The Failed Path: Ever More Sophisticated Programs</h2>
+
+    <p>Turing imagined the route to machine intelligence as essentially one of programming — of encoding knowledge, rules, and reasoning procedures explicitly into a sufficiently large computer. For five decades, the field of artificial intelligence followed precisely this path. The results were impressive, brittle, and ultimately inadequate.</p>
+
+    <div class="timeline">
+
+      <div class="timeline-item">
+        <div class="timeline-year">1956</div>
+        <div class="timeline-dot"></div>
+        <div class="timeline-content">
+          <h3>Logic Theorist &amp; the Dartmouth Conference</h3>
+          <p>Newell, Shaw and Simon demonstrate machine theorem-proving. McCarthy coins "Artificial Intelligence." The founding premise: intelligence is symbol manipulation, and symbols can be programmed.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-year">1965</div>
+        <div class="timeline-dot"></div>
+        <div class="timeline-content">
+          <h3>ELIZA — The First Conversational Illusion</h3>
+          <p>Weizenbaum's pattern-matching program fools users into believing it understands. A warning sign: the appearance of intelligence and its substance are easily separated. ELIZA has no knowledge, only rules.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-year">1970s</div>
+        <div class="timeline-dot"></div>
+        <div class="timeline-content">
+          <h3>Expert Systems — Intelligence as Rule Codification</h3>
+          <p>MYCIN, DENDRAL, Xcon: human expertise hand-encoded into thousands of IF-THEN rules. Worked in narrow domains. Collapsed under the weight of exceptions, edge cases, and the combinatorial explosion of real-world ambiguity.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-year">1984</div>
+        <div class="timeline-dot"></div>
+        <div class="timeline-content">
+          <h3>Cyc — The Grand Encyclopaedic Project</h3>
+          <p>Lenat's project to hand-encode all human common sense — millions of axioms over decades. Still ongoing. Never achieved general reasoning. Demonstrated the futility of trying to enumerate what humans know implicitly.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-year">1980s–90s</div>
+        <div class="timeline-dot"></div>
+        <div class="timeline-content">
+          <h3>The AI Winters</h3>
+          <p>Repeated cycles of overpromising and underdelivering. DARPA funding collapses. The Lighthill Report in the UK. Turing's fifty-year deadline of 2000 approaches with no credible candidate for the imitation game.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-year">2000</div>
+        <div class="timeline-dot"></div>
+        <div class="timeline-content">
+          <h3>Turing's Deadline — Quietly Missed</h3>
+          <p>The millennium passes. Storage has exceeded 10⁹ bits by many orders of magnitude. No program exists that could plausibly confuse an attentive interrogator for five minutes. The programmatic approach has reached its ceiling.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="verdict-box">
+      <div class="verdict-head">Verdict on the Programmatic Path</div>
+      <p>The fundamental error was ontological. Human language and thought do not operate by explicit rules — they operate through statistical intuition built from immense exposure. You cannot program what was never articulated. Turing's vision of a "well-programmed" machine was, in retrospect, the wrong model entirely.</p>
+    </div>
+  </div>
+</div>
+
+<div class="section-divider div-red"></div>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 4 — THE NEURAL TRIUMPH
+═══════════════════════════════════════════ -->
+<div class="section-triumph">
+  <div class="chapter fade-in">
+    <div class="chapter-label">Chapter IV</div>
+    <h2>The Dumb but Brilliant Solution: Neural Networks</h2>
+
+    <p>The approach that finally achieved Turing's benchmark shares almost nothing with what Turing imagined. There are no rules. No knowledge representations. No logical inference. Instead: billions of numerical weights, adjusted by gradient descent through exposure to vast quantities of human text. It is, in one sense, profoundly stupid. In another, it is the most powerful cognitive tool ever built.</p>
+
+    <div class="dumb-brilliant">
+      <h3>"Dumb but Brilliant"</h3>
+      <p>No programmer encodes language knowledge. No expert distils their understanding into rules. The system is exposed to human text at massive scale, and mathematical optimisation — gradient descent — adjusts billions of parameters to minimise prediction error. Intelligence emerges. It was never designed. It was <em>trained</em>.</p>
+    </div>
+
+    <div class="neural-steps">
+
+      <div class="neural-step">
+        <div class="neural-year">1943–58</div>
+        <div class="neural-content">
+          <h3>McCulloch-Pitts Neurons &amp; Perceptrons</h3>
+          <p>The biological metaphor: artificial neurons that fire or don't. Rosenblatt's perceptron learns from examples. Minsky and Papert kill the dream in 1969 by proving perceptrons cannot solve XOR. A twenty-year winter follows.</p>
+        </div>
+      </div>
+
+      <div class="neural-step">
+        <div class="neural-year">1986</div>
+        <div class="neural-content">
+          <h3>Backpropagation — The Algorithm That Changes Everything</h3>
+          <p>Rumelhart, Hinton, and Williams demonstrate that error gradients can be propagated back through multi-layer networks, allowing deep learning. The mathematical key exists. Hardware is not yet ready.</p>
+        </div>
+      </div>
+
+      <div class="neural-step">
+        <div class="neural-year">2006–12</div>
+        <div class="neural-content">
+          <h3>Deep Learning Renaissance</h3>
+          <p>Hinton, LeCun, Bengio. GPUs make matrix multiplication fast enough. ImageNet competition results shock the computer vision community. The scaling hypothesis begins to crystallise: more data, more parameters, more compute — better results.</p>
+        </div>
+      </div>
+
+      <div class="neural-step highlight">
+        <div class="neural-year">2017</div>
+        <div class="neural-content">
+          <h3>"Attention Is All You Need" — The Transformer</h3>
+          <p>Vaswani et al. at Google introduce the transformer architecture. Self-attention allows models to weigh relationships across entire sequences simultaneously. The architecture that powers every frontier language model is born.</p>
+        </div>
+      </div>
+
+      <div class="neural-step highlight">
+        <div class="neural-year">2020–26</div>
+        <div class="neural-content">
+          <h3>Large Language Models — Turing's Test Surpassed</h3>
+          <p>GPT-3, GPT-4, Claude, Gemini. At sufficient scale — billions to trillions of parameters, trained on hundreds of billions of tokens — capabilities emerge that no one designed: reasoning, coding, literary analysis, scientific synthesis. An average interrogator in five minutes cannot reliably identify the machine. Turing's wager, paid out twenty years late and by a completely unexpected method.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="contrast-grid">
+      <div class="contrast-col old">
+        <h4>The Turing Path (Failed)</h4>
+        <ul>
+          <li>Explicit rule encoding</li>
+          <li>Hand-crafted knowledge bases</li>
+          <li>Symbolic logical inference</li>
+          <li>Human experts as bottleneck</li>
+          <li>Brittle under ambiguity</li>
+          <li>Ceiling: narrow domains only</li>
+        </ul>
+      </div>
+      <div class="contrast-col new">
+        <h4>The Neural Path (Succeeded)</h4>
+        <ul>
+          <li>No explicit rules whatsoever</li>
+          <li>Statistical patterns from data</li>
+          <li>Gradient descent optimisation</li>
+          <li>Scale as the primary lever</li>
+          <li>Robust across ambiguity</li>
+          <li>Emergent general capability</li>
+        </ul>
+      </div>
+    </div>
+
+    <p>The irony Turing could not have foreseen: the successful machine is not a Turing machine in any meaningful sense. It does not compute in the formal, rule-following way he theorised. It is, in architecture, closer to a brain — a vast web of weighted connections shaped by experience — than to anything he imagined when he wrote his 1950 paper.</p>
+
+  </div>
+</div>
+
+<div class="section-divider div-purple"></div>
+
+<!-- ═══════════════════════════════════════════
+     CODA
+═══════════════════════════════════════════ -->
+<div class="section-coda">
+  <div class="coda-inner fade-in">
+    <h2>The Wager, Settled</h2>
+    <p>Turing predicted a behavioural outcome. He was right. He predicted a timeline. He was twenty years optimistic. He predicted a mechanism. He was entirely wrong. And in a final vindication of his softer prediction — that educated opinion would shift — we now speak of machines reasoning, understanding, and hallucinating without expecting philosophical challenge.</p>
+    <p>He asked the right question, set the right test, and misidentified the path. The destination vindicated the prophet; the journey surprised him completely.</p>
+    <p class="final-line">A.M. Turing · 1912–1954 · &nbsp;"Can Machines Think?" · Mind, 1950</p>
+  </div>
+</div>
+
+<script>
+  // Intersection Observer for fade-in
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // Animate storage bars on scroll
+  const barObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('.scale-bar-fill').forEach(bar => {
+          const target = bar.style.width;
+          bar.style.width = '0%';
+          setTimeout(() => { bar.style.width = target; }, 100);
+        });
+      }
+    });
+  }, { threshold: 0.2 });
+
+  const storageScale = document.querySelector('.storage-scale');
+  if (storageScale) barObserver.observe(storageScale);
+</script>
+</body>
+</html>
