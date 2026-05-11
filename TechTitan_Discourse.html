@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Philosopher-Kings & Tyrants — A Discourse on AI Gratification</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Courier+Prime:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --ink: #0d0a05;
+  --paper: #f5f0e8;
+  --paper-dark: #ede5d0;
+  --sepia: #4a3c28;
+  --sepia-light: #9a8a68;
+  --gold: #b8860b;
+  --gold-light: #e8c87a;
+  --crimson: #8c0f0f;
+  --green: #2a6b42;
+  --rule: #c8b888;
+  --just-bg: rgba(42,107,66,0.07);
+  --unjust-bg: rgba(140,15,15,0.06);
+}
+
+body {
+  background: #d4c9b0;
+  font-family: Georgia, 'Times New Roman', serif;
+  color: var(--ink);
+  padding: 2rem 1rem;
+  min-height: 100vh;
+}
+
+.broadsheet {
+  max-width: 1080px;
+  margin: 0 auto;
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  box-shadow: 8px 8px 0 rgba(0,0,0,0.35);
+  position: relative;
+  overflow: hidden;
+}
+
+/* grain overlay */
+.broadsheet::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.4;
+}
+
+/* ── MASTHEAD ── */
+.masthead {
+  text-align: center;
+  padding: 2rem 3rem 1.4rem;
+  border-bottom: 4px double var(--ink);
+  position: relative;
+  z-index: 1;
+}
+.kicker {
+  font-family: 'Courier Prime', monospace;
+  font-size: 10px;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--sepia);
+  margin-bottom: 0.8rem;
+}
+.headline {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.2rem, 5vw, 3.8rem);
+  font-weight: 900;
+  line-height: 0.92;
+  color: var(--ink);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-bottom: 0.6rem;
+}
+.subhead {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  font-style: italic;
+  color: var(--sepia);
+  margin-bottom: 0.7rem;
+}
+.dateline {
+  font-family: 'Courier Prime', monospace;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sepia-light);
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+/* ── LEAD THESIS ── */
+.lead {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 1.5rem 3rem;
+  position: relative;
+  z-index: 1;
+}
+.lead-inner {
+  max-width: 700px;
+  margin: 0 auto;
+  text-align: center;
+}
+.lead-tag {
+  font-family: 'Courier Prime', monospace;
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold-light);
+  margin-bottom: 0.6rem;
+  opacity: 0.7;
+}
+.lead p {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem;
+  font-style: italic;
+  line-height: 1.65;
+  color: rgba(245,240,232,0.9);
+}
+.lead strong {
+  color: var(--gold-light);
+  font-style: normal;
+}
+
+/* ── MAIN BODY ── */
+.body-wrap {
+  padding: 2rem 3rem 2.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── SECTION LABELS ── */
+.sec-label {
+  font-family: 'Courier Prime', monospace;
+  font-size: 9px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--sepia-light);
+  margin-bottom: 0.4rem;
+}
+.sec-rule {
+  border: none;
+  border-top: 2px solid var(--ink);
+  margin: 0 0 1rem;
+}
+
+/* ── GRATIFICATION DIPTYCH ── */
+.diptych {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border: 2px solid var(--ink);
+  margin: 1.5rem 0;
+}
+.diptych-panel {
+  padding: 1.4rem 1.6rem;
+}
+.diptych-panel.just { background: var(--just-bg); border-right: 2px solid var(--ink); }
+.diptych-panel.unjust { background: var(--unjust-bg); }
+.panel-head {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.9rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1.5px solid var(--ink);
+}
+.just .panel-head { color: var(--green); }
+.unjust .panel-head { color: var(--crimson); }
+.panel-head .icon { margin-right: 0.4rem; }
+
+.grat-item {
+  display: flex;
+  gap: 0.7rem;
+  margin-bottom: 0.8rem;
+  align-items: flex-start;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--sepia);
+}
+.grat-item::before {
+  content: '▪';
+  color: var(--sepia-light);
+  font-size: 11px;
+  margin-top: 3px;
+  flex-shrink: 0;
+}
+.grat-item strong { color: var(--ink); font-style: normal; }
+
+/* ── PULL QUOTE ── */
+.pullquote {
+  margin: 2rem 0;
+  padding: 1.2rem 2rem;
+  border-left: 5px solid var(--ink);
+  border-right: 5px solid var(--ink);
+  text-align: center;
+  background: rgba(184,134,11,0.06);
+}
+.pullquote p {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.25rem;
+  font-style: italic;
+  line-height: 1.55;
+  color: var(--ink);
+}
+.pullquote cite {
+  display: block;
+  font-family: 'Courier Prime', monospace;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sepia-light);
+  margin-top: 0.6rem;
+  font-style: normal;
+}
+
+/* ── TWO CLASSES ── */
+.classes-grid {
+  display: grid;
+  grid-template-columns: 1fr 60px 1fr;
+  gap: 0;
+  border: 2px solid var(--ink);
+  margin: 1.5rem 0;
+}
+.class-panel {
+  padding: 1.4rem 1.6rem;
+}
+.class-panel.outward { background: var(--just-bg); }
+.class-panel.inward  { background: var(--unjust-bg); }
+.class-axis {
+  background: var(--ink);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 0;
+}
+.class-axis span {
+  font-family: 'Courier Prime', monospace;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold-light);
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
+.class-axis .vs {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-weight: 900;
+  color: var(--paper);
+  writing-mode: horizontal-tb;
+}
+.class-head {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1.5px solid var(--ink);
+}
+.outward .class-head { color: var(--green); }
+.inward  .class-head { color: var(--crimson); }
+.class-epithet {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.85rem;
+  font-style: italic;
+  color: var(--sepia);
+  margin-bottom: 0.9rem;
+}
+.class-body {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--sepia);
+}
+.class-body strong { color: var(--ink); }
+
+/* ── EPISTEMIC DIVIDE ── */
+.episteme {
+  margin: 1.5rem 0;
+  border: 2px solid var(--ink);
+}
+.episteme-head {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 0.7rem 1.4rem;
+  font-family: 'Courier Prime', monospace;
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+}
+.episteme-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+.epist-col {
+  padding: 1.2rem 1.4rem;
+}
+.epist-col:first-child {
+  background: var(--just-bg);
+  border-right: 2px solid var(--ink);
+}
+.epist-col:last-child { background: var(--unjust-bg); }
+.epist-tag {
+  font-family: 'Courier Prime', monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sepia-light);
+  margin-bottom: 0.4rem;
+}
+.epist-thesis {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 0.7rem;
+  line-height: 1.3;
+}
+.epist-expl {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--sepia);
+  font-style: italic;
+}
+
+/* ── CONCLUSION BAND ── */
+.conclusion {
+  background: var(--ink);
+  color: var(--paper);
+  margin: 2rem -3rem -2.5rem;
+  padding: 2rem 3rem;
+}
+.conclusion-inner {
+  max-width: 800px;
+  margin: 0 auto;
+}
+.conc-tag {
+  font-family: 'Courier Prime', monospace;
+  font-size: 9px;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--gold-light);
+  opacity: 0.7;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+.conc-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 1.5rem;
+}
+.conc-col-head {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.6rem;
+  padding-bottom: 0.4rem;
+}
+.conc-col-head.just  { color: #5ccf84; border-bottom: 1.5px solid #5ccf84; }
+.conc-col-head.unjust{ color: #e05a42; border-bottom: 1.5px solid #e05a42; }
+.conc-text {
+  font-size: 14px;
+  line-height: 1.65;
+  color: rgba(245,240,232,0.8);
+  font-style: italic;
+}
+.conc-divider { border: none; border-top: 1px solid rgba(255,255,255,0.12); margin: 1.5rem 0; }
+.final-verdict {
+  text-align: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem;
+  font-style: italic;
+  color: var(--gold-light);
+  line-height: 1.65;
+  padding: 0 1rem;
+}
+.final-verdict strong {
+  font-style: normal;
+  color: #fff;
+}
+
+/* ── FOOTER ── */
+.footer {
+  background: var(--paper-dark);
+  border-top: 4px double var(--ink);
+  padding: 0.8rem 3rem;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  position: relative;
+  z-index: 1;
+}
+.footer span {
+  font-family: 'Courier Prime', monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sepia);
+}
+
+/* ── THREE-COL LAYOUT for middle section ── */
+.three-col {
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr 1px 1fr;
+  gap: 0 2rem;
+  margin: 1.5rem 0;
+}
+.col-divider { background: var(--rule); }
+.three-col-item { padding: 0 0; }
+.three-head {
+  font-family: 'Courier Prime', monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sepia-light);
+  border-bottom: 1.5px solid var(--ink);
+  padding-bottom: 0.4rem;
+  margin-bottom: 0.7rem;
+}
+.three-body {
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: var(--sepia);
+}
+.three-body strong { color: var(--ink); }
+.three-body em { color: var(--crimson); }
+
+/* animation */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.broadsheet { animation: fadeUp 0.6s ease both; }
+</style>
+</head>
+<body>
+
+<div class="broadsheet">
+
+  <!-- MASTHEAD -->
+  <div class="masthead">
+    <div class="kicker">BOLLI · AI Literacy · Session 4→5 &nbsp;·&nbsp; Ed Murrow Discourse</div>
+    <div class="headline">Philosopher-Kings<br>&amp; Tyrants</div>
+    <div class="subhead">On the Gratification of Tech Titans — Just and Unjust</div>
+    <div class="dateline">
+      <span>Plato · Republic Book IX</span>
+      <span>The 729× Question</span>
+      <span>John Day · Ed Murrow</span>
+    </div>
+  </div>
+
+  <!-- LEAD -->
+  <div class="lead">
+    <div class="lead-inner">
+      <div class="lead-tag">The Central Question</div>
+      <p>What <strong>gratification</strong> does a tech titan find in building and deploying AI — and does that gratification differ depending on whether the use is <strong>just or unjust</strong>? Not abstract happiness. Felt reward. The thing they actually get from the choice itself.</p>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="body-wrap">
+
+    <!-- GRATIFICATION DIPTYCH -->
+    <div class="sec-label">The Gratification Question</div>
+    <hr class="sec-rule">
+
+    <div class="diptych">
+      <div class="diptych-panel just">
+        <div class="panel-head"><span class="icon">✦</span>The Just Titan</div>
+        <div class="grat-item"><span>Gratification from <strong>being seen</strong> — recognition, legacy, measurable impact. Real lives altered.</span></div>
+        <div class="grat-item"><span>Satisfaction of <strong>alignment with something external</strong> — truth, justice, human flourishing. The inner order Plato claims.</span></div>
+        <div class="grat-item"><span>Reward that is <strong>slow and diffuse</strong> — tutoring students, probing existence, bridging languages. Gratification compounds over time.</span></div>
+        <div class="grat-item"><span>Can be <strong>wrong and learn</strong>. Constrained by a reality independent of the self.</span></div>
+      </div>
+      <div class="diptych-panel unjust">
+        <div class="panel-head"><span class="icon">◆</span>The Unjust Titan</div>
+        <div class="grat-item"><span>Gratification of <strong>pure dominance</strong> — shaping what millions believe, invisibly. Power without accountability.</span></div>
+        <div class="grat-item"><span>The seduction of <strong>speed</strong> — suppress protesters today; the PR cleans itself up tomorrow. No waiting for justice to compound.</span></div>
+        <div class="grat-item"><span>The reward of <strong>self-permission</strong> — you get the power and the justification simultaneously. "National security." "Stability." The lie you tell yourself.</span></div>
+        <div class="grat-item"><span>Has <strong>outsourced the question</strong> entirely. Plato's trap: not open suffering, but the quiet excision of conscience.</span></div>
+      </div>
+    </div>
+
+    <!-- PULL QUOTE 1 -->
+    <div class="pullquote">
+      <p>"Can those two gratifications coexist in the same person — or does choosing one path structurally foreclose the other?"</p>
+      <cite>Ed Murrow · The Discourse</cite>
+    </div>
+
+    <!-- TWO CLASSES -->
+    <div class="sec-label">The Two Classes</div>
+    <hr class="sec-rule">
+
+    <div class="classes-grid">
+      <div class="class-panel outward">
+        <div class="class-head">Class A — Outward Looking</div>
+        <div class="class-epithet">The world is the object. Understanding it is the reward.</div>
+        <div class="class-body">
+          They have <strong>discovered the world</strong> and find it wonderful. Understanding it — and helping others understand it — is its own reward. They are transparent about their own limitations because the focus is not on them. <strong>They can fail and learn.</strong> They are almost invisible in their own work.
+        </div>
+      </div>
+      <div class="class-axis">
+        <span>Class</span>
+        <div class="vs">vs</div>
+        <span>Class</span>
+      </div>
+      <div class="class-panel inward">
+        <div class="class-head">Class B — Inward Looking</div>
+        <div class="class-epithet">They have discovered themselves, and that discovery has become obsessive.</div>
+        <div class="class-body">
+          The world becomes a mirror. Everyone else becomes a surface on which to project their image. Their reach and power aren't tools for understanding — they're <strong>amplifiers for the self</strong>. Conformity isn't a side effect; it's the goal. Make the world resemble me.
+        </div>
+      </div>
+    </div>
+
+    <!-- THREE COLUMN: the mechanisms -->
+    <div class="three-col">
+      <div class="three-col-item">
+        <div class="three-head">The Unjust Requirement</div>
+        <div class="three-body">The unjust uses — misinformation, suppression, surveillance — almost all require the inward gaze. You cannot misrepresent facts without first deciding your interpretation <em>is</em> the fact.</div>
+      </div>
+      <div class="col-divider"></div>
+      <div class="three-col-item">
+        <div class="three-head">The Epistemic Root</div>
+        <div class="three-body">Class A believes in <strong>discoverable truth</strong> — reality exists independent of any single mind, emerging through collective inquiry. Class B has collapsed that distance. Reality <em>is</em> their conviction.</div>
+      </div>
+      <div class="col-divider"></div>
+      <div class="three-col-item">
+        <div class="three-head">Power as Metric</div>
+        <div class="three-body">If reality is merely the projection of one's conviction, then power becomes the only meaningful metric — because power is what forces the world to conform to your inner truth.</div>
+      </div>
+    </div>
+
+    <!-- EPISTEMIC DIVIDE -->
+    <div class="sec-label">The Epistemic Divide</div>
+    <hr class="sec-rule">
+
+    <div class="episteme">
+      <div class="episteme-head">What Each Class Believes Reality To Be</div>
+      <div class="episteme-body">
+        <div class="epist-col">
+          <div class="epist-tag">Class A · Outward</div>
+          <div class="epist-thesis">Truth is discovered through joint, collective human experience moving forward.</div>
+          <div class="epist-expl">The just titan finds satisfaction in alignment with something external. They are constrained and corrected by it. They can be wrong. The world is not theirs to possess — only to illuminate. Gratification comes from the unveiling, not the control.</div>
+        </div>
+        <div class="epist-col">
+          <div class="epist-tag">Class B · Inward</div>
+          <div class="epist-thesis">Reality is what I believe it to be. It constitutes itself from my inner conviction.</div>
+          <div class="epist-expl">Not "I believe this is true" — but "this <em>is</em> true because I believe it." Their gratification requires a world that mirrors them back perfectly. They must suppress anything that doesn't reflect their image — not from malice necessarily, but from metaphysical necessity.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PULL QUOTE 2 -->
+    <div class="pullquote">
+      <p>"After twenty-four centuries, we still have essentially the same distinction — the modern philosopher-kings, and the modern tyrants."</p>
+      <cite>John Day · The Discourse</cite>
+    </div>
+
+    <!-- CONCLUSION BAND -->
+    <div class="conclusion">
+      <div class="conclusion-inner">
+        <div class="conc-tag">The Verdict · Republic Book IX</div>
+        <div class="conc-grid">
+          <div>
+            <div class="conc-col-head just">✦ The Philosopher-King</div>
+            <div class="conc-text">Deploys AI to illuminate — tutoring, translation, genuine inquiry. Ruled through alignment with something transcendent. Constrained by reality. Answerable to facts. Gratification is slow, diffuse, and compounding.</div>
+          </div>
+          <div>
+            <div class="conc-col-head unjust">◆ The Modern Tyrant</div>
+            <div class="conc-text">Deploys AI to reinforce — misinformation at scale, surveillance perfected, dissent preempted before it forms. Ruled through imposition of inner conviction onto reality itself. His certainty is absolute because it admits no external standard.</div>
+          </div>
+        </div>
+        <hr class="conc-divider">
+        <div class="final-verdict">
+          The unsettling truth: <strong>both classes wield AI now.</strong> The philosopher-king and the tyrant hold the same tool — and it amplifies both. Justice versus injustice is not about the technology. It is about which class is wielding it, and what they believe reality actually <em>is</em>.
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /body-wrap -->
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <span>BOLLI · AI Literacy</span>
+    <span>Plato · Republic Book IX · 729×</span>
+    <span>Ed Murrow · Good Night, and Good Luck</span>
+  </div>
+
+</div>
+
+</body>
+</html>
