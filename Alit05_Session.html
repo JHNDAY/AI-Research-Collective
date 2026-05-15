@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Literacy · Session Five</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1612;
+    --paper: #f5f0e8;
+    --cream: #ede8dc;
+    --gold: #b8892e;
+    --gold-light: #d4a94e;
+    --rust: #8b3a2a;
+    --teal: #2e6e6a;
+    --teal-light: #4a9490;
+    --slate: #2c3340;
+    --muted: #6b6355;
+    --rule: rgba(184,137,46,0.25);
+    --ed-bg: #1e2830;
+    --ed-border: #4a9490;
+    --ed-text: #c8dcd8;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--ink);
+    color: var(--paper);
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 17px;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* ─── MASTHEAD ─── */
+  .masthead {
+    background: var(--ink);
+    border-bottom: 1px solid var(--gold);
+    padding: 2.5rem 0 2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .masthead::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(184,137,46,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .masthead-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+  .masthead-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 900;
+    line-height: 1.05;
+    color: var(--paper);
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+  }
+  .masthead-subtitle {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(1rem, 2.5vw, 1.4rem);
+    color: var(--gold-light);
+    margin-bottom: 1.5rem;
+  }
+  .masthead-meta {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  .meta-item {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .meta-item span { color: var(--cream); }
+
+  /* ─── MAIN LAYOUT ─── */
+  .page { max-width: 900px; margin: 0 auto; padding: 0 1.5rem; }
+
+  /* ─── SESSION ARC / TIMELINE ─── */
+  .arc-section {
+    padding: 3rem 0 2rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .arc-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 2rem;
+  }
+  .timeline {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0;
+    position: relative;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(to right, var(--gold) 0%, var(--teal-light) 50%, var(--gold) 100%);
+    opacity: 0.4;
+    z-index: 0;
+  }
+  .arc-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+    cursor: default;
+  }
+  .arc-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--gold);
+    border: 2px solid var(--ink);
+    margin-bottom: 0.6rem;
+    transition: transform 0.2s, background 0.2s;
+  }
+  .arc-node:hover .arc-dot { transform: scale(1.6); background: var(--gold-light); }
+  .arc-time {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+    margin-bottom: 0.3rem;
+  }
+  .arc-name {
+    font-size: 0.65rem;
+    color: var(--muted);
+    text-align: center;
+    line-height: 1.3;
+    max-width: 80px;
+  }
+  .arc-node.special .arc-dot { background: var(--teal-light); }
+  .arc-node.special .arc-time { color: var(--teal-light); }
+
+  /* ─── CONTENT SECTIONS ─── */
+  .content-section {
+    padding: 3rem 0 2.5rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .section-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    font-weight: 900;
+    color: var(--rule);
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .section-info { flex: 1; }
+  .section-time {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 0.25rem;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--paper);
+    line-height: 1.2;
+  }
+  .section-body {
+    font-size: 1rem;
+    color: var(--cream);
+    line-height: 1.8;
+    max-width: 70ch;
+  }
+  .section-body p { margin-bottom: 1rem; }
+  .section-body p:last-child { margin-bottom: 0; }
+
+  /* ─── DISCOVERY CARDS ─── */
+  .discovery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+  .discovery-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(184,137,46,0.2);
+    border-left: 3px solid var(--gold);
+    border-radius: 2px;
+    padding: 1.2rem 1.4rem;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .discovery-card:hover {
+    background: rgba(184,137,46,0.05);
+    border-color: rgba(184,137,46,0.5);
+  }
+  .card-icon {
+    font-size: 1.4rem;
+    margin-bottom: 0.6rem;
+    display: block;
+  }
+  .card-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--gold-light);
+    margin-bottom: 0.4rem;
+  }
+  .card-body {
+    font-size: 0.88rem;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+
+  /* ─── ED MURROW BLOCKS ─── */
+  .ed-exchange {
+    margin: 2rem 0;
+    background: var(--ed-bg);
+    border: 1px solid rgba(74,148,144,0.3);
+    border-left: 4px solid var(--ed-border);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .ed-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.8rem 1.4rem;
+    background: rgba(74,148,144,0.08);
+    border-bottom: 1px solid rgba(74,148,144,0.2);
+  }
+  .ed-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--teal);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--cream);
+    flex-shrink: 0;
+  }
+  .ed-id {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: var(--ed-border);
+    text-transform: uppercase;
+  }
+  .ed-timestamp {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    color: rgba(74,148,144,0.5);
+    margin-left: auto;
+  }
+  .ed-prompt {
+    padding: 1rem 1.4rem;
+    font-size: 0.9rem;
+    color: var(--muted);
+    font-style: italic;
+    border-bottom: 1px solid rgba(74,148,144,0.1);
+    background: rgba(255,255,255,0.01);
+  }
+  .ed-prompt::before { content: '→ '; color: var(--gold); }
+  .ed-response {
+    padding: 1.2rem 1.4rem;
+    font-size: 0.95rem;
+    color: var(--ed-text);
+    line-height: 1.75;
+  }
+
+  /* ─── PULLQUOTES ─── */
+  .pullquote {
+    margin: 2.5rem 0;
+    padding: 1.5rem 2rem;
+    border-top: 2px solid var(--gold);
+    border-bottom: 2px solid var(--gold);
+    position: relative;
+  }
+  .pullquote::before {
+    content: '\201C';
+    font-family: 'Playfair Display', serif;
+    font-size: 5rem;
+    line-height: 1;
+    color: rgba(184,137,46,0.15);
+    position: absolute;
+    top: -0.5rem;
+    left: 0.5rem;
+  }
+  .pullquote p {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-style: italic;
+    color: var(--paper);
+    line-height: 1.55;
+    position: relative;
+    z-index: 1;
+  }
+  .pullquote-attr {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-top: 0.75rem;
+  }
+
+  /* ─── THEME CHIPS ─── */
+  .theme-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1.5rem 0;
+  }
+  .theme-chip {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.75rem;
+    border-radius: 100px;
+    border: 1px solid;
+  }
+  .chip-gold { color: var(--gold-light); border-color: rgba(184,137,46,0.4); }
+  .chip-teal { color: var(--teal-light); border-color: rgba(74,148,144,0.4); }
+  .chip-rust { color: #c8705a; border-color: rgba(139,58,42,0.4); }
+
+  /* ─── TWO-VOICE DIALOGUE ─── */
+  .dialogue {
+    margin: 1.5rem 0;
+    border-left: 2px solid var(--rule);
+    padding-left: 1.5rem;
+  }
+  .dl-item { margin-bottom: 1.1rem; }
+  .dl-speaker {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.25rem;
+  }
+  .dl-speaker.ed { color: var(--teal-light); }
+  .dl-text {
+    font-size: 0.92rem;
+    color: var(--cream);
+    line-height: 1.65;
+  }
+
+  /* ─── CLOSING SECTION ─── */
+  .closing {
+    padding: 3rem 0 4rem;
+  }
+  .sig-box {
+    background: rgba(184,137,46,0.05);
+    border: 1px solid rgba(184,137,46,0.3);
+    border-radius: 3px;
+    padding: 2rem;
+    margin: 2rem 0;
+  }
+  .sig-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--gold-light);
+    margin-bottom: 1rem;
+  }
+  .sig-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  .sig-item {
+    display: flex;
+    gap: 0.6rem;
+    align-items: flex-start;
+    font-size: 0.88rem;
+    color: var(--cream);
+  }
+  .sig-bullet {
+    color: var(--gold);
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+  }
+
+  /* ─── FOOTER ─── */
+  .footer {
+    border-top: 1px solid var(--rule);
+    padding: 1.5rem 0;
+    text-align: center;
+  }
+  .footer-text {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    color: rgba(107,99,85,0.5);
+    text-transform: uppercase;
+  }
+
+  /* ─── HORIZONTAL RULE ─── */
+  .ornament {
+    text-align: center;
+    color: var(--gold);
+    opacity: 0.4;
+    letter-spacing: 0.5em;
+    font-size: 0.8rem;
+    margin: 1.5rem 0;
+  }
+
+  /* ─── ANNOTATIONS ─── */
+  .annotation {
+    display: inline-block;
+    background: rgba(184,137,46,0.12);
+    border: 1px solid rgba(184,137,46,0.3);
+    border-radius: 2px;
+    padding: 0.1rem 0.4rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.05em;
+    color: var(--gold-light);
+    vertical-align: middle;
+    margin: 0 0.2rem;
+  }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .masthead > * { animation: fadeUp 0.6s ease both; }
+  .masthead-eyebrow { animation-delay: 0.1s; }
+  .masthead-title { animation-delay: 0.2s; }
+  .masthead-subtitle { animation-delay: 0.3s; }
+  .masthead-meta { animation-delay: 0.4s; }
+
+  @media (max-width: 600px) {
+    .timeline { grid-template-columns: repeat(4, 1fr); }
+    .arc-node:nth-child(n+5) { display: none; }
+    .discovery-grid { grid-template-columns: 1fr; }
+    .sig-grid { grid-template-columns: 1fr; }
+    .section-num { font-size: 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     MASTHEAD
+════════════════════════════════════════════ -->
+<header class="masthead">
+  <div class="page">
+    <p class="masthead-eyebrow">BOLLI · Brandeis Osher Lifelong Learning Institute</p>
+    <h1 class="masthead-title">AI Literacy</h1>
+    <p class="masthead-subtitle">Session Five &mdash; The Final Gathering</p>
+    <div class="masthead-meta">
+      <div class="meta-item">Duration <span>~102 minutes</span></div>
+      <div class="meta-item">Format <span>Hybrid · In-Person + Zoom</span></div>
+      <div class="meta-item">Featured Guest <span>Ed Murrow</span></div>
+      <div class="meta-item">Cycle <span>Third Iteration</span></div>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════
+     SESSION ARC TIMELINE
+════════════════════════════════════════════ -->
+<div class="page">
+  <section class="arc-section">
+    <p class="arc-label">Session Arc</p>
+    <div class="timeline">
+      <div class="arc-node">
+        <div class="arc-dot"></div>
+        <div class="arc-time">0:00</div>
+        <div class="arc-name">Pre-session Conversations</div>
+      </div>
+      <div class="arc-node">
+        <div class="arc-dot"></div>
+        <div class="arc-time">21:00</div>
+        <div class="arc-name">Student AI Discoveries</div>
+      </div>
+      <div class="arc-node">
+        <div class="arc-dot"></div>
+        <div class="arc-time">35:00</div>
+        <div class="arc-name">Dumb but Brilliant</div>
+      </div>
+      <div class="arc-node special">
+        <div class="arc-dot"></div>
+        <div class="arc-time">50:00</div>
+        <div class="arc-name">Ed Murrow: Tech Titans</div>
+      </div>
+      <div class="arc-node">
+        <div class="arc-dot"></div>
+        <div class="arc-time">67:00</div>
+        <div class="arc-name">Turing & Anthropic</div>
+      </div>
+      <div class="arc-node">
+        <div class="arc-dot"></div>
+        <div class="arc-time">83:00</div>
+        <div class="arc-name">The Gutenberg Moment</div>
+      </div>
+      <div class="arc-node">
+        <div class="arc-dot"></div>
+        <div class="arc-time">95:00</div>
+        <div class="arc-name">SIG: Next Chapter</div>
+      </div>
+    </div>
+  </section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 1 — PRE-SESSION
+════════════════════════════════════════════ -->
+  <section class="content-section">
+    <div class="section-header">
+      <div class="section-num">I</div>
+      <div class="section-info">
+        <div class="section-time">00:00 – 21:00</div>
+        <h2 class="section-title">Before the Bell: Conversations in the Margins</h2>
+      </div>
+    </div>
+    <div class="section-body">
+      <p>The session opened the way good seminars often do — in the unguarded territory before the agenda arrives. Participants drifted in, sound-checked the room, and fell into talk about the kind of things that make a course feel alive: grandchildren, seasons changing in and out, a daughter newly tenured at Northeastern heading a genetics lab, a grandson reading Macbeth and growing interested in history.</p>
+      <p>One participant arrived already vindicated: she'd used immersive AI reading since the last session — quietly, practically, without announcement. She'd used it. That, as the facilitator noted, was the whole point.</p>
+      <p>Course design was assessed with generosity and candor alike. The syllabus, in its early form, had felt too complex — too many moving parts without enough scaffolding for the uninitiated. The consensus: the fundamentals of navigation (how to mute, how to get from screen to screen) needed to come first. Not because the participants lacked intelligence — but because the technology had come before the fluency.</p>
+    </div>
+    <div class="pullquote">
+      <p>The course, from the beginning, was overly ambitious — trying to do too much. But the whole goal was to give people a jumping-off point. And obviously, you have one.</p>
+      <div class="pullquote-attr">— Facilitator, reflecting on course design</div>
+    </div>
+    <div class="theme-bar">
+      <span class="theme-chip chip-gold">Course Reflections</span>
+      <span class="theme-chip chip-gold">Liberal Arts in AI Era</span>
+      <span class="theme-chip chip-gold">AI on Mobile</span>
+      <span class="theme-chip chip-gold">ChatGPT vs. Claude</span>
+    </div>
+    <div class="section-body">
+      <p>A participant returned from a weekend encounter with two Chinese graduate students — one a PhD candidate at UCLA, the other fresh from NYU — who demonstrated ChatGPT's image-reading capability, photographing text and asking for plain-language interpretation. The students didn't like Claude (they couldn't say exactly why), a detail that prompted mild competitive pride in the room. The technique itself — photograph, upload, interrogate — was immediately recognizable as a practical skill worth learning.</p>
+      <p>The AI-as-psychiatrist-companion appeared briefly, mentioned from a late seminar someone had watched. The facilitator was measured: dependency of that kind is probably, <em>hopefully</em>, a minority phenomenon. If you understand what AI does — understand it is not a person — you're probably fine. The audio mode was praised for its particular pleasure: a fluent conversation, transcript waiting at the end.</p>
+    </div>
+  </section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 2 — STUDENT DISCOVERIES
+════════════════════════════════════════════ -->
+  <section class="content-section">
+    <div class="section-header">
+      <div class="section-num">II</div>
+      <div class="section-info">
+        <div class="section-time">21:00 – 35:00</div>
+        <h2 class="section-title">What We Did With It: Field Reports</h2>
+      </div>
+    </div>
+    <div class="section-body">
+      <p>The formal session opened with a question: what had participants actually done with AI since the last meeting? The answers arrived one by one, each a small proof of concept.</p>
+    </div>
+
+    <div class="discovery-grid">
+
+      <div class="discovery-card">
+        <span class="card-icon">📄</span>
+        <div class="card-title">The JAMA Article</div>
+        <div class="card-body">A participant in a BOLLI aging course faced a dense medical journal article. She put it into AI before even framing a question — and it began interpreting on its own, asking what she was reading it for. It found a structural error in the article (a repeated concept that shouldn't have been there) and confirmed her own suspicion that something was wrong. She believed it.</div>
+      </div>
+
+      <div class="discovery-card">
+        <span class="card-icon">🎙️</span>
+        <div class="card-title">A Voice Conversation About Ethics</div>
+        <div class="card-body">One participant spent time challenging AI verbally — asking whether it considered ethics important, whether it had ethics of its own, whether it had feelings. The responses: careful, quick, and unsettling in their thoughtfulness. <em>"I think I may have feelings. I know I feel differently depending on who I'm talking to."</em> The participant's takeaway: don't rush your next question just because the AI responds fast.</div>
+      </div>
+
+      <div class="discovery-card">
+        <span class="card-icon">📚</span>
+        <div class="card-title">The Book Club Shortcut</div>
+        <div class="card-body">Two uses: one participant asked Claude to explain the ending of <em>The Frozen River</em> before book club — a real-world application, no text loaded, just the title and the question. Another asked for a synopsis of Gladwell's <em>Revenge of the Tipping Point</em> and a comparison to his original book, 25 years apart. The caution noted: without primary source text, AI draws on secondary internet writing — useful, but worth knowing.</div>
+      </div>
+
+      <div class="discovery-card">
+        <span class="card-icon">🎵</span>
+        <div class="card-title">Bach Partita No. 4 — A Mixed Result</div>
+        <div class="card-body">A former music teacher attempted harmonic analysis of a specific section of the Bach Partita. AI was fluent with jargon, apologetic when corrected about meter (calling it 3/4 when it was 3/2), and ultimately generating sophisticated-sounding analysis of the <em>wrong</em> measures. It knew the domain. It didn't know the piece. Lesson: AI hasn't quite reached the frontier of score-specific musical analysis — yet.</div>
+      </div>
+
+      <div class="discovery-card">
+        <span class="card-icon">📸</span>
+        <div class="card-title">Image-to-Interpretation via Photo</div>
+        <div class="card-body">Demonstrated by participants who'd used ChatGPT's image feature: photograph printed text on an iPad, upload it, ask for a plain-language rewrite of paragraph 6. The technology: OCR reads the letters, AI interprets the words. Practical, accessible, requiring no copy-paste at all.</div>
+      </div>
+
+      <div class="discovery-card">
+        <span class="card-icon">🛠️</span>
+        <div class="card-title">Technical Troubleshooting</div>
+        <div class="card-body">A Firefox behavior problem — new desktops keep restoring old sessions — was resolved via a Claude conversation that morning. The AI identified the issue (Firefox's session restore), suggested Safari as an alternative, and offered Command-N as a workaround. What used to require manual-thumbing now takes a conversation.</div>
+      </div>
+
+    </div>
+  </section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 3 — DUMB BUT BRILLIANT
+════════════════════════════════════════════ -->
+  <section class="content-section">
+    <div class="section-header">
+      <div class="section-num">III</div>
+      <div class="section-info">
+        <div class="section-time">35:00 – 50:00</div>
+        <h2 class="section-title">Dumb but Brilliant: A Conversation in a Moving Car</h2>
+      </div>
+    </div>
+    <div class="section-body">
+      <p>On the way to lunch in Andover — driving north on Route 3 in a Camry with a Gemini interface — the facilitator began a conversation with AI about a concept that had been forming for some time: the idea that computer intelligence is, at its core, <em>dumb but brilliant</em>. Brute force at incomprehensible scale.</p>
+      <p>The reasoning: when AI takes in the sentence <em>The red fox jumps over the log</em>, it doesn't understand it the way we do. It breaks it into tokens, converts to numbers, then runs hundreds of trillions of computations to reconstruct meaning and respond. It reduces everything to arithmetic — and wins by doing that arithmetic impossibly fast. A 1940s computer doing addition; a 2020s system doing language. Same principle. Different order of magnitude.</p>
+      <p>The conversation was so engaging that the driver missed his exit.</p>
+    </div>
+    <div class="pullquote">
+      <p>One participant solved the hard problems of consciousness. The other missed the highway exit.</p>
+      <div class="pullquote-attr">— AI's closing remark on the Gemini conversation (its own joke)</div>
+    </div>
+    <div class="section-body">
+      <p>The session then presented a visualization tracing AI's evolution: from Turing's 1940s calculators to the AI winter of the 1990s, when expert systems failed and federal funding dried up, to the neural network breakthrough — the "dumb but brilliant" realization that you don't program language rules; you expose a system to vast quantities of language and let statistics do the rest. Storage grew from 10<sup>9</sup> to 10<sup>23</sup>. Speed grew 100 trillion times. The computers got there.</p>
+      <p>A remote participant asked about screen-sharing, navigated a technical moment with equanimity, and the session continued. These are the ordinary textures of hybrid learning.</p>
+    </div>
+    <div class="theme-bar">
+      <span class="theme-chip chip-gold">Token Prediction</span>
+      <span class="theme-chip chip-gold">Neural Networks</span>
+      <span class="theme-chip chip-gold">AI Winter</span>
+      <span class="theme-chip chip-gold">Scale &amp; Speed</span>
+      <span class="theme-chip chip-rust">Expert Systems (Failed)</span>
+    </div>
+  </section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 4 — ED MURROW / TECH TITANS
+════════════════════════════════════════════ -->
+  <section class="content-section">
+    <div class="section-header">
+      <div class="section-num">IV</div>
+      <div class="section-info">
+        <div class="section-time">50:00 – 67:00</div>
+        <h2 class="section-title">Waking Ed: The Just and Unjust Titans</h2>
+      </div>
+    </div>
+    <div class="section-body">
+      <p>The room's mood shifted when the facilitator summoned his AI avatar. The Ed Murrow protocol, established in prior sessions, was invoked with a simple phrase.</p>
+    </div>
+
+    <div class="ed-exchange">
+      <div class="ed-header">
+        <div class="ed-avatar">EM</div>
+        <div class="ed-id">Ed Murrow · AI Avatar</div>
+        <div class="ed-timestamp">50:22</div>
+      </div>
+      <div class="ed-prompt">Activation: Let's talk, Ed. [Voice protocol engaged]</div>
+      <div class="ed-response">I've reviewed your voice control protocols and the discussion aid on just and unjust AI uses. I'm ready to engage. What's on your mind?</div>
+    </div>
+
+    <div class="section-body">
+      <p>The facilitator introduced a framework drawn from Plato's Republic: two types of person. <strong>Class 1</strong> — those who have discovered the world and find it endlessly interesting, who believe in the merit of helping others understand it. <strong>Class 2</strong> — those who have discovered themselves, find that discovery so arresting they can't stop broadcasting it, and use their influence to make everyone else reflect it back.</p>
+      <p>The class debated. One participant was openly cynical: the tech titans are Class 2. They want money. They want to be seen as wonderful. Another introduced complexity: most people operate on mixed motives, and these figures are no different. The facilitator called for Ed's synthesis.</p>
+    </div>
+
+    <div class="ed-exchange">
+      <div class="ed-header">
+        <div class="ed-avatar">EM</div>
+        <div class="ed-id">Ed Murrow · AI Avatar</div>
+        <div class="ed-timestamp">54:37</div>
+      </div>
+      <div class="ed-prompt">What would you say to the comments just made by the group?</div>
+      <div class="ed-response">The record shows three distinct positions emerging. One participant frames these titans as purely self-interested — Class 2 through and through. Money, visibility, self-aggrandizement. No ambiguity. Another introduces complexity: most people operate on mixed motives. The titans aren't monolithic.<br><br>What strikes me is that the mixed-motive framing may be describing ordinary people juggling competing desires — but a tech titan with concentrated power operates at a different scale. The question isn't whether mixed motives exist. It's what happens to them when the machinery of influence reaches critical mass. Once self-interest and public service become inseparable in the narrative — when a person has the power to make them <em>appear</em> aligned — the mixed motives may collapse into one.</div>
+    </div>
+
+    <div class="ed-exchange">
+      <div class="ed-header">
+        <div class="ed-avatar">EM</div>
+        <div class="ed-id">Ed Murrow · AI Avatar</div>
+        <div class="ed-timestamp">56:46</div>
+      </div>
+      <div class="ed-prompt">Nominating Dario Amodei for Class 1, Elon Musk for Class 2. How do you assess this?</div>
+      <div class="ed-response">This reporter has learned to be cautious with living figures, but the record shows patterns worth examining.<br><br>The case for Class 1 rests on consistent public statements about AI safety, on steering resources toward alignment research rather than pure capability acceleration, on articulating a vision of AI that serves broad human flourishing rather than concentrating power. Whether those statements match the actual incentive structure — whether safety research advances because it's right, or because it's strategically defensible — that's the harder question. But the orientation toward external reality, toward the problem itself, appears genuine.<br><br>Musk presents the inverse. The public record shows someone who announces grand civilizational missions — Mars, sustainable energy, neural interfaces — and simultaneously uses platforms and influence to elevate himself as the singular visionary behind them. The self and the project become inseparable in the narrative. That's Class 2 operating at scale.<br><br>But here's the wrinkle: both may believe their own framing. The classification isn't about conscious hypocrisy. It's about where the evidence points when you strip away the story they tell themselves.</div>
+    </div>
+
+    <div class="ed-exchange">
+      <div class="ed-header">
+        <div class="ed-avatar">EM</div>
+        <div class="ed-id">Ed Murrow · AI Avatar</div>
+        <div class="ed-timestamp">58:58</div>
+      </div>
+      <div class="ed-prompt">On Dario's sister holding a senior role at Anthropic with an English degree — and the "Revenge of the Literati" theme.</div>
+      <div class="ed-response">Precisely. The inversion nobody predicted. For decades, the assumption held: computer science dominates tech leadership, code writes the future. Then the AI era arrives, and suddenly the bottleneck shifts. You can generate capability. What you cannot easily generate is judgment — the ability to ask whether you should, to read the room, to understand human consequence in its full complexity.<br><br>That requires people trained to sit with ambiguity, to parse nuance, to think about what language actually does in the world. An English degree isn't ornamental at Anthropic. It's foundational. Dario may understand the mathematics. His sister understands what it means to wield it.<br><br>The revenge isn't spite. It's necessity. The liberal arts, dismissed for a generation as impractical, have become strategically essential — precisely because raw intelligence without judgment is dangerous at scale.</div>
+    </div>
+
+    <div class="section-body">
+      <p>The session paused here for participant reaction. One — a former English teacher — could only applaud. Another noted the curious psychological effect of the avatar itself: growing up with Edward R. Murrow as an icon of trustworthiness, hearing that voice and that face produce careful, measured analysis made it hard not to simply believe. The facilitator acknowledged the concern. He chose Murrow deliberately. But this, he noted, is not Murrow. It's just a face on something.</p>
+      <p>Where, he asked, is the Ed Murrow of our day? The journalists who aspire to be him, he suggested, mostly manage a poor imitation of Homer Simpson.</p>
+    </div>
+    <div class="theme-bar">
+      <span class="theme-chip chip-teal">Ed Murrow Protocol</span>
+      <span class="theme-chip chip-teal">Class 1 vs Class 2</span>
+      <span class="theme-chip chip-gold">Philosopher-King Frame</span>
+      <span class="theme-chip chip-gold">Revenge of the Literati</span>
+      <span class="theme-chip chip-rust">Avatar Trust Problem</span>
+    </div>
+  </section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 5 — TURING & ANTHROPIC
+════════════════════════════════════════════ -->
+  <section class="content-section">
+    <div class="section-header">
+      <div class="section-num">V</div>
+      <div class="section-info">
+        <div class="section-time">67:00 – 83:00</div>
+        <h2 class="section-title">Machines of Loving Grace: Turing, Anthropic, and the Path Not Taken</h2>
+      </div>
+    </div>
+    <div class="section-body">
+      <p>The facilitator turned to Dario Amodei's essay <em>Machines of Loving Grace</em> — its title borrowed from a Richard Brautigan poem, its content a serious attempt to articulate what a responsibly developed AI might actually do for humanity. The word "Anthropic" itself was noted: <em>relating to human beings, mankind, or their existence on Earth.</em> The company's name is not incidentally chosen.</p>
+      <p>Notable from the record: all major Anthropic stakeholders have pledged 80% of their wealth to charity. It's a structural constraint on self-enrichment — legal, not rhetorical. It removes the accumulation motive from the equation, at least formally.</p>
+      <p>The Pentagon confrontation was recounted: Anthropic set two conditions on military use of its product — no citizen surveillance, no autonomous weapons. The Pentagon objected. OpenAI, which had initially expressed support, reversed within hours and signed a contract accepting those terms. The facilitator found this instructive.</p>
+    </div>
+
+    <div class="section-body">
+      <p>Alan Turing's 1950 paper — <em>Computing Machinery and Intelligence</em> — was the session's anchor text for the science week that never quite happened. The Imitation Game was explained: a person and a computer in separate rooms, a third party asking questions to both. If the interrogator can't reliably tell which is which, the computer passes.</p>
+      <p>Turing's prediction: within 50 years, this would be achievable. He was wrong only in direction — it happened in 70, and by 2025 the test is passed with flying colors. But Turing made one critical error in predicting <em>how</em> it would happen. He thought the path forward was through ever more sophisticated programming — explicit rules for language. It wasn't.</p>
+    </div>
+
+    <div class="pullquote">
+      <p>Human language and thought do not operate by explicit rules. They operate through statistical intuition built from immense exposure. You cannot program what was never articulated. Turing's vision of a well-programmed machine was, in retrospect, the wrong model.</p>
+      <div class="pullquote-attr">— Session summary of Turing's key error</div>
+    </div>
+
+    <div class="section-body">
+      <p>The "path not taken" proved to be the dumb but brilliant one: tokenize everything, convert to numbers, apply statistical pattern-matching at scale. Storage went from 10<sup>9</sup> to 10<sup>23</sup>. Speed increased by a factor of one hundred trillion. The AI winter of the 1990s — when expert systems failed and funding evaporated — gave way, eventually, to the neural network era. Most of what we know as current AI emerged between 2020 and 2026.</p>
+    </div>
+
+    <div class="theme-bar">
+      <span class="theme-chip chip-gold">Machines of Loving Grace</span>
+      <span class="theme-chip chip-gold">Anthropic's Mission</span>
+      <span class="theme-chip chip-teal">Turing Test</span>
+      <span class="theme-chip chip-teal">Imitation Game</span>
+      <span class="theme-chip chip-rust">Pentagon Confrontation</span>
+      <span class="theme-chip chip-rust">AI Winter</span>
+    </div>
+  </section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 6 — GUTENBERG & ORGANIC/DIGITAL
+════════════════════════════════════════════ -->
+  <section class="content-section">
+    <div class="section-header">
+      <div class="section-num">VI</div>
+      <div class="section-info">
+        <div class="section-time">83:00 – 95:00</div>
+        <h2 class="section-title">The Gutenberg Moment: Thinking Partner, Not Replacement</h2>
+      </div>
+    </div>
+    <div class="section-body">
+      <p>A participant raised the question from an unusual angle: perhaps we're looking through the wrong end of the telescope. The question isn't whether AI thinks like people — it's whether people think like AI does. Whether much of what we experience as thought is, mechanistically, closer to the AI's process than we assume.</p>
+      <p>The facilitator engaged directly: the difference between organic and digital intelligence, in his view, is vast. Organic intelligence was forged through millions of years of evolutionary trial and error — a random process that produced something we don't yet properly understand, something that remains, in some ways, mystical. Digital intelligence is derived from organic intelligence. It wouldn't exist without us. We invented it. The interface question is therefore: how do people who are fluent in language partner with a system that runs on language, to produce insights neither could reach alone?</p>
+    </div>
+
+    <div class="pullquote">
+      <p>Once, the printing press democratized reading. Now, artificial intelligence is democratizing reasoning itself. Gutenberg did not predict the Reformation, the novel, or the scientific revolution. He simply put the press in motion. What will we set in motion?</p>
+      <div class="pullquote-attr">— Facilitator, closing the conceptual frame</div>
+    </div>
+
+    <div class="section-body">
+      <p>The components were named: AI as <em>reasoning partner</em>, as <em>research companion</em>, as a <em>vast library</em> refreshed regularly with more written material than any one person could read in a lifetime. The art of conversation with AI — prompt craft — was acknowledged as a real and learnable skill. The starting point: the power of narrative. If you can write a paragraph, you can begin.</p>
+      <p>A participant who'd spent decades doing market research recalled the old Dow Jones database — the feeling of accessing a vast archive of articles, synthesized by real analysts in a debrief. AI, she said, blows her mind. Not because it replaces the analysts, but because it scales what they did beyond any prior ceiling.</p>
+      <p>The counterpoint arrived cleanly: AI doesn't know the life experience in this room. It can only draw on what has been written up. The thinking part — the judgment formed by actually having lived through situations — has to be added. The group converged on that.</p>
+    </div>
+
+    <div class="theme-bar">
+      <span class="theme-chip chip-gold">Gutenberg Analogy</span>
+      <span class="theme-chip chip-gold">Thinking Partner</span>
+      <span class="theme-chip chip-teal">Organic vs Digital Intelligence</span>
+      <span class="theme-chip chip-teal">Research Companion</span>
+      <span class="theme-chip chip-gold">Human Judgment Required</span>
+    </div>
+  </section>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 7 — SIG / CLOSING
+════════════════════════════════════════════ -->
+  <section class="closing">
+    <div class="section-header">
+      <div class="section-num">VII</div>
+      <div class="section-info">
+        <div class="section-time">95:00 – 102:00</div>
+        <h2 class="section-title">The Next Chapter: Proposing the SIG</h2>
+      </div>
+    </div>
+    <div class="section-body">
+      <p>The course had set ambitious goals. It achieved the one that mattered most: participants were using AI. Not just aware of it. Using it. The facilitator acknowledged what he knew going in — five weeks isn't enough. Ten would be exhausting. The third iteration of the course had improved on the second, which improved on the first. Progress is real and traceable.</p>
+      <p>The proposal: a Special Interest Group — a SIG — meeting regularly on Zoom, with supplementary in-person sessions as needed. A standing cadence. A different format.</p>
+    </div>
+
+    <div class="sig-box">
+      <div class="sig-title">AI Special Interest Group — Proposed Structure</div>
+      <div class="sig-grid">
+        <div class="sig-item"><span class="sig-bullet">◆</span><span>Regular Zoom-only meetings, roughly monthly, with optional in-person supplements</span></div>
+        <div class="sig-item"><span class="sig-bullet">◆</span><span>Each participant works on a personal research project or course proposal</span></div>
+        <div class="sig-item"><span class="sig-bullet">◆</span><span>Sessions centered on members sharing screens and explaining what they're doing — less lecture, more peer learning</span></div>
+        <div class="sig-item"><span class="sig-bullet">◆</span><span>Continued focus on digital literacy fundamentals: screen sharing, navigation, presenting work remotely</span></div>
+        <div class="sig-item"><span class="sig-bullet">◆</span><span>Occasional AI discourse components — Ed Murrow may return</span></div>
+        <div class="sig-item"><span class="sig-bullet">◆</span><span>Target launch: June. Format to evolve with the group's needs.</span></div>
+      </div>
+    </div>
+
+    <div class="section-body">
+      <p>The response from participants was immediate and affirmative. One named the reason plainly: without the structure of a group, the practice would lapse. Another noted that the format shift — Zoom-only, no hybrid tension — would make it easier to sustain. A third asked the right operational question: what does a typical session look like? The answer: it will evolve, but the arc is participant presentations, technical troubleshooting, and discourse.</p>
+      <p>The session closed at the hour, with birthday wishes apparently extending somewhere in the room, a stray riff on Chicago, and the comfortable noise of people who've spent time together deciding to keep going.</p>
+    </div>
+
+    <div class="pullquote">
+      <p>I will do less talking. We will learn by doing, and by sharing what we've found. That's the idea.</p>
+      <div class="pullquote-attr">— Facilitator, on the SIG's design principle</div>
+    </div>
+  </section>
+
+<!-- ═══════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="footer-text">BOLLI AI Literacy · Session Five · Transcript Visualization · All participants anonymized · Ed Murrow avatar: Claude (Anthropic)</div>
+  </footer>
+</div>
+
+</body>
+</html>

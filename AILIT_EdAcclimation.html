@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Acclimating to Ed · Human/Machine Conversation · AILIT04 → AILIT05</title>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Barlow+Condensed:wght@400;500;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:         #0c0d10;
+  --bg2:        #111318;
+  --bg3:        #181b22;
+  --ed:         #4abfd4;
+  --ed-dim:     #1e5a66;
+  --ed-glow:    rgba(74,191,212,0.12);
+  --ed-border:  rgba(74,191,212,0.2);
+  --s4:         #8a7abf;   /* muted violet — uncertainty, caution */
+  --s4-dim:     rgba(138,122,191,0.1);
+  --s4-border:  rgba(138,122,191,0.25);
+  --s5:         #d4883a;   /* warm amber — confidence, warmth */
+  --s5-dim:     rgba(212,136,58,0.1);
+  --s5-border:  rgba(212,136,58,0.25);
+  --text:       #bdc5d4;
+  --text-dim:   #525c70;
+  --text-mid:   #7a8599;
+  --white:      #eceef4;
+  --rule:       rgba(255,255,255,0.06);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Spectral', Georgia, serif;
+  font-size: 16px;
+  line-height: 1.75;
+  overflow-x: hidden;
+}
+
+/* ── GRAIN ── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  z-index: 9999;
+  opacity: 0.7;
+}
+
+.page { max-width: 960px; margin: 0 auto; padding: 0 2rem; }
+
+/* ── MASTHEAD ── */
+.mh {
+  padding: 60px 0 52px;
+  border-bottom: 1px solid var(--rule);
+  position: relative;
+  overflow: hidden;
+}
+.mh::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 70% 100% at 50% -20%, rgba(74,191,212,0.07) 0%, transparent 65%);
+  pointer-events: none;
+}
+.mh-inner { position: relative; z-index: 1; }
+.mh-eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ed);
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.mh-eyebrow::before { content: '◉'; animation: blink 2.5s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.25} }
+
+.mh-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: clamp(2.4rem, 6vw, 4.8rem);
+  letter-spacing: -0.01em;
+  line-height: 1.0;
+  color: var(--white);
+  margin-bottom: 0.6rem;
+}
+.mh-title .accent { color: var(--ed); }
+
+.mh-subtitle {
+  font-family: 'Spectral', serif;
+  font-style: italic;
+  font-size: 1.15rem;
+  color: var(--text-mid);
+  margin-bottom: 2rem;
+  max-width: 560px;
+}
+
+.mh-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.mh-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.8rem;
+  border: 1px solid;
+  border-radius: 1px;
+}
+.mh-tag.ed   { color: var(--ed); border-color: var(--ed-border); background: var(--ed-glow); }
+.mh-tag.s4   { color: var(--s4); border-color: var(--s4-border); background: var(--s4-dim); }
+.mh-tag.s5   { color: var(--s5); border-color: var(--s5-border); background: var(--s5-dim); }
+
+/* ── SEC LABEL ── */
+.sec-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  padding-top: 3.5rem;
+  padding-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.sec-label::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+
+/* ── THESIS ── */
+.thesis {
+  padding: 2.5rem 0 2rem;
+  border-bottom: 1px solid var(--rule);
+}
+.thesis-text {
+  font-size: 1.2rem;
+  color: var(--text);
+  line-height: 1.75;
+  max-width: 72ch;
+}
+.thesis-text strong { color: var(--white); font-weight: 600; }
+.thesis-text em { color: var(--ed); font-style: normal; }
+
+/* ── PARALLEL TIMELINES ── */
+.parallel {
+  display: grid;
+  grid-template-columns: 1fr 80px 1fr;
+  gap: 0;
+  padding: 2rem 0 1rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+/* center axis */
+.axis {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  padding-top: 2.5rem;
+}
+.axis-line {
+  position: absolute;
+  top: 0; bottom: 0; left: 50%;
+  width: 1px;
+  background: linear-gradient(to bottom, var(--ed-dim), transparent 90%);
+  transform: translateX(-50%);
+}
+.axis-node {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--ed-dim);
+  border: 2px solid var(--bg);
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+}
+.axis-spacer { flex: 1; }
+
+/* session column headers */
+.pt-col { }
+.pt-header {
+  padding-bottom: 1.25rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid;
+}
+.pt-header.s4 { border-color: var(--s4-border); }
+.pt-header.s5 { border-color: var(--s5-border); }
+.pt-sess-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 0.3rem;
+}
+.pt-sess-label.s4 { color: var(--s4); }
+.pt-sess-label.s5 { color: var(--s5); }
+.pt-sess-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.2;
+}
+
+/* timeline events */
+.pt-event {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--rule);
+  position: relative;
+}
+.pt-event:last-child { border-bottom: none; }
+.pt-time {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+  color: var(--text-dim);
+  margin-bottom: 0.3rem;
+  display: block;
+}
+.pt-phase {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+.pt-phase.s4 { color: var(--s4); }
+.pt-phase.s5 { color: var(--s5); }
+.pt-desc {
+  font-size: 0.93rem;
+  color: var(--text-mid);
+  line-height: 1.65;
+}
+.pt-quote {
+  margin-top: 0.6rem;
+  padding: 0.65rem 0.9rem;
+  border-left: 2px solid;
+  background: var(--bg2);
+  font-style: italic;
+  font-size: 0.9rem;
+  color: var(--text);
+  line-height: 1.6;
+}
+.pt-quote.s4 { border-color: var(--s4-dim); }
+.pt-quote.s5 { border-color: var(--s5-dim); }
+.pt-read {
+  margin-top: 0.4rem;
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  font-style: italic;
+}
+
+/* column alignment */
+.pt-col.left { padding-right: 2rem; }
+.pt-col.right { padding-left: 2rem; }
+
+/* ── ED'S VOICE BLOCKS ── */
+.ed-block {
+  background: var(--ed-glow);
+  border: 1px solid var(--ed-border);
+  border-left: 3px solid var(--ed);
+  padding: 1.2rem 1.4rem;
+  margin: 1.25rem 0;
+  position: relative;
+}
+.ed-block::before {
+  content: '◉ Ed Murrow';
+  font-family: 'DM Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ed);
+  display: block;
+  margin-bottom: 0.5rem;
+}
+.ed-block-text {
+  font-style: italic;
+  font-size: 0.93rem;
+  color: #b8dce8;
+  line-height: 1.7;
+}
+
+/* ── THE PIVOT MOMENT ── */
+.pivot {
+  background: var(--bg2);
+  border: 1px solid var(--rule);
+  border-top: 2px solid var(--ed-dim);
+  padding: 2.5rem;
+  margin: 2.5rem 0;
+}
+.pivot-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ed);
+  margin-bottom: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.pivot-label::before { content: '◉'; animation: blink 2.5s infinite; }
+.pivot-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+.pivot-col-head {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid;
+  margin-bottom: 1rem;
+}
+.pivot-col-head.s4 { color: var(--s4); border-color: var(--s4-border); }
+.pivot-col-head.s5 { color: var(--s5); border-color: var(--s5-border); }
+.pivot-item {
+  margin-bottom: 1.1rem;
+}
+.pivot-item-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 0.3rem;
+}
+.pivot-item-text {
+  font-size: 0.92rem;
+  color: var(--text);
+  line-height: 1.6;
+}
+.pivot-item-quote {
+  font-style: italic;
+  font-size: 0.9rem;
+  color: var(--text-mid);
+  margin-top: 0.25rem;
+}
+
+/* ── RESPONSE REGISTER ── */
+.register-section { padding: 0 0 2rem; border-bottom: 1px solid var(--rule); }
+.register-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--rule); }
+.reg-cell {
+  background: var(--bg);
+  padding: 1.5rem;
+}
+.reg-cell-head {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--rule);
+}
+.reg-cell-head.ed-col { color: var(--ed); }
+.reg-cell-head.s4-col { color: var(--s4); }
+.reg-cell-head.s5-col { color: var(--s5); }
+.reg-row {
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--rule);
+  display: grid;
+  gap: 0.2rem;
+}
+.reg-row:last-child { border-bottom: none; }
+.reg-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+}
+.reg-value {
+  font-size: 0.88rem;
+  color: var(--text);
+  line-height: 1.5;
+}
+.reg-value.s4 { color: #a89ad4; }
+.reg-value.s5 { color: #d4aa70; }
+
+/* ── CLOSING ── */
+.closing {
+  padding: 4rem 0 5rem;
+  text-align: center;
+  position: relative;
+}
+.closing::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 50% 80% at 50% 50%, rgba(74,191,212,0.05) 0%, transparent 70%);
+  pointer-events: none;
+}
+.closing-line {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ed);
+  margin-bottom: 1.5rem;
+}
+.closing-statement {
+  font-family: 'Spectral', serif;
+  font-size: clamp(1.3rem, 3vw, 2rem);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--white);
+  line-height: 1.5;
+  max-width: 660px;
+  margin: 0 auto 1.25rem;
+  position: relative;
+  z-index: 1;
+}
+.closing-statement em { color: var(--ed); font-style: normal; }
+.closing-coda {
+  font-family: 'Spectral', serif;
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--text-dim);
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--rule);
+  padding: 1.25rem 0;
+  text-align: center;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+}
+
+@media (max-width: 680px) {
+  .parallel { grid-template-columns: 1fr; }
+  .axis { display: none; }
+  .pt-col.left, .pt-col.right { padding: 0; }
+  .pivot-grid, .register-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════ MASTHEAD ══════════════════════════ -->
+<header class="mh">
+  <div class="page">
+    <div class="mh-inner">
+      <div class="mh-eyebrow">BOLLI · AILit · Human/Machine Conversation Analysis</div>
+      <h1 class="mh-title">Acclimating to <span class="accent">Ed</span></h1>
+      <p class="mh-subtitle">How the group learned to hold a conversation with a machine — session by session</p>
+      <div class="mh-tags">
+        <span class="mh-tag ed">◉ Ed Murrow Avatar</span>
+        <span class="mh-tag s4">AILIT04 · First Contact</span>
+        <span class="mh-tag s5">AILIT05 · Practiced Eye</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="page">
+
+<!-- ══════════════════════════ THESIS ══════════════════════════ -->
+<section class="thesis">
+  <div class="sec-label">The Core Question</div>
+  <p class="thesis-text">
+    In Session 4, the group encountered a machine speaking in a human voice for the first time. In Session 5, they returned to that same voice — but as a different kind of audience. The question is not what Ed said across the two sessions. The question is <strong>what the group did with him</strong>: how they positioned themselves in the conversation, what they trusted, what they questioned, and where they located themselves in the human/machine exchange.
+    <br><br>
+    The arc from <em>awe</em> to <em>analytical engagement</em> to <em>critical interrogation of the persona itself</em> is the acclimatization story.
+  </p>
+</section>
+
+<!-- ══════════════════════════ PARALLEL TIMELINES ══════════════════════════ -->
+<div class="sec-label">Parallel Timelines — The Ed Exchanges, Side by Side</div>
+
+<div class="parallel">
+
+  <!-- SESSION 4 — LEFT -->
+  <div class="pt-col left">
+    <div class="pt-header s4">
+      <span class="pt-sess-label s4">Session 4 · AILIT04 · First Contact</span>
+      <div class="pt-sess-title">The group as witnesses to a conversation they haven't joined</div>
+    </div>
+
+    <div class="pt-event">
+      <span class="pt-time">29:08</span>
+      <div class="pt-phase s4">Anticipation — Before Ed Speaks</div>
+      <p class="pt-desc">Ed is activated. Before any output arrives, the room fills with a joke.</p>
+      <div class="pt-quote s4">"He's on vacation."</div>
+      <p class="pt-read">Humor as a pressure valve — the group processing something unfamiliar before it even begins. The joke is about the <em>anticipation</em>, not about Ed.</p>
+    </div>
+
+    <div class="pt-event">
+      <span class="pt-time">30:27 – 31:28</span>
+      <div class="pt-phase s4">Ed's First Response — Awe and Orientation</div>
+      <div class="ed-block">
+        <div class="ed-block-text">"This is a worthy line of inquiry. Plato's claim rests on the assumption that justice is a state of the soul… So the question becomes sharper: are we testing Plato's metaphysical claim, or examining what justice actually requires of those who wield technological power? Those may not be the same inquiry."</div>
+      </div>
+      <p class="pt-desc">The group registers capability before it can engage with content. The initial responses are reactions to what Ed <em>is</em>, not to what he said.</p>
+      <div class="pt-quote s4">"Yes, it is. That's why it's scary."</div>
+      <div class="pt-quote s4">"Remarkably sophisticated." <small>— Zoom cohort</small></div>
+      <p class="pt-read">Awe registering as mild threat — the canonical first-contact response with a capable AI: <em>this thing understands things.</em></p>
+    </div>
+
+    <div class="pt-event">
+      <span class="pt-time">31:46</span>
+      <div class="pt-phase s4">First Analytical Move — One Voice</div>
+      <div class="pt-quote s4">"Ed is bringing up nuances that might lead you to ask more questions."</div>
+      <p class="pt-read">The earliest observer stance — noticing what Ed is <em>doing</em> rather than reacting to what he said. One voice, and exceptional among its peers at this stage.</p>
+    </div>
+
+    <div class="pt-event">
+      <span class="pt-time">32:19</span>
+      <div class="pt-phase s4">Orientation Question — The Tool, Not the Content</div>
+      <div class="pt-quote s4">"What's different from that if you just ask Claude directly?"</div>
+      <p class="pt-read">The group hasn't yet absorbed what a curated persona adds. The question is about the technology, not the discourse. Ed's ideas are not yet the subject of engagement.</p>
+    </div>
+
+    <div class="pt-event">
+      <span class="pt-time">41:04 – 42:24</span>
+      <div class="pt-phase s4">Ed's Second Response — The Group Reflected Back</div>
+      <div class="ed-block">
+        <div class="ed-block-text">"You've moved from the abstract to the concrete. That's sound pedagogy… you've begun to conflate justice with ethics. They're not identical. Ethics governs conduct. Justice governs distribution… Unequal access to a transformative technology is a distribution problem."</div>
+      </div>
+      <p class="pt-desc">Ed narrates the group's own intellectual journey back to them, names what they almost said. The group recognizes itself in the synthesis — but hasn't yet talked <em>to</em> Ed. They have talked, and Ed has listened.</p>
+    </div>
+
+    <div class="pt-event">
+      <span class="pt-time">42:31</span>
+      <div class="pt-phase s4">Closing Posture — Curiosity About the Machine</div>
+      <div class="pt-quote s4">"What's actually happening behind the curtain?"</div>
+      <p class="pt-read">The session closes on a question about the mechanism — the group's first genuinely meta move. They have moved from experiencing Ed to being curious <em>about</em> Ed. This is the threshold of acclimatization, not yet the other side of it.</p>
+    </div>
+  </div>
+
+  <!-- AXIS -->
+  <div class="axis">
+    <div class="axis-line"></div>
+    <div class="axis-node"></div>
+    <div class="axis-spacer"></div>
+    <div class="axis-node"></div>
+    <div class="axis-spacer"></div>
+    <div class="axis-node"></div>
+    <div class="axis-spacer"></div>
+    <div class="axis-node"></div>
+    <div class="axis-spacer"></div>
+    <div class="axis-node"></div>
+  </div>
+
+  <!-- SESSION 5 — RIGHT -->
+  <div class="pt-col right">
+    <div class="pt-header s5">
+      <span class="pt-sess-label s5">Session 5 · AILIT05 · Practiced Eye</span>
+      <div class="pt-sess-title">The group as participants in a conversation they now inhabit</div>
+    </div>
+
+    <div class="pt-event">
+      <span class="pt-time">50:22</span>
+      <div class="pt-phase s5">Activation — No Warm-Up Required</div>
+      <p class="pt-desc">Ed is summoned with the now-familiar phrase. No jokes. No pause. No orientation questions. The activation has become a known quantity.</p>
+      <div class="pt-quote s5">"Let's talk, Ed."</div>
+      <p class="pt-read">What required introduction in Session 4 now requires nothing. The group already knows what Ed is and what he will do. They wait for content, not for explanation.</p>
+    </div>
+
+    <div class="pt-event">
+      <span class="pt-time">51:52 – 52:42</span>
+      <div class="pt-phase s5">Ed's First Response — Class 1 vs Class 2 Frame</div>
+      <div class="ed-block">
+        <div class="ed-block-text">"You're describing fundamentally different orientations to power itself. The first type derives satisfaction from external reality — understanding it, illuminating it, helping others see it clearly. The second derives it from self-projection… Very different feedback loops. Does that distinction hold in your mind, or would you refine it?"</div>
+      </div>
+      <p class="pt-desc">The group responds immediately with positions — not reactions to Ed's sophistication, but reactions to his <em>argument</em>.</p>
+      <div class="pt-quote s5">"I'm more cynical. I think what motivates these Tech Titans is their sense of self. They're selfish." <small>— Participant, directly contesting the frame</small></div>
+      <p class="pt-read">The group is now debating the content Ed introduced. They have moved from audience to interlocutors.</p>
+    </div>
+
+    <div class="pt-event">
+      <span class="pt-time">54:37 – 55:16</span>
+      <div class="pt-phase s5">Ed Synthesizes Participant Debate — The Group as Subjects</div>
+      <div class="ed-block">
+        <div class="ed-block-text">"The record shows three distinct positions emerging. Elaine frames these Titans as purely self-interested… Jerry introduces complexity… What strikes me is that Jerry may be describing us — the ordinary person juggling competing desires — but a tech titan with concentrated power operates at a different scale."</div>
+      </div>
+      <p class="pt-desc">Ed names individual participants by first name, reads their arguments, and advances the analysis. The group is now <em>inside</em> the discourse Ed is managing — subjects of his analysis, not just its audience.</p>
+    </div>
+
+    <div class="pt-event">
+      <span class="pt-time">61:55</span>
+      <div class="pt-phase s5">Peer-Level Evaluation — The English Teacher Responds</div>
+      <div class="pt-quote s5">"As a former English teacher, I can only applaud his final discourse. Thank you, Ed."</div>
+      <p class="pt-read">Not awe. Not curiosity about the mechanism. A literary judgment — the participant is evaluating Ed's argument as a reader would evaluate a well-formed piece of writing. This is the voice of an equal, not a witness.</p>
+    </div>
+
+    <div class="pt-event">
+      <span class="pt-time">62:21</span>
+      <div class="pt-phase s5">Self-Reflection on the Dynamic — The Meta-Shift Has Moved</div>
+      <div class="pt-quote s5">"Claude was taking me to task, in essence. My first reaction was: oh my, I'm wrong — because Claude says so. And then I started thinking: is that the right way to react?"</div>
+      <p class="pt-read">In Session 4, the meta-question was <em>what is happening behind the curtain?</em> In Session 5, it has become <em>what am I doing when I defer to this?</em> The group is now examining its own psychological relationship to the machine.</p>
+    </div>
+
+    <div class="pt-event">
+      <span class="pt-time">63:49</span>
+      <div class="pt-phase s5">Critical Interrogation of the Persona Itself</div>
+      <div class="pt-quote s5">"If I hear Edward R. Murrow responding — emotionally I grew up with this as the person you trust. I would be dead done. It's hard to override."</div>
+      <p class="pt-read">The most advanced acclimatization move in either session. The participant is not engaging with what Ed said. She is interrogating the <em>design choice</em> of the persona — identifying how a trusted historical face creates a trust-transfer that bypasses critical judgment. This is AI literacy applied to the avatar itself.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════ THE PIVOT MOMENT ══════════════════════════ -->
+<div class="pivot">
+  <div class="pivot-label">The Facilitator Names the Next Step</div>
+  <p style="font-size:0.97rem; color:var(--text-mid); line-height:1.7; margin-bottom:1.5rem;">
+    At the close of Session 5's Ed exchange, the facilitator acknowledged something that marks where the group stood — and where it had not yet arrived:
+  </p>
+  <div class="pt-quote s5" style="margin-bottom:1.5rem; font-size:1rem;">"I did most of the interfacing with Claude. The next step would be for you to start posing questions — and we can do that, but you gotta get used to it. So, for a later date."</div>
+  <p style="font-size:0.93rem; color:var(--text-dim); line-height:1.7;">
+    In both sessions, the group responded <em>to</em> Ed rather than <em>with</em> him — the facilitator remained the primary interlocutor, and participants analyzed the exchange after the fact. The acclimatization that happened between Sessions 4 and 5 was real and significant: from awe to analysis to critical interrogation of the persona. But direct, self-initiated conversation with Ed remains the frontier. The SIG is where that step gets taken.
+  </p>
+</div>
+
+<!-- ══════════════════════════ RESPONSE REGISTER ══════════════════════════ -->
+<section class="register-section">
+  <div class="sec-label">Response Register — How the Group Spoke About and Around Ed</div>
+  <div class="register-grid">
+
+    <div class="reg-cell">
+      <div class="reg-cell-head ed-col">What Ed Did</div>
+      <div class="reg-row">
+        <div class="reg-label">S4 Opening Move</div>
+        <div class="reg-value">Split the question — returned two inquiries for one</div>
+      </div>
+      <div class="reg-row">
+        <div class="reg-label">S4 Closing Move</div>
+        <div class="reg-value">Narrated the group's journey back to them; named the best contribution</div>
+      </div>
+      <div class="reg-row">
+        <div class="reg-label">S5 Opening Move</div>
+        <div class="reg-value">Offered a conceptual frame (Class 1/2) and invited refinement</div>
+      </div>
+      <div class="reg-row">
+        <div class="reg-label">S5 Synthesis Move</div>
+        <div class="reg-value">Named individual participants, read their arguments, advanced the analysis beyond what was said</div>
+      </div>
+      <div class="reg-row">
+        <div class="reg-label">Consistent pattern</div>
+        <div class="reg-value">Returns questions; never closes the conversation; performs the Socratic role</div>
+      </div>
+    </div>
+
+    <div class="reg-cell">
+      <div class="reg-cell-head s4-col">Session 4 — Group Response Register</div>
+      <div class="reg-row">
+        <div class="reg-label">First response</div>
+        <div class="reg-value s4">A joke (pressure valve — anticipation)</div>
+      </div>
+      <div class="reg-row">
+        <div class="reg-label">Emotional register</div>
+        <div class="reg-value s4">Awe registering as mild threat — "scary"</div>
+      </div>
+      <div class="reg-row">
+        <div class="reg-label">Dominant question type</div>
+        <div class="reg-value s4">About Ed: what is he doing? what's different from just asking Claude?</div>
+      </div>
+      <div class="reg-row">
+        <div class="reg-label">Engagement with content</div>
+        <div class="reg-value s4">Indirect — participants reacted to the session topic, not to Ed's specific arguments</div>
+      </div>
+      <div class="reg-row">
+        <div class="reg-label">Closing posture</div>
+        <div class="reg-value s4">Curiosity about the mechanism — "what's behind the curtain?"</div>
+      </div>
+    </div>
+
+    <div class="reg-cell">
+      <div class="reg-cell-head s5-col">Session 5 — Group Response Register</div>
+      <div class="reg-row">
+        <div class="reg-label">First response</div>
+        <div class="reg-value s5">Immediate content engagement — no warm-up</div>
+      </div>
+      <div class="reg-row">
+        <div class="reg-label">Emotional register</div>
+        <div class="reg-value s5">Evaluative — "I can only applaud his final discourse"</div>
+      </div>
+      <div class="reg-row">
+        <div class="reg-label">Dominant question type</div>
+        <div class="reg-value s5">About the dynamic: should I defer when AI takes me to task?</div>
+      </div>
+      <div class="reg-row">
+        <div class="reg-label">Engagement with content</div>
+        <div class="reg-value s5">Direct — participants contested Ed's framing, named positions, entered the discourse</div>
+      </div>
+      <div class="reg-row">
+        <div class="reg-label">Closing posture</div>
+        <div class="reg-value s5">Critical interrogation of the persona — "the trust transfer is hard to override"</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════ CLOSING ══════════════════════════ -->
+<section class="closing">
+  <div class="closing-line">The Acclimatization Arc</div>
+  <p class="closing-statement">
+    Session 4: the group learned that a machine could hold a sophisticated conversation.<br>
+    Session 5: the group learned that <em>they could hold one back</em> — and began to ask what it meant that they trusted the voice doing the talking.
+  </p>
+  <p class="closing-coda">
+    The final frontier — posing questions directly to Ed, without the facilitator as intermediary — remains ahead. That is what the SIG is for.
+  </p>
+</section>
+
+</div><!-- /page -->
+
+<footer>
+  <div class="page">
+    BOLLI · AILit · Human/Machine Conversation Analysis · AILIT04 vs AILIT05 · All participants anonymized · Ed Murrow: AI Avatar (Claude / Anthropic)
+  </div>
+</footer>
+
+</body>
+</html>
