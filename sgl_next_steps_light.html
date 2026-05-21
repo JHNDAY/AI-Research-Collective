@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SGL AI Workshop — Next Steps</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:       #1a1a2e;
+    --paper:     #faf8f4;
+    --cream:     #f2ede3;
+    --gold:      #b8860b;
+    --gold-lt:   #d4a017;
+    --rust:      #8b3a2a;
+    --sage:      #4a6741;
+    --teal:      #2a7a6e;
+    --rule:      #c8b89a;
+    --muted:     #6b6150;
+    --step-bg:   #ffffff;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    line-height: 1.8;
+    min-height: 100vh;
+  }
+
+  /* ── Letterhead ── */
+  .letterhead {
+    background: var(--ink);
+    padding: 0.38rem 0;
+    text-align: center;
+  }
+  .letterhead span {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.35em;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+
+  /* ── Hero ── */
+  .hero {
+    background: var(--cream);
+    border-bottom: 1px solid var(--rule);
+    padding: 3.5rem 2rem 2.75rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(184,134,11,0.09) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero .eyebrow {
+    font-size: 0.7rem;
+    letter-spacing: 0.32em;
+    color: var(--gold);
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.9rem, 5vw, 3rem);
+    font-weight: 600;
+    line-height: 1.15;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+  }
+  .hero h1 em { font-style: italic; color: var(--rust); }
+  .hero .subtitle {
+    color: var(--muted);
+    font-size: 0.92rem;
+    letter-spacing: 0.05em;
+    margin-top: 0.5rem;
+  }
+
+  /* ── Envelope ── */
+  .envelope {
+    max-width: 740px;
+    margin: 0 auto;
+    padding: 3rem 2rem 5rem;
+  }
+
+  .salutation {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: var(--ink);
+    margin-bottom: 1.25rem;
+  }
+
+  .opening {
+    font-size: 1.03rem;
+    color: var(--muted);
+    padding-left: 1.25rem;
+    border-left: 3px solid var(--gold);
+    margin-bottom: 2.75rem;
+  }
+
+  /* ── Section rule ── */
+  .section-rule {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 2.5rem 0 1.5rem;
+  }
+  .section-rule::before,
+  .section-rule::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+  .section-rule .label {
+    font-size: 0.67rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 1rem;
+  }
+
+  p { margin-bottom: 1.1rem; font-size: 0.97rem; }
+
+  /* ── Step cards ── */
+  .steps { display: grid; gap: 0.8rem; margin: 0.5rem 0 0.5rem; }
+
+  .step {
+    background: var(--step-bg);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--gold);
+    padding: 1.1rem 1.4rem;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    transition: box-shadow 0.2s;
+  }
+  .step:hover { box-shadow: 0 3px 14px rgba(0,0,0,0.07); }
+  .step.teal  { border-left-color: var(--teal); }
+  .step.sage  { border-left-color: var(--sage); }
+
+  .step .n {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--rule);
+    line-height: 1;
+    flex-shrink: 0;
+    width: 1.5rem;
+    text-align: center;
+    padding-top: 0.1rem;
+  }
+  .step .s-title {
+    font-weight: 700;
+    font-size: 0.94rem;
+    color: var(--ink);
+    margin-bottom: 0.2rem;
+  }
+  .step .s-desc {
+    font-size: 0.88rem;
+    color: var(--muted);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* ── Accomplishment banner ── */
+  .accomplishment {
+    background: linear-gradient(135deg, #fdf6e3 0%, #faf0d0 100%);
+    border: 1px solid #e2cc88;
+    border-left: 4px solid var(--gold);
+    padding: 1.3rem 1.6rem;
+    margin: 1.5rem 0;
+  }
+  .accomplishment .tag {
+    font-size: 0.64rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+  }
+  .accomplishment p { margin: 0; font-size: 0.95rem; }
+  .accomplishment strong { color: var(--rust); }
+
+  /* ── Digital Fluency feature block ── */
+  .fluency-block {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 0;
+    margin: 1.75rem 0 2rem;
+    overflow: hidden;
+    position: relative;
+  }
+  .fluency-block::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--teal), var(--gold));
+  }
+  .fluency-inner {
+    padding: 1.75rem 2rem;
+    position: relative;
+    z-index: 1;
+  }
+  .fluency-block .f-eyebrow {
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--teal);
+    font-weight: 700;
+    margin-bottom: 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .fluency-block .f-eyebrow::after {
+    content: '';
+    display: block;
+    flex: 1;
+    height: 1px;
+    background: rgba(255,255,255,0.1);
+  }
+  .fluency-block h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #eae6de;
+    margin-bottom: 0.65rem;
+  }
+  .fluency-block .f-desc {
+    font-size: 0.9rem;
+    color: #9e9a94;
+    margin-bottom: 1.25rem;
+    line-height: 1.7;
+  }
+  .fluency-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+  }
+  .pill {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: #c8c4bc;
+    font-size: 0.78rem;
+    padding: 0.3rem 0.8rem;
+    letter-spacing: 0.04em;
+  }
+  .pill.highlight {
+    border-color: rgba(42,122,110,0.5);
+    color: #7ecdc2;
+    background: rgba(42,122,110,0.1);
+  }
+  .fluency-note {
+    margin-top: 1.1rem;
+    font-size: 0.82rem;
+    color: #6b6a6a;
+    font-style: italic;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    padding-top: 0.9rem;
+  }
+
+  /* ── SIG callout ── */
+  .sig-box {
+    background: white;
+    border: 1px solid var(--rule);
+    border-top: 3px solid var(--teal);
+    padding: 1.5rem 1.75rem;
+    margin: 1rem 0 0.5rem;
+    display: flex;
+    gap: 1.25rem;
+    align-items: flex-start;
+    transition: box-shadow 0.2s;
+  }
+  .sig-box:hover { box-shadow: 0 4px 18px rgba(0,0,0,0.07); }
+  .sig-box .sig-icon { font-size: 1.8rem; flex-shrink: 0; line-height: 1; }
+  .sig-box h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    margin-bottom: 0.35rem;
+  }
+  .sig-box p { font-size: 0.88rem; color: var(--muted); margin: 0; }
+  .sig-box .register {
+    display: inline-block;
+    margin-top: 0.8rem;
+    padding: 0.4rem 1rem;
+    border: 1px solid var(--teal);
+    color: var(--teal);
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+  }
+  .sig-box .register:hover { background: var(--teal); color: white; }
+
+  /* ── Closing ── */
+  .closing {
+    border-top: 1px solid var(--rule);
+    padding-top: 1.75rem;
+    margin-top: 2.5rem;
+  }
+  .closing .sign-off { font-size: 0.95rem; color: var(--muted); margin-bottom: 0.2rem; }
+  .closing .sig {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-style: italic;
+    color: var(--ink);
+    line-height: 1;
+    margin-bottom: 0.3rem;
+  }
+  .closing .role {
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 700;
+  }
+
+  /* ── Footer ── */
+  footer {
+    background: var(--ink);
+    text-align: center;
+    padding: 1.25rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    color: #4a4a5a;
+  }
+  footer span { color: var(--gold); }
+
+  /* ── Animations ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .hero { animation: fadeUp 0.55s ease both; }
+  .envelope > * { animation: fadeUp 0.5s ease both; }
+  .envelope > *:nth-child(1)  { animation-delay: 0.10s; }
+  .envelope > *:nth-child(2)  { animation-delay: 0.18s; }
+  .envelope > *:nth-child(3)  { animation-delay: 0.26s; }
+  .envelope > *:nth-child(4)  { animation-delay: 0.32s; }
+  .envelope > *:nth-child(5)  { animation-delay: 0.38s; }
+  .envelope > *:nth-child(6)  { animation-delay: 0.44s; }
+  .envelope > *:nth-child(7)  { animation-delay: 0.50s; }
+  .envelope > *:nth-child(8)  { animation-delay: 0.56s; }
+  .envelope > *:nth-child(9)  { animation-delay: 0.62s; }
+  .envelope > *:nth-child(10) { animation-delay: 0.68s; }
+  .envelope > *:nth-child(11) { animation-delay: 0.74s; }
+  .envelope > *:nth-child(12) { animation-delay: 0.80s; }
+</style>
+</head>
+<body>
+
+<div class="letterhead">
+  <span>BOLLI · Study Group Leader AI Training · Brandeis Osher Lifelong Learning Institute</span>
+</div>
+
+<div class="hero">
+  <div class="eyebrow">February 2025 Cohort &nbsp;·&nbsp; Next Steps</div>
+  <h1>SGL AI Workshop:<br><em>The Path Forward</em></h1>
+  <div class="subtitle">AI-Assisted Course Development &nbsp;·&nbsp; What We Built &amp; Where We Go Next</div>
+</div>
+
+<div class="envelope">
+
+  <div class="salutation">Dear SGL AI Cohort,</div>
+
+  <div class="opening">
+    This note outlines the path forward from our February workshop on integrating AI into the Study Group Leader course development process.
+  </div>
+
+  <!-- § 01 Objectives -->
+  <div class="section-rule"><span class="label">What We Set Out to Do</span></div>
+  <h2>Three Core Objectives</h2>
+  <p>The workshop was designed to enable each SGL to use AI across three dimensions of course work:</p>
+
+  <div class="steps">
+    <div class="step">
+      <div class="n">1</div>
+      <div>
+        <div class="s-title">Define a Course Syllabus</div>
+        <div class="s-desc">Transform your personal passion and expertise into a structured, week-by-week course outline.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="n">2</div>
+      <div>
+        <div class="s-title">Research Important Topics</div>
+        <div class="s-desc">Use AI to explore and deepen the subject matter that forms the backbone of your syllabus.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="n">3</div>
+      <div>
+        <div class="s-title">Create Course Materials</div>
+        <div class="s-desc">Produce polished, ready-to-use materials for administering your course in the classroom.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="accomplishment">
+    <div class="tag">Our Major Accomplishment</div>
+    <p>Course narratives produced for <strong>more than half</strong> (<a href="https://90f5b62a.streak-link.com/CxeH-DXY2JGluvZXBglyO7Sw/https%3A%2F%2Fjhnday.github.io%2FJhndayRprts%2Fcourse_narrative_diversity" target="_blank" style="color:var(--rust);text-decoration:none;font-weight:700;">see Course Narratives</a>) of workshop participants — a strong foundation to build on as we move to syllabus and materials.</p>
+  </div>
+
+  <!-- § 02 Immediate Next Steps -->
+  <div class="section-rule"><span class="label">Immediate Next Steps</span></div>
+  <h2>From Narrative to Syllabus</h2>
+  <p>The work now moves from narrative to execution. Our next two tasks carry us from story to structured course:</p>
+
+  <div class="steps">
+    <div class="step">
+      <div class="n">1</div>
+      <div>
+        <div class="s-title">Create a Syllabus from the Narrative</div>
+        <div class="s-desc">Transform your personal course story into a structured, week-by-week syllabus with AI as your collaborator.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="n">2</div>
+      <div>
+        <div class="s-title">Visualize the Syllabus</div>
+        <div class="s-desc">Produce an interactive, shareable visualization — a format that can be used directly to administer the course.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- § 03 Digital Fluency -->
+  <div class="section-rule"><span class="label">Integrated Throughout</span></div>
+  <h2>Digital Fluency</h2>
+
+  <div class="fluency-block">
+    <div class="fluency-inner">
+      <div class="f-eyebrow">Woven into Every Session</div>
+      <h3>Building Confident, Capable Browser Skills</h3>
+      <div class="f-desc">
+        Digital fluency is not a prerequisite — it is a companion. Rather than front-loading technical skills before the real work begins, fluency is introduced progressively, in context, precisely when each skill is needed. You will develop browser confidence naturally as you navigate the tools that power your course development.
+      </div>
+      <div class="fluency-pills">
+        <span class="pill highlight">Tabs vs. Split-Screen Workflows</span>
+        <span class="pill highlight">Bookmarks &amp; Navigation</span>
+        <span class="pill highlight">Upload &amp; Download Mechanics</span>
+        <span class="pill">Screen Management</span>
+        <span class="pill">Sharing &amp; Publishing</span>
+        <span class="pill">Working with AI Interfaces</span>
+        <span class="pill">File Handling</span>
+      </div>
+      <div class="fluency-note">
+        Progressive disclosure rather than prerequisite knowledge — each skill introduced at the moment it becomes useful.
+      </div>
+    </div>
+  </div>
+
+  <!-- § 04 Looking Further Ahead -->
+  <div class="section-rule"><span class="label">Looking Further Ahead</span></div>
+  <h2>Deeper AI-Assisted Work</h2>
+  <p>Once syllabi are in place, we will turn to the more expansive dimensions of the workshop objectives:</p>
+
+  <div class="steps">
+    <div class="step teal">
+      <div class="n">1</div>
+      <div>
+        <div class="s-title">AI-Assisted Topic Research</div>
+        <div class="s-desc">Using AI to research and enrich the important topics within each individual syllabus.</div>
+      </div>
+    </div>
+    <div class="step teal">
+      <div class="n">2</div>
+      <div>
+        <div class="s-title">Teaching Visualizations</div>
+        <div class="s-desc">Creating visualizations that integrate directly into course sessions — tools for teaching, not just planning.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- § 05 AILit SIG -->
+  <div class="section-rule"><span class="label">How We Will Continue</span></div>
+  <h2>The AILit SIG</h2>
+  <p>As I mentioned during our workshop, this next phase will unfold as a Special Interest Group over an extended period of time.</p>
+
+  <div class="sig-box">
+    <div class="sig-icon">🔬</div>
+    <div>
+      <h3>Special Interest Group — AILit</h3>
+      <p>Full details — including schedule, format, and objectives — are available in the AILit viz. Registration is open; you can sign up directly through the visualization.</p>
+      <a class="register" href="https://jhnday.github.io/AI-Research-Collective/ai-sig-proposal.html" target="_blank">Register via the AILit Viz →</a>
+    </div>
+  </div>
+
+  <!-- Closing -->
+  <div class="closing">
+    <div class="sign-off">With appreciation,</div>
+    <div class="sig">John</div>
+    <div class="role">SGL AI Training Workshop &nbsp;·&nbsp; BOLLI Technology Committee</div>
+  </div>
+
+</div>
+
+<footer>
+  <span>BOLLI</span> · Brandeis Osher Lifelong Learning Institute &nbsp;·&nbsp; jhnday.github.io
+</footer>
+
+</body>
+</html>
