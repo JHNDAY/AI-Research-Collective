@@ -1,0 +1,419 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Elements of Style</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body { margin: 0; padding: 2rem; background: #e8e0cc; }
+
+.mpage {
+  background: #fffdf6;
+  color: #0d0a05;
+  font-family: Georgia, 'Times New Roman', serif;
+  padding: 3rem 3.5rem;
+  border: 2px solid #3a2e18;
+  box-shadow: 5px 5px 0 #0d0a05;
+  position: relative;
+  max-width: 1020px;
+  margin: 0 auto;
+}
+
+.mpage::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(0,0,0,0.03) 27px, rgba(0,0,0,0.03) 28px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.mpage > * { position: relative; z-index: 1; }
+
+/* ── MASTHEAD ── */
+.masthead { text-align: center; border-bottom: 4px double #0d0a05; padding-bottom: 1.4rem; margin-bottom: .5rem; }
+.kicker { font-family: 'Courier Prime', monospace; font-size: 11px; letter-spacing: .38em; text-transform: uppercase; color: #4a3c28; margin-bottom: .5rem; }
+.headline { font-family: 'Playfair Display', serif; font-size: 4rem; font-weight: 900; line-height: .92; color: #0d0a05; text-transform: uppercase; letter-spacing: .04em; margin-bottom: .35rem; }
+.headline em { font-style: italic; font-weight: 400; font-size: 3rem; display: block; letter-spacing: .06em; color: #4a3c28; }
+.subhead { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-style: italic; color: #4a3c28; margin-bottom: .5rem; }
+.dedication { font-family: 'Courier Prime', monospace; font-size: 10px; letter-spacing: .22em; text-transform: uppercase; color: #9a8a68; border-top: 1px solid #c8b888; padding-top: .5rem; margin-top: .5rem; }
+
+/* ── RULES ── */
+hr.thick  { border: none; border-top: 3px solid #0d0a05; margin: 1.2rem 0; }
+hr.thin   { border: none; border-top: 1px solid #c8b888; margin: 1rem 0; }
+hr.double { border: none; border-top: 4px double #0d0a05; margin: 1.5rem 0; }
+
+/* ── AXIOM BAND ── */
+.axiom-band { display: grid; grid-template-columns: repeat(3,1fr); border: 2px solid #0d0a05; margin-bottom: 1.3rem; }
+.axiom-cell { padding: .95rem 1.1rem; border-right: 2px solid #0d0a05; }
+.axiom-cell:last-child { border-right: none; }
+.axiom-tag  { font-family: 'Courier Prime', monospace; font-size: 9px; letter-spacing: .25em; text-transform: uppercase; color: #4a3c28; margin-bottom: 4px; }
+.axiom-num  { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 900; color: #c8b888; line-height: 1; margin-bottom: 2px; }
+.axiom-name { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: #0d0a05; margin-bottom: 4px; }
+.axiom-name.red { color: #8c0f0f; }
+.axiom-body { font-size: 13px; line-height: 1.55; color: #4a3c28; font-style: italic; }
+
+/* ── SECTION LABELS ── */
+.sec-tag  { font-family: 'Courier Prime', monospace; font-size: 9px; letter-spacing: .3em; text-transform: uppercase; color: #4a3c28; margin-bottom: .4rem; }
+.sec-head { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: #0d0a05; border-bottom: 2px solid #0d0a05; padding-bottom: .35rem; margin-bottom: .85rem; }
+
+/* ── COLUMNS ── */
+.col2 { display: grid; grid-template-columns: 1fr 1fr; gap: 2.2rem; }
+.col3 { display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 2rem; }
+
+/* ── RULE ENTRIES ── */
+.rule-entry { margin-bottom: 1.1rem; border-left: 4px solid #0d0a05; padding: .75rem 1rem; background: rgba(0,0,0,.03); }
+.rule-num   { font-family: 'Courier Prime', monospace; font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: #8c0f0f; margin-bottom: 3px; }
+.rule-title { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: #0d0a05; margin-bottom: 5px; }
+.rule-body  { font-size: 13.5px; line-height: 1.65; color: #4a3c28; font-style: italic; margin-bottom: 5px; }
+.rule-apply { font-family: 'Courier Prime', monospace; font-size: 12px; color: #0d0a05; font-style: normal; }
+.rule-apply::before { content: '→ '; color: #8c0f0f; font-weight: 700; }
+
+/* ── VIOLATION TABLE ── */
+table.vt { width: 100%; border-collapse: collapse; }
+table.vt thead th { font-family: 'Courier Prime', monospace; font-size: 9px; letter-spacing: .18em; text-transform: uppercase; color: #4a3c28; text-align: left; padding: 4px 8px 8px; border-bottom: 1.5px solid #0d0a05; }
+table.vt tbody td { padding: 8px; border-bottom: 1px dashed #c8b888; vertical-align: top; font-size: 13px; line-height: 1.5; }
+table.vt tbody tr:last-child td { border-bottom: none; }
+table.vt .bad  { font-family: 'Courier Prime', monospace; font-size: 12.5px; color: #8c0f0f; text-decoration: line-through; text-decoration-color: #8c0f0f; text-decoration-thickness: 2px; background: #f0e8d0; padding: 2px 7px; border: 1.5px solid #c8b888; display: inline-block; margin-bottom: 3px; }
+table.vt .good { font-family: 'Courier Prime', monospace; font-size: 12.5px; color: #4a7c28; background: #f0e8d0; padding: 2px 7px; border: 1.5px solid #c8b888; display: inline-block; }
+table.vt .reason { font-size: 13px; color: #4a3c28; font-style: italic; }
+
+/* ── FORBIDDEN ── */
+.forbidden { background: #f0e8d0; border: 2px solid #0d0a05; padding: .9rem 1.1rem; margin: 1rem 0; }
+.forb-head { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: #8c0f0f; display: flex; align-items: center; gap: .6rem; margin-bottom: .7rem; }
+.forb-head::before, .forb-head::after { content: ''; flex: 1; height: 1.5px; background: #8c0f0f; }
+.pills { display: flex; flex-wrap: wrap; gap: 5px; }
+.pill { font-family: 'Courier Prime', monospace; font-size: 11px; padding: 3px 9px; border: 1.5px solid #4a3c28; color: #0d0a05; text-decoration: line-through; text-decoration-color: #8c0f0f; text-decoration-thickness: 2px; }
+
+/* ── CHECKLIST ── */
+ul.chk { list-style: none; padding: 0; margin: 0; }
+ul.chk li { font-size: 13.5px; line-height: 1.6; color: #0d0a05; padding: 6px 0 6px 24px; border-bottom: 1px dashed #c8b888; position: relative; }
+ul.chk li:last-child { border-bottom: none; }
+ul.chk li::before { content: '□'; position: absolute; left: 0; top: 6px; color: #4a3c28; font-size: 14px; }
+ul.chk li.warn { font-family: 'Courier Prime', monospace; font-size: 12.5px; font-weight: 700; color: #8c0f0f; }
+ul.chk li.warn::before { content: '⚠'; color: #8c0f0f; font-size: 12px; top: 7px; }
+
+/* ── RLIST ── */
+ul.rlist { list-style: none; padding: 0; margin: 0; }
+ul.rlist li { font-size: 13.5px; line-height: 1.6; color: #0d0a05; padding: 6px 0 6px 20px; border-bottom: 1px dashed #c8b888; position: relative; }
+ul.rlist li:last-child { border-bottom: none; }
+ul.rlist li::before { content: '▪'; position: absolute; left: 0; top: 8px; color: #8c0f0f; font-size: 11px; }
+
+/* ── PULL QUOTE ── */
+.pullquote { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-style: italic; font-weight: 700; color: #0d0a05; border-top: 3px solid #0d0a05; border-bottom: 3px solid #0d0a05; padding: .8rem 1rem; margin: 1.2rem 0; text-align: center; line-height: 1.45; }
+.pullquote span { color: #8c0f0f; }
+.pullquote cite { display: block; font-family: 'Courier Prime', monospace; font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: #9a8a68; font-style: normal; margin-top: .4rem; }
+
+/* ── DOC RULE ── */
+.doc-rule { border: 2px solid #0d0a05; background: rgba(140,15,15,.04); padding: .9rem 1.1rem; margin: 1.1rem 0; }
+.doc-head  { font-family: 'Playfair Display', serif; font-size: .95rem; font-weight: 700; color: #8c0f0f; text-transform: uppercase; letter-spacing: .04em; margin-bottom: .5rem; }
+.doc-rule p { font-size: 13.5px; line-height: 1.65; color: #4a3c28; font-style: italic; margin: 0; }
+.doc-rule strong { color: #0d0a05; font-style: normal; }
+
+/* ── HIERARCHY LADDER ── */
+.ladder { border: 2px solid #0d0a05; overflow: hidden; margin: 1rem 0; }
+.ladder-row { display: grid; grid-template-columns: 80px 1fr auto; border-bottom: 1px solid #c8b888; align-items: center; }
+.ladder-row:last-child { border-bottom: none; }
+.ladder-row.target { background: rgba(74,124,40,.07); }
+.ladder-row.reject { background: rgba(140,15,15,.04); }
+.lad-num  { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 900; color: #c8b888; text-align: center; padding: .7rem; border-right: 1px solid #c8b888; }
+.lad-body { padding: .65rem .9rem; }
+.lad-name { font-family: 'Courier Prime', monospace; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: #0d0a05; margin-bottom: 2px; }
+.lad-desc { font-size: 12.5px; color: #4a3c28; font-style: italic; }
+.lad-badge { padding: .65rem .9rem; }
+.badge { font-family: 'Courier Prime', monospace; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; padding: 3px 8px; border: 1.5px solid currentColor; white-space: nowrap; }
+.badge.target { color: #4a7c28; }
+.badge.refine { color: #7a5c00; }
+.badge.reject { color: #8c0f0f; }
+
+/* ── SIG & FOOTER ── */
+.sig { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-style: italic; color: #0d0a05; text-align: center; border-top: 2px solid #0d0a05; border-bottom: 2px solid #0d0a05; padding: .85rem; margin: 1.8rem 0 1rem; }
+.footer { border-top: 4px double #0d0a05; padding-top: .9rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: .4rem; }
+.footer span { font-family: 'Courier Prime', monospace; font-size: 10px; letter-spacing: .15em; text-transform: uppercase; color: #4a3c28; }
+</style>
+</head>
+<body>
+
+<div class="mpage">
+
+  <!-- MASTHEAD -->
+  <div class="masthead">
+    <div class="kicker">Current Events Discussion Group &nbsp;·&nbsp; Visualization Standards — Adopted</div>
+    <div class="headline">AI Elements<em>of Style</em></div>
+    <div class="subhead">Guiding Principles for the Design of Discussion Visualizations</div>
+    <div class="dedication">After William Strunk Jr. &amp; E.B. White — <em>The Elements of Style</em> (1959) &nbsp;·&nbsp; Adapted for Visual Communication with Artificial Intelligence &nbsp;·&nbsp; 2026</div>
+  </div>
+
+  <!-- AXIOM BAND -->
+  <div class="axiom-band">
+    <div class="axiom-cell">
+      <div class="axiom-tag">First Principle</div>
+      <div class="axiom-num">I</div>
+      <div class="axiom-name red">Omit Needless Elements</div>
+      <div class="axiom-body">Every element in a visualization must earn its place. If it does not inform, guide, or invite — remove it. Decoration is a failure of discipline.</div>
+    </div>
+    <div class="axiom-cell">
+      <div class="axiom-tag">Second Principle</div>
+      <div class="axiom-num">II</div>
+      <div class="axiom-name">Prefer the Specific</div>
+      <div class="axiom-body">A vague headline announces nothing. A sharp question opens a room. Name the issue exactly. Specificity is respect for the reader's intelligence.</div>
+    </div>
+    <div class="axiom-cell">
+      <div class="axiom-tag">Third Principle</div>
+      <div class="axiom-num">III</div>
+      <div class="axiom-name">Restraint Is Force</div>
+      <div class="axiom-body">Emptiness becomes eloquence. The designer who knows what to remove is more powerful than the one who knows what to add. White space is argument.</div>
+    </div>
+  </div>
+
+  <hr class="thick">
+
+  <div class="col3">
+
+    <!-- COLUMN 1 — THE RULES -->
+    <div>
+      <div class="sec-tag">The Canon</div>
+      <div class="sec-head">Seven Rules</div>
+
+      <div class="rule-entry">
+        <div class="rule-num">Rule 1</div>
+        <div class="rule-title">Make the paragraph the unit of composition</div>
+        <div class="rule-body">Strunk: "The paragraph is the unit of composition." In visualization: the <em>panel</em> is the unit. Each panel carries one idea, one question, one dimension of the issue. Never cram two arguments into one panel.</div>
+        <div class="rule-apply">One panel, one idea. Full stop.</div>
+      </div>
+
+      <div class="rule-entry">
+        <div class="rule-num">Rule 2</div>
+        <div class="rule-title">Use the active voice</div>
+        <div class="rule-body">Passive construction buries agency. "The policy was contested" hides who contested it. In visualization: name the actor, the action, the consequence. Passive data is inert. Active framing invites argument.</div>
+        <div class="rule-apply">Name the actor. State the action. Invite the dispute.</div>
+      </div>
+
+      <div class="rule-entry">
+        <div class="rule-num">Rule 3</div>
+        <div class="rule-title">Put statements in positive form</div>
+        <div class="rule-body">Strunk: "Make definite assertions." Hedged labels and qualified headlines train readers to discount them. State what the data shows, not what it fails to disprove. Uncertainty can be named — but name it directly, not by evasion.</div>
+        <div class="rule-apply">Assert. Do not hedge into invisibility.</div>
+      </div>
+
+      <div class="rule-entry">
+        <div class="rule-num">Rule 4</div>
+        <div class="rule-title">Omit needless words</div>
+        <div class="rule-body">"Vigorous writing is concise." The same law governs labels, captions, and headlines. If three words do the work of eight, use three. The reader's attention is finite. Spend it on signal, not scaffolding.</div>
+        <div class="rule-apply">Cut by half. Then cut again.</div>
+      </div>
+
+      <div class="rule-entry">
+        <div class="rule-num">Rule 5</div>
+        <div class="rule-title">Avoid a succession of loose sentences</div>
+        <div class="rule-body">A visualization that strings together disconnected data points without hierarchy has no spine. Establish the main claim first. Supporting detail follows. Drill-down comes last. Order is argument.</div>
+        <div class="rule-apply">Hierarchy first. Everything else descends from it.</div>
+      </div>
+
+      <div class="rule-entry">
+        <div class="rule-num">Rule 6</div>
+        <div class="rule-title">Keep related words together</div>
+        <div class="rule-body">Strunk's rule of proximity. In visualization: group what belongs together. Separate what is distinct. The eye reads proximity as relationship. If two elements sit together, the viewer assumes they're connected. Use that assumption deliberately.</div>
+        <div class="rule-apply">Proximity is meaning. Group with intention.</div>
+      </div>
+
+      <div class="rule-entry">
+        <div class="rule-num">Rule 7</div>
+        <div class="rule-title">Express coordinate ideas in similar form</div>
+        <div class="rule-body">Parallel structure signals parallel importance. If three trends are presented, treat them identically — same weight, same format, same visual grammar. Inconsistency implies hierarchy where none was intended. Parallel ideas demand parallel treatment.</div>
+        <div class="rule-apply">Same structure = same status. Break it deliberately or not at all.</div>
+      </div>
+    </div>
+
+    <!-- COLUMN 2 — APPLIED TO DESIGN -->
+    <div>
+      <div class="sec-tag">Applied Standards</div>
+      <div class="sec-head">The One-Pager</div>
+
+      <div class="doc-rule">
+        <div class="doc-head">The One-Pager Protocol</div>
+        <p>Every discussion visualization conforms to this structure and no other:<br><br>
+        <strong>1. The Issue</strong> — one sentence, active voice, specific<br>
+        <strong>2. The Core Question</strong> — what the group is being asked to consider<br>
+        <strong>3. The Evidence</strong> — the minimum data required; no more<br>
+        <strong>4. The Drill-Down</strong> — available; never forced; clearly signaled</p>
+      </div>
+
+      <hr class="thin">
+
+      <div class="sec-tag">Format Hierarchy</div>
+      <div class="sec-head">Choose Your Level</div>
+
+      <div class="ladder">
+        <div class="ladder-row reject">
+          <div class="lad-num">3</div>
+          <div class="lad-body">
+            <div class="lad-name">Dense Text</div>
+            <div class="lad-desc">Walls of prose. Too hard to assimilate in real time. Closes discussion before it opens.</div>
+          </div>
+          <div class="lad-badge"><span class="badge reject">Reject</span></div>
+        </div>
+        <div class="ladder-row">
+          <div class="lad-num">2</div>
+          <div class="lad-body">
+            <div class="lad-name">Rich Visualization</div>
+            <div class="lad-desc">Charts, dashboards, full data views. Step forward — still risks overload without restraint.</div>
+          </div>
+          <div class="lad-badge"><span class="badge refine">Refine</span></div>
+        </div>
+        <div class="ladder-row target">
+          <div class="lad-num">1</div>
+          <div class="lad-body">
+            <div class="lad-name">The One-Pager</div>
+            <div class="lad-desc">Issue + question + minimal evidence + optional drill-down. Respects the reader's agency and attention.</div>
+          </div>
+          <div class="lad-badge"><span class="badge target">Target</span></div>
+        </div>
+      </div>
+
+      <hr class="thin">
+
+      <div class="sec-tag">Engagement Principle</div>
+      <div class="sec-head">Context, Not Authority</div>
+
+      <div class="rule-entry">
+        <div class="rule-num">Framing Law</div>
+        <div class="rule-title">Offer the landscape — do not lecture from it</div>
+        <div class="rule-body">The systematic view opens the conversation. It does not close it. Present the temperature of the news as a threshold the group may step through — not as the answer they are being handed.</div>
+        <div class="rule-apply">Participants chose to engage. They were not pushed.</div>
+      </div>
+
+      <div class="rule-entry">
+        <div class="rule-num">Agency Law</div>
+        <div class="rule-title">Drill-down is an offer, not an instruction</div>
+        <div class="rule-body">The participant reaches for depth. The designer does not push it. A drill-down that requires activation is evidence of respect. A visualization that opens at full depth is an ambush.</div>
+        <div class="rule-apply">Signal the door. Do not push them through it.</div>
+      </div>
+    </div>
+
+    <!-- COLUMN 3 — VIOLATIONS & CHECKLIST -->
+    <div>
+      <div class="sec-tag">Common Violations</div>
+      <div class="sec-head">Never Utter</div>
+
+      <div class="forbidden">
+        <div class="forb-head">Banned Elements</div>
+        <div class="pills">
+          <span class="pill">Decorative color</span>
+          <span class="pill">Chartjunk</span>
+          <span class="pill">Vague headlines</span>
+          <span class="pill">Passive captions</span>
+          <span class="pill">Redundant labels</span>
+          <span class="pill">Orphaned data</span>
+          <span class="pill">Hidden hierarchy</span>
+          <span class="pill">Forced drill-down</span>
+          <span class="pill">Undifferentiated density</span>
+          <span class="pill">Two ideas per panel</span>
+        </div>
+      </div>
+
+      <p style="font-size:13px;color:#0d0a05;font-style:italic;line-height:1.55;margin-bottom:1rem;">If you violate: remove the element. Do not explain its presence. Correction is silent revision.</p>
+
+      <hr class="thin">
+
+      <div class="sec-tag">Before You Publish</div>
+      <div class="sec-head">Pre-Release Checklist</div>
+
+      <ul class="chk">
+        <li>Does each panel carry exactly one idea?</li>
+        <li>Is the headline in active voice, specific, assertive?</li>
+        <li>Has every decorative element been removed?</li>
+        <li>Does the hierarchy read without instruction?</li>
+        <li>Is the core question visible within 3 seconds?</li>
+        <li>Is drill-down available but not forced?</li>
+        <li>Would removing anything break comprehension? (If not, remove it.)</li>
+        <li>Does it invite argument — or foreclose it?</li>
+        <li class="warn">Any wrong → revise before publishing</li>
+      </ul>
+
+      <hr class="thin">
+
+      <div class="sec-tag">Correction Protocol</div>
+      <div class="sec-head">When It Fails</div>
+
+      <ul class="rlist">
+        <li>Watch where participants actually drill — not where you assumed they would</li>
+        <li>If they gloss over a panel, it carried the wrong question or too many</li>
+        <li>If discussion stalls, the frame was too closed — open the question</li>
+        <li>Revise silently. Apply correction to future work. Do not explain the old version.</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <hr class="double">
+
+  <!-- MURROW RADIO RULE + WHITE DISCIPLINE — full width -->
+  <div class="pullquote">
+    "Vigorous writing is concise. A sentence should contain no unnecessary words, a paragraph no unnecessary sentences,<br>for the same reason that a drawing should have no unnecessary lines and a machine no unnecessary parts."
+    <cite>— William Strunk Jr., as rendered by E.B. White &nbsp;·&nbsp; The Elements of Style, 1959</cite>
+  </div>
+
+  <div class="col2">
+    <div>
+      <div class="sec-tag">The Radio Corollary</div>
+      <div class="sec-head">Murrow's Law Applied</div>
+      <div class="rule-entry">
+        <div class="rule-num">Broadcast Standard</div>
+        <div class="rule-title">You cannot overload the ear — and you cannot overload the eye</div>
+        <div class="rule-body">Edward R. Murrow understood that radio permitted no revision, no re-reading, no second chance. Every word had to arrive at full weight on the first transmission. Visualization works under the same constraint: the viewer reads once, in real time, in the middle of a conversation. If it does not land immediately, it does not land at all.</div>
+        <div class="rule-apply">Design for first contact. There is no second reading.</div>
+      </div>
+      <div class="rule-entry">
+        <div class="rule-num">Invisible Guidance</div>
+        <div class="rule-title">The hierarchy must be so clear it disappears</div>
+        <div class="rule-body">When structure is visible, it calls attention to itself and away from the content. The goal is a hierarchy so obvious the viewer does not perceive they have been guided — only that they understood. Craft that works leaves no fingerprints.</div>
+        <div class="rule-apply">If they see the design, it failed. If they see the idea, it succeeded.</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="sec-tag">Memory &amp; Continuity</div>
+      <div class="sec-head">Working with AI Review</div>
+
+      <div class="doc-rule">
+        <div class="doc-head">Reference Document Protocol</div>
+        <p>This document is a standing contract between the designer and the AI reviewer. When requesting visualization review:<br><br>
+        <strong>1.</strong> Attach this document to the conversation<br>
+        <strong>2.</strong> State: "Review against the AI Elements of Style"<br>
+        <strong>3.</strong> The reviewer applies these rules explicitly, not from memory<br><br>
+        AI memory has recency bias. This document eliminates dependency on retrieval.</p>
+      </div>
+
+      <hr class="thin">
+
+      <div class="sec-tag">The Turing Principle</div>
+      <div class="rule-entry" style="margin-bottom:0">
+        <div class="rule-num">Pragmatic Standard</div>
+        <div class="rule-title">If it works, use it — and ask why later</div>
+        <div class="rule-body">The test of a visualization is behavior, not theory. Does it open discussion? Does it invite argument? Does it orient without overwhelming? If yes: ship it. The mechanism behind its success is secondary. The result is primary.</div>
+        <div class="rule-apply">Utility is the measure. Everything else is philosophy.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sig">"Not that I would know a noun from a participial phrase, but I know a clear sentence when I stumble into one." &nbsp;—&nbsp; E.B. White</div>
+
+  <div class="footer">
+    <span>After Strunk &amp; White · 1959</span>
+    <span>Omit needless elements</span>
+    <span>Restraint is force</span>
+    <span>One panel · one idea</span>
+    <span>Design for first contact</span>
+    <span>2026</span>
+  </div>
+
+</div>
+
+</body>
+</html>
