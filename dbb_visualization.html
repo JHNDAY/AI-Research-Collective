@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dumb but Brilliant — How Computers Really Work</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Lora:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #1a1f2e;
+    --surface: #232a3b;
+    --surface2: #2c3549;
+    --gold: #e8b84b;
+    --gold-light: #f5d07a;
+    --chalk: #f2ede4;
+    --chalk-dim: #c8c0b0;
+    --human: #7ec8a4;
+    --human-dim: #3d7a5c;
+    --computer: #6ab0d4;
+    --computer-dim: #2d6080;
+    --accent: #e87a4b;
+    --text: #ddd5c5;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Lora', Georgia, serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: linear-gradient(160deg, #0f1420 0%, #1a1f2e 60%, #1e2538 100%);
+    border-bottom: 2px solid var(--gold);
+    padding: 3rem 2rem 2.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(232,184,75,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .dbb-label {
+    font-family: 'Caveat', cursive;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.6rem;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.2s forwards;
+  }
+  h1 {
+    font-family: 'Caveat', cursive;
+    font-size: clamp(2.4rem, 6vw, 4rem);
+    font-weight: 700;
+    color: var(--chalk);
+    line-height: 1.1;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 0.4s forwards;
+  }
+  h1 span { color: var(--gold); }
+  .subtitle {
+    font-size: 1.05rem;
+    font-style: italic;
+    color: var(--chalk-dim);
+    margin-top: 0.9rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 0.6s forwards;
+  }
+
+  /* ── MAIN ── */
+  main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 3rem;
+  }
+
+  /* ── SECTION LABELS ── */
+  .section-label {
+    font-family: 'Caveat', cursive;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--gold);
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, rgba(232,184,75,0.4), transparent);
+  }
+
+  /* ── PROBLEM SETUP ── */
+  .problem-box {
+    background: var(--surface);
+    border: 1px solid rgba(232,184,75,0.25);
+    border-radius: 12px;
+    padding: 1.8rem 2rem;
+    text-align: center;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 0.8s forwards;
+  }
+  .problem-eq {
+    font-family: 'Caveat', cursive;
+    font-size: clamp(2.5rem, 7vw, 4.5rem);
+    font-weight: 700;
+    color: var(--chalk);
+    letter-spacing: 0.05em;
+  }
+  .problem-eq .question { color: var(--gold); }
+  .problem-note {
+    font-size: 0.92rem;
+    color: var(--chalk-dim);
+    margin-top: 0.6rem;
+    font-style: italic;
+  }
+
+  /* ── TWO PATHS ── */
+  .paths {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+    margin-bottom: 1.5rem;
+  }
+  @media (max-width: 640px) {
+    .paths { grid-template-columns: 1fr; }
+  }
+
+  .path-card {
+    background: var(--surface);
+    border-radius: 14px;
+    padding: 1.6rem;
+    border: 1px solid transparent;
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards;
+  }
+  .path-card.human {
+    border-color: rgba(126,200,164,0.3);
+    animation-delay: 1s;
+  }
+  .path-card.computer {
+    border-color: rgba(106,176,212,0.3);
+    animation-delay: 1.15s;
+  }
+  .path-title {
+    font-family: 'Caveat', cursive;
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .path-title.human { color: var(--human); }
+  .path-title.computer { color: var(--computer); }
+
+  .path-icon { font-size: 1.3rem; }
+
+  /* steps */
+  .steps { display: flex; flex-direction: column; gap: 0.7rem; }
+
+  .step {
+    background: var(--surface2);
+    border-radius: 8px;
+    padding: 0.7rem 0.9rem;
+    font-size: 0.92rem;
+    line-height: 1.5;
+    position: relative;
+    border-left: 3px solid transparent;
+    opacity: 0;
+    animation: stepIn 0.5s ease forwards;
+  }
+  .step.human-step { border-left-color: var(--human-dim); animation-delay: var(--d); }
+  .step.computer-step { border-left-color: var(--computer-dim); animation-delay: var(--d); }
+
+  .step-num {
+    font-family: 'Caveat', cursive;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.6;
+    display: block;
+    margin-bottom: 0.2rem;
+  }
+  .step-num.h { color: var(--human); }
+  .step-num.c { color: var(--computer); }
+
+  .mono {
+    font-family: 'Courier New', monospace;
+    font-size: 0.88rem;
+    color: var(--gold-light);
+    display: block;
+    margin-top: 0.3rem;
+    letter-spacing: 0.12em;
+  }
+  .binary { color: var(--computer); }
+
+  /* ── CONVERGENCE ── */
+  .convergence {
+    background: linear-gradient(135deg, rgba(126,200,164,0.12) 0%, rgba(106,176,212,0.12) 100%);
+    border: 2px solid rgba(232,184,75,0.5);
+    border-radius: 16px;
+    padding: 2rem;
+    text-align: center;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 2.4s forwards;
+    position: relative;
+    overflow: hidden;
+  }
+  .convergence::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(232,184,75,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .converge-label {
+    font-family: 'Caveat', cursive;
+    font-size: 1rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+  }
+  .converge-arrows {
+    font-size: 1.5rem;
+    margin-bottom: 0.6rem;
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+  }
+  .arr-human { color: var(--human); }
+  .arr-computer { color: var(--computer); }
+  .answer {
+    font-family: 'Caveat', cursive;
+    font-size: clamp(3rem, 10vw, 5.5rem);
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+    text-shadow: 0 0 40px rgba(232,184,75,0.4);
+    animation: pulse 2s ease-in-out 3s infinite;
+  }
+  .converge-note {
+    font-size: 0.95rem;
+    font-style: italic;
+    color: var(--chalk-dim);
+    margin-top: 0.7rem;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* ── DBB DEFINITION ── */
+  .dbb-def {
+    background: var(--surface);
+    border-left: 4px solid var(--gold);
+    border-radius: 0 12px 12px 0;
+    padding: 1.4rem 1.8rem;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 2.7s forwards;
+  }
+  .dbb-def p {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--chalk);
+  }
+  .dbb-def strong { color: var(--gold); font-style: normal; }
+  .dbb-def em { color: var(--chalk-dim); }
+
+  /* ── APPLICATIONS ── */
+  .apps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+  }
+  @media (max-width: 580px) {
+    .apps { grid-template-columns: 1fr; }
+  }
+
+  .app-card {
+    background: var(--surface);
+    border-radius: 14px;
+    padding: 1.4rem 1.2rem;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.07);
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+    cursor: default;
+  }
+  .app-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(232,184,75,0.35);
+  }
+  .app-card:nth-child(1) { animation-delay: 2.9s; }
+  .app-card:nth-child(2) { animation-delay: 3.05s; }
+  .app-card:nth-child(3) { animation-delay: 3.2s; }
+
+  .app-icon {
+    font-size: 2.2rem;
+    display: block;
+    margin-bottom: 0.7rem;
+  }
+  .app-name {
+    font-family: 'Caveat', cursive;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--gold-light);
+    margin-bottom: 0.5rem;
+  }
+  .app-desc {
+    font-size: 0.86rem;
+    color: var(--chalk-dim);
+    line-height: 1.55;
+  }
+
+  /* ── FOOTER NOTE ── */
+  .footer-note {
+    text-align: center;
+    padding: 1.5rem 1rem;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    opacity: 0;
+    animation: fadeUp 0.6s ease 3.5s forwards;
+  }
+  .footer-note p {
+    font-size: 0.9rem;
+    font-style: italic;
+    color: var(--chalk-dim);
+  }
+  .footer-note strong {
+    color: var(--gold);
+    font-style: normal;
+    font-family: 'Caveat', cursive;
+    font-size: 1.05rem;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes stepIn {
+    from { opacity: 0; transform: translateX(-8px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes pulse {
+    0%, 100% { text-shadow: 0 0 30px rgba(232,184,75,0.35); }
+    50%       { text-shadow: 0 0 60px rgba(232,184,75,0.7), 0 0 100px rgba(232,184,75,0.2); }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="dbb-label">D·B·B — Dumb but Brilliant</div>
+  <h1>How Computers <span>Really</span> Work</h1>
+  <p class="subtitle">A guided tour for adult learners who suspect computers are smarter than they are — they're not, and that's the beautiful part.</p>
+</header>
+
+<main>
+
+  <!-- THE PROBLEM -->
+  <div class="section-label">The Problem</div>
+  <div class="problem-box">
+    <div class="problem-eq">7 × 6 = <span class="question">?</span></div>
+    <p class="problem-note">A problem so simple a child can solve it. Watch what each solver does next.</p>
+  </div>
+
+  <!-- TWO PATHS -->
+  <div class="section-label">Two Very Different Routes</div>
+  <div class="paths">
+
+    <!-- HUMAN -->
+    <div class="path-card human">
+      <div class="path-title human"><span class="path-icon">🧠</span> The Human Brain</div>
+      <div class="steps">
+        <div class="step human-step" style="--d:1.1s">
+          <span class="step-num h">Route A — Memory</span>
+          Reaches into a mental multiplication table, stored since third grade.
+          <span class="mono">7 × 6 → remembered as 42</span>
+        </div>
+        <div class="step human-step" style="--d:1.25s">
+          <span class="step-num h">Route B — Repeated Addition</span>
+          Counts up by sevens, six times.
+          <span class="mono">7+7+7+7+7+7 → 42</span>
+        </div>
+        <div class="step human-step" style="--d:1.4s">
+          <span class="step-num h">The Experience</span>
+          Intuitive. Meaningful. You <em>understand</em> what you did.
+        </div>
+      </div>
+    </div>
+
+    <!-- COMPUTER -->
+    <div class="path-card computer">
+      <div class="path-title computer"><span class="path-icon">💻</span> The Computer</div>
+      <div class="steps">
+        <div class="step computer-step" style="--d:1.3s">
+          <span class="step-num c">Step 1 — Translate to Binary</span>
+          Converts both numbers into base-2 — a language no human would choose.
+          <span class="mono binary">7 → 0111 &nbsp; 6 → 0110</span>
+        </div>
+        <div class="step computer-step" style="--d:1.5s">
+          <span class="step-num c">Step 2 — Bit Manipulation</span>
+          Performs millions of tiny on/off switch operations. Incomprehensible to any person watching.
+          <span class="mono binary">0111 × 0110 → 101010</span>
+        </div>
+        <div class="step computer-step" style="--d:1.7s">
+          <span class="step-num c">Step 3 — Translate Back</span>
+          Converts the binary result into characters a human can read.
+          <span class="mono binary">101010 → ASCII "42"</span>
+        </div>
+        <div class="step computer-step" style="--d:1.9s">
+          <span class="step-num c">The Experience</span>
+          Rigid. Mechanical. The computer understands <em>nothing.</em>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- CONVERGENCE -->
+  <div class="convergence">
+    <div class="converge-label">Both paths arrive at exactly the same place</div>
+    <div class="converge-arrows">
+      <span class="arr-human">🧠 ➜</span>
+      <span class="arr-computer">💻 ➜</span>
+    </div>
+    <div class="answer">42</div>
+    <p class="converge-note">One route was elegant and human. The other was a ridiculous detour through an alien number system. And yet — same answer, every time, in nanoseconds.</p>
+  </div>
+
+  <!-- DBB DEFINITION -->
+  <div class="dbb-def">
+    <p>This is <strong>Dumb but Brilliant (DBB)</strong>: the computer's method is <em>dumb</em> — it has no understanding, no intuition, no common sense. It is <strong>brilliant</strong> because that same mindless, mechanical detour through binary works for <em>everything</em>: any number, any problem, billions of times per second, without ever making a mistake. Dumbness, deployed at scale, becomes a superpower.</p>
+  </div>
+
+  <!-- APPLICATIONS -->
+  <div class="section-label">DBB Is Everywhere You Look</div>
+  <div class="apps">
+    <div class="app-card">
+      <span class="app-icon">🎵</span>
+      <div class="app-name">Digital Music</div>
+      <p class="app-desc">Happy Birthday becomes millions of ones and zeros — and back into music your ear recognizes, perfectly, every time.</p>
+    </div>
+    <div class="app-card">
+      <span class="app-icon">📷</span>
+      <div class="app-name">Your Photos</div>
+      <p class="app-desc">Every photo on your phone is stored as binary data. DBB lets you search thousands of faces in seconds.</p>
+    </div>
+    <div class="app-card">
+      <span class="app-icon">💬</span>
+      <div class="app-name">This Conversation</div>
+      <p class="app-desc">Every word in this chat — typed, processed, and replied to — is binary all the way down. DBB, from start to finish.</p>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer-note">
+    <p>The computer is not smarter than you are. It is faster. It is tireless. It is <strong>Dumb but Brilliant</strong> — and knowing the difference is the beginning of real digital literacy.</p>
+  </div>
+
+</main>
+
+</body>
+</html>
