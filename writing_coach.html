@@ -329,7 +329,6 @@
     background: var(--code-bg);
     border-radius: 4px;
     padding: 18px 20px;
-    position: relative;
   }
 
   .review-box pre {
@@ -356,9 +355,6 @@
   }
 
   .copy-review-btn {
-    position: absolute;
-    top: 12px;
-    right: 12px;
     background: rgba(255,255,255,0.12);
     color: var(--code-accent);
     border: 1px solid rgba(212,169,106,0.4);
@@ -371,6 +367,12 @@
   }
   .copy-review-btn:hover { background: rgba(255,255,255,0.2); }
   .copy-review-btn.copied { color: #9ed4c0; border-color: #9ed4c0; }
+
+  .review-box-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 12px;
+  }
 
   /* Divider */
   .divider {
@@ -450,9 +452,11 @@
     </div>
 
     <div class="review-box">
-      <button class="copy-review-btn" onclick="copyReview(this)">Copy</button>
       <pre id="reviewPrompt"><span class="label">Review and advise:</span>
 <span class="placeholder">[Your narrative will appear here once you type above]</span></pre>
+      <div class="review-box-footer">
+        <button class="copy-review-btn" onclick="copyReview(this)">Copy</button>
+      </div>
     </div>
   </div>
 
@@ -540,57 +544,53 @@ When reviewing a narrative draft, give feedback in three parts:
     // 1. Normalise line endings
     let text = raw.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
 
-    // 2. Split into paragraphs on blank lines
-    let paragraphs = text.split(/\n{2,}/);
+    // 2. Split on blank lines to find paragraph/block boundaries
+    let blocks = text.split(/\n{2,}/);
 
-    paragraphs = paragraphs.map(para => {
-      const lines = para.split('\n');
+    const listPattern = /^(\s*(\d+[\.\):]|[a-zA-Z][\.\):]|[-•*])\s)/;
 
-      // Detect a numbered/lettered list paragraph (lines starting with 1. / a. / - / •)
-      const listPattern = /^(\s*(\d+[\.\):]|[a-zA-Z][\.\):]|[-•*])\s)/;
-      const isListBlock = lines.every(l => l.trim() === '' || listPattern.test(l));
+    // Topic-shift signal words — a sentence starting with these likely begins a new subject
+    const topicShift = /^(However|But|Also|Additionally|Another|Now|Next|Finally|Note|Please|Assume|One idea|A key|The key|This means|In addition|For example|For instance|Consider|Important|Importantly|If |When |While |Although |Because )/i;
 
-      if (isListBlock) {
-        // Tidy each list item individually
-        return lines
-          .filter(l => l.trim() !== '')
-          .map(l => l.trim())
-          .join('\n');
+    blocks = blocks.map(block => {
+      const lines = block.split('\n').map(l => l.trim()).filter(l => l !== '');
+
+      // Detect numbered/bulleted list — keep each item on its own line
+      if (lines.every(l => listPattern.test(l))) {
+        return lines.join('\n');
       }
 
-      // Plain prose: join all lines into one, collapse internal whitespace,
-      // then wrap at ~80 chars on word boundaries
-      const joined = lines.map(l => l.trim()).join(' ').replace(/\s+/g, ' ').trim();
-      return wordWrap(joined, 80);
+      // Join ragged lines into one clean string
+      const joined = lines.join(' ').replace(/\s+/g, ' ').trim();
+
+      // Split into individual sentences on ". ", "? ", "! "
+      const sentenceBreaks = joined.split(/(?<=[.?!])\s+/);
+
+      // Group sentences into topic paragraphs: start a new group when a
+      // topic-shift word is detected at the start of a sentence
+      const groups = [];
+      let current = [];
+      for (const sentence of sentenceBreaks) {
+        if (current.length > 0 && topicShift.test(sentence.trim())) {
+          groups.push(current.join(' '));
+          current = [sentence];
+        } else {
+          current.push(sentence);
+        }
+      }
+      if (current.length) groups.push(current.join(' '));
+
+      return groups.join('\n\n');
     });
 
-    // 3. Re-join paragraphs with a blank line between them
-    ta.value = paragraphs.join('\n\n');
+    // 3. Separate blocks with a blank line; trim any empty blocks
+    ta.value = blocks.filter(b => b.trim()).join('\n\n');
     updateReview();
 
-    // Brief feedback on the button
     const orig = btn.textContent;
     btn.textContent = '✦ Done';
     btn.classList.add('done');
     setTimeout(() => { btn.textContent = orig; btn.classList.remove('done'); }, 1800);
-  }
-
-  function wordWrap(text, maxLen) {
-    const words = text.split(' ');
-    const lines = [];
-    let current = '';
-    for (const word of words) {
-      if (!current) {
-        current = word;
-      } else if ((current + ' ' + word).length <= maxLen) {
-        current += ' ' + word;
-      } else {
-        lines.push(current);
-        current = word;
-      }
-    }
-    if (current) lines.push(current);
-    return lines.join('\n');
   }
 </script>
 </body>
