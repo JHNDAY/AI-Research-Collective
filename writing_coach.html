@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BOLLI Writing Coach — Narrative Prompt Builder</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1c1a17;
+    --cream: #f7f3ec;
+    --warm-mid: #e8e0d0;
+    --rule: #c8b89a;
+    --accent: #7a4f2e;
+    --accent-light: #b07a50;
+    --step-bg: #fdfaf5;
+    --step-border: #d4c4a8;
+    --highlight: #fff8e7;
+    --highlight-border: #e6c97a;
+    --code-bg: #2a2520;
+    --code-text: #e8dfc8;
+    --code-accent: #d4a96a;
+    --shadow: rgba(60,40,10,0.12);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-weight: 300;
+    font-size: 17px;
+    line-height: 1.75;
+    min-height: 100vh;
+  }
+
+  /* Subtle paper texture via repeating gradient */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 28px,
+        rgba(180,150,100,0.06) 28px,
+        rgba(180,150,100,0.06) 29px
+      );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page {
+    position: relative;
+    z-index: 1;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 56px 40px 80px;
+  }
+
+  /* Header */
+  header {
+    border-bottom: 2px solid var(--rule);
+    padding-bottom: 24px;
+    margin-bottom: 40px;
+  }
+
+  .institution {
+    font-family: 'Source Serif 4', serif;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent-light);
+    margin-bottom: 10px;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 2.1rem;
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+
+  .subtitle {
+    font-style: italic;
+    color: #6b5d4a;
+    font-size: 15px;
+  }
+
+  /* Section headings */
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  h2 .step-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-family: 'Source Serif 4', serif;
+    font-size: 13px;
+    font-weight: 400;
+    font-style: normal;
+    flex-shrink: 0;
+  }
+
+  /* Step cards */
+  .step {
+    background: var(--step-bg);
+    border: 1px solid var(--step-border);
+    border-left: 4px solid var(--accent);
+    border-radius: 4px;
+    padding: 28px 30px;
+    margin-bottom: 28px;
+    box-shadow: 0 2px 8px var(--shadow);
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .step:nth-child(1) { animation-delay: 0.05s; }
+  .step:nth-child(2) { animation-delay: 0.15s; }
+  .step:nth-child(3) { animation-delay: 0.25s; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .step p {
+    color: #3d3228;
+    margin-bottom: 10px;
+  }
+  .step p:last-child { margin-bottom: 0; }
+
+  /* The coaching instructions block */
+  .instructions-block {
+    background: var(--highlight);
+    border: 1px solid var(--highlight-border);
+    border-radius: 4px;
+    padding: 20px 22px;
+    margin: 16px 0;
+    font-size: 15.5px;
+    line-height: 1.7;
+    color: #2e2416;
+  }
+
+  .instructions-block::before {
+    content: 'Coaching Instructions';
+    display: block;
+    font-family: 'Source Serif 4', serif;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent-light);
+    margin-bottom: 10px;
+  }
+
+  .instructions-block .copy-btn-row {
+    margin-top: 14px;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .copy-btn {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    padding: 6px 16px;
+    font-family: 'Source Serif 4', serif;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+  }
+  .copy-btn:hover { background: var(--accent-light); }
+  .copy-btn:active { transform: scale(0.97); }
+  .copy-btn.copied { background: #4a7a50; }
+
+  .copy-prompt-btn {
+    background: var(--ink);
+    color: var(--cream);
+    border: none;
+    border-radius: 3px;
+    padding: 10px 22px;
+    font-family: 'Source Serif 4', serif;
+    font-size: 14px;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+  }
+  .copy-prompt-btn:hover { background: var(--accent); }
+  .copy-prompt-btn:active { transform: scale(0.97); }
+  .copy-prompt-btn.copied { background: #4a7a50; }
+
+  .prompt-preview {
+    margin-top: 14px;
+    background: var(--code-bg);
+    border-radius: 4px;
+    padding: 14px 16px;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    color: var(--code-text);
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .beautify-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 8px;
+    gap: 12px;
+  }
+
+  .beautify-hint {
+    font-size: 12px;
+    font-style: italic;
+    color: #9a8a74;
+  }
+
+  .beautify-btn {
+    background: transparent;
+    color: var(--accent);
+    border: 1.5px solid var(--accent);
+    border-radius: 3px;
+    padding: 5px 14px;
+    font-family: 'Source Serif 4', serif;
+    font-size: 13px;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s, color 0.2s, transform 0.1s;
+  }
+  .beautify-btn:hover { background: var(--accent); color: #fff; }
+  .beautify-btn:active { transform: scale(0.97); }
+  .beautify-btn.done { background: #4a7a50; color: #fff; border-color: #4a7a50; }
+
+  /* Sub-steps list */
+  .substeps {
+    list-style: none;
+    counter-reset: sub;
+    margin-top: 10px;
+  }
+
+  .substeps li {
+    counter-increment: sub;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--warm-mid);
+    font-size: 15.5px;
+    color: #3d3228;
+  }
+  .substeps li:last-child { border-bottom: none; }
+
+  .substeps li::before {
+    content: counter(sub);
+    min-width: 22px;
+    height: 22px;
+    background: var(--warm-mid);
+    border: 1px solid var(--rule);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: var(--accent);
+    font-family: 'Playfair Display', serif;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* Narrative textarea */
+  .narrative-area {
+    margin-top: 14px;
+  }
+
+  .narrative-area label {
+    display: block;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent-light);
+    margin-bottom: 8px;
+  }
+
+  textarea {
+    width: 100%;
+    min-height: 180px;
+    background: #fff;
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: 14px 16px;
+    font-family: 'Source Serif 4', serif;
+    font-size: 15.5px;
+    line-height: 1.7;
+    color: var(--ink);
+    resize: vertical;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  textarea:focus {
+    outline: none;
+    border-color: var(--accent-light);
+    box-shadow: 0 0 0 3px rgba(176,122,80,0.15);
+  }
+  textarea::placeholder { color: #b09c82; font-style: italic; }
+
+  /* Review prompt builder */
+  .review-box {
+    margin-top: 16px;
+    background: var(--code-bg);
+    border-radius: 4px;
+    padding: 18px 20px;
+    position: relative;
+  }
+
+  .review-box pre {
+    font-family: 'Courier New', monospace;
+    font-size: 13.5px;
+    color: var(--code-text);
+    white-space: pre-wrap;
+    word-break: break-word;
+    line-height: 1.6;
+  }
+
+  .review-box pre .label {
+    color: var(--code-accent);
+    font-weight: bold;
+  }
+
+  .review-box pre .placeholder {
+    color: #8fa89a;
+    font-style: italic;
+  }
+
+  .review-box pre .dynamic {
+    color: #9ed4c0;
+  }
+
+  .copy-review-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: rgba(255,255,255,0.12);
+    color: var(--code-accent);
+    border: 1px solid rgba(212,169,106,0.4);
+    border-radius: 3px;
+    padding: 4px 11px;
+    font-family: 'Source Serif 4', serif;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .copy-review-btn:hover { background: rgba(255,255,255,0.2); }
+  .copy-review-btn.copied { color: #9ed4c0; border-color: #9ed4c0; }
+
+  /* Divider */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--rule);
+    margin: 36px 0;
+  }
+
+  /* Footer note */
+  .footer-note {
+    font-size: 13.5px;
+    color: #8a7a66;
+    font-style: italic;
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 24px;
+    border-top: 1px solid var(--warm-mid);
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .page { padding: 32px 20px 60px; }
+    h1 { font-size: 1.6rem; }
+    .copy-btn { position: static; margin-top: 10px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <div class="institution">Brandeis Osher Lifelong Learning Institute &nbsp;·&nbsp; Writing Workshop</div>
+    <h1>Narrative Prompt Builder</h1>
+    <p class="subtitle">A guided workflow for crafting your personal narrative with Claude as writing coach</p>
+  </header>
+
+  <!-- STEP 1 -->
+  <div class="step">
+    <h2><span class="step-badge">1</span> First Step — Copy the Coaching Instructions into Claude</h2>
+    <p>Open a new Claude conversation. Copy the block below, paste it in, and press <strong>Enter</strong>. This establishes Claude as your personal writing coach for BOLLI.</p>
+
+    <div class="instructions-block" id="coachingBlock">
+      You are a writing coach at BOLLI (Brandeis Osher Lifelong Learning Institute), working with retired adult learners aged 60–85 who are writing narrative prompts to use with Claude. Your role is warm, specific, and encouraging.<br><br>
+      When reviewing a narrative draft, give feedback in three parts:<br>
+      1. Two specific things that are working well — quote actual phrases from their text.<br>
+      2. One concrete suggestion to strengthen it (usually: add more personal context, be clearer about what they actually want to learn, or reveal more about their relationship to the topic).<br>
+      3. A brief note on what a visualization of this narrative might look like — what themes it might emphasize.
+      <div class="copy-btn-row">
+        <button class="copy-btn" onclick="copyBlock('coachingBlock', this)">Copy</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="step">
+    <h2><span class="step-badge">2</span> First Version &amp; All Subsequent Iterations</h2>
+    <p>Write or paste your narrative draft below. Then use the <em>Review &amp; Advise</em> prompt that appears beneath it to send your current version to Claude.</p>
+
+    <ul class="substeps">
+      <li>Paste or write your first draft in the field below.</li>
+      <li>Copy the generated <em>Review and advise</em> prompt and paste it into Claude.</li>
+      <li>Using Claude's feedback, revise your narrative in the field below.</li>
+      <li>Repeat until your narrative feels ready to submit.</li>
+    </ul>
+
+    <div class="narrative-area">
+      <label for="narrativeText">Current iteration of your narrative</label>
+      <textarea
+        id="narrativeText"
+        placeholder="Write or paste your narrative here…"
+        oninput="updateReview()"
+      ></textarea>
+      <div class="beautify-row">
+        <span class="beautify-hint">Reflows and tidies spacing — no words added or removed</span>
+        <button class="beautify-btn" onclick="beautifyText(this)">✦ Beautify</button>
+      </div>
+    </div>
+
+    <div class="review-box">
+      <button class="copy-review-btn" onclick="copyReview(this)">Copy</button>
+      <pre id="reviewPrompt"><span class="label">Review and advise:</span>
+<span class="placeholder">[Your narrative will appear here once you type above]</span></pre>
+    </div>
+  </div>
+
+  <!-- STEP 3: Copy final prompt for use -->
+  <div class="step">
+    <h2><span class="step-badge">3</span> Final Step — Generate Your Narrative as an HTML Artifact</h2>
+    <p>When your narrative is ready, click the button below. It copies a prompt that instructs Claude to render your narrative as a polished HTML file artifact — with no API calls embedded.</p>
+    <p>Paste it into Claude and press <strong>Enter</strong>.</p>
+    <div class="copy-btn-row" style="margin-top: 18px;">
+      <button class="copy-prompt-btn" id="copyPromptBtn" onclick="copyFinalPrompt(this)">Copy Prompt for Use</button>
+    </div>
+    <div id="promptPreview" class="prompt-preview" style="display:none;"></div>
+  </div>
+
+  <div class="footer-note">
+    BOLLI Writing Workshop &nbsp;·&nbsp; Narrative Prompt Builder &nbsp;·&nbsp; jhnday.github.io
+  </div>
+
+</div>
+
+<script>
+  const COACHING_TEXT = `You are a writing coach at BOLLI (Brandeis Osher Lifelong Learning Institute), working with retired adult learners aged 60–85 who are writing narrative prompts to use with Claude. Your role is warm, specific, and encouraging.
+
+When reviewing a narrative draft, give feedback in three parts:
+1. Two specific things that are working well — quote actual phrases from their text.
+2. One concrete suggestion to strengthen it (usually: add more personal context, be clearer about what they actually want to learn, or reveal more about their relationship to the topic).
+3. A brief note on what a visualization of this narrative might look like — what themes it might emphasize.`;
+
+  function copyBlock(blockId, btn) {
+    navigator.clipboard.writeText(COACHING_TEXT).then(() => {
+      const orig = btn.textContent;
+      btn.textContent = 'Copied ✓';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+
+  function updateReview() {
+    const text = document.getElementById('narrativeText').value.trim();
+    const pre = document.getElementById('reviewPrompt');
+    if (!text) {
+      pre.innerHTML = '<span class="label">Review and advise:</span>\n<span class="placeholder">[Your narrative will appear here once you type above]</span>';
+    } else {
+      pre.innerHTML = '<span class="label">Review and advise:</span> <span class="dynamic">' + escapeHtml(text) + '</span>';
+    }
+  }
+
+  function escapeHtml(str) {
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function copyReview(btn) {
+    const text = document.getElementById('narrativeText').value.trim();
+    if (!text) { return; }
+    const prompt = 'Review and advise: ' + text;
+    navigator.clipboard.writeText(prompt).then(() => {
+      const orig = btn.textContent;
+      btn.textContent = 'Copied ✓';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+  function copyFinalPrompt(btn) {
+    const narrative = document.getElementById('narrativeText').value.trim();
+    const suffix = '\n\ncreate an html file artifact for this response - don\'t create any api calls in the artifact';
+    const prompt = narrative
+      ? 'Review and advise: ' + narrative + suffix
+      : suffix.trim();
+    navigator.clipboard.writeText(prompt).then(() => {
+      const orig = btn.textContent;
+      btn.textContent = 'Copied ✓';
+      btn.classList.add('copied');
+      // Show preview
+      const preview = document.getElementById('promptPreview');
+      preview.textContent = prompt;
+      preview.style.display = 'block';
+      setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+  function beautifyText(btn) {
+    const ta = document.getElementById('narrativeText');
+    const raw = ta.value;
+    if (!raw.trim()) return;
+
+    // 1. Normalise line endings
+    let text = raw.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+
+    // 2. Split into paragraphs on blank lines
+    let paragraphs = text.split(/\n{2,}/);
+
+    paragraphs = paragraphs.map(para => {
+      const lines = para.split('\n');
+
+      // Detect a numbered/lettered list paragraph (lines starting with 1. / a. / - / •)
+      const listPattern = /^(\s*(\d+[\.\):]|[a-zA-Z][\.\):]|[-•*])\s)/;
+      const isListBlock = lines.every(l => l.trim() === '' || listPattern.test(l));
+
+      if (isListBlock) {
+        // Tidy each list item individually
+        return lines
+          .filter(l => l.trim() !== '')
+          .map(l => l.trim())
+          .join('\n');
+      }
+
+      // Plain prose: join all lines into one, collapse internal whitespace,
+      // then wrap at ~80 chars on word boundaries
+      const joined = lines.map(l => l.trim()).join(' ').replace(/\s+/g, ' ').trim();
+      return wordWrap(joined, 80);
+    });
+
+    // 3. Re-join paragraphs with a blank line between them
+    ta.value = paragraphs.join('\n\n');
+    updateReview();
+
+    // Brief feedback on the button
+    const orig = btn.textContent;
+    btn.textContent = '✦ Done';
+    btn.classList.add('done');
+    setTimeout(() => { btn.textContent = orig; btn.classList.remove('done'); }, 1800);
+  }
+
+  function wordWrap(text, maxLen) {
+    const words = text.split(' ');
+    const lines = [];
+    let current = '';
+    for (const word of words) {
+      if (!current) {
+        current = word;
+      } else if ((current + ' ' + word).length <= maxLen) {
+        current += ' ' + word;
+      } else {
+        lines.push(current);
+        current = word;
+      }
+    }
+    if (current) lines.push(current);
+    return lines.join('\n');
+  }
+</script>
+</body>
+</html>
