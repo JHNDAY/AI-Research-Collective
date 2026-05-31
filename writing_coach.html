@@ -553,7 +553,7 @@ When reviewing a narrative draft, give feedback in three parts:
     const narrative = document.getElementById('narrativeText').value.trim();
     const suffix = 'create an html file artifact for this response - don\'t create any api calls in the artifact';
     const prompt = narrative
-      ? 'Review and advise: ' + narrative + '\n\n' + suffix
+      ? narrative + '\n\n' + suffix
       : suffix;
     navigator.clipboard.writeText(prompt).then(() => {
       const orig = btn.textContent;
