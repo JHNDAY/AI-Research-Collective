@@ -252,6 +252,35 @@
   .beautify-btn:active { transform: scale(0.97); }
   .beautify-btn.done { background: #4a7a50; color: #fff; border-color: #4a7a50; }
 
+  .beautify-preview {
+    margin-top: 14px;
+    background: #fff;
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: 18px 20px;
+    font-family: 'Source Serif 4', serif;
+    font-size: 15.5px;
+    line-height: 1.75;
+    color: var(--ink);
+  }
+  .beautify-preview h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 10px;
+  }
+  .beautify-preview .subhead {
+    font-weight: 600;
+    margin-bottom: 14px;
+    display: block;
+  }
+  .beautify-preview p {
+    margin-bottom: 12px;
+    color: #3d3228;
+  }
+  .beautify-preview p:last-child { margin-bottom: 0; }
+
   /* Sub-steps list */
   .substeps {
     list-style: none;
@@ -449,6 +478,7 @@
         <span class="beautify-hint">Reflows and tidies spacing — no words added or removed</span>
         <button class="beautify-btn" onclick="beautifyText(this)">✦ Beautify</button>
       </div>
+      <div id="beautifyPreview" class="beautify-preview" style="display:none;"></div>
     </div>
 
     <div class="review-box">
@@ -521,19 +551,30 @@ When reviewing a narrative draft, give feedback in three parts:
   }
   function copyFinalPrompt(btn) {
     const narrative = document.getElementById('narrativeText').value.trim();
-    const suffix = '\n\ncreate an html file artifact for this response - don\'t create any api calls in the artifact';
+    const suffix = 'create an html file artifact for this response - don\'t create any api calls in the artifact';
     const prompt = narrative
-      ? 'Review and advise: ' + narrative + suffix
-      : suffix.trim();
+      ? 'Review and advise: ' + narrative + '\n\n' + suffix
+      : suffix;
     navigator.clipboard.writeText(prompt).then(() => {
       const orig = btn.textContent;
       btn.textContent = 'Copied ✓';
       btn.classList.add('copied');
-      // Show preview
       const preview = document.getElementById('promptPreview');
       preview.textContent = prompt;
       preview.style.display = 'block';
       setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
+    }).catch(() => {
+      // Fallback: select a hidden textarea and copy
+      const tmp = document.createElement('textarea');
+      tmp.value = prompt;
+      tmp.style.position = 'fixed'; tmp.style.opacity = '0';
+      document.body.appendChild(tmp);
+      tmp.select();
+      document.execCommand('copy');
+      document.body.removeChild(tmp);
+      const preview = document.getElementById('promptPreview');
+      preview.textContent = prompt;
+      preview.style.display = 'block';
     });
   }
   function beautifyText(btn) {
@@ -548,26 +589,18 @@ When reviewing a narrative draft, give feedback in three parts:
     let blocks = text.split(/\n{2,}/);
 
     const listPattern = /^(\s*(\d+[\.\):]|[a-zA-Z][\.\):]|[-•*])\s)/;
-
-    // Topic-shift signal words — a sentence starting with these likely begins a new subject
-    const topicShift = /^(However|But|Also|Additionally|Another|Now|Next|Finally|Note|Please|Assume|One idea|A key|The key|This means|In addition|For example|For instance|Consider|Important|Importantly|If |When |While |Although |Because )/i;
+    const topicShift = /^(However|But|Also|Additionally|Another|Now|Next|Finally|Note|Please|Assume|One idea|A key|The key|This means|In addition|For example|For instance|Consider|Important|Importantly|If |When |While |Although |Because |Part of|I think|I keep|I want)/i;
 
     blocks = blocks.map(block => {
       const lines = block.split('\n').map(l => l.trim()).filter(l => l !== '');
 
-      // Detect numbered/bulleted list — keep each item on its own line
       if (lines.every(l => listPattern.test(l))) {
         return lines.join('\n');
       }
 
-      // Join ragged lines into one clean string
       const joined = lines.join(' ').replace(/\s+/g, ' ').trim();
-
-      // Split into individual sentences on ". ", "? ", "! "
       const sentenceBreaks = joined.split(/(?<=[.?!])\s+/);
 
-      // Group sentences into topic paragraphs: start a new group when a
-      // topic-shift word is detected at the start of a sentence
       const groups = [];
       let current = [];
       for (const sentence of sentenceBreaks) {
@@ -583,8 +616,9 @@ When reviewing a narrative draft, give feedback in three parts:
       return groups.join('\n\n');
     });
 
-    // 3. Separate blocks with a blank line; trim any empty blocks
     ta.value = blocks.filter(b => b.trim()).join('\n\n');
+    const preview = document.getElementById('beautifyPreview');
+    if (preview) preview.style.display = 'none';
     updateReview();
 
     const orig = btn.textContent;
