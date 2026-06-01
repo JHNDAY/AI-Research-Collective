@@ -252,6 +252,23 @@
   .beautify-btn:active { transform: scale(0.97); }
   .beautify-btn.done { background: #4a7a50; color: #fff; border-color: #4a7a50; }
 
+  .copy-review-btn-inline {
+    background: transparent;
+    color: var(--accent);
+    border: 1.5px solid var(--accent);
+    border-radius: 3px;
+    padding: 5px 14px;
+    font-family: 'Source Serif 4', serif;
+    font-size: 13px;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s, color 0.2s, transform 0.1s;
+  }
+  .copy-review-btn-inline:hover { background: var(--accent); color: #fff; }
+  .copy-review-btn-inline:active { transform: scale(0.97); }
+  .copy-review-btn-inline.copied { background: #4a7a50; color: #fff; border-color: #4a7a50; }
+
   .beautify-preview {
     margin-top: 14px;
     background: #fff;
@@ -477,23 +494,17 @@
       <div class="beautify-row">
         <span class="beautify-hint">Reflows and tidies spacing — no words added or removed</span>
         <button class="beautify-btn" onclick="beautifyText(this)">✦ Beautify</button>
+        <button class="copy-review-btn-inline" onclick="copyReview(this)">Copy for Review</button>
       </div>
       <div id="beautifyPreview" class="beautify-preview" style="display:none;"></div>
     </div>
 
-    <div class="review-box">
-      <pre id="reviewPrompt"><span class="label">Review and advise:</span>
-<span class="placeholder">[Your narrative will appear here once you type above]</span></pre>
-      <div class="review-box-footer">
-        <button class="copy-review-btn" onclick="copyReview(this)">Copy</button>
-      </div>
-    </div>
   </div>
 
   <!-- STEP 3: Copy final prompt for use -->
   <div class="step">
     <h2><span class="step-badge">3</span> Final Step — Generate Your Narrative as an HTML Artifact</h2>
-    <p>When your narrative is ready, click the button below. It copies a prompt that instructs Claude to render your narrative as a polished HTML file artifact — with no API calls embedded.</p>
+    <p>When your narrative is ready, click the button below. It copies your narrative together with an instruction telling Claude to create an HTML file artifact that <strong>visualizes Claude's response to your narrative</strong> — with no API calls embedded.</p>
     <p>Paste it into Claude and press <strong>Enter</strong>.</p>
     <div class="copy-btn-row" style="margin-top: 18px;">
       <button class="copy-prompt-btn" id="copyPromptBtn" onclick="copyFinalPrompt(this)">Copy Prompt for Use</button>
@@ -551,7 +562,7 @@ When reviewing a narrative draft, give feedback in three parts:
   }
   function copyFinalPrompt(btn) {
     const narrative = document.getElementById('narrativeText').value.trim();
-    const suffix = 'create an html file artifact for this response - don\'t create any api calls in the artifact';
+    const suffix = 'Please create an HTML file artifact that visualizes your response to this narrative — don\'t create any API calls in the artifact.';
     const prompt = narrative
       ? narrative + '\n\n' + suffix
       : suffix;
