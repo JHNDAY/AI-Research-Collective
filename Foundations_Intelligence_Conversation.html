@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Foundations: Intelligence &amp; Conversation — BOLLI AI Literacy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+SC:wght@400;600;700&family=Playfair+Display:ital,wght@0,700;0,900;1,400;1,700&family=Oswald:wght@300;400;600&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream:      #FAF8F2;
+    --paper:      #FFFFFF;
+    --ink:        #18160F;
+    --navy:       #1B3557;
+    --navy-dk:    #112240;
+    --gold:       #9A7C2F;
+    --gold-lt:    #F5EDD6;
+    --gold-bright:#F6C945;
+    --teal:       #1A6B72;
+    --teal-lt:    #E4F2F3;
+    --rule:       #D6CFC0;
+    --muted:      #6B6456;
+    --blue-lt:    #E8F0F8;
+    --shadow:     0 2px 16px rgba(24,22,15,.07);
+    --shadow-lg:  0 6px 32px rgba(24,22,15,.13);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Lora', Georgia, serif;
+    background: var(--cream);
+    color: var(--ink);
+    line-height: 1.65;
+    min-height: 100vh;
+  }
+
+  /* ── Top stripe ── */
+  .top-stripe {
+    background: linear-gradient(90deg, var(--navy) 0%, var(--gold-bright) 50%, var(--navy) 100%);
+    height: 5px;
+  }
+
+  /* ── Masthead ── */
+  .masthead {
+    background: var(--navy-dk);
+    padding: 44px 32px 36px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .masthead::after {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    border: 50px solid rgba(246,201,69,.10);
+    pointer-events: none;
+  }
+  .masthead-eyebrow {
+    font-family: 'Oswald', sans-serif;
+    font-size: .68rem;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--gold-bright);
+    opacity: .8;
+    margin-bottom: 14px;
+  }
+  .masthead-title {
+    font-family: 'Cormorant SC', Georgia, serif;
+    font-size: clamp(1.9rem, 4.5vw, 3.2rem);
+    font-weight: 600;
+    letter-spacing: .06em;
+    color: #fff;
+    line-height: 1.15;
+    margin-bottom: 10px;
+    position: relative; z-index: 1;
+  }
+  .masthead-title .gold { color: var(--gold-bright); }
+  .masthead-rule {
+    display: flex; align-items: center; gap: 12px;
+    max-width: 480px; margin: 16px auto 14px;
+  }
+  .masthead-rule hr { flex:1; border:none; border-top:1px solid rgba(246,201,69,.3); }
+  .masthead-rule .gem {
+    width: 6px; height: 6px;
+    background: var(--gold-bright);
+    transform: rotate(45deg); flex-shrink: 0;
+  }
+  .masthead-subtitle {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(.95rem, 2vw, 1.2rem);
+    color: rgba(255,255,255,.72);
+    position: relative; z-index: 1;
+  }
+
+  /* ── Container ── */
+  .container { max-width: 1320px; margin: 0 auto; padding: 40px 24px 64px; }
+
+  /* ── Intro box ── */
+  .intro-box {
+    background: var(--teal-lt);
+    border-left: 4px solid var(--teal);
+    border-radius: 0 3px 3px 0;
+    padding: 22px 26px;
+    margin-bottom: 40px;
+    font-size: .98rem;
+    line-height: 1.8;
+    color: var(--ink);
+  }
+  .intro-box strong { color: var(--teal); }
+  .intro-box em { color: var(--navy); }
+
+  /* ── Foundation grid ── */
+  .foundation-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    margin-bottom: 40px;
+  }
+
+  /* ── Foundation card ── */
+  .foundation-card {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-top: 4px solid var(--navy);
+    border-radius: 3px;
+    box-shadow: var(--shadow);
+    transition: box-shadow .25s, transform .25s;
+    overflow: hidden;
+  }
+  .foundation-card:hover { box-shadow: var(--shadow-lg); }
+
+  .card-header {
+    padding: 22px 24px 0;
+  }
+
+  .foundation-card h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.1rem, 2vw, 1.4rem);
+    font-weight: 700;
+    color: var(--navy);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+  .icon { font-size: 1.6em; flex-shrink: 0; }
+
+  .card-summary {
+    font-family: 'Lora', serif;
+    font-style: italic;
+    font-size: .93rem;
+    color: var(--muted);
+    line-height: 1.55;
+    padding: 0 24px 18px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  /* ── Collapse button ── */
+  .collapse-button,
+  .collapse-button-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: calc(100% - 48px);
+    margin: 16px 24px;
+    padding: 11px 18px;
+    background: var(--navy);
+    color: var(--gold-bright);
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    font-family: 'Oswald', sans-serif;
+    font-size: .82rem;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    transition: background .2s, color .2s;
+  }
+  .collapse-button:hover,
+  .collapse-button-bottom:hover {
+    background: var(--gold-bright);
+    color: var(--navy);
+  }
+  .collapse-button-bottom { display: none; }
+  .foundation-card.expanded .collapse-button-bottom { display: flex; }
+
+  .collapse-icon {
+    font-size: 1em;
+    transition: transform .3s;
+  }
+  .foundation-card.expanded .collapse-icon { transform: rotate(180deg); }
+
+  /* ── Card content ── */
+  .card-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .5s ease;
+  }
+  .foundation-card.expanded .card-content {
+    max-height: 12000px;
+    overflow: visible;
+  }
+  .card-content-inner { padding: 0 24px 8px; }
+
+  /* ── Detail sections ── */
+  .detail-section {
+    margin-top: 22px;
+    padding-top: 22px;
+    border-top: 1px solid var(--rule);
+  }
+  .detail-section:first-child { border-top: none; margin-top: 10px; }
+
+  .detail-section h3 {
+    font-family: 'Oswald', sans-serif;
+    font-size: .72rem;
+    font-weight: 600;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 12px;
+    padding-left: 14px;
+    border-left: 3px solid var(--gold-bright);
+  }
+
+  .detail-section p {
+    font-size: .95rem;
+    color: var(--ink);
+    line-height: 1.8;
+    margin-bottom: 12px;
+  }
+  .detail-section p:last-child { margin-bottom: 0; }
+  .detail-section em { color: var(--teal); font-style: italic; }
+  .detail-section strong { color: var(--navy); }
+
+  /* ── Highlight span ── */
+  .highlight {
+    background: var(--gold-lt);
+    padding: 2px 6px;
+    border-radius: 2px;
+    font-weight: 600;
+    color: var(--navy);
+  }
+
+  /* ── Callout boxes ── */
+  .strength-box {
+    background: var(--gold-lt);
+    border-left: 4px solid var(--gold);
+    border-radius: 0 3px 3px 0;
+    padding: 16px 18px;
+    margin: 14px 0;
+    font-size: .93rem;
+    line-height: 1.75;
+    color: var(--ink);
+  }
+  .strength-box strong { color: var(--navy); }
+
+  .strength-box.alert {
+    background: #FFF0F0;
+    border-color: #C0392B;
+  }
+  .strength-box.alert strong { color: #C0392B; }
+
+  .strength-box.success {
+    background: var(--teal-lt);
+    border-color: var(--teal);
+  }
+  .strength-box.success strong { color: var(--teal); }
+
+  .example-box {
+    background: var(--teal-lt);
+    border-left: 4px solid var(--teal);
+    border-radius: 0 3px 3px 0;
+    padding: 16px 18px;
+    margin: 14px 0;
+  }
+  .example-box h4 {
+    font-family: 'Oswald', sans-serif;
+    font-size: .7rem;
+    font-weight: 600;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 10px;
+  }
+  .example-box p {
+    font-size: .93rem;
+    color: var(--ink);
+    line-height: 1.75;
+    margin-bottom: 8px !important;
+  }
+  .example-box p:last-child { margin-bottom: 0 !important; }
+  .example-box em { color: var(--navy); font-style: italic; }
+  .example-box ul {
+    margin: 10px 0 0 18px;
+    font-size: .92rem;
+    line-height: 1.8;
+    color: var(--ink);
+  }
+
+  /* ── Conversation flow ── */
+  .conversation-flow {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 8px;
+    margin: 18px 0;
+    padding: 22px 18px;
+    background: var(--navy);
+    border-radius: 3px;
+  }
+  .flow-item { text-align: center; flex: 1; }
+  .flow-icon { font-size: 2.2em; margin-bottom: 8px; }
+  .flow-label {
+    font-family: 'Oswald', sans-serif;
+    font-size: .78rem;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--gold-bright);
+    margin-bottom: 4px;
+  }
+  .flow-desc {
+    font-family: 'Lora', serif;
+    font-style: italic;
+    font-size: .82rem;
+    color: rgba(255,255,255,.65);
+  }
+  .flow-arrow {
+    font-size: 1.8em;
+    color: var(--gold-bright);
+    opacity: .6;
+    flex: 0;
+  }
+
+  /* ── Word meaning grid ── */
+  .word-meaning-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin: 18px 0;
+  }
+  .meaning-card {
+    background: var(--cream);
+    border: 1px solid var(--rule);
+    border-top: 3px solid var(--navy);
+    border-radius: 3px;
+    padding: 16px 18px;
+    transition: box-shadow .2s;
+  }
+  .meaning-card:hover { box-shadow: var(--shadow); }
+  .meaning-card h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 8px;
+  }
+  .meaning-card p {
+    font-size: .9rem;
+    line-height: 1.65;
+    color: var(--muted);
+    margin-bottom: 0 !important;
+  }
+
+  /* ── Comparison table ── */
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    box-shadow: var(--shadow);
+    border-radius: 3px;
+    overflow: hidden;
+    font-size: .88rem;
+  }
+  .comparison-table th {
+    background: var(--navy);
+    color: #fff;
+    padding: 12px 14px;
+    text-align: left;
+    font-family: 'Oswald', sans-serif;
+    font-size: .76rem;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+  .comparison-table th:first-child { border-left: 4px solid var(--gold-bright); }
+  .comparison-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+    line-height: 1.65;
+    color: var(--ink);
+  }
+  .comparison-table tr:nth-child(even) td { background: var(--cream); }
+  .comparison-table tr:hover td { background: var(--blue-lt); transition: background .18s; }
+  .comparison-table td:first-child {
+    font-weight: 600;
+    color: var(--teal);
+    font-size: .88rem;
+  }
+  /* Task balance table — who leads cell backgrounds */
+  .comparison-table td[style*="fff3e0"] { background: var(--gold-lt) !important; }
+  .comparison-table td[style*="e1f5fe"] { background: var(--blue-lt) !important; }
+  .comparison-table td[style*="e8f5e9"] { background: var(--teal-lt) !important; }
+
+  /* ── Synthesis section ── */
+  .synthesis-section {
+    background: var(--navy-dk);
+    color: #fff;
+    padding: 44px 40px;
+    border-radius: 3px;
+    margin-top: 40px;
+    border-top: 4px solid var(--gold-bright);
+  }
+  .synthesis-section h2 {
+    font-family: 'Cormorant SC', serif;
+    font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+    font-weight: 600;
+    letter-spacing: .06em;
+    color: #fff;
+    margin-bottom: 24px;
+    text-align: center;
+  }
+  .synthesis-content {
+    font-size: .97rem;
+    line-height: 1.85;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+  .synthesis-content p { margin-bottom: 18px; color: rgba(255,255,255,.85); }
+  .synthesis-content strong { color: var(--gold-bright); }
+  .synthesis-content em { color: rgba(255,255,255,.7); font-style: italic; }
+
+  .key-insight {
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(246,201,69,.25);
+    border-left: 4px solid var(--gold-bright);
+    padding: 20px 22px;
+    border-radius: 0 3px 3px 0;
+    margin: 18px 0;
+  }
+  .key-insight strong {
+    font-family: 'Oswald', sans-serif;
+    font-size: .82rem;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--gold-bright);
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 900px) {
+    .foundation-grid { grid-template-columns: 1fr; }
+    .word-meaning-grid { grid-template-columns: 1fr; }
+    .conversation-flow { flex-direction: column; }
+    .flow-arrow { transform: rotate(90deg); margin: 10px 0; }
+    .synthesis-section { padding: 30px 24px; }
+  }
+  @media (max-width: 560px) {
+    .container { padding: 24px 14px 48px; }
+    .collapse-button, .collapse-button-bottom { width: calc(100% - 28px); margin: 14px; }
+    .card-content-inner { padding: 0 14px 8px; }
+    .card-header, .card-summary { padding-left: 14px; padding-right: 14px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="top-stripe"></div>
+
+<div class="masthead">
+  <div class="masthead-eyebrow">BOLLI AI Literacy Series</div>
+  <div class="masthead-title">
+    Foundations: <span class="gold">Intelligence</span> &amp; Conversation
+  </div>
+  <div class="masthead-rule"><hr><div class="gem"></div><hr></div>
+  <div class="masthead-subtitle">Understanding How AI Enhances Your Exploration of Topics Across Subject Areas</div>
+</div>
+
+<div class="container">
+
+  <div class="intro-box">
+    <strong>For BOLLI Study Group Leaders and Participants:</strong> Before diving into how AI tools can enrich your exploration of topics across history, science, literature, and the arts, it helps to understand the fundamental principles that make AI a useful thinking partner. These four foundational concepts explain <em>why</em> AI works the way it does and <em>how</em> it complements your own judgment as a lifelong learner and intellectual discussant. Think of this as learning the "grammar" of AI interaction — once you grasp these basics, everything else becomes clearer and more intuitive.
+  </div>
+
+  <div class="foundation-grid">
+
+    <!-- ① Digital & Organic Intelligence -->
+    <div class="foundation-card" aria-expanded="false">
+      <div class="card-header">
+        <h2><span class="icon">🤝</span>Digital &amp; Organic Intelligence</h2>
+      </div>
+      <div class="card-summary">Two different kinds of "smart" that work brilliantly together</div>
+      <button class="collapse-button" onclick="toggleCard(this)" aria-label="Expand section to learn more">
+        <span class="collapse-text">Learn More</span>
+        <span class="collapse-icon">▼</span>
+      </button>
+      <div class="card-content">
+        <div class="card-content-inner">
+          <div class="detail-section">
+            <h3>What This Means for You</h3>
+            <p>As a BOLLI participant, you possess <span class="highlight">organic intelligence</span> — your life experience, intellectual curiosity, disciplinary instincts, and hard-won sense of what is interesting and why. AI brings <span class="highlight">digital intelligence</span> — vast information processing, pattern recognition across millions of texts, and tireless ability to research, summarize, and surface connections across complex topics in history, science, literature, philosophy, and the arts.</p>
+          </div>
+          <div class="detail-section">
+            <h3>Complementary Strengths</h3>
+            <table class="comparison-table">
+              <tbody>
+                <tr><th>Your Organic Intelligence</th><th>AI's Digital Intelligence</th></tr>
+                <tr><td><strong>Wisdom &amp; Judgment:</strong> Decades of lived experience, interdisciplinary perspective, knowing what actually matters in a subject</td><td><strong>Pattern Recognition:</strong> Tracking how a topic has been treated across hundreds of sources, scholars, and periods</td></tr>
+                <tr><td><strong>Contextual Understanding:</strong> Knowing the intellectual landscape, key thinkers, and what debates have come before</td><td><strong>Information Synthesis:</strong> Rapidly connecting ideas across disciplines, periods, and traditions</td></tr>
+                <tr><td><strong>Critical Perspective:</strong> Your unique viewpoint, skepticism, sense of nuance, and instinct for what rings false or oversimplified</td><td><strong>Research Speed:</strong> Finding background, timelines, counterarguments, and scholarly perspectives in seconds</td></tr>
+                <tr><td><strong>Interpretive Depth:</strong> Reading between the lines, weighing significance, understanding human consequences and meaning</td><td><strong>Consistent Availability:</strong> Always ready to explain, summarize, or explore a question — no matter how basic or advanced</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="detail-section">
+            <h3>The Partnership Model</h3>
+            <div class="strength-box"><strong>AI doesn't replace your judgment — it amplifies it.</strong> Think of digital intelligence as a research assistant who has read everything but needs your wisdom to know what matters. Your organic intelligence provides the "why" and the "so what"; AI provides the "who," "when," and "help me understand the background."</div>
+            <div class="example-box">
+              <h4>BOLLI Course Example</h4>
+              <p><strong>You bring:</strong> "I'm trying to understand the debate over Rosalind Franklin's role in the DNA discovery — what she actually contributed, how credit was assigned at the time, and how historians have revisited it since."</p>
+              <p><strong>AI brings:</strong> "Here's a timeline of the DNA discovery, the specific contributions of Franklin, Watson, Crick, and Wilkins, how the 1962 Nobel Prize was awarded, and three scholarly frameworks historians use to analyze gender and credit in mid-century science."</p>
+              <p><strong>Together you create:</strong> A richer, better-informed perspective for your own thinking and for the group discussion — grounded in your judgment, filled out with AI's research.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="collapse-button-bottom" onclick="toggleCard(this)">
+        <span class="collapse-text">Learn More</span>
+        <span class="collapse-icon">▼</span>
+      </button>
+    </div>
+
+    <!-- ② Importance of Conversation -->
+    <div class="foundation-card" aria-expanded="false">
+      <div class="card-header">
+        <h2><span class="icon">💬</span>Importance of Conversation</h2>
+      </div>
+      <div class="card-summary">AI works through dialogue, not commands — just like teaching</div>
+      <button class="collapse-button" onclick="toggleCard(this)" aria-label="Expand section to learn more">
+        <span class="collapse-text">Learn More</span>
+        <span class="collapse-icon">▼</span>
+      </button>
+      <div class="card-content">
+        <div class="card-content-inner">
+          <div class="detail-section">
+            <h3>Why Conversation Matters</h3>
+            <p>Unlike traditional software where you click buttons and fill forms, AI interaction is fundamentally <span class="highlight">conversational</span>. This is actually a natural fit for BOLLI participants, because you already engage the world through dialogue and intellectual exchange! You don't need to learn programming or master complex interfaces — you just need to talk to AI the way you'd talk to a well-informed colleague who happens to have read everything.</p>
+          </div>
+          <div class="detail-section">
+            <h3>The Conversation Flow</h3>
+            <div class="conversation-flow">
+              <div class="flow-item">
+                <div class="flow-icon">🎯</div>
+                <div class="flow-label">Initial Prompt</div>
+                <div class="flow-desc">Share your thoughts, even messy ones</div>
+              </div>
+              <div class="flow-arrow">→</div>
+              <div class="flow-item">
+                <div class="flow-icon">✨</div>
+                <div class="flow-label">AI Response</div>
+                <div class="flow-desc">Organized output based on your input</div>
+              </div>
+              <div class="flow-arrow">→</div>
+              <div class="flow-item">
+                <div class="flow-icon">🔄</div>
+                <div class="flow-label">Refinement</div>
+                <div class="flow-desc">Iterate until it's exactly right</div>
+              </div>
+            </div>
+          </div>
+          <div class="detail-section">
+            <h3>Conversation ≠ Perfection</h3>
+            <div class="strength-box"><strong>Your first prompt doesn't need to be perfect.</strong> In fact, "messy" prompts are often better! AI can sort through your stream of consciousness, identify the key ideas, and give you organized, useful output. Throw in everything you're thinking about — background, questions, hunches — and AI helps you sort it out.</div>
+            <div class="example-box">
+              <h4>Real BOLLI Course Conversation</h4>
+              <p><strong>First message:</strong> "I'm preparing a session on the Harlem Renaissance and I'm not sure how to frame it — there's the literature, the music, the visual arts, the migration story, and the political backdrop with Marcus Garvey and the NAACP, and I can't figure out what the throughline is..."</p>
+              <p><strong>Follow-up:</strong> "That's helpful. Can you focus specifically on how the literary figures related to each other — who influenced whom, and where were the key tensions or disagreements?"</p>
+              <p><strong>Third iteration:</strong> "Great. Can you suggest three discussion questions that would draw out those tensions for a group of engaged non-specialists?"</p>
+              <p><em>Notice: Each message builds on the last. Nothing is wasted. The conversation naturally sharpens your preparation.</em></p>
+            </div>
+          </div>
+          <div class="detail-section">
+            <h3>Conversation Enables Deeper Understanding</h3>
+            <p>Because AI interaction is conversational, you deepen your understanding <em>while</em> you explore a topic. Ask "why did this happen?" or "what are the strongest counterarguments?" or "what am I missing?" and AI engages with you seriously. This is fundamentally different from googling — it's collaborative exploration that builds your grasp of a subject with each exchange.</p>
+          </div>
+        </div>
+      </div>
+      <button class="collapse-button-bottom" onclick="toggleCard(this)">
+        <span class="collapse-text">Learn More</span>
+        <span class="collapse-icon">▼</span>
+      </button>
+    </div>
+
+    <!-- ③ Balancing Strengths -->
+    <div class="foundation-card" aria-expanded="false">
+      <div class="card-header">
+        <h2><span class="icon">⚖️</span>Balancing the Strengths</h2>
+      </div>
+      <div class="card-summary">Knowing when to lead and when to let AI do the heavy lifting — in course exploration and discussion prep</div>
+      <button class="collapse-button" onclick="toggleCard(this)" aria-label="Expand section to learn more">
+        <span class="collapse-text">Learn More</span>
+        <span class="collapse-icon">▼</span>
+      </button>
+      <div class="card-content">
+        <div class="card-content-inner">
+          <div class="detail-section">
+            <h3>The Balance Principle</h3>
+            <p>Effective AI partnership means understanding which tasks play to each intelligence's strengths. You shouldn't try to do what AI does better, and AI can't do what requires your human judgment. The art is knowing which is which — and for BOLLI course exploration, that distinction is actually quite clear.</p>
+          </div>
+          <div class="detail-section">
+            <h3>Task-by-Task Balance</h3>
+            <table class="comparison-table">
+              <tbody>
+                <tr><th>BOLLI Course Task</th><th>Who Leads?</th><th>Why?</th></tr>
+                <tr><td><strong>Deciding which topics and questions matter to you</strong></td><td style="background:var(--gold-lt);">👤 You Lead</td><td>Requires your intellectual values, curiosity, and sense of what's worth exploring</td></tr>
+                <tr><td><strong>Researching background, context, and key figures</strong></td><td style="background:var(--blue-lt);">🤖 AI Leads</td><td>Can surface timelines, key thinkers, and scholarly perspectives quickly</td></tr>
+                <tr><td><strong>Forming your own interpretation</strong></td><td style="background:var(--gold-lt);">👤 You Lead</td><td>Requires your intellectual framework, lived experience, and independent judgment</td></tr>
+                <tr><td><strong>Summarizing a complex topic or text</strong></td><td style="background:var(--blue-lt);">🤖 AI Leads</td><td>Can distill dense material into a clear, accessible narrative</td></tr>
+                <tr><td><strong>Finding alternative viewpoints and scholarly debates</strong></td><td style="background:var(--blue-lt);">🤖 AI Leads</td><td>Can surface the strongest counterarguments and competing interpretations</td></tr>
+                <tr><td><strong>Evaluating an argument's strength or a source's credibility</strong></td><td style="background:var(--gold-lt);">👤 You Lead</td><td>Requires your critical judgment about evidence, reasoning, and framing</td></tr>
+                <tr><td><strong>Exploring interdisciplinary connections</strong></td><td style="background:var(--teal-lt);">⚖️ Collaborative</td><td>AI surfaces unexpected links across fields; you assess which are genuinely illuminating</td></tr>
+                <tr><td><strong>Deciding what to contribute in discussion</strong></td><td style="background:var(--gold-lt);">👤 You Lead</td><td>Requires your voice, relationships, and reading of the room</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="detail-section">
+            <h3>Red Flags: When Balance Is Off</h3>
+            <div class="strength-box"><strong>You're asking AI to do too much when:</strong> You accept AI's summary without reading critically, let AI form your interpretations for you, or use AI-generated talking points without adding your own perspective and voice.</div>
+            <div class="strength-box alert"><strong>You're not using AI enough when:</strong> You spend an hour hunting for background you could get in two minutes, feel overwhelmed by a topic's complexity when AI could walk you through it, or avoid a subject because you don't know where to start.</div>
+            <div class="strength-box success"><strong>You've found the balance when:</strong> Preparing for a session feels energizing rather than exhausting, you arrive with a clearer sense of the terrain and sharper questions — and what you contribute to the discussion is distinctly, unmistakably <em>yours</em>.</div>
+          </div>
+          <div class="detail-section">
+            <h3>Practical Balancing Strategy</h3>
+            <div class="example-box">
+              <h4>The "Three-Pass" Method</h4>
+              <p><strong>Pass 1 (You Lead):</strong> Tell AI what you're trying to understand — your question, your confusion, what you've already read. Don't worry about being tidy.</p>
+              <p><strong>Pass 2 (AI Leads):</strong> Let AI research, organize, summarize, and surface angles you might have missed.</p>
+              <p><strong>Pass 3 (You Lead):</strong> Evaluate critically, push back, ask follow-up questions, and form your own conclusions based on what you've learned.</p>
+              <p><em>This rhythm — you frame it, AI researches it, you interpret it — creates productive partnership.</em></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="collapse-button-bottom" onclick="toggleCard(this)">
+        <span class="collapse-text">Show Less</span>
+        <span class="collapse-icon">▼</span>
+      </button>
+    </div>
+
+    <!-- ④ Meaning of Words -->
+    <div class="foundation-card" aria-expanded="false">
+      <div class="card-header">
+        <h2><span class="icon">📖</span>Meaning of Words</h2>
+      </div>
+      <div class="card-summary">How AI learns meaning from patterns — and why the words you choose in your prompts matter</div>
+      <button class="collapse-button" onclick="toggleCard(this)" aria-label="Expand section to learn more">
+        <span class="collapse-text">Learn More</span>
+        <span class="collapse-icon">▼</span>
+      </button>
+      <div class="card-content">
+        <div class="card-content-inner">
+          <div class="detail-section">
+            <h3>Words Are the Interface</h3>
+            <p>To understand how AI processes your prompts, we need to think about meaning at three different levels. Let's use a simple example — the word "dog" — to see how meaning works in AI, from concrete to complex.</p>
+          </div>
+          <div class="detail-section">
+            <h3>Level 1: The Concrete Instance</h3>
+            <div class="example-box">
+              <h4>Example: "dog"</h4>
+              <p>At the most basic level, "dog" refers to a specific, concrete thing: a four-legged domesticated animal, genus Canis. This is the dictionary definition — the literal, denotative meaning. When you write "I want to teach about dogs," AI recognizes this as the animal.</p>
+            </div>
+            <div class="strength-box"><strong>For BOLLI course research:</strong> When you use concrete, specific words — "Keynesian economics," "DNA double helix," "Romantic movement," "Meiji Restoration" — AI has clear, unambiguous concepts to work with. Vague terms like "the economics thing" or "what happened in Japan" leave AI guessing which of many possible topics you mean.</div>
+          </div>
+          <div class="detail-section">
+            <h3>Level 2: Contextual Transformation</h3>
+            <div class="example-box">
+              <h4>Example: "You sly dog!"</h4>
+              <p>Now watch what happens when context changes everything. "You sly dog!" doesn't refer to an animal at all — it's about a person behaving cleverly or cunningly. The word "dog" has been completely transformed by the context around it: the word "sly," the exclamation point, the phrase structure.</p>
+            </div>
+            <div class="strength-box"><strong>For BOLLI course research:</strong> This is why <span class="highlight">context matters so much</span> in your prompts. "Revolution" means one thing in a conversation about France in 1789, another about Russia in 1917, and something else in a discussion of scientific paradigm shifts. When you give AI context — "I'm preparing this for a discussion group of engaged non-specialists," "focus on the cultural consequences," "explain how this compares to earlier examples" — you're transforming how every word in your prompt gets interpreted.</div>
+            <p>This is why even a rambling, "messy" initial question works! Your stream of consciousness provides contextual clues that help AI understand <em>which</em> angle you're actually asking about.</p>
+          </div>
+          <div class="detail-section">
+            <h3>Level 3: The Vast Corpus of Patterns</h3>
+            <div class="example-box">
+              <h4>Example: All the ways "dog" appears in millions of texts</h4>
+              <p>Here's where AI's true power lies. During training, the AI has encountered "dog" in millions of different contexts across countless texts:</p>
+              <ul>
+                <li>"dog" near "bark," "fetch," "leash," "veterinarian" (animal context)</li>
+                <li>"dog" near "sly," "crafty," "cunning" (personality metaphor)</li>
+                <li>"hot dog" near "baseball," "mustard," "bun" (food context)</li>
+                <li>"dog days of summer" near "heat," "lazy," "August" (idiomatic usage)</li>
+                <li>"underdog" near "competition," "victory," "unlikely" (metaphorical status)</li>
+                <li>"dog-eared pages" near "book," "worn," "well-read" (descriptive metaphor)</li>
+              </ul>
+            </div>
+            <div class="strength-box"><strong>The key insight:</strong> AI doesn't have a definition of "dog" like a dictionary does. Instead, it has learned <span class="highlight">statistical patterns</span> about how "dog" appears in relationship to millions of other words across billions of sentences. When you use a word in your prompt, AI activates all the patterns it has learned about that word and uses surrounding context to figure out which patterns are relevant.</div>
+          </div>
+          <div class="detail-section">
+            <h3>What This Means for Your Prompts</h3>
+            <table class="comparison-table">
+              <tbody>
+                <tr><th>Understanding</th><th>Practical Application</th></tr>
+                <tr><td><strong>Level 1: Concrete words</strong> give AI clear reference points</td><td>Use specific terms: "double-slit experiment," not "the quantum physics thing"</td></tr>
+                <tr><td><strong>Level 2: Context</strong> tells AI which meaning you intend</td><td>Provide surrounding details: "I'm exploring this from a literary perspective" or "I want to understand the economic consequences" shapes the whole response</td></tr>
+                <tr><td><strong>Level 3: Corpus patterns</strong> let AI draw on vast knowledge</td><td>AI knows how scientific, historical, and literary concepts typically relate because it has processed millions of scholarly articles, essays, and books across every discipline</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="detail-section">
+            <h3>Two Word Challenges in BOLLI Course Research</h3>
+            <div class="example-box">
+              <h4>Challenge 1: Using Words to Identify Relationships</h4>
+              <p>When exploring a course topic, you need words that describe how ideas, figures, and forces relate to each other. The AI uses its corpus knowledge to understand relationship words: "leads to," "in response to," "depends on," "undermines," "anticipates."</p>
+              <p><strong>Example:</strong> "Explain how Darwin's theory of natural selection <em>contributed to</em> the Social Darwinism movement <em>which then shaped</em> late 19th-century attitudes toward poverty and immigration."</p>
+              <p><em>The relationship words (in italics) tell AI how to structure the causal chain you're asking about.</em></p>
+            </div>
+            <div class="example-box">
+              <h4>Challenge 2: Using Words to Search for Context</h4>
+              <p>When using AI's web search capability, your search terms activate different patterns in the corpus, which determines what gets retrieved. Too generic and you get noise; too specific and you miss important context.</p>
+              <p><strong>Generic:</strong> "modernism" → returns everything from architecture to poetry to philosophy to jazz</p>
+              <p><strong>Targeted:</strong> "literary modernism stream of consciousness Woolf Joyce narrative technique" → returns focused scholarly discussion of the specific technique you're preparing to teach</p>
+              <p><em>The more precise your language, the more useful AI's response will be.</em></p>
+            </div>
+          </div>
+          <div class="detail-section">
+            <h3>Why This Matters for You</h3>
+            <div class="strength-box"><strong>Your advantage:</strong> As an engaged lifelong learner, you already understand how context shapes meaning — it's what you do when you read between the lines of a text or notice how an author's word choice reveals a bias. When you encounter "progress," you naturally ask: progress toward what? measured how? by whose standards? You're already expert at using words critically and demanding precision.</div>
+            <div class="strength-box success"><strong>The transition:</strong> Working with AI just means applying that same critical language instinct in a slightly different direction — toward shaping your prompts rather than analyzing texts. You're not learning a new skill; you're redirecting one you already have.</div>
+          </div>
+        </div>
+      </div>
+      <button class="collapse-button-bottom" onclick="toggleCard(this)">
+        <span class="collapse-text">Show Less</span>
+        <span class="collapse-icon">▼</span>
+      </button>
+    </div>
+
+  </div><!-- /foundation-grid -->
+
+  <!-- Synthesis -->
+  <div class="synthesis-section">
+    <h2>🌟 Bringing It All Together</h2>
+    <div class="synthesis-content">
+      <p>These four foundations work together to create a powerful framework for AI-enhanced exploration of topics across every subject area BOLLI offers:</p>
+      <div class="key-insight">
+        <strong>Digital + Organic Intelligence</strong>
+        Your judgment, intellectual experience, and disciplinary instincts provide the "so what"; AI provides research depth and organizational power. Neither works as well alone.
+      </div>
+      <div class="key-insight">
+        <strong>Through Conversation</strong>
+        You deepen your understanding of a topic through natural dialogue, building on each exchange rather than trying to get the perfect answer in one shot.
+      </div>
+      <div class="key-insight">
+        <strong>With Balanced Partnership</strong>
+        You make the interpretive and evaluative judgments; AI handles research, summarization, and surfacing angles you might have missed — each playing to its strengths.
+      </div>
+      <div class="key-insight">
+        <strong>Using Words Precisely</strong>
+        Your language skills — specificity, context, framing your actual question — directly translate into better, more useful AI responses. This is learnable and improvable with every session.
+      </div>
+      <p style="margin-top:28px;"><strong>What This Means for Your BOLLI Course Work:</strong> You're not learning to "use AI" in some abstract sense. You're learning to partner with a tool that amplifies your existing strengths — your intellectual curiosity, your disciplinary knowledge, your hard-won judgment about how ideas connect and what actually matters. Whether your course explores history, science, literature, music, or philosophy, the same four foundations apply. Master these concepts, and the rest becomes intuitive.</p>
+      <p style="font-style:italic;text-align:center;color:rgba(255,255,255,.65);">Ready to put these foundations to work? The next sessions will show you exactly how to use these principles to explore topics more deeply, frame better questions, and bring richer perspectives to your BOLLI discussions.</p>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<script>
+  function toggleCard(button) {
+    const card = button.closest('.foundation-card');
+    const isExpanded = card.classList.contains('expanded');
+    card.classList.toggle('expanded');
+    const allButtons = card.querySelectorAll('.collapse-button, .collapse-button-bottom');
+    allButtons.forEach(btn => {
+      btn.querySelector('.collapse-text').textContent = isExpanded ? 'Learn More' : 'Show Less';
+    });
+    card.setAttribute('aria-expanded', card.classList.contains('expanded') ? 'true' : 'false');
+    if (isExpanded && button.classList.contains('collapse-button-bottom')) {
+      card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.foundation-card.expanded').forEach(card => {
+        card.querySelectorAll('.collapse-button, .collapse-button-bottom').forEach(btn => {
+          btn.querySelector('.collapse-text').textContent = 'Learn More';
+        });
+        card.classList.remove('expanded');
+        card.setAttribute('aria-expanded', 'false');
+      });
+    }
+  });
+</script>
+
+</body>
+</html>
