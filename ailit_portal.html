@@ -441,70 +441,6 @@
     }
     .sum-link:hover { background: var(--navy); color: #fff; border-color: var(--navy); }
 
-    /* ══════════════════════════════════════
-       COMPACT ARCHIVE GRID
-    ══════════════════════════════════════ */
-    .archive-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 0;
-      background: var(--paper);
-      border: 1px solid var(--rule);
-      border-top: 3px solid var(--navy);
-      border-radius: 3px;
-      box-shadow: var(--shadow);
-      margin-bottom: 18px;
-    }
-    .archive-col { padding: 18px 20px; }
-    .archive-col:not(:last-child) { border-right: 1px solid var(--rule); }
-
-    .se {
-      padding-bottom: 14px;
-      margin-bottom: 14px;
-      border-bottom: 1px dotted var(--rule);
-    }
-    .se:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-
-    .se-date {
-      display: inline-flex;
-      font-family: 'Oswald', sans-serif;
-      font-size: .67rem;
-      font-weight: 600;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      background: var(--gold-bright);
-      color: var(--navy);
-      padding: 2px 9px;
-      border-radius: 1px;
-      margin-bottom: 7px;
-    }
-    .se-topics {
-      list-style: none;
-      font-size: .82rem;
-      color: var(--ink);
-      line-height: 1.7;
-      margin-bottom: 8px;
-      padding-left: 2px;
-    }
-    .se-topics li::before { content: '– '; color: var(--rule); }
-    .se-topics a { color: var(--navy); font-weight: 600; text-decoration: none; }
-    .se-topics a:hover { color: var(--teal); text-decoration: underline; }
-    .se-links { display: flex; gap: 6px; flex-wrap: wrap; }
-    .se-link {
-      display: inline-block;
-      font-family: 'Lora', Georgia, serif;
-      font-size: .75rem;
-      font-style: italic;
-      color: var(--navy);
-      background: var(--blue-lt);
-      border: 1px solid #C0D4E8;
-      padding: 3px 10px;
-      border-radius: 2px;
-      text-decoration: none;
-      transition: all .18s;
-    }
-    .se-link:hover { background: var(--navy); color: #fff; border-color: var(--navy); }
-
     /* ── About / Brand section ── */
     .brand-grid {
       display: grid;
@@ -530,8 +466,6 @@
 
     /* ── Responsive ── */
     @media (max-width:900px) {
-      .archive-grid { grid-template-columns: 1fr 1fr; }
-      .archive-col:nth-child(3) { grid-column: 1 / -1; border-top: 1px solid var(--rule); border-right: none; }
     }
     @media (max-width:860px) {
       .two-col { grid-template-columns: 1fr; }
@@ -666,9 +600,9 @@
           Session Materials
         </div>
         <div class="links col">
-          <a href="#" class="link-btn" target="_blank" rel="noopener">🤖 Live AI Demo — Claude Sandbox</a>
-          <a href="#" class="link-btn" target="_blank" rel="noopener">📄 Starter Prompts Handout</a>
-          <a href="#" class="link-btn" target="_blank" rel="noopener">📊 AI Landscape 2026 — One-Pager</a>
+          <a href="https://jhnday.github.io/AI-Research-Collective/Foundations_Intelligence_Conversation.html" class="link-btn" target="_blank" rel="noopener">🏛️ Foundations of AI Conversation</a>
+          <a href="https://jhnday.github.io/AI-Research-Collective/Generative_AI_vs_RAG.html" class="link-btn" target="_blank" rel="noopener">🦋 Generative to RAG</a>
+          <a href="https://jhnday.github.io/AI-Research-Collective/writing_coach" class="link-btn" target="_blank" rel="noopener">📄 Writing Coach</a>
         </div>
       </div>
     </div>
@@ -742,40 +676,7 @@
       <div class="summary-links">
         <a href="#" class="sum-link" target="_blank" rel="noopener">🎥 Recording</a>
         <a href="#" class="sum-link" target="_blank" rel="noopener">📊 Visual Summary</a>
-        <a href="#" class="sum-link" target="_blank" rel="noopener">📄 AfterWord</a>
-        <a href="#" class="sum-link" target="_blank" rel="noopener">📋 Session Survey</a>
       </div>
-    </div>
-  </div>
-
-  <!-- ── SESSION ARCHIVES ── -->
-  <div class="section-divider">
-    <hr><div class="lozenge">Session Archive</div><hr>
-  </div>
-
-  <div class="section-block">
-    <div class="section-label">Summer 2026 — Inaugural Season</div>
-    <div class="section-title"><span class="emoji">🗂️</span>AILit SIG Sessions</div>
-
-    <div class="archive-grid">
-      <div class="archive-col">
-        <div class="se">
-          <div class="se-date">Jun 21, 2026</div>
-          <ul class="se-topics">
-            <li>Welcome &amp; AI Landscape 2026</li>
-            <li>Live Demo: Claude Sandbox</li>
-            <li>Critical Thinking &amp; Trust</li>
-            <li>Fall Theme: AI &amp; the Professions</li>
-          </ul>
-          <div class="se-links">
-            <a href="#" class="se-link" target="_blank" rel="noopener">🎥 Recording</a>
-            <a href="#" class="se-link" target="_blank" rel="noopener">📊 Summary</a>
-            <a href="#" class="se-link" target="_blank" rel="noopener">📄 AfterWord</a>
-          </div>
-        </div>
-      </div>
-      <div class="archive-col"><!-- future sessions --></div>
-      <div class="archive-col"><!-- future sessions --></div>
     </div>
   </div>
 
