@@ -618,7 +618,7 @@ When reviewing a narrative draft, give feedback in three parts:
     });
   }
   function copyEvoPrompt(btn) {
-    const prompt = 'Create a Prompt Evolution visualization of the prompt iterations in this conversation, using the template at https://docs.google.com/document/d/1QYc8yd8-wORk0Qep2Hpr8Ke02YTP6kIogdZA5q-QrKQ/edit?tab=t.0#heading=h.wcobc9h8k56';
+    const prompt = 'Create a Prompt Evolution visualization of the prompt iterations in this conversation, using the template at https://docs.google.com/document/d/1QYc8yd8-wORk0Qep2Hpr8Ke02YTP6kIogdZA5q-QrKQ/edit?tab=t.0#heading=h.wcobc9h8k56. Title the visualization "An Anatomy of a Prompt for: [infer a short title from the prompt topic developed in this conversation]".';
     navigator.clipboard.writeText(prompt).then(() => {
       const orig = btn.textContent;
       btn.textContent = '✦ Copied — paste into a new Claude conversation';
