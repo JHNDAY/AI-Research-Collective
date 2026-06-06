@@ -725,7 +725,7 @@ When reviewing a narrative draft, give feedback in three parts:
   }
 
   // ── Main beautify handler: try API, fall back to rule-based ─────────────
-  async function beautifyText(btn) {
+  function beautifyText(btn) {
     const ta = document.getElementById('narrativeText');
     const raw = ta.value;
     if (!raw.trim()) return;
@@ -734,43 +734,8 @@ When reviewing a narrative draft, give feedback in three parts:
     btn.textContent = '✦ Working…';
     btn.disabled = true;
 
-    let succeeded = false;
-    try {
-      const response = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          model: "claude-sonnet-4-20250514",
-          max_tokens: 1000,
-          messages: [{
-            role: "user",
-            content: `Reformat the following text to be more easily read by a person. Rules:
-- Do not add, remove, or change any words
-- Fix punctuation only where clearly wrong (e.g. missing question marks, missing commas before conjunctions)
-- Break the text into natural paragraphs — one idea or question per paragraph
-- Separate distinct sentences or questions onto their own lines or paragraphs when they shift topic
-- Return only the reformatted text, nothing else — no commentary, no preamble
-
-Text to reformat:
-${raw}`
-          }]
-        })
-      });
-      const data = await response.json();
-      const beautified = data.content && data.content[0] && data.content[0].text;
-      if (beautified) {
-        ta.value = beautified.trim();
-        updateReview();
-        succeeded = true;
-      }
-    } catch (e) {
-      // API unavailable — fall through to rule-based
-    }
-
-    if (!succeeded) {
-      ta.value = beautifyRuleBased(raw);
-      updateReview();
-    }
+    ta.value = beautifyRuleBased(raw);
+    updateReview();
 
     btn.textContent = '✦ Done';
     btn.classList.add('done');
