@@ -516,7 +516,7 @@
         oninput="updateReview()"
       ></textarea>
       <div class="beautify-row">
-        <span class="beautify-hint">Reflows and tidies spacing — no words added or removed</span>
+        <span class="beautify-hint">Reparagraphs and fixes punctuation — no words added or removed</span>
         <button class="beautify-btn" onclick="beautifyText(this)">✦ Beautify</button>
         <button class="copy-review-btn-inline" onclick="copyReview(this)">Copy for Review</button>
       </div>
@@ -567,6 +567,7 @@ When reviewing a narrative draft, give feedback in three parts:
   function updateReview() {
     const text = document.getElementById('narrativeText').value.trim();
     const pre = document.getElementById('reviewPrompt');
+    if (!pre) return;
     if (!text) {
       pre.innerHTML = '<span class="label">Review and advise:</span>\n<span class="placeholder">[Your narrative will appear here once you type above]</span>';
     } else {
@@ -627,54 +628,122 @@ When reviewing a narrative draft, give feedback in three parts:
     });
   }
 
+  // ── Rule-based beautifier (no API needed) ───────────────────────────────
+  function beautifyRuleBased(raw) {
+
+    // 1. Normalise whitespace and line endings
+    let text = raw.replace(/\r\n/g, '\n').replace(/\r/g, '\n')
+                  .replace(/[ \t]+/g, ' ').trim();
+
+    // 2. Merge all lines into one flow (we'll re-paragraph below)
+    text = text.split('\n').map(l => l.trim()).filter(Boolean).join(' ');
+
+    // 3. Fix punctuation before splitting into sentences
+    //    a. Question words / phrases that end without ? → add ?
+    const questionStarters = [
+      'how does','how do','how is','how are','how can','how would','how should',
+      'what is','what are','what does','what do','what would','what should','what can',
+      'why is','why are','why does','why do','why would','why should',
+      'where is','where are','where does','where do',
+      'when is','when are','when does','when do',
+      'who is','who are','who does','who would',
+      'which is','which are','which would',
+      'does this','is this','can this','could this','should this','would this',
+      'do you','can you','could you','would you','will you','shall we'
+    ];
+    // Sentence-end detector: word chars, then optional closing punct
+    const qRe = new RegExp(
+      '(' + questionStarters.map(q => q.replace(/ /g,'\\s+')).join('|') + ')' +
+      '([^.?!]*?)([.])(?=\\s|$)',
+      'gi'
+    );
+    text = text.replace(qRe, (m, start, mid, dot) => start + mid + '?');
+
+    //    b. Missing comma before coordinating conjunctions joining two clauses
+    //       e.g. "I like coffee and I like tea" → "I like coffee, and I like tea"
+    text = text.replace(
+      /([a-z])(\s+)(and|but|or|nor|so|yet|for)(\s+)([A-Z])/g,
+      '$1,$2$3$4$5'
+    );
+    text = text.replace(
+      /([a-z])(\s+)(and|but|or|nor|so|yet)(\s+)(I|we|it|they|he|she|you|this|that|there|Claude|the)\b/g,
+      '$1,$2$3$4$5'
+    );
+
+    // 4. Split into sentences on . ? ! followed by whitespace + capital
+    //    Protect common abbreviations first
+    const ABBR = ['Mr','Mrs','Ms','Dr','Prof','Sr','Jr','vs','etc','i\.e','e\.g','approx','dept','fig','no'];
+    ABBR.forEach((a, i) => {
+      text = text.replace(new RegExp('\\b' + a + '\\.', 'g'), `\x00ABBR${i}\x00`);
+    });
+
+    const rawSentences = text.split(/(?<=[.?!])\s+(?=[A-Z"'])/);
+
+    ABBR.forEach((a, i) => {
+      rawSentences.forEach((s, j) => {
+        rawSentences[j] = rawSentences[j].replace(new RegExp(`\x00ABBR${i}\x00`, 'g'), a + '.');
+      });
+    });
+
+    const sentences = rawSentences.map(s => s.trim()).filter(Boolean);
+
+    // 5. Group sentences into paragraphs
+    //    New paragraph when:
+    //    - sentence starts with a strong topic-shift word/phrase
+    //    - previous sentence was a question (ends with ?)
+    //    - sentence starts with "I believe / I think / I suspect / I keep / I want"
+    //      (personal stance shift)
+    //    - sentence is a short imperative (≤ 8 words, starts with capital verb)
+
+    const hardBreakStarters = /^(However|But|Also|Additionally|Another|Now|Next|Finally|Note|Please|In addition|For example|For instance|Consider|Important|Importantly|Here is|Here's|I believe|I think|I suspect|I keep|I want|I use|I notice|I find|What constantly|What surprises|How does|Use our|My current|My model)\b/i;
+
+    const isShortImperative = (s) => {
+      const words = s.split(/\s+/);
+      return words.length <= 9 && /^[A-Z][a-z]/.test(s) && !/^(I|We|They|He|She|It|The|A |An |This|That|There)\b/.test(s);
+    };
+
+    const paragraphs = [];
+    let current = [];
+
+    sentences.forEach((s, i) => {
+      const prev = sentences[i - 1] || '';
+      const breakBefore =
+        hardBreakStarters.test(s) ||
+        prev.endsWith('?') ||
+        (current.length > 0 && isShortImperative(s));
+
+      if (breakBefore && current.length > 0) {
+        paragraphs.push(current.join(' '));
+        current = [s];
+      } else {
+        current.push(s);
+      }
+    });
+    if (current.length) paragraphs.push(current.join(' '));
+
+    return paragraphs.join('\n\n');
+  }
+
+  // ── Main beautify handler: try API, fall back to rule-based ─────────────
   function beautifyText(btn) {
     const ta = document.getElementById('narrativeText');
     const raw = ta.value;
     if (!raw.trim()) return;
 
-    // 1. Normalise line endings
-    let text = raw.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+    const orig = btn.textContent;
+    btn.textContent = '✦ Working…';
+    btn.disabled = true;
 
-    // 2. Split on blank lines to find paragraph/block boundaries
-    let blocks = text.split(/\n{2,}/);
-
-    const listPattern = /^(\s*(\d+[\.\):]|[a-zA-Z][\.\):]|[-•*])\s)/;
-    const topicShift = /^(However|But|Also|Additionally|Another|Now|Next|Finally|Note|Please|Assume|One idea|A key|The key|This means|In addition|For example|For instance|Consider|Important|Importantly|If |When |While |Although |Because |Part of|I think|I keep|I want)/i;
-
-    blocks = blocks.map(block => {
-      const lines = block.split('\n').map(l => l.trim()).filter(l => l !== '');
-
-      if (lines.every(l => listPattern.test(l))) {
-        return lines.join('\n');
-      }
-
-      const joined = lines.join(' ').replace(/\s+/g, ' ').trim();
-      const sentenceBreaks = joined.split(/(?<=[.?!])\s+/);
-
-      const groups = [];
-      let current = [];
-      for (const sentence of sentenceBreaks) {
-        if (current.length > 0 && topicShift.test(sentence.trim())) {
-          groups.push(current.join(' '));
-          current = [sentence];
-        } else {
-          current.push(sentence);
-        }
-      }
-      if (current.length) groups.push(current.join(' '));
-
-      return groups.join('\n\n');
-    });
-
-    ta.value = blocks.filter(b => b.trim()).join('\n\n');
-    const preview = document.getElementById('beautifyPreview');
-    if (preview) preview.style.display = 'none';
+    ta.value = beautifyRuleBased(raw);
     updateReview();
 
-    const orig = btn.textContent;
     btn.textContent = '✦ Done';
     btn.classList.add('done');
+    btn.disabled = false;
     setTimeout(() => { btn.textContent = orig; btn.classList.remove('done'); }, 1800);
+
+    const preview = document.getElementById('beautifyPreview');
+    if (preview) preview.style.display = 'none';
   }
 </script>
 </body>
