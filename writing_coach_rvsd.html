@@ -567,6 +567,7 @@ When reviewing a narrative draft, give feedback in three parts:
   function updateReview() {
     const text = document.getElementById('narrativeText').value.trim();
     const pre = document.getElementById('reviewPrompt');
+    if (!pre) return;
     if (!text) {
       pre.innerHTML = '<span class="label">Review and advise:</span>\n<span class="placeholder">[Your narrative will appear here once you type above]</span>';
     } else {
