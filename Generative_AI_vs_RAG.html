@@ -338,13 +338,13 @@
 <div class="masthead">
   <div class="masthead-eyebrow">BOLLI AI Literacy Series</div>
   <div class="masthead-title">
-    <span class="gold">Generative AI</span> → RAG
+    <span class="gold">Generative AI</span> &amp; RAG
   </div>
   <div class="masthead-rule">
     <hr><div class="gem"></div><hr>
   </div>
-  <div class="masthead-subtitle">Talking Through Ideas vs. Getting the Facts</div>
-  <div class="masthead-sub2">Generative AI is your partner for discussing and assessing ideas — RAG is your tool for retrieving accurate, citable facts</div>
+  <div class="masthead-subtitle">Harvest · Repository · Mine</div>
+  <div class="masthead-sub2">Two architectures that solve the same problem — and how each one works</div>
 </div>
 
 <div class="container">
@@ -357,16 +357,16 @@
     </div>
     <div class="collapsible-content" id="genai-content">
       <div class="collapsible-inner">
-        <p><strong>Your thinking partner for discussing, interpreting, and assessing ideas — drawing on vast general knowledge to help you explore a topic, weigh arguments, and sharpen your own thinking.</strong></p>
+        <p><strong>Your thinking partner for discussing, interpreting, and assessing ideas — drawing on vast knowledge compressed into trained weights to help you explore a topic, weigh arguments, and sharpen your own thinking.</strong></p>
         <a href="https://claude.ai/public/artifacts/2087e7ae-4f2e-437b-9f5e-f19391a62637" target="_blank" class="see-how-link">▶️ See How it Works</a>
-        <p>When you want to <em>think through</em> a topic — explore its tensions, weigh competing interpretations, draft discussion questions, or assess the strength of an argument — generative AI is a brilliant, tireless interlocutor. It has absorbed enormous breadth of knowledge and can engage seriously with almost any idea your BOLLI course raises. What it cannot do is go fetch a fact for you: it cannot look up a current source, verify a claim against a live document, or tell you what was published last month. It reasons from what it already knows, not from what it retrieves.</p>
+        <p>When you want to <em>think through</em> a topic — explore its tensions, weigh competing interpretations, draft discussion questions, or assess the strength of an argument — generative AI is a brilliant, tireless interlocutor. During training it absorbed an enormous breadth of knowledge, compressing billions of associations into mathematical weights. Your prompt activates the relevant patterns in those weights; generation then proceeds token by token from that activation. No documents are retrieved. No search is performed. The "library" was dissolved into cognition at training time — vast and richly interconnected, but frozen at a cutoff date and unable to cite a specific source.</p>
         <div class="example-box">
-          <div class="label">Example — Generative AI as idea partner</div>
-          <p>"What are the strongest arguments for and against crediting Rosalind Franklin as a co-discoverer of the DNA double helix?" — the AI engages the intellectual and ethical dimensions, weighs the evidence, and helps you think through the question, drawing on its broad training.</p>
+          <div class="label">Example — Generative AI as thinking partner</div>
+          <p>"What are the strongest arguments for and against crediting Rosalind Franklin as a co-discoverer of the DNA double helix?" — the AI engages the intellectual and ethical dimensions, weighs the evidence, and helps you think through the question, drawing on compressed training associations.</p>
         </div>
         <div class="example-box">
           <div class="label">Where Generative AI reaches its limit</div>
-          <p>"What does the latest scholarship say about Franklin's role, and where can participants read more?" — for <em>that</em> question, you need RAG. Generative AI can discuss ideas about the topic; only RAG can go get you today's facts and sources.</p>
+          <p>"What does the latest scholarship say about Franklin's role, and where can participants read more?" — for <em>that</em> question, you need RAG. Generative AI thinks with you from what it already knows; RAG harvests specific, current, citable sources and generates from them.</p>
         </div>
       </div>
     </div>
@@ -375,20 +375,28 @@
   <!-- RAG -->
   <div class="section">
     <div class="section-header" onclick="toggleSection('rag')">
-      <h2><span class="emoji">⚡</span> RAG: The Cosmic Leap Forward <span class="section-label-pill">Retrieval</span></h2>
+      <h2><span class="emoji">⚡</span> RAG: Harvest · Repository · Mine <span class="section-label-pill">Retrieval</span></h2>
       <span class="toggle-icon" id="rag-icon">▼</span>
     </div>
     <div class="collapsible-content" id="rag-content">
       <div class="collapsible-inner">
-        <p><strong>Your fact-retrieval engine — goes out to the live web or your uploaded documents, pulls the actual sources, and grounds every answer in citable, verifiable content you can point participants to.</strong></p>
-        <p>When you need a <em>fact</em> — a current source, a verifiable claim, a real article participants can read — RAG is the tool. RAG-enabled AI (Claude or ChatGPT with web search, Perplexity AI, or any AI with document upload) goes out and retrieves actual content: live web pages, your uploaded readings, your session transcripts. It doesn't reason from memory; it reads what you give it — or what it finds on the web — and cites every claim with a link or page reference. The distinction is clean: use generative AI to <em>think</em>, use RAG to <em>find and verify</em>.</p>
+        <p><strong>RAG solves the same problem as generative AI — how to respond usefully to your question — but by a different route: it first harvests relevant passages from a document index, assembles them into a targeted repository in the context window, then mines that repository using the same token-by-token generation process.</strong></p>
+        <p>The three phases are distinct and sequential — retrieval happens <em>before</em> generation begins, not during it:</p>
         <div class="example-box">
-          <div class="label">Example — RAG in action for course preparation</div>
-          <p>"Based on this week's assigned reading on Rosalind Franklin, what three discussion questions would probe the most contested interpretations?" — a RAG system reads the actual uploaded text and crafts questions grounded in its specific arguments and evidence, with page references.</p>
+          <div class="label">Phase 1 — Harvest</div>
+          <p>Your prompt is encoded as a vector and matched against pre-indexed documents — uploaded readings, web pages, transcripts, syllabi. The most relevant passages are selected by similarity. Not everything: only what the search judges pertinent. Like a student surveying the library stacks and pulling the relevant volumes.</p>
         </div>
         <div class="example-box">
-          <div class="label">Example — RAG applied to session follow-up</div>
-          <p>Upload your Zoom session transcript and ask: "Where did our discussion diverge most sharply from the assigned reading's conclusions, and what additional sources might resolve those gaps?" RAG reads both documents and produces a sourced synthesis in seconds.</p>
+          <div class="label">Phase 2 — Repository</div>
+          <p>The harvested passages are assembled into the context window alongside your original prompt. This is the "spreading sources on the desk" step. The language model has not yet begun to write — it simply now has specific, curated material in front of it. The sources remain intact and citable.</p>
+        </div>
+        <div class="example-box">
+          <div class="label">Phase 3 — Mine</div>
+          <p>Generation proceeds token by token, exactly as in basic generative AI — but now conditioned on both your prompt and the harvested repository. The response is grounded in specific documents and can cite page references or links precisely. The same writing process; a different desk.</p>
+        </div>
+        <div class="example-box">
+          <div class="label">Example — RAG applied to course preparation</div>
+          <p>"Based on this week's assigned reading on Rosalind Franklin, what three discussion questions would probe the most contested interpretations?" — a RAG system harvests the relevant passages from the uploaded text, assembles them as context, and mines them to craft questions grounded in specific arguments and evidence, with page references.</p>
         </div>
       </div>
     </div>
@@ -397,15 +405,16 @@
   <!-- The Foundation and the Leap -->
   <div class="section">
     <div class="section-header" onclick="toggleSection('foundation')">
-      <h2><span class="emoji">💡</span> The Foundation and the Leap <span class="section-label-pill">Synthesis</span></h2>
+      <h2><span class="emoji">💡</span> Two Architectures, One Problem <span class="section-label-pill">Synthesis</span></h2>
       <span class="toggle-icon" id="foundation-icon">▼</span>
     </div>
     <div class="collapsible-content" id="foundation-content">
       <div class="collapsible-inner">
-        <p><strong>Generative AI</strong> is the foundational technology — and the right tool whenever the task is intellectual: discussing an idea, assessing an argument, drafting a question, exploring a theme. It is a brilliant thinking partner. But it works from what it already knows, not from what it can retrieve. For <em>ideas</em>, it is remarkable.</p>
-        <p><strong>RAG (Retrieval-Augmented Generation)</strong> is the tool for <em>facts</em>. When the question is "what does a credible source actually say, and where can I find it?" — RAG goes and gets the answer. It retrieves, reads, and cites. It doesn't opine; it produces evidence.</p>
+        <p>Both architectures solve the same fundamental problem: <em>all possible knowledge is too large to reason over simultaneously.</em> They solve it at different moments in time — and that difference shapes everything.</p>
+        <p><strong>Generative AI</strong> solves it at <em>training time</em> — compressing billions of associations into weights so that your prompt activates the relevant patterns without any runtime search. The library was dissolved into cognition during training. It cannot be searched or cited, but its associations are vast and richly interconnected, and it is always ready to think with you.</p>
+        <p><strong>RAG</strong> solves it at <em>runtime</em> — harvesting relevant passages from a live index, assembling them into the context window, and generating from that curated repository. The sources remain intact, citable, and verifiable. The index can be updated with new documents at any time.</p>
         <div class="gold-box">
-          <p>The rule of thumb: if you're thinking and discussing, use Generative AI. If you're fact-checking and source-hunting, use RAG. The best BOLLI course preparation uses both — in the right order.</p>
+          <p>Think of it this way: the generative scholar has read everything and absorbed it — ask them anything and they reason from deep, compressed knowledge. The RAG scholar goes to the library first, spreads the relevant sources on the desk, and writes from what is in front of them. Both write token by token. What differs is what they are writing from.</p>
         </div>
       </div>
     </div>
@@ -423,19 +432,20 @@
           <thead>
             <tr>
               <th>Aspect</th>
-              <th>Basic Generative AI</th>
-              <th>RAG (Retrieval-Augmented)</th>
+              <th>Basic Generative AI (e.g. Claude)</th>
+              <th>RAG (Retrieval-Augmented Generation)</th>
             </tr>
           </thead>
           <tbody>
-            <tr><td>Knowledge Scope</td><td>Draws only on training data — frozen at a cutoff date, often months to a year behind</td><td>Retrieves live content from the web; can reflect today's scholarship, news, and commentary</td></tr>
-            <tr><td>Internet Access</td><td>Cannot access any live website, database, journal, or online resource</td><td>Queries the open web in real time — Wikipedia, JSTOR abstracts, encyclopedias, reputable news sources, and more</td></tr>
-            <tr><td>Citations</td><td>Cannot cite live sources — no access to any URL or current publication</td><td>Provides verifiable citations with links to actual web pages so every claim can be checked</td></tr>
-            <tr><td>Hallucination Risk</td><td>Higher — especially for recent developments, living figures, or evolving scholarship</td><td>Substantially reduced — answers anchored to retrieved web content rather than recalled training patterns</td></tr>
-            <tr><td>Keeping Current</td><td>Cannot reflect recent discoveries, obituaries, new publications, or updated interpretations</td><td>Retrieves the latest available information — critical when a course touches on living history or active research</td></tr>
-            <tr><td>Sourcing Breadth</td><td>Limited to whatever the model absorbed during training — no ability to go deeper on a topic</td><td>Can retrieve multiple perspectives on a topic from across the web in a single query</td></tr>
-            <tr><td>Best Use</td><td>Discussing ideas, assessing arguments, exploring themes, drafting discussion questions, thinking through interpretations</td><td>Getting facts: finding current sources, verifying claims, locating supplementary readings, producing citable evidence</td></tr>
-            <tr><td>Tools</td><td>Claude (no web search), ChatGPT (no web search), base LLM APIs</td><td>Claude + web search, ChatGPT + web search, Perplexity AI, Bing Copilot</td></tr>
+            <tr><td>How It Solves the Problem</td><td>Reduction at training time — knowledge compressed into weights; your prompt activates relevant patterns</td><td>Reduction at runtime — prompt triggers harvest of relevant passages, assembled into context before generation</td></tr>
+            <tr><td>The Three Phases</td><td>One phase: prompt activates weights → token-by-token generation</td><td>Harvest (retrieve passages) → Repository (assemble context) → Mine (generate token by token)</td></tr>
+            <tr><td>Knowledge Source</td><td>Trained weights — vast, associative, frozen at cutoff date</td><td>Live document index — specific, current, updatable at any time</td></tr>
+            <tr><td>When Retrieval Happens</td><td>No runtime retrieval — all knowledge absorbed during training</td><td>Once, before generation begins — context window is set, then model writes from it</td></tr>
+            <tr><td>Citations</td><td>Cannot cite sources — knowledge dissolved into weights, no source documents remain</td><td>Can cite specific passages — sources stay intact in the index, retrievable and verifiable</td></tr>
+            <tr><td>Hallucination Risk</td><td>Higher for recent or highly specific claims — no external anchor</td><td>Substantially reduced — generation anchored to retrieved passages, errors traceable to sources</td></tr>
+            <tr><td>Can Access New Information?</td><td>No — weights fixed at training cutoff</td><td>Yes — document index updated independently of the model</td></tr>
+            <tr><td>Best Use for BOLLI</td><td>Thinking, discussing, assessing arguments, drafting questions, exploring themes collaboratively</td><td>Working with specific uploaded readings, transcripts, or syllabi; producing grounded, citable, sourced answers</td></tr>
+            <tr><td>Tools</td><td>Claude (base), ChatGPT (base), any LLM without document upload or web search</td><td>Claude or ChatGPT with document upload or web search; Perplexity AI; any AI with a retrieval index</td></tr>
           </tbody>
         </table>
       </div>
@@ -445,23 +455,23 @@
   <!-- BOLLI Application -->
   <div class="section">
     <div class="section-header" onclick="toggleSection('bolli')">
-      <h2><span class="emoji">🎓</span> Why RAG is a Cosmic Leap for BOLLI Course Work <span class="section-label-pill">Application</span></h2>
+      <h2><span class="emoji">🎓</span> What This Means for BOLLI Course Work <span class="section-label-pill">Application</span></h2>
       <span class="toggle-icon" id="bolli-icon">▼</span>
     </div>
     <div class="collapsible-content" id="bolli-content">
       <div class="collapsible-inner">
-        <p><strong>The distinction is simple and powerful: use Generative AI to talk through and assess ideas — use RAG to get the facts.</strong> Basic generative AI is a remarkable thinking partner for background context, concept exploration, and intellectual discussion. But when a BOLLI participant asks "where does that claim come from?" or "what are people writing about this now?" — that's a RAG question, not a Generative AI question.</p>
-        <p><strong>The transformation in practice:</strong> With RAG-enabled AI, a Study Group Leader can ask: "Find me three accessible, well-sourced web articles on the current scholarly debate about Rosalind Franklin's credit for the DNA discovery." The AI retrieves real pages and produces a sourced list with links participants can follow. It is not opining — it is <em>finding facts on your behalf</em>. That is a categorically different tool from one that discusses ideas, however brilliantly.</p>
-        <p>For BOLLI's intellectually rigorous learners, this matters. Discussion should be grounded in evidence, not in an AI's impressions. RAG lets the SGL say: <em>here is what a credible source actually says today — here is the link, here is where the debate stands now.</em> Generative AI helps you think about what it means.</p>
+        <p><strong>The harvest → repository → mine architecture makes RAG a precise and powerful tool for working with your actual course materials.</strong> When you upload a syllabus, a reading, or a session transcript and ask a RAG system a question about it, the system does not search its training memory — it harvests the relevant passages from your document, assembles them into a working context, and generates a response grounded specifically in what you gave it. Every claim is traceable back to a source passage.</p>
+        <p>This is the practical difference between asking a knowledgeable colleague what they remember about a topic and asking them to work through a stack of documents with you. Both are valuable. Only one is verifiable. For BOLLI's intellectually rigorous learners, that distinction matters: discussion should be grounded in evidence, not in an AI's impressions of what it once learned.</p>
+        <p>Generative AI, meanwhile, remains the right tool whenever the task is collaborative thinking — exploring a theme, weighing an argument, drafting discussion questions, or assessing competing interpretations. Its compressed associations are vast and always available. It thinks with you from what it already knows.</p>
         <ul>
-          <li><strong>Live Source Discovery:</strong> Ask "Find recent accessible articles on the ethics of AI in healthcare" and get links to real, current web sources — not a synthesis of training-data impressions</li>
-          <li><strong>Fact-Checking in Real Time:</strong> When a claim arises in preparation, RAG can retrieve a current source to confirm or complicate it — rather than relying on potentially stale training data</li>
-          <li><strong>Supplementary Reading Lists:</strong> Ask "What are good introductory web resources on quantum entanglement for a general audience?" and receive a cited, linked list drawn from actual current pages</li>
-          <li><strong>Keeping Pace with Living History:</strong> For courses touching on recent events, living figures, or active research fields, RAG retrieves what has actually been published — not what the model last knew</li>
-          <li><strong>Reducing Hallucination Where It Matters:</strong> Recent developments and evolving scholarship are exactly where basic Gen AI is most likely to confabulate — RAG anchors responses to real retrieved pages, dramatically lowering that risk</li>
-          <li><strong>Multiple Perspectives, One Query:</strong> Ask for coverage of a topic from different angles — scientific, humanistic, journalistic — and RAG retrieves actual representative sources rather than producing a generic summary</li>
+          <li><strong>Harvest from your materials:</strong> Semantic search identifies the most relevant passages from syllabi, readings, and evaluations — selectivity is built into the process, not left to chance</li>
+          <li><strong>Repository assembled for your question:</strong> The context window is populated with exactly what bears on your query — not everything, the right things — before generation begins</li>
+          <li><strong>Mine with confidence:</strong> Generation proceeds from that grounded repository — responses cite sources, reduce hallucination, and remain traceable to specific passages</li>
+          <li><strong>Index stays current:</strong> New documents can be added to the retrieval index at any time — unlike trained weights, the repository grows with your course</li>
+          <li><strong>Cross-disciplinary reach:</strong> Meaning-based semantic search bridges BOLLI's interdisciplinary range — harvesting across history, literature, science, and social studies in a single query</li>
+          <li><strong>Generative AI for thinking, RAG for sourcing:</strong> The best course preparation uses both — generative AI to deepen understanding, RAG to ground discussion in what specific documents actually say</li>
         </ul>
-        <p class="bottom-line"><strong>The Bottom Line:</strong> Generative AI is for <em>talking about and assessing ideas</em> — it thinks with you, argues with you, helps you see a topic from multiple angles. RAG is for <em>getting facts</em> — it retrieves current sources, verifies claims, and produces citable evidence with links. The best BOLLI course preparation uses both: Generative AI to deepen your thinking, RAG to ground your discussion in what credible sources actually say today.</p>
+        <p class="bottom-line"><strong>The Bottom Line:</strong> Both generative AI and RAG generate token by token. What differs is what they are generating from. Generative AI generates from vast compressed associations activated by your prompt — brilliant for thinking together, unable to cite a source. RAG generates from a curated repository harvested from your specific documents — grounded, citable, and verifiable. Your prompt is the funnel: in generative AI it funnels probability; in RAG it funnels documents.</p>
       </div>
     </div>
   </div>
