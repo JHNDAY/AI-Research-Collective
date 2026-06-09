@@ -35,7 +35,6 @@
     min-height: 100vh;
   }
 
-  /* Subtle paper texture via repeating gradient */
   body::before {
     content: '';
     position: fixed;
@@ -60,7 +59,6 @@
     padding: 56px 40px 80px;
   }
 
-  /* Header */
   header {
     border-bottom: 2px solid var(--rule);
     padding-bottom: 24px;
@@ -92,7 +90,6 @@
     font-size: 15px;
   }
 
-  /* Section headings */
   h2 {
     font-family: 'Playfair Display', serif;
     font-size: 1.15rem;
@@ -120,7 +117,6 @@
     flex-shrink: 0;
   }
 
-  /* Step cards */
   .step {
     background: var(--step-bg);
     border: 1px solid var(--step-border);
@@ -147,7 +143,6 @@
   }
   .step p:last-child { margin-bottom: 0; }
 
-  /* The coaching instructions block */
   .instructions-block {
     background: var(--highlight);
     border: 1px solid var(--highlight-border);
@@ -298,7 +293,6 @@
   }
   .beautify-preview p:last-child { margin-bottom: 0; }
 
-  /* Sub-steps list */
   .substeps {
     list-style: none;
     counter-reset: sub;
@@ -334,7 +328,6 @@
     margin-top: 2px;
   }
 
-  /* Narrative textarea */
   .narrative-area {
     margin-top: 14px;
   }
@@ -369,7 +362,6 @@
   }
   textarea::placeholder { color: #b09c82; font-style: italic; }
 
-  /* Review prompt builder */
   .review-box {
     margin-top: 16px;
     background: var(--code-bg);
@@ -420,14 +412,12 @@
     margin-top: 12px;
   }
 
-  /* Divider */
   .divider {
     border: none;
     border-top: 1px solid var(--rule);
     margin: 36px 0;
   }
 
-  /* Footer note */
   .footer-note {
     font-size: 13.5px;
     color: #8a7a66;
@@ -438,7 +428,6 @@
     border-top: 1px solid var(--warm-mid);
   }
 
-  /* Evolution button */
   .evo-btn {
     background: var(--cream);
     color: var(--accent);
@@ -462,7 +451,6 @@
     color: #9a8a74;
   }
 
-  /* Responsive */
   @media (max-width: 600px) {
     .page { padding: 32px 20px 60px; }
     h1 { font-size: 1.6rem; }
@@ -499,13 +487,13 @@
   <!-- STEP 2 -->
   <div class="step">
     <h2><span class="step-badge">2</span> First Version &amp; All Subsequent Iterations</h2>
-    <p>Write or paste your narrative draft below. Then use the <em>Review &amp; Advise</em> prompt that appears beneath it to send your current version to Claude.</p>
+    <p>Write or paste your narrative draft below. Then follow the subsequent steps.</p>
 
     <ul class="substeps">
-      <li>Paste or write your first draft in the field below.</li>
-      <li>Copy the generated <em>Review and advise</em> prompt and paste it into Claude.</li>
+      <li>Paste or write your first draft in the white input box below.</li>
+      <li><span>Click the <strong>Copy for Review</strong> button, then paste into the Claude prompt input window and click the rust-colored up arrow.</span></li>
       <li>Using Claude's feedback, revise your narrative in the field below.</li>
-      <li>Repeat until your narrative feels ready to submit.</li>
+      <li>Repeat until your narrative has been honed to your liking and then proceed to step 3 which is listed below.</li>
     </ul>
 
     <div class="narrative-area">
@@ -516,8 +504,6 @@
         oninput="updateReview()"
       ></textarea>
       <div class="beautify-row">
-        <span class="beautify-hint">Reparagraphs and fixes punctuation — no words added or removed</span>
-        <button class="beautify-btn" onclick="beautifyText(this)">✦ Beautify</button>
         <button class="copy-review-btn-inline" onclick="copyReview(this)">Copy for Review</button>
       </div>
       <div id="beautifyPreview" class="beautify-preview" style="display:none;"></div>
@@ -525,13 +511,12 @@
 
   </div>
 
-  <!-- STEP 3: Copy final prompt for use -->
+  <!-- STEP 3 -->
   <div class="step">
-    <h2><span class="step-badge">3</span> Final Step — Generate the Response to Your Narrative as an HTML Artifact</h2>
-    <p>When your narrative is ready, click the button below. It copies your narrative together with an instruction telling Claude to create an HTML file artifact that <strong>visualizes Claude's response to your narrative</strong> — with no API calls embedded.</p>
-    <p>Paste it into Claude and press <strong>Enter</strong>.</p>
+    <h2><span class="step-badge">3</span> Final Step — Generate a Web Page that Visualizes the Response to Your Prompt</h2>
+    <p>When your narrative is ready, click the button below. It copies your narrative together with an instruction telling Claude to create an HTML file artifact that <strong>visualizes Claude's response to your narrative</strong>.</p>
     <div class="copy-btn-row" style="margin-top: 18px;">
-      <button class="copy-prompt-btn" id="copyPromptBtn" onclick="copyFinalPrompt(this)">Copy Prompt for Use</button>
+      <button class="copy-prompt-btn" id="copyPromptBtn" onclick="copyFinalPrompt(this)">Copy Prompt to Create Visualized Response</button>
     </div>
     <div id="promptPreview" class="prompt-preview" style="display:none;"></div>
   </div>
@@ -590,6 +575,7 @@ When reviewing a narrative draft, give feedback in three parts:
       setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
     });
   }
+
   function copyFinalPrompt(btn) {
     const narrative = document.getElementById('narrativeText').value.trim();
     const suffix = 'Please create an HTML file artifact that visualizes your response to this narrative — don\'t create any API calls in the artifact.';
@@ -605,7 +591,6 @@ When reviewing a narrative draft, give feedback in three parts:
       preview.style.display = 'block';
       setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
     }).catch(() => {
-      // Fallback: select a hidden textarea and copy
       const tmp = document.createElement('textarea');
       tmp.value = prompt;
       tmp.style.position = 'fixed'; tmp.style.opacity = '0';
@@ -618,6 +603,7 @@ When reviewing a narrative draft, give feedback in three parts:
       preview.style.display = 'block';
     });
   }
+
   function copyEvoPrompt(btn) {
     const prompt = `Create a Prompt Evolution visualization of the prompt iterations in this conversation, using the following template:\n\nSingle-page HTML. Parchment background (#f4f1eb). Fonts: DM Serif Display (headlines), Lora (body), DM Mono (labels/mono). Version colors: v1 red #b02a1e → v2 orange #c06010 → v3 olive #7a6800 → v4 green #1e7a40 → v5 blue #1a5c96 → compare purple #6a2a8e. Gold accent #8a6a10.\n\nStructure: Header (eyebrow · h1 · italic subtitle · premise) → sticky nav (one pill per version + Compare anchor) → N version blocks → comparison section → footer.\n\nEach version block: colored numbered badge · h2 "Version N — [Dimension Added]" · dimension pills (Subject / Identity / Purpose / Audience / Success Criterion / Intellectual Frame, checked ✓ or struck through) · collapsible prompt panel (newly added text highlighted gold) · two cards: "✦ What's working" (green) + "→ What's still missing" (gold).\n\nBetween blocks: connector arrow label "+ WHAT NEXT VERSION ADDS".\n\nComparison section: V1 vs Final side-by-side cards · 4-column delta table (Dimension / V1 state / Final state / Impact on Claude's output) · animated score bars per dimension · key-lesson gold-border card (~120 words synthesizing the coaching principle).\n\nJS: collapsible toggle + IntersectionObserver animates score bars on scroll.\n\nTitle the visualization "An Anatomy of a Prompt for: [infer a short title from the prompt topic developed in this conversation]".`;
     navigator.clipboard.writeText(prompt).then(() => {
@@ -628,18 +614,13 @@ When reviewing a narrative draft, give feedback in three parts:
     });
   }
 
-  // ── Rule-based beautifier (no API needed) ───────────────────────────────
+  // ── Rule-based beautifier ───────────────────────────────
   function beautifyRuleBased(raw) {
-
-    // 1. Normalise whitespace and line endings
     let text = raw.replace(/\r\n/g, '\n').replace(/\r/g, '\n')
                   .replace(/[ \t]+/g, ' ').trim();
 
-    // 2. Merge all lines into one flow (we'll re-paragraph below)
     text = text.split('\n').map(l => l.trim()).filter(Boolean).join(' ');
 
-    // 3. Fix punctuation before splitting into sentences
-    //    a. Question words / phrases that end without ? → add ?
     const questionStarters = [
       'how does','how do','how is','how are','how can','how would','how should',
       'what is','what are','what does','what do','what would','what should','what can',
@@ -651,7 +632,6 @@ When reviewing a narrative draft, give feedback in three parts:
       'does this','is this','can this','could this','should this','would this',
       'do you','can you','could you','would you','will you','shall we'
     ];
-    // Sentence-end detector: word chars, then optional closing punct
     const qRe = new RegExp(
       '(' + questionStarters.map(q => q.replace(/ /g,'\\s+')).join('|') + ')' +
       '([^.?!]*?)([.])(?=\\s|$)',
@@ -659,8 +639,6 @@ When reviewing a narrative draft, give feedback in three parts:
     );
     text = text.replace(qRe, (m, start, mid, dot) => start + mid + '?');
 
-    //    b. Missing comma before coordinating conjunctions joining two clauses
-    //       e.g. "I like coffee and I like tea" → "I like coffee, and I like tea"
     text = text.replace(
       /([a-z])(\s+)(and|but|or|nor|so|yet|for)(\s+)([A-Z])/g,
       '$1,$2$3$4$5'
@@ -670,8 +648,6 @@ When reviewing a narrative draft, give feedback in three parts:
       '$1,$2$3$4$5'
     );
 
-    // 4. Split into sentences on . ? ! followed by whitespace + capital
-    //    Protect common abbreviations first
     const ABBR = ['Mr','Mrs','Ms','Dr','Prof','Sr','Jr','vs','etc','i\.e','e\.g','approx','dept','fig','no'];
     ABBR.forEach((a, i) => {
       text = text.replace(new RegExp('\\b' + a + '\\.', 'g'), `\x00ABBR${i}\x00`);
@@ -686,14 +662,6 @@ When reviewing a narrative draft, give feedback in three parts:
     });
 
     const sentences = rawSentences.map(s => s.trim()).filter(Boolean);
-
-    // 5. Group sentences into paragraphs
-    //    New paragraph when:
-    //    - sentence starts with a strong topic-shift word/phrase
-    //    - previous sentence was a question (ends with ?)
-    //    - sentence starts with "I believe / I think / I suspect / I keep / I want"
-    //      (personal stance shift)
-    //    - sentence is a short imperative (≤ 8 words, starts with capital verb)
 
     const hardBreakStarters = /^(However|But|Also|Additionally|Another|Now|Next|Finally|Note|Please|In addition|For example|For instance|Consider|Important|Importantly|Here is|Here's|I believe|I think|I suspect|I keep|I want|I use|I notice|I find|What constantly|What surprises|How does|Use our|My current|My model)\b/i;
 
@@ -724,7 +692,6 @@ When reviewing a narrative draft, give feedback in three parts:
     return paragraphs.join('\n\n');
   }
 
-  // ── Main beautify handler: try API, fall back to rule-based ─────────────
   function beautifyText(btn) {
     const ta = document.getElementById('narrativeText');
     const raw = ta.value;
