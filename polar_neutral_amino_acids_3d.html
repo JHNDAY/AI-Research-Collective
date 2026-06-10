@@ -289,7 +289,7 @@ let molGroup = new THREE.Group();
 scene.add(molGroup);
 
 let autoRotate = true;
-let rotX=0, rotY=0, panX=0, panY=0;
+let rotX=0, rotY=0, rotZ=0, panX=0, panY=0;
 let isDragging=false, isRight=false, lastX=0, lastY=0;
 
 function buildMol(key) {
@@ -325,13 +325,14 @@ function buildMol(key) {
   const size = new THREE.Vector3(); box.getSize(size);
   camera.position.z = Math.max(size.x, size.y, size.z) * 2.0 + 4;
 
-  rotX=0; rotY=0; panX=0; panY=0;
+  rotX=0.2618; rotY=0; rotZ=0.4855; panX=0; panY=0;
   applyTransform();
 }
 
 function applyTransform() {
   molGroup.rotation.x = rotX;
   molGroup.rotation.y = rotY;
+  molGroup.rotation.z = rotZ;
   molGroup.position.x = panX;
   molGroup.position.y = panY;
 }
@@ -377,7 +378,7 @@ document.getElementById('btn-auto').addEventListener('click', ()=>{
   document.getElementById('btn-auto').style.opacity = autoRotate ? '1' : '0.45';
 });
 document.getElementById('btn-reset').addEventListener('click', ()=>{
-  rotX=0; rotY=0; panX=0; panY=0;
+  rotX=0.2618; rotY=0; rotZ=0.4855; panX=0; panY=0;
   applyTransform();
   camera.position.z=12;
 });
