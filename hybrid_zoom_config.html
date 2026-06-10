@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hybrid Zoom Room Configuration</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #22263a;
+    --border: rgba(255,255,255,0.08);
+    --text: #e8eaf2;
+    --muted: #8891ab;
+    --blue: #4a8eff;
+    --blue-dim: rgba(74,142,255,0.12);
+    --purple: #9b6dff;
+    --purple-dim: rgba(155,109,255,0.12);
+    --amber: #f5a623;
+    --amber-dim: rgba(245,166,35,0.12);
+    --teal: #2dd4bf;
+    --teal-dim: rgba(45,212,191,0.1);
+    --coral: #ff6b6b;
+    --coral-dim: rgba(255,107,107,0.1);
+    --green: #34d399;
+    --green-dim: rgba(52,211,153,0.1);
+    --font-head: 'Space Grotesk', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.5;
+    min-height: 100vh;
+    padding: 32px 24px 48px;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 36px;
+  }
+
+  header h1 {
+    font-family: var(--font-head);
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  header p {
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto;
+    gap: 16px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  /* ── Cards ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    position: relative;
+  }
+
+  .card-label {
+    font-family: var(--font-head);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+
+  .card-title {
+    font-family: var(--font-head);
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .card-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* Color accents */
+  .card.blue  { border-color: rgba(74,142,255,0.3);  background: linear-gradient(135deg, var(--surface) 60%, var(--blue-dim)); }
+  .card.purple{ border-color: rgba(155,109,255,0.3); background: linear-gradient(135deg, var(--surface) 60%, var(--purple-dim)); }
+  .card.amber { border-color: rgba(245,166,35,0.35); background: linear-gradient(135deg, var(--surface) 60%, var(--amber-dim)); }
+  .card.teal  { border-color: rgba(45,212,191,0.3);  background: linear-gradient(135deg, var(--surface) 60%, var(--teal-dim)); }
+  .card.coral { border-color: rgba(255,107,107,0.3); background: linear-gradient(135deg, var(--surface) 60%, var(--coral-dim)); }
+  .card.green { border-color: rgba(52,211,153,0.3);  background: linear-gradient(135deg, var(--surface) 60%, var(--green-dim)); }
+
+  .blue   .card-title { color: var(--blue); }
+  .purple .card-title { color: var(--purple); }
+  .amber  .card-title { color: var(--amber); }
+  .teal   .card-title { color: var(--teal); }
+  .coral  .card-title { color: var(--coral); }
+  .green  .card-title { color: var(--green); }
+
+  /* dot badge */
+  .dot {
+    display: inline-block;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    margin-right: 6px;
+    vertical-align: middle;
+    position: relative; top: -1px;
+  }
+  .dot-blue   { background: var(--blue); box-shadow: 0 0 6px var(--blue); }
+  .dot-purple { background: var(--purple); box-shadow: 0 0 6px var(--purple); }
+  .dot-amber  { background: var(--amber); box-shadow: 0 0 6px var(--amber); }
+  .dot-teal   { background: var(--teal); box-shadow: 0 0 6px var(--teal); }
+  .dot-coral  { background: var(--coral); box-shadow: 0 0 6px var(--coral); }
+  .dot-green  { background: var(--green); box-shadow: 0 0 6px var(--green); }
+
+  /* ── grid placement ── */
+  .card-c1       { grid-column: 1; grid-row: 1; }
+  .card-c2       { grid-column: 2; grid-row: 1; }
+  .card-inroom   { grid-column: 1; grid-row: 2; }
+  .card-remote   { grid-column: 2; grid-row: 2; }
+  .card-audio    { grid-column: 1; grid-row: 3; }
+  .card-tips     { grid-column: 2; grid-row: 3; }
+
+  /* ── flow connector ── */
+  .flow-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .flow-row:last-child { margin-bottom: 0; }
+
+  .flow-icon {
+    flex-shrink: 0;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+  }
+
+  .flow-text {
+    font-size: 13px;
+    color: var(--muted);
+    padding-top: 5px;
+  }
+
+  .flow-text strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  /* warning rows */
+  .warn-row {
+    display: flex;
+    gap: 10px;
+    padding: 10px 12px;
+    background: rgba(245,166,35,0.06);
+    border: 1px solid rgba(245,166,35,0.2);
+    border-radius: var(--radius-sm);
+    margin-bottom: 8px;
+    font-size: 13px;
+    align-items: flex-start;
+  }
+  .warn-row:last-child { margin-bottom: 0; }
+  .warn-icon { flex-shrink: 0; font-size: 15px; line-height: 1.4; }
+  .warn-text { color: var(--muted); line-height: 1.5; }
+  .warn-text strong { color: var(--amber); font-weight: 500; }
+
+  /* tip rows */
+  .tip-row {
+    display: flex;
+    gap: 10px;
+    padding: 9px 12px;
+    background: rgba(52,211,153,0.05);
+    border: 1px solid rgba(52,211,153,0.15);
+    border-radius: var(--radius-sm);
+    margin-bottom: 8px;
+    font-size: 13px;
+    align-items: flex-start;
+  }
+  .tip-row:last-child { margin-bottom: 0; }
+  .tip-icon { flex-shrink: 0; font-size: 14px; line-height: 1.5; }
+  .tip-text { color: var(--muted); line-height: 1.5; }
+  .tip-text strong { color: var(--green); font-weight: 500; }
+
+  /* ── arrow connector between cards (SVG overlay) ── */
+  .connector-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    max-width: 900px;
+    margin: -4px auto 4px;
+    pointer-events: none;
+  }
+
+  /* ── signal tags ── */
+  .signal-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 8px;
+    border-radius: 20px;
+    margin-top: 10px;
+    margin-right: 6px;
+  }
+  .sig-blue   { background: var(--blue-dim);   color: var(--blue);   border: 1px solid rgba(74,142,255,0.25); }
+  .sig-purple { background: var(--purple-dim); color: var(--purple); border: 1px solid rgba(155,109,255,0.25); }
+
+  /* ── zoom cloud banner ── */
+  .zoom-cloud {
+    max-width: 900px;
+    margin: 0 auto 16px;
+    background: var(--surface2);
+    border: 1px solid rgba(74,142,255,0.2);
+    border-radius: var(--radius);
+    padding: 14px 22px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .zoom-cloud-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--blue);
+    box-shadow: 0 0 8px var(--blue);
+    flex-shrink: 0;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%,100% { opacity: 1; }
+    50%      { opacity: 0.4; }
+  }
+  .zoom-cloud-text {
+    font-family: var(--font-head);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+  }
+  .zoom-cloud-text strong { color: var(--blue); }
+
+  /* arrows between sections */
+  .arrow-row {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    max-width: 900px;
+    margin: 4px auto;
+    gap: 16px;
+  }
+  .arrow-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+  .arrow-line {
+    width: 1px;
+    height: 20px;
+    background: var(--border);
+    position: relative;
+  }
+  .arrow-line::after {
+    content: '';
+    position: absolute;
+    bottom: -1px; left: -4px;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 6px solid rgba(255,255,255,0.15);
+  }
+  .arrow-label {
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 600px) {
+    .layout {
+      grid-template-columns: 1fr;
+    }
+    .card-c1, .card-c2, .card-inroom, .card-remote, .card-audio, .card-tips {
+      grid-column: 1;
+      grid-row: auto;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Hybrid Zoom Room — Configuration</h1>
+  <p>Two-computer setup · in-room + remote attendees · screen share + room camera</p>
+</header>
+
+<!-- Zoom cloud banner -->
+<div class="zoom-cloud">
+  <div class="zoom-cloud-dot"></div>
+  <div class="zoom-cloud-text"><strong>Zoom cloud</strong> — routes audio &amp; video between both computers and all remote attendees</div>
+</div>
+
+<!-- Arrow row down -->
+<div class="arrow-row">
+  <div class="arrow-col">
+    <div class="arrow-label">screen share</div>
+    <div class="arrow-line"></div>
+  </div>
+  <div class="arrow-col">
+    <div class="arrow-label">room camera</div>
+    <div class="arrow-line"></div>
+  </div>
+</div>
+
+<!-- Main grid -->
+<div class="layout">
+
+  <!-- Computer 1 -->
+  <div class="card blue card-c1">
+    <div class="card-label">Computer 1</div>
+    <div class="card-title"><span class="dot dot-blue"></span>Presenter machine</div>
+    <div class="card-desc" style="margin-bottom:12px">Logged into Zoom as host. Shares screen with everyone — remote attendees and in-room display.</div>
+    <div class="flow-row">
+      <div class="flow-icon" style="background:var(--blue-dim); color:var(--blue)">→</div>
+      <div class="flow-text"><strong>Screen share</strong> goes to Zoom cloud, reaching all remote attendees</div>
+    </div>
+    <div class="flow-row">
+      <div class="flow-icon" style="background:var(--blue-dim); color:var(--blue)">⊡</div>
+      <div class="flow-text"><strong>Room projector / display</strong> mirrors from this machine</div>
+    </div>
+    <div>
+      <span class="signal-tag sig-blue">▶ Screen share</span>
+      <span class="signal-tag sig-blue">🔊 Room audio</span>
+    </div>
+  </div>
+
+  <!-- Computer 2 -->
+  <div class="card purple card-c2">
+    <div class="card-label">Computer 2</div>
+    <div class="card-title"><span class="dot dot-purple"></span>Room camera machine</div>
+    <div class="card-desc" style="margin-bottom:12px">Logged into Zoom as a second participant. Acts as a dedicated camera pointed at in-room attendees.</div>
+    <div class="flow-row">
+      <div class="flow-icon" style="background:var(--purple-dim); color:var(--purple)">◎</div>
+      <div class="flow-text"><strong>Camera feed</strong> shows remote attendees the people in the room</div>
+    </div>
+    <div class="flow-row">
+      <div class="flow-icon" style="background:var(--purple-dim); color:var(--purple)">✕</div>
+      <div class="flow-text"><strong>Mic &amp; speaker muted</strong> — essential to prevent echo feedback</div>
+    </div>
+    <div>
+      <span class="signal-tag sig-purple">◎ Room camera</span>
+      <span class="signal-tag sig-purple">✕ Mic off</span>
+    </div>
+  </div>
+
+  <!-- In-room attendees -->
+  <div class="card teal card-inroom">
+    <div class="card-label">In the room</div>
+    <div class="card-title"><span class="dot dot-teal"></span>In-person attendees</div>
+    <div class="card-desc">Not on Zoom. Watch the presentation on the room display mirrored from Computer 1. Are visible to remote attendees via Computer 2's camera.</div>
+  </div>
+
+  <!-- Remote attendees -->
+  <div class="card coral card-remote">
+    <div class="card-label">On Zoom</div>
+    <div class="card-title"><span class="dot dot-coral"></span>Remote attendees</div>
+    <div class="card-desc">Receive two feeds via Zoom: the <strong style="color:var(--blue);font-weight:500">shared screen</strong> from Computer 1, and the <strong style="color:var(--purple);font-weight:500">room camera view</strong> from Computer 2. Can pin or spotlight either feed in their own Zoom layout.</div>
+  </div>
+
+  <!-- Audio warning -->
+  <div class="card amber card-audio">
+    <div class="card-label">⚠ Critical — Audio</div>
+    <div class="card-title" style="margin-bottom:12px">Prevent echo feedback</div>
+    <div class="warn-row">
+      <div class="warn-icon">🔇</div>
+      <div class="warn-text"><strong>Mute mic on Computer 2.</strong> Two live mics in the same room will create a feedback loop.</div>
+    </div>
+    <div class="warn-row">
+      <div class="warn-icon">🔈</div>
+      <div class="warn-text"><strong>Disable speaker on Computer 2.</strong> Only one device should play audio in the room.</div>
+    </div>
+    <div class="warn-row">
+      <div class="warn-icon">🎤</div>
+      <div class="warn-text"><strong>Use Computer 1</strong> (or an external room mic) as the single audio source for Zoom.</div>
+    </div>
+  </div>
+
+  <!-- Tips -->
+  <div class="card green card-tips">
+    <div class="card-label">Setup tips</div>
+    <div class="card-title" style="margin-bottom:12px">Get the best result</div>
+    <div class="tip-row">
+      <div class="tip-icon">📷</div>
+      <div class="tip-text"><strong>Wide-angle lens</strong> on Computer 2 helps capture the whole in-room group.</div>
+    </div>
+    <div class="tip-row">
+      <div class="tip-icon">📌</div>
+      <div class="tip-text"><strong>Spotlight Computer 2</strong> for remote attendees so the room view stays visible.</div>
+    </div>
+    <div class="tip-row">
+      <div class="tip-icon">🖥</div>
+      <div class="tip-text"><strong>Position Computer 2</strong> so the camera faces in-room seating, not the presenter's back.</div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
