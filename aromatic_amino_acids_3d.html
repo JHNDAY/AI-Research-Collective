@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aromatic Amino Acid 3D Viewer</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0f1117;
+    --bg2: #181c27;
+    --bg3: #1f2435;
+    --border: rgba(255,255,255,0.08);
+    --border2: rgba(255,255,255,0.16);
+    --text: #e8eaf0;
+    --muted: #8891a8;
+    --accent: #6ea8fe;
+    --radius: 10px;
+    --radius-sm: 6px;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  header {
+    padding: 28px 32px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  header h1 { font-size: 20px; font-weight: 600; letter-spacing: -0.3px; }
+  header p  { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+  .layout { display: flex; flex: 1; overflow: hidden; }
+
+  .sidebar {
+    width: 240px; flex-shrink: 0;
+    border-right: 1px solid var(--border);
+    padding: 20px 16px;
+    display: flex; flex-direction: column; gap: 6px;
+    overflow-y: auto;
+  }
+
+  .sidebar-label {
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--muted); padding: 0 8px; margin-bottom: 4px;
+  }
+
+  .mol-btn {
+    display: flex; flex-direction: column; align-items: flex-start;
+    padding: 10px 12px; border-radius: var(--radius-sm);
+    border: 1px solid transparent; background: transparent;
+    cursor: pointer; transition: background .15s, border-color .15s;
+    text-align: left; width: 100%; gap: 2px;
+  }
+  .mol-btn:hover  { background: var(--bg3); }
+  .mol-btn.active { background: var(--bg3); border-color: var(--border2); }
+  .mol-btn .name  { font-size: 14px; font-weight: 500; color: var(--text); }
+  .mol-btn .sub   { font-size: 11px; color: var(--muted); }
+  .mol-btn .formula { font-size: 11px; color: var(--accent); margin-top: 2px; }
+
+  .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+  #canvas-wrap { flex: 1; position: relative; overflow: hidden; min-height: 420px; }
+  canvas { display: block; width: 100%; height: 100%; }
+
+  .info-bar {
+    border-top: 1px solid var(--border);
+    padding: 14px 24px;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px; flex-wrap: wrap;
+  }
+  #mol-info { font-size: 13px; color: var(--muted); }
+  #mol-info strong { color: var(--text); font-weight: 500; }
+  .hint { font-size: 12px; color: var(--muted); opacity: 0.7; }
+
+  .legend {
+    border-top: 1px solid var(--border);
+    padding: 12px 24px;
+    display: flex; gap: 18px; flex-wrap: wrap;
+  }
+  .leg { display: flex; align-items: center; gap: 7px; font-size: 12px; color: var(--muted); }
+  .dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+  .controls-overlay {
+    position: absolute; top: 16px; right: 16px;
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .ctrl-btn {
+    width: 32px; height: 32px; border-radius: var(--radius-sm);
+    border: 1px solid var(--border2);
+    background: rgba(15,17,23,0.75);
+    backdrop-filter: blur(6px);
+    color: var(--text); font-size: 15px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background .15s;
+  }
+  .ctrl-btn:hover { background: var(--bg3); }
+
+  @media (max-width: 600px) {
+    .sidebar { width: 100%; flex-direction: row; flex-wrap: wrap; border-right: none; border-bottom: 1px solid var(--border); padding: 10px; }
+    .layout  { flex-direction: column; }
+    .mol-btn .formula { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Aromatic Amino Acid 3D Viewer</h1>
+  <p>Hydrophobic side chain — aromatic ring structures</p>
+</header>
+
+<div class="layout">
+  <nav class="sidebar">
+    <div class="sidebar-label">Molecules</div>
+    <button class="mol-btn active" data-mol="PHE">
+      <span class="name">Phenylalanine</span>
+      <span class="sub">Phe · F</span>
+      <span class="formula">C₉H₁₁NO₂</span>
+    </button>
+    <button class="mol-btn" data-mol="TRP">
+      <span class="name">Tryptophan</span>
+      <span class="sub">Trp · W</span>
+      <span class="formula">C₁₁H₁₂N₂O₂</span>
+    </button>
+    <button class="mol-btn" data-mol="TYR">
+      <span class="name">Tyrosine</span>
+      <span class="sub">Tyr · Y</span>
+      <span class="formula">C₉H₁₁NO₃</span>
+    </button>
+  </nav>
+
+  <main class="main">
+    <div id="canvas-wrap">
+      <canvas id="c"></canvas>
+      <div class="controls-overlay">
+        <button class="ctrl-btn" id="btn-auto" title="Toggle auto-rotate">⟳</button>
+        <button class="ctrl-btn" id="btn-reset" title="Reset view">⌖</button>
+      </div>
+    </div>
+
+    <div class="info-bar">
+      <div id="mol-info"><strong>Phenylalanine</strong> — MW 165.2 Da · benzyl side chain · essential amino acid</div>
+      <div class="hint">Drag to rotate · Scroll to zoom · Right-drag to pan</div>
+    </div>
+
+    <div class="legend">
+      <div class="leg"><div class="dot" style="background:#7a7e8a"></div>Carbon</div>
+      <div class="leg"><div class="dot" style="background:#d8dce8;border:1px solid #555"></div>Hydrogen</div>
+      <div class="leg"><div class="dot" style="background:#4a90d9"></div>Nitrogen</div>
+      <div class="leg"><div class="dot" style="background:#e05c3a"></div>Oxygen</div>
+    </div>
+  </main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+// ─── Molecule data ────────────────────────────────────────────────────────────
+// All coordinates in Angstroms, roughly correct geometry.
+// Benzene ring radius ≈ 1.4 Å; indole is fused 5+6 ring system.
+
+const PI = Math.PI;
+const cos = Math.cos, sin = Math.sin;
+
+// Helper: hexagon ring positions (flat, z=0 unless offset given)
+function hexRing(cx, cy, cz, r, startAngle=0) {
+  return Array.from({length:6}, (_,i) => {
+    const a = startAngle + i*PI/3;
+    return {x: cx + r*cos(a), y: cy + r*sin(a), z: cz};
+  });
+}
+
+const MOLS = {
+
+  // ── Phenylalanine ──────────────────────────────────────────────────────────
+  // backbone: NH2-CH(COOH)-CH2-  then benzene ring
+  PHE: {
+    info: "<strong>Phenylalanine</strong> — MW 165.2 Da · benzyl side chain · essential amino acid",
+    atoms: [
+      // 0 alpha-C
+      {el:"C", x:0,    y:0,    z:0},
+      // 1 carboxyl C
+      {el:"C", x:1.52, y:0,    z:0},
+      // 2 carboxyl O (=O)
+      {el:"O", x:2.15, y:1.08, z:0},
+      // 3 carboxyl O (-OH)
+      {el:"O", x:2.18, y:-1.06,z:0},
+      // 4 N (NH2)
+      {el:"N", x:-0.67,y:1.27, z:0},
+      // 5 beta-C (CH2)
+      {el:"C", x:-0.75,y:-1.22,z:0.3},
+      // 6 ipso C of benzene
+      {el:"C", x:-1.88,y:-1.3, z:-0.62},
+      // benzene ring: 7-12  (flat, in xz-plane roughly)
+      {el:"C", x:-2.52,y:-2.42,z:-0.62},
+      {el:"C", x:-3.88,y:-2.45,z:-0.62},
+      {el:"C", x:-4.60,y:-1.36,z:-0.62},
+      {el:"C", x:-3.97,y:-0.24,z:-0.62},
+      {el:"C", x:-2.61,y:-0.21,z:-0.62},
+      // H on alpha-C
+      {el:"H", x:0.05, y:-0.45,z:1.02},
+      // H on NH2
+      {el:"H", x:-0.25,y:2.12, z:0.36},
+      {el:"H", x:-1.65,y:1.22, z:0.12},
+      // H on OH
+      {el:"H", x:3.12, y:-0.94,z:0},
+      // H on beta-C (2x)
+      {el:"H", x:-0.32,y:-2.18,z:0.62},
+      {el:"H", x:-0.98,y:-1.0, z:1.36},
+      // H on benzene (5x — ipso has no H, it connects to CH2)
+      {el:"H", x:-2.0,  y:-3.28,z:-0.62},
+      {el:"H", x:-4.38, y:-3.32,z:-0.62},
+      {el:"H", x:-5.68, y:-1.38,z:-0.62},
+      {el:"H", x:-4.53, y:0.68, z:-0.62},
+      {el:"H", x:-2.1,  y:0.66, z:-0.62},
+    ],
+    bonds: [
+      [0,1],[1,2],[1,3],[0,4],[0,5],[0,12],
+      [4,13],[4,14],[3,15],
+      [5,6],[5,16],[5,17],
+      // benzene ring
+      [6,7],[7,8],[8,9],[9,10],[10,11],[11,6],
+      // benzene H
+      [7,18],[8,19],[9,20],[10,21],[11,22]
+    ],
+    // aromatic ring atom indices for double-bond display (alternating)
+    aromatic: [[6,7],[8,9],[10,11]]
+  },
+
+  // ── Tryptophan ─────────────────────────────────────────────────────────────
+  // indole = benzene fused with pyrrole; NH on pyrrole ring
+  TRP: {
+    info: "<strong>Tryptophan</strong> — MW 204.2 Da · indole bicyclic ring · largest standard amino acid",
+    atoms: [
+      // backbone
+      {el:"C", x:0,    y:0,    z:0},      // 0 alpha-C
+      {el:"C", x:1.52, y:0,    z:0},      // 1 carboxyl C
+      {el:"O", x:2.15, y:1.08, z:0},      // 2 =O
+      {el:"O", x:2.18, y:-1.06,z:0},      // 3 -OH
+      {el:"N", x:-0.67,y:1.27, z:0},      // 4 NH2
+      {el:"C", x:-0.75,y:-1.22,z:0.3},    // 5 beta-C
+      // indole: C3 is connection point from beta-C
+      // pyrrole ring (5-membered): atoms 6-10
+      {el:"C", x:-1.88,y:-1.3, z:-0.5},   // 6  C3 (beta-carbon of indole, connects to CH2)
+      {el:"C", x:-2.6, y:-2.38,z:-0.5},   // 7  C2
+      {el:"N", x:-3.95,y:-2.1, z:-0.5},   // 8  N1 (NH)
+      {el:"C", x:-4.3, y:-0.78,z:-0.5},   // 9  C7a (junction)
+      {el:"C", x:-3.05,y:-0.05,z:-0.5},   // 10 C3a (junction)
+      // benzene ring (6-membered): atoms 11-14 + 9,10
+      {el:"C", x:-2.72,y:1.32, z:-0.5},   // 11 C4
+      {el:"C", x:-3.58,y:2.38, z:-0.5},   // 12 C5
+      {el:"C", x:-4.94,y:2.12, z:-0.5},   // 13 C6
+      {el:"C", x:-5.38,y:0.75, z:-0.5},   // 14 C7
+
+      // H's
+      {el:"H", x:0.05, y:-0.45,z:1.02},   // 15 H on alpha-C
+      {el:"H", x:-0.25,y:2.12, z:0.36},   // 16 H on NH2
+      {el:"H", x:-1.65,y:1.22, z:0.12},   // 17 H on NH2
+      {el:"H", x:3.12, y:-0.94,z:0},      // 18 H on OH
+      {el:"H", x:-0.3, y:-2.18,z:0.65},   // 19 H beta
+      {el:"H", x:-0.95,y:-1.0, z:1.36},   // 20 H beta
+      {el:"H", x:-2.3, y:-3.38,z:-0.5},   // 21 H on C2
+      {el:"H", x:-4.55,y:-2.9, z:-0.5},   // 22 H on N1
+      {el:"H", x:-1.66,y:1.52, z:-0.5},   // 23 H on C4
+      {el:"H", x:-3.22,y:3.4,  z:-0.5},   // 24 H on C5
+      {el:"H", x:-5.62,y:2.96, z:-0.5},   // 25 H on C6
+      {el:"H", x:-6.45,y:0.54, z:-0.5},   // 26 H on C7
+    ],
+    bonds: [
+      [0,1],[1,2],[1,3],[0,4],[0,5],[0,15],
+      [4,16],[4,17],[3,18],
+      [5,6],[5,19],[5,20],
+      // pyrrole ring
+      [6,7],[7,8],[8,9],[9,10],[10,6],
+      // benzene fused
+      [9,14],[10,11],[11,12],[12,13],[13,14],
+      // H indole
+      [7,21],[8,22],[11,23],[12,24],[13,25],[14,26]
+    ],
+    aromatic: [[6,7],[9,14],[11,12],[13,14]]
+  },
+
+  // ── Tyrosine ───────────────────────────────────────────────────────────────
+  // like Phe but with para-OH on benzene ring
+  TYR: {
+    info: "<strong>Tyrosine</strong> — MW 181.2 Da · para-hydroxybenzyl side chain · weakly ionizable",
+    atoms: [
+      {el:"C", x:0,    y:0,    z:0},      // 0 alpha-C
+      {el:"C", x:1.52, y:0,    z:0},      // 1 carboxyl C
+      {el:"O", x:2.15, y:1.08, z:0},      // 2 =O
+      {el:"O", x:2.18, y:-1.06,z:0},      // 3 -OH (carboxyl)
+      {el:"N", x:-0.67,y:1.27, z:0},      // 4 NH2
+      {el:"C", x:-0.75,y:-1.22,z:0.3},    // 5 beta-C
+      {el:"C", x:-1.88,y:-1.3, z:-0.62},  // 6 ipso C
+      // benzene ring 7-12
+      {el:"C", x:-2.52,y:-2.42,z:-0.62},  // 7 ortho
+      {el:"C", x:-3.88,y:-2.45,z:-0.62},  // 8 meta
+      {el:"C", x:-4.60,y:-1.36,z:-0.62},  // 9 para  ← OH here
+      {el:"C", x:-3.97,y:-0.24,z:-0.62},  // 10 meta
+      {el:"C", x:-2.61,y:-0.21,z:-0.62},  // 11 ortho
+      // para-OH
+      {el:"O", x:-5.98,y:-1.38,z:-0.62},  // 12 phenol O
+      // H's
+      {el:"H", x:0.05, y:-0.45,z:1.02},   // 13 H alpha
+      {el:"H", x:-0.25,y:2.12, z:0.36},   // 14 H NH2
+      {el:"H", x:-1.65,y:1.22, z:0.12},   // 15 H NH2
+      {el:"H", x:3.12, y:-0.94,z:0},      // 16 H carboxyl OH
+      {el:"H", x:-0.32,y:-2.18,z:0.62},   // 17 H beta
+      {el:"H", x:-0.98,y:-1.0, z:1.36},   // 18 H beta
+      // benzene H (4x — para has OH, ipso has CH2)
+      {el:"H", x:-2.0,  y:-3.28,z:-0.62}, // 19 ortho H
+      {el:"H", x:-4.38, y:-3.32,z:-0.62}, // 20 meta H
+      {el:"H", x:-3.97, y:0.68, z:-0.62}, // 21 meta H
+      {el:"H", x:-2.1,  y:0.66, z:-0.62}, // 22 ortho H
+      // H on phenol OH
+      {el:"H", x:-6.38, y:-0.52,z:-0.62}, // 23
+    ],
+    bonds: [
+      [0,1],[1,2],[1,3],[0,4],[0,5],[0,13],
+      [4,14],[4,15],[3,16],
+      [5,6],[5,17],[5,18],
+      [6,7],[7,8],[8,9],[9,10],[10,11],[11,6],
+      [9,12],[12,23],
+      [7,19],[8,20],[10,21],[11,22]
+    ],
+    aromatic: [[6,7],[8,9],[10,11]]
+  }
+};
+
+// ─── Three.js setup ──────────────────────────────────────────────────────────
+const COLORS = {C:0x7a7e8a, H:0xd8dce8, O:0xe05c3a, N:0x4a90d9, S:0xe8c53a};
+const RADII  = {C:0.35, H:0.22, O:0.33, N:0.33, S:0.44};
+
+const wrap   = document.getElementById('canvas-wrap');
+const canvas = document.getElementById('c');
+let W = wrap.clientWidth, H = wrap.clientHeight || 420;
+
+const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setSize(W, H);
+renderer.setClearColor(0x000000, 0);
+
+const scene  = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(40, W/H, 0.1, 200);
+camera.position.set(0, 0, 16);
+
+scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+const dl1 = new THREE.DirectionalLight(0xffffff, 0.9); dl1.position.set(5,8,6);  scene.add(dl1);
+const dl2 = new THREE.DirectionalLight(0x8899ff, 0.3); dl2.position.set(-5,-4,-5); scene.add(dl2);
+
+let molGroup = new THREE.Group();
+scene.add(molGroup);
+
+let autoRotate = true;
+let rotX=0, rotY=0, panX=0, panY=0;
+let isDragging=false, isRight=false, lastX=0, lastY=0;
+
+function buildMol(key) {
+  molGroup.clear();
+  const mol = MOLS[key];
+
+  // atoms
+  mol.atoms.forEach(a => {
+    const geo = new THREE.SphereGeometry(RADII[a.el], 24, 18);
+    const mat = new THREE.MeshPhongMaterial({color:COLORS[a.el], shininess:70, specular:0x333333});
+    const m = new THREE.Mesh(geo, mat);
+    m.position.set(a.x, a.y, a.z);
+    molGroup.add(m);
+  });
+
+  // bonds
+  mol.bonds.forEach(([i,j]) => {
+    const a = mol.atoms[i], b = mol.atoms[j];
+    const av = new THREE.Vector3(a.x,a.y,a.z);
+    const bv = new THREE.Vector3(b.x,b.y,b.z);
+    const dir = new THREE.Vector3().subVectors(bv,av);
+    const len = dir.length();
+    const mid = new THREE.Vector3().addVectors(av,bv).multiplyScalar(0.5);
+    const geo = new THREE.CylinderGeometry(0.075,0.075,len,12);
+    const mat = new THREE.MeshPhongMaterial({color:0x555a68, shininess:30});
+    const m = new THREE.Mesh(geo, mat);
+    m.position.copy(mid);
+    m.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0), dir.normalize());
+    molGroup.add(m);
+  });
+
+  // aromatic double bonds: add a thin inner cylinder slightly offset
+  if (mol.aromatic) {
+    mol.aromatic.forEach(([i,j]) => {
+      const a = mol.atoms[i], b = mol.atoms[j];
+      const av = new THREE.Vector3(a.x,a.y,a.z);
+      const bv = new THREE.Vector3(b.x,b.y,b.z);
+      const dir = new THREE.Vector3().subVectors(bv,av);
+      const len = dir.length();
+      const mid = new THREE.Vector3().addVectors(av,bv).multiplyScalar(0.5);
+      // offset perpendicular to bond in ring plane
+      const perp = new THREE.Vector3(0,0,1).cross(dir.clone().normalize()).normalize().multiplyScalar(0.14);
+      const geo = new THREE.CylinderGeometry(0.04,0.04,len*0.88,10);
+      const mat = new THREE.MeshPhongMaterial({color:0x9aa0b8, shininess:20});
+      const m = new THREE.Mesh(geo, mat);
+      m.position.copy(mid.clone().add(perp));
+      m.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0), dir.normalize());
+      molGroup.add(m);
+    });
+  }
+
+  // center and fit camera
+  const box = new THREE.Box3().setFromObject(molGroup);
+  const center = new THREE.Vector3(); box.getCenter(center);
+  molGroup.position.sub(center);
+  const size = new THREE.Vector3(); box.getSize(size);
+  camera.position.z = Math.max(size.x, size.y, size.z) * 2.0 + 4;
+
+  rotX=0; rotY=0; panX=0; panY=0;
+  applyTransform();
+}
+
+function applyTransform() {
+  molGroup.rotation.x = rotX;
+  molGroup.rotation.y = rotY;
+  molGroup.position.x = panX;
+  molGroup.position.y = panY;
+}
+
+// ─── Controls ────────────────────────────────────────────────────────────────
+canvas.addEventListener('mousedown', e => {
+  isDragging=true; isRight=e.button===2;
+  lastX=e.clientX; lastY=e.clientY;
+  autoRotate=false;
+  document.getElementById('btn-auto').style.opacity='0.45';
+  e.preventDefault();
+});
+canvas.addEventListener('contextmenu', e=>e.preventDefault());
+window.addEventListener('mousemove', e => {
+  if(!isDragging) return;
+  const dx=e.clientX-lastX, dy=e.clientY-lastY;
+  if(isRight){panX+=dx*0.012; panY-=dy*0.012;}
+  else{rotY+=dx*0.012; rotX+=dy*0.012;}
+  lastX=e.clientX; lastY=e.clientY;
+  applyTransform();
+});
+window.addEventListener('mouseup', ()=>{isDragging=false});
+canvas.addEventListener('wheel', e=>{
+  camera.position.z = Math.max(2, Math.min(50, camera.position.z+e.deltaY*0.03));
+  e.preventDefault();
+},{passive:false});
+
+canvas.addEventListener('touchstart', e=>{
+  isDragging=true; isRight=false;
+  lastX=e.touches[0].clientX; lastY=e.touches[0].clientY;
+  autoRotate=false;
+},{passive:true});
+canvas.addEventListener('touchmove', e=>{
+  if(!isDragging||e.touches.length!==1) return;
+  const dx=e.touches[0].clientX-lastX, dy=e.touches[0].clientY-lastY;
+  rotY+=dx*0.012; rotX+=dy*0.012;
+  lastX=e.touches[0].clientX; lastY=e.touches[0].clientY;
+  applyTransform();
+},{passive:true});
+canvas.addEventListener('touchend', ()=>{isDragging=false});
+
+document.getElementById('btn-auto').addEventListener('click', ()=>{
+  autoRotate=!autoRotate;
+  document.getElementById('btn-auto').style.opacity = autoRotate ? '1' : '0.45';
+});
+document.getElementById('btn-reset').addEventListener('click', ()=>{
+  rotX=0; rotY=0; panX=0; panY=0;
+  applyTransform();
+  camera.position.z=16;
+});
+
+document.querySelectorAll('.mol-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.mol-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    buildMol(btn.dataset.mol);
+    document.getElementById('mol-info').innerHTML = MOLS[btn.dataset.mol].info;
+    autoRotate=true;
+    document.getElementById('btn-auto').style.opacity='1';
+  });
+});
+
+// ─── Render loop ─────────────────────────────────────────────────────────────
+function animate(){
+  requestAnimationFrame(animate);
+  if(autoRotate){ rotY+=0.005; applyTransform(); }
+  renderer.render(scene, camera);
+}
+
+window.addEventListener('resize', ()=>{
+  W=wrap.clientWidth; H=wrap.clientHeight||420;
+  camera.aspect=W/H; camera.updateProjectionMatrix();
+  renderer.setSize(W,H);
+});
+
+buildMol('PHE');
+animate();
+</script>
+</body>
+</html>
