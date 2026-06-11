@@ -479,11 +479,14 @@ document.getElementById('btn-reset').addEventListener('click', ()=>{
 });
 
 document.querySelectorAll('.mol-btn').forEach(btn=>{
-  btn.addEventListener('click', ()=>{
+  btn.addEventListener('click', function(e){
+    const btn = e.target.closest('.mol-btn');
+    if (!btn) return;
     document.querySelectorAll('.mol-btn').forEach(b=>b.classList.remove('active'));
     btn.classList.add('active');
-    buildMol(btn.dataset.mol);
-    document.getElementById('mol-info').innerHTML = MOLS[btn.dataset.mol].info;
+    const mol = btn.dataset.mol;
+    buildMol(mol);
+    document.getElementById('mol-info').innerHTML = MOLS[mol].info;
     autoRotate=true;
     document.getElementById('btn-auto').style.opacity='1';
   });
