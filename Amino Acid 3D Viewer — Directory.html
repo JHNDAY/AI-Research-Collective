@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amino Acid 3D Viewer — Directory</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0f1117;
+    --bg2: #181c27;
+    --bg3: #1f2435;
+    --border: rgba(255,255,255,0.08);
+    --border2: rgba(255,255,255,0.18);
+    --text: #e8eaf0;
+    --muted: #8891a8;
+    --accent: #6ea8fe;
+    --accent2: #a78bfa;
+    --green: #4ade80;
+    --teal: #2dd4bf;
+    --coral: #fb7185;
+    --amber: #fbbf24;
+    --radius: 12px;
+    --radius-sm: 7px;
+  }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    min-height: 100vh;
+    padding: 0 0 60px;
+  }
+
+  /* ── Hero ── */
+  .hero {
+    padding: 52px 48px 40px;
+    border-bottom: 1px solid var(--border);
+    max-width: 960px;
+    margin: 0 auto;
+  }
+  .hero-eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+  .hero h1 {
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    line-height: 1.15;
+    color: var(--text);
+    margin-bottom: 16px;
+  }
+  .hero p {
+    font-size: 15px;
+    color: var(--muted);
+    line-height: 1.75;
+    max-width: 640px;
+  }
+  .hero-meta {
+    margin-top: 24px;
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .meta-pill {
+    font-size: 12px;
+    color: var(--muted);
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: 20px;
+    padding: 5px 14px;
+  }
+  .meta-pill span { color: var(--text); font-weight: 500; }
+
+  /* ── Grid ── */
+  .grid {
+    max-width: 960px;
+    margin: 44px auto 0;
+    padding: 0 48px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+
+  /* ── Card ── */
+  .card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: border-color .2s, transform .15s;
+    text-decoration: none;
+    color: inherit;
+  }
+  .card:hover {
+    border-color: var(--border2);
+    transform: translateY(-2px);
+  }
+
+  .card-header {
+    padding: 22px 22px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .card-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 19px;
+    flex-shrink: 0;
+  }
+  .card-title-block { flex: 1; min-width: 0; }
+  .card-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .card-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.3;
+  }
+
+  .card-body {
+    padding: 16px 22px 14px;
+    flex: 1;
+  }
+  .card-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  .card-molecules {
+    padding: 12px 22px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .mol-tag {
+    pointer-events: none;
+    font-size: 11px;
+    padding: 3px 9px;
+    border-radius: 4px;
+    font-weight: 500;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .card-footer {
+    padding: 12px 22px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .card-count { font-size: 12px; color: var(--muted); }
+  .card-link-label {
+    font-size: 12px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .card-link-label svg {
+    width: 13px; height: 13px;
+    transition: transform .15s;
+  }
+  .card:hover .card-link-label svg { transform: translateX(3px); }
+
+  /* colour themes */
+  .theme-gray  { --t: var(--muted);   --ti: #23272f; --tb: rgba(136,145,168,0.15); }
+  .theme-blue  { --t: var(--accent);  --ti: #0f1c2e; --tb: rgba(110,168,254,0.12); }
+  .theme-teal  { --t: var(--teal);    --ti: #0a1f1e; --tb: rgba(45,212,191,0.12); }
+  .theme-green { --t: var(--green);   --ti: #0d1f12; --tb: rgba(74,222,128,0.12); }
+  .theme-coral { --t: var(--coral);   --ti: #221019; --tb: rgba(251,113,133,0.12); }
+  .theme-amber { --t: var(--amber);   --ti: #1e1608; --tb: rgba(251,191,36,0.12); }
+  .theme-purple{ --t: var(--accent2); --ti: #160e27; --tb: rgba(167,139,250,0.12); }
+
+  .card-icon   { background: var(--ti); color: var(--t); }
+  .card-label  { color: var(--t); }
+  .card-link-label { color: var(--t); }
+
+  /* ── CPK legend ── */
+  .cpk-section {
+    max-width: 960px;
+    margin: 40px auto 0;
+    padding: 0 48px;
+  }
+  .cpk-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .cpk-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .cpk-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--muted);
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 7px 12px;
+  }
+  .cpk-dot {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .cpk-item span { color: var(--text); font-weight: 500; }
+
+  /* ── Controls note ── */
+  .controls-note {
+    max-width: 960px;
+    margin: 28px auto 0;
+    padding: 0 48px;
+    font-size: 12px;
+    color: var(--muted);
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .ctrl-item { display: flex; align-items: center; gap: 6px; }
+  .ctrl-key {
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    border-radius: 4px;
+    padding: 2px 7px;
+    font-size: 11px;
+    color: var(--text);
+    font-family: monospace;
+  }
+
+  @media (max-width: 640px) {
+    .hero { padding: 36px 24px 28px; }
+    .hero h1 { font-size: 26px; }
+    .grid { padding: 0 16px; }
+    .cpk-section, .controls-note { padding: 0 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-eyebrow">Interactive 3D Molecular Models</div>
+  <h1>The 20 Standard Amino Acids</h1>
+  <p>Ball-and-stick 3D viewers for all standard amino acids, organized by side-chain chemistry. Each model can be rotated, zoomed, and panned to explore tetrahedral geometry, ring planarity, and functional group orientation.</p>
+  <div class="hero-meta">
+    <div class="meta-pill"><span>20</span> amino acids</div>
+    <div class="meta-pill"><span>6</span> structural groups</div>
+    <div class="meta-pill">CPK color scheme</div>
+    <div class="meta-pill">Three.js · WebGL</div>
+  </div>
+</div>
+
+<div class="grid">
+
+  <!-- Nonpolar Aliphatic -->
+  <a class="card theme-gray" href="https://jhnday.github.io/AI-Research-Collective/amino_acids_3d.html" target="_blank">
+    <div class="card-header">
+      <div class="card-icon">⬡</div>
+      <div class="card-title-block">
+        <div class="card-label">Nonpolar · Aliphatic</div>
+        <div class="card-title">Nonpolar Aliphatic</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <p class="card-desc">The hydrophobic core builders. Each carries a pure hydrocarbon R-group with no polar atoms. The tetrahedral geometry of the α-carbon is clearly visible in 3D, and the branched-chain members (Val, Leu, Ile) show how side-chain bulk increases with carbon count. Methionine is the lone sulfur-bearing member, its thioether capping an unbranched four-carbon chain.</p>
+    </div>
+    <div class="card-molecules">
+      <span class="mol-tag">Ala · A</span>
+      <span class="mol-tag">Val · V</span>
+      <span class="mol-tag">Leu · L</span>
+      <span class="mol-tag">Ile · I</span>
+      <span class="mol-tag">Met · M</span>
+    </div>
+    <div class="card-footer">
+      <span class="card-count">5 molecules</span>
+      <span class="card-link-label">Open viewer <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
+    </div>
+  </a>
+
+  <!-- Aromatic -->
+  <a class="card theme-blue" href="https://jhnday.github.io/AI-Research-Collective/aromatic_amino_acids_3d.html" target="_blank">
+    <div class="card-header">
+      <div class="card-icon">⬡</div>
+      <div class="card-title-block">
+        <div class="card-label">Hydrophobic · Aromatic</div>
+        <div class="card-title">Aromatic</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <p class="card-desc">Flat, electron-rich ring systems that absorb UV light and pack tightly in protein cores. Phenylalanine has a simple benzene ring. Tryptophan carries the largest side chain of any standard amino acid — a bicyclic indole with an NH visible as a blue nitrogen. Tyrosine is phenylalanine with a para-hydroxyl, making it ionizable at high pH.</p>
+    </div>
+    <div class="card-molecules">
+      <span class="mol-tag">Phe · F</span>
+      <span class="mol-tag">Trp · W</span>
+      <span class="mol-tag">Tyr · Y</span>
+    </div>
+    <div class="card-footer">
+      <span class="card-count">3 molecules</span>
+      <span class="card-link-label">Open viewer <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
+    </div>
+  </a>
+
+  <!-- Polar Neutral -->
+  <a class="card theme-teal" href="https://jhnday.github.io/AI-Research-Collective/polar_neutral_amino_acids_3d.html" target="_blank">
+    <div class="card-header">
+      <div class="card-icon">◈</div>
+      <div class="card-title-block">
+        <div class="card-label">Polar · Uncharged</div>
+        <div class="card-title">Polar Neutral</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <p class="card-desc">Hydrogen-bond donors and acceptors that are uncharged at physiological pH. Asparagine and Glutamine each carry an amide group at the chain tip — visible as a blue nitrogen flanked by a red oxygen. Cysteine's large yellow sulfur marks the thiol that forms disulfide bridges. Serine and Threonine bear hydroxyl groups; Threonine gains a methyl, giving it two chiral centers.</p>
+    </div>
+    <div class="card-molecules">
+      <span class="mol-tag">Asn · N</span>
+      <span class="mol-tag">Cys · C</span>
+      <span class="mol-tag">Gln · Q</span>
+      <span class="mol-tag">Ser · S</span>
+      <span class="mol-tag">Thr · T</span>
+    </div>
+    <div class="card-footer">
+      <span class="card-count">5 molecules</span>
+      <span class="card-link-label">Open viewer <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
+    </div>
+  </a>
+
+  <!-- Acidic -->
+  <a class="card theme-coral" href="https://jhnday.github.io/AI-Research-Collective/acidic_amino_acids_3d.html" target="_blank">
+    <div class="card-header">
+      <div class="card-icon">−</div>
+      <div class="card-title-block">
+        <div class="card-label">Charged · Acidic</div>
+        <div class="card-title">Acidic</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <p class="card-desc">Negatively charged at physiological pH — each carries a second carboxyl group on the side chain with a pKa well below 7. Both show four oxygens total (two per –COOH), rendered with double-bond cylinders. Aspartic acid has a single –CH₂– spacer between α-carbon and side-chain carboxyl; Glutamic acid adds one more carbon, giving it a slightly higher pKa and more conformational reach.</p>
+    </div>
+    <div class="card-molecules">
+      <span class="mol-tag">Asp · D</span>
+      <span class="mol-tag">Glu · E</span>
+    </div>
+    <div class="card-footer">
+      <span class="card-count">2 molecules</span>
+      <span class="card-link-label">Open viewer <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
+    </div>
+  </a>
+
+  <!-- Basic -->
+  <a class="card theme-amber" href="https://jhnday.github.io/AI-Research-Collective/basic_amino_acids_3d.html" target="_blank">
+    <div class="card-header">
+      <div class="card-icon">+</div>
+      <div class="card-title-block">
+        <div class="card-label">Charged · Basic</div>
+        <div class="card-title">Basic</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <p class="card-desc">Positively charged at physiological pH — each carries a nitrogen-rich side chain. Arginine's guanidinium group has three nitrogens in a flat Y-shaped arrangement, making it the most basic amino acid (pKa ≈ 12.5). Histidine's imidazole ring sits near neutrality (pKa ≈ 6.0), making it a key catalytic residue in enzymes. Lysine has a simple four-carbon chain tipped with a freely accessible –NH₂.</p>
+    </div>
+    <div class="card-molecules">
+      <span class="mol-tag">Arg · R</span>
+      <span class="mol-tag">His · H</span>
+      <span class="mol-tag">Lys · K</span>
+    </div>
+    <div class="card-footer">
+      <span class="card-count">3 molecules</span>
+      <span class="card-link-label">Open viewer <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
+    </div>
+  </a>
+
+  <!-- Unique -->
+  <a class="card theme-purple" href="https://jhnday.github.io/AI-Research-Collective/unique_amino_acids_3d.html" target="_blank">
+    <div class="card-header">
+      <div class="card-icon">✦</div>
+      <div class="card-title-block">
+        <div class="card-label">Structurally Exceptional</div>
+        <div class="card-title">Unique</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <p class="card-desc">Two amino acids that break the rules of the standard blueprint. Glycine's α-carbon carries two identical hydrogens — making it the only achiral amino acid. Rotate end-on to see the perfect symmetry. Proline's nitrogen is locked into a five-membered pyrrolidine ring, making it a secondary amine with no free –NH₂. This rigid geometry forces a kink in any polypeptide chain, making proline a helix-breaker in protein structure.</p>
+    </div>
+    <div class="card-molecules">
+      <span class="mol-tag">Gly · G</span>
+      <span class="mol-tag">Pro · P</span>
+    </div>
+    <div class="card-footer">
+      <span class="card-count">2 molecules</span>
+      <span class="card-link-label">Open viewer <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
+    </div>
+  </a>
+
+</div>
+
+<!-- CPK Legend -->
+<div class="cpk-section">
+  <div class="cpk-label">CPK Color Scheme</div>
+  <div class="cpk-row">
+    <div class="cpk-item"><div class="cpk-dot" style="background:#7a7e8a"></div><span>Carbon</span> — gray</div>
+    <div class="cpk-item"><div class="cpk-dot" style="background:#d8dce8;border:1px solid #555"></div><span>Hydrogen</span> — white</div>
+    <div class="cpk-item"><div class="cpk-dot" style="background:#4a90d9"></div><span>Nitrogen</span> — blue</div>
+    <div class="cpk-item"><div class="cpk-dot" style="background:#e05c3a"></div><span>Oxygen</span> — red</div>
+    <div class="cpk-item"><div class="cpk-dot" style="background:#e8c53a"></div><span>Sulfur</span> — yellow</div>
+  </div>
+</div>
+
+<!-- Viewer controls -->
+<div class="controls-note">
+  <div class="ctrl-item"><kbd class="ctrl-key">drag</kbd> rotate</div>
+  <div class="ctrl-item"><kbd class="ctrl-key">scroll</kbd> zoom</div>
+  <div class="ctrl-item"><kbd class="ctrl-key">right-drag</kbd> pan</div>
+  <div class="ctrl-item"><kbd class="ctrl-key">⟳</kbd> toggle auto-rotate</div>
+  <div class="ctrl-item"><kbd class="ctrl-key">⌖</kbd> reset view</div>
+</div>
+
+<script>
+document.querySelectorAll('.card-molecules').forEach(el=>{
+  el.addEventListener('click', e=>{ e.preventDefault(); e.stopPropagation(); });
+});
+</script>
+</body>
+</html>
