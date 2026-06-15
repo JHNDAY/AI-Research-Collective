@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AI SIG — Member Backgrounds & Interests</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Source+Sans+3:wght@300;400;500;600&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -39,7 +39,7 @@
   body {
     background: var(--bg);
     color: var(--ink);
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Source Sans 3', sans-serif;
     font-weight: 400;
     line-height: 1.6;
   }
@@ -60,7 +60,7 @@
   }
   .header-inner { max-width: 1100px; margin: 0 auto; }
   .eyebrow {
-    font-family: 'DM Mono', monospace;
+    font-family: 'Source Code Pro', monospace;
     font-size: .7rem;
     letter-spacing: .18em;
     text-transform: uppercase;
@@ -68,11 +68,13 @@
     margin-bottom: .75rem;
   }
   .site-header h1 {
-    font-family: 'DM Serif Display', serif;
-    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.4rem, 5vw, 3.8rem);
+    font-weight: 500;
     color: #ffffff;
-    line-height: 1.15;
-    max-width: 620px;
+    line-height: 1.1;
+    max-width: 640px;
+    letter-spacing: .01em;
   }
   .site-header h1 em {
     font-style: italic;
@@ -86,10 +88,7 @@
     gap: 2rem;
     flex-wrap: wrap;
   }
-  .header-meta span strong {
-    color: #fff;
-    font-weight: 500;
-  }
+  .header-meta span strong { color: #fff; font-weight: 500; }
 
   /* ── STAT STRIP ──────────────────────────── */
   .stat-strip {
@@ -111,7 +110,7 @@
   }
   .stat-item:last-child { border-right: none; }
   .stat-num {
-    font-family: 'DM Serif Display', serif;
+    font-family: 'Cormorant Garamond', serif;
     font-size: 2rem;
     line-height: 1;
     color: var(--accent);
@@ -141,7 +140,7 @@
   }
   .chart-title {
     font-size: .7rem;
-    font-family: 'DM Mono', monospace;
+    font-family: 'Source Code Pro', monospace;
     text-transform: uppercase;
     letter-spacing: .12em;
     color: var(--ink-faint);
@@ -153,44 +152,100 @@
     gap: .75rem;
     margin-bottom: .6rem;
   }
-  .bar-label {
-    font-size: .8rem;
-    color: var(--ink-mid);
-    width: 72px;
-    flex-shrink: 0;
-    white-space: nowrap;
-  }
-  .bar-track {
-    flex: 1;
-    height: 8px;
-    background: var(--bg);
-    border-radius: 99px;
-    overflow: hidden;
-  }
-  .bar-fill {
-    height: 100%;
-    border-radius: 99px;
-    transition: width .4s ease;
-  }
-  .bar-count {
-    font-family: 'DM Mono', monospace;
-    font-size: .75rem;
-    color: var(--ink-faint);
-    width: 22px;
-    text-align: right;
-    flex-shrink: 0;
-  }
+  .bar-label { font-size: .8rem; color: var(--ink-mid); width: 72px; flex-shrink: 0; white-space: nowrap; }
+  .bar-track { flex: 1; height: 8px; background: var(--bg); border-radius: 99px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 99px; }
+  .bar-count { font-family: 'Source Code Pro', monospace; font-size: .75rem; color: var(--ink-faint); width: 22px; text-align: right; flex-shrink: 0; }
 
-  /* donut */
-  .donut-wrap {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
+  .donut-wrap { display: flex; align-items: center; gap: 1rem; }
   .donut-wrap svg { flex-shrink: 0; }
   .donut-legend { font-size: .8rem; }
   .legend-row { display: flex; align-items: center; gap: .5rem; margin-bottom: .4rem; }
   .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+  /* ── PROFESSIONAL PROFILE SECTION ───────── */
+  .profile-section {
+    max-width: 1100px;
+    margin: 2.5rem auto 0;
+    padding: 0 2.5rem;
+  }
+  .profile-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 1rem;
+  }
+  .profile-header h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.75rem;
+    font-weight: 500;
+    letter-spacing: .01em;
+    color: var(--ink);
+  }
+  .profile-header p { font-size: .825rem; color: var(--ink-faint); }
+  .profile-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+  @media (max-width: 700px) {
+    .profile-grid { grid-template-columns: 1fr; }
+    .profile-section { padding: 0 1.25rem; }
+  }
+  .profile-card {
+    background: var(--card-bg);
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    padding: 1.5rem;
+  }
+  .profile-card.full-width { grid-column: 1 / -1; }
+  .profile-card-title {
+    font-family: 'Source Code Pro', monospace;
+    font-size: .68rem;
+    text-transform: uppercase;
+    letter-spacing: .13em;
+    color: var(--ink-faint);
+    margin-bottom: 1.1rem;
+  }
+
+  .sector-list { display: flex; flex-direction: column; gap: .55rem; }
+  .sector-row { display: flex; align-items: center; gap: .75rem; }
+  .sector-icon { font-size: 1.05rem; width: 24px; text-align: center; flex-shrink: 0; }
+  .sector-info { flex: 1; }
+  .sector-name { font-size: .84rem; font-weight: 600; color: var(--ink); }
+  .sector-names { font-size: .72rem; color: var(--ink-faint); margin-top: .05rem; }
+  .sector-bar-track { width: 80px; height: 6px; background: var(--bg); border-radius: 99px; overflow: hidden; flex-shrink: 0; }
+  .sector-bar-fill { height: 100%; border-radius: 99px; }
+  .sector-count { font-family: 'Source Code Pro', monospace; font-size: .75rem; color: var(--ink-faint); width: 18px; text-align: right; flex-shrink: 0; }
+
+  .exp-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: .75rem; }
+  .exp-cell { background: var(--bg); border-radius: 8px; padding: .85rem .75rem; text-align: center; }
+  .exp-icon { font-size: 1.4rem; margin-bottom: .35rem; }
+  .exp-label { font-size: .75rem; font-weight: 600; color: var(--ink); line-height: 1.3; }
+  .exp-sub { font-size: .68rem; color: var(--ink-faint); margin-top: .15rem; }
+
+  .theme-cloud { display: flex; flex-wrap: wrap; gap: .5rem; align-items: flex-start; }
+  .theme-tag {
+    padding: .3rem .75rem;
+    border-radius: 99px;
+    font-size: .78rem;
+    font-weight: 500;
+    border: 1.5px solid;
+    line-height: 1.3;
+  }
+
+  .narrative-text { font-size: .9rem; color: var(--ink-mid); line-height: 1.7; }
+  .narrative-text strong { color: var(--ink); font-weight: 600; }
+  .narrative-highlight {
+    display: inline-block;
+    background: var(--accent-soft);
+    color: var(--accent);
+    border-radius: 4px;
+    padding: 0 .3em;
+    font-weight: 600;
+  }
 
   /* ── SEARCH / FILTER ─────────────────────── */
   .controls {
@@ -203,23 +258,21 @@
     align-items: center;
   }
   .section-label {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.5rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.75rem;
+    font-weight: 500;
+    letter-spacing: .01em;
     color: var(--ink);
     flex: 1;
     min-width: 160px;
   }
-  .search-box {
-    position: relative;
-    flex: 1;
-    max-width: 320px;
-  }
+  .search-box { position: relative; flex: 1; max-width: 320px; }
   .search-box input {
     width: 100%;
     padding: .6rem 1rem .6rem 2.4rem;
     border: 1.5px solid var(--rule);
     border-radius: 8px;
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Source Sans 3', sans-serif;
     font-size: .875rem;
     color: var(--ink);
     background: var(--card-bg);
@@ -227,44 +280,23 @@
     transition: border-color .2s;
   }
   .search-box input:focus { border-color: var(--accent); }
-  .search-icon {
-    position: absolute;
-    left: .75rem;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--ink-faint);
-    font-size: .9rem;
-  }
-  .filter-btns {
-    display: flex;
-    gap: .5rem;
-    flex-wrap: wrap;
-  }
+  .search-icon { position: absolute; left: .75rem; top: 50%; transform: translateY(-50%); color: var(--ink-faint); font-size: .9rem; }
+  .filter-btns { display: flex; gap: .5rem; flex-wrap: wrap; }
   .filter-btn {
     padding: .45rem .9rem;
     border-radius: 99px;
     border: 1.5px solid var(--rule);
     background: var(--card-bg);
     font-size: .78rem;
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'Source Sans 3', sans-serif;
     color: var(--ink-mid);
     cursor: pointer;
     transition: all .2s;
     font-weight: 500;
   }
   .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
-  .filter-btn.active {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: #fff;
-  }
-  .results-count {
-    font-size: .8rem;
-    color: var(--ink-faint);
-    font-family: 'DM Mono', monospace;
-    align-self: center;
-    white-space: nowrap;
-  }
+  .filter-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .results-count { font-size: .8rem; color: var(--ink-faint); font-family: 'Source Code Pro', monospace; align-self: center; white-space: nowrap; }
 
   /* ── GRID ────────────────────────────────── */
   .grid {
@@ -284,10 +316,7 @@
     flex-direction: column;
     transition: box-shadow .2s, transform .2s;
   }
-  .card:hover {
-    box-shadow: 0 8px 32px rgba(92,78,245,.1);
-    transform: translateY(-2px);
-  }
+  .card:hover { box-shadow: 0 8px 32px rgba(92,78,245,.1); transform: translateY(-2px); }
   .card-top {
     padding: 1.25rem 1.25rem .9rem;
     display: flex;
@@ -296,182 +325,42 @@
     border-bottom: 1px solid var(--rule);
   }
   .avatar {
-    width: 42px;
-    height: 42px;
+    width: 42px; height: 42px;
     border-radius: 50%;
     flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: 'DM Serif Display', serif;
+    font-family: 'Cormorant Garamond', serif;
     font-size: 1.1rem;
     color: #fff;
   }
-  .name-row h3 {
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 600;
-    font-size: 1rem;
-    color: var(--ink);
-    line-height: 1.2;
-  }
-  .pill-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: .3rem;
-    margin-top: .4rem;
-  }
+  .name-row h3 { font-family: 'Source Sans 3', sans-serif; font-weight: 600; font-size: 1rem; color: var(--ink); line-height: 1.2; }
+  .pill-row { display: flex; flex-wrap: wrap; gap: .3rem; margin-top: .4rem; }
   .pill {
-    display: inline-flex;
-    align-items: center;
-    gap: .3rem;
-    padding: .15rem .55rem;
-    border-radius: 99px;
-    font-size: .68rem;
-    font-weight: 500;
-    white-space: nowrap;
+    display: inline-flex; align-items: center; gap: .3rem;
+    padding: .15rem .55rem; border-radius: 99px;
+    font-size: .68rem; font-weight: 500; white-space: nowrap;
   }
-  .pill-mac  { background: var(--accent-soft); color: var(--accent); }
-  .pill-pc   { background: var(--teal-soft);   color: var(--teal); }
-  .pill-chrome  { background: var(--chrome-bg); color: var(--chrome-c); }
-  .pill-firefox { background: var(--firefox-bg); color: var(--firefox-c); }
-  .pill-safari  { background: var(--safari-bg);  color: var(--safari-c); }
-  .pill-edge    { background: var(--edge-bg);    color: var(--edge-c); }
+  .pill-mac     { background: var(--accent-soft); color: var(--accent); }
+  .pill-pc      { background: var(--teal-soft);   color: var(--teal); }
+  .pill-chrome  { background: var(--chrome-bg);   color: var(--chrome-c); }
+  .pill-firefox { background: var(--firefox-bg);  color: var(--firefox-c); }
+  .pill-safari  { background: var(--safari-bg);   color: var(--safari-c); }
+  .pill-edge    { background: var(--edge-bg);     color: var(--edge-c); }
   .pill-turner  { background: #e8f5ed; color: #1d8a4a; }
 
   .card-body { padding: 1rem 1.25rem; flex: 1; display: flex; flex-direction: column; gap: .75rem; }
-  .section-block {}
   .block-label {
-    font-family: 'DM Mono', monospace;
+    font-family: 'Source Code Pro', monospace;
     font-size: .63rem;
     text-transform: uppercase;
     letter-spacing: .12em;
     color: var(--ink-faint);
     margin-bottom: .3rem;
   }
-  .block-text {
-    font-size: .83rem;
-    color: var(--ink-mid);
-    line-height: 1.55;
-  }
-  .empty-text {
-    font-size: .8rem;
-    color: var(--ink-faint);
-    font-style: italic;
-  }
-
-  /* ── PROFESSIONAL PROFILE SECTION ───────── */
-  .profile-section {
-    max-width: 1100px;
-    margin: 2.5rem auto 0;
-    padding: 0 2.5rem;
-  }
-  .profile-header {
-    display: flex;
-    align-items: baseline;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-    border-bottom: 1px solid var(--rule);
-    padding-bottom: 1rem;
-  }
-  .profile-header h2 {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.5rem;
-    color: var(--ink);
-  }
-  .profile-header p {
-    font-size: .825rem;
-    color: var(--ink-faint);
-  }
-  .profile-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.25rem;
-  }
-  @media (max-width: 700px) {
-    .profile-grid { grid-template-columns: 1fr; }
-    .profile-section { padding: 0 1.25rem; }
-  }
-  .profile-card {
-    background: var(--card-bg);
-    border: 1px solid var(--rule);
-    border-radius: 12px;
-    padding: 1.5rem;
-  }
-  .profile-card.full-width {
-    grid-column: 1 / -1;
-  }
-  .profile-card-title {
-    font-family: 'DM Mono', monospace;
-    font-size: .68rem;
-    text-transform: uppercase;
-    letter-spacing: .13em;
-    color: var(--ink-faint);
-    margin-bottom: 1.1rem;
-  }
-
-  /* Career sectors */
-  .sector-list { display: flex; flex-direction: column; gap: .5rem; }
-  .sector-row { display: flex; align-items: center; gap: .75rem; }
-  .sector-icon { font-size: 1.1rem; width: 24px; text-align: center; flex-shrink: 0; }
-  .sector-info { flex: 1; }
-  .sector-name { font-size: .85rem; font-weight: 600; color: var(--ink); }
-  .sector-names { font-size: .75rem; color: var(--ink-faint); margin-top: .05rem; }
-  .sector-bar-track {
-    width: 90px;
-    height: 6px;
-    background: var(--bg);
-    border-radius: 99px;
-    overflow: hidden;
-    flex-shrink: 0;
-  }
-  .sector-bar-fill { height: 100%; border-radius: 99px; }
-  .sector-count {
-    font-family: 'DM Mono', monospace;
-    font-size: .75rem;
-    color: var(--ink-faint);
-    width: 18px;
-    text-align: right;
-    flex-shrink: 0;
-  }
-
-  /* AI Experience */
-  .exp-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: .75rem; }
-  .exp-cell {
-    background: var(--bg);
-    border-radius: 8px;
-    padding: .85rem .75rem;
-    text-align: center;
-  }
-  .exp-icon { font-size: 1.4rem; margin-bottom: .35rem; }
-  .exp-label { font-size: .75rem; font-weight: 600; color: var(--ink); line-height: 1.3; }
-  .exp-sub { font-size: .68rem; color: var(--ink-faint); margin-top: .15rem; }
-
-  /* Themes */
-  .theme-cloud { display: flex; flex-wrap: wrap; gap: .5rem; align-items: flex-start; }
-  .theme-tag {
-    padding: .3rem .75rem;
-    border-radius: 99px;
-    font-size: .78rem;
-    font-weight: 500;
-    border: 1.5px solid;
-    line-height: 1.3;
-  }
-
-  /* Narrative */
-  .narrative-text {
-    font-size: .9rem;
-    color: var(--ink-mid);
-    line-height: 1.7;
-  }
-  .narrative-text strong { color: var(--ink); font-weight: 600; }
-  .narrative-highlight {
-    display: inline-block;
-    background: var(--accent-soft);
-    color: var(--accent);
-    border-radius: 4px;
-    padding: 0 .3em;
-    font-weight: 600;
-  }
+  .block-text { font-size: .83rem; color: var(--ink-mid); line-height: 1.55; }
+  .empty-text { font-size: .8rem; color: var(--ink-faint); font-style: italic; }
 
   /* ── EMPTY STATE ─────────────────────────── */
   .empty-state {
@@ -479,17 +368,14 @@
     text-align: center;
     padding: 4rem 2rem;
     color: var(--ink-faint);
-    font-family: 'DM Serif Display', serif;
+    font-family: 'Cormorant Garamond', serif;
     font-size: 1.25rem;
   }
 
   /* ── RESPONSIVE ──────────────────────────── */
   @media (max-width: 600px) {
     .site-header { padding: 2rem 1.25rem 2rem; }
-    .stat-strip-inner, .charts-row, .controls, .grid {
-      padding-left: 1.25rem;
-      padding-right: 1.25rem;
-    }
+    .stat-strip-inner, .charts-row, .controls, .grid { padding-left: 1.25rem; padding-right: 1.25rem; }
     .stat-strip-inner { grid-template-columns: repeat(2, 1fr); }
   }
 </style>
@@ -501,7 +387,7 @@
     <p class="eyebrow">AI Special Interest Group · Member Directory</p>
     <h1>Who's here &amp; <em>why</em> they joined</h1>
     <div class="header-meta">
-      <span><strong>19</strong> members</span>
+      <span><strong>21</strong> members</span>
       <span>Backgrounds from law, medicine, education &amp; tech</span>
       <span>All pursuing AI literacy</span>
     </div>
@@ -510,11 +396,11 @@
 
 <div class="stat-strip">
   <div class="stat-strip-inner">
-    <div class="stat-item"><div class="stat-num">19</div><div class="stat-label">Members</div></div>
+    <div class="stat-item"><div class="stat-num">21</div><div class="stat-label">Members</div></div>
     <div class="stat-item"><div class="stat-num">12</div><div class="stat-label">Turner St. Yes</div></div>
-    <div class="stat-item"><div class="stat-num">84%</div><div class="stat-label">Have Gmail</div></div>
-    <div class="stat-item"><div class="stat-num">53%</div><div class="stat-label">Mac Users</div></div>
-    <div class="stat-item"><div class="stat-num">47%</div><div class="stat-label">Chrome Users</div></div>
+    <div class="stat-item"><div class="stat-num">81%</div><div class="stat-label">Have Gmail</div></div>
+    <div class="stat-item"><div class="stat-num">57%</div><div class="stat-label">Mac Users</div></div>
+    <div class="stat-item"><div class="stat-num">43%</div><div class="stat-label">Chrome Users</div></div>
   </div>
 </div>
 
@@ -524,12 +410,12 @@
     <div class="chart-title">Computer Platform</div>
     <div class="bar-row">
       <div class="bar-label">Mac</div>
-      <div class="bar-track"><div class="bar-fill" style="width:53%; background:var(--accent);"></div></div>
-      <div class="bar-count">10</div>
+      <div class="bar-track"><div class="bar-fill" style="width:57%; background:var(--accent);"></div></div>
+      <div class="bar-count">12</div>
     </div>
     <div class="bar-row">
       <div class="bar-label">PC</div>
-      <div class="bar-track"><div class="bar-fill" style="width:47%; background:var(--teal);"></div></div>
+      <div class="bar-track"><div class="bar-fill" style="width:43%; background:var(--teal);"></div></div>
       <div class="bar-count">9</div>
     </div>
   </div>
@@ -539,18 +425,18 @@
     <div class="chart-title">Browser</div>
     <div class="bar-row">
       <div class="bar-label">Chrome</div>
-      <div class="bar-track"><div class="bar-fill" style="width:47%; background:var(--chrome-c);"></div></div>
+      <div class="bar-track"><div class="bar-fill" style="width:43%; background:var(--chrome-c);"></div></div>
       <div class="bar-count">9</div>
     </div>
     <div class="bar-row">
       <div class="bar-label">Firefox</div>
-      <div class="bar-track"><div class="bar-fill" style="width:26%; background:var(--firefox-c);"></div></div>
-      <div class="bar-count">5</div>
+      <div class="bar-track"><div class="bar-fill" style="width:29%; background:var(--firefox-c);"></div></div>
+      <div class="bar-count">6</div>
     </div>
     <div class="bar-row">
       <div class="bar-label">Safari</div>
-      <div class="bar-track"><div class="bar-fill" style="width:21%; background:var(--safari-c);"></div></div>
-      <div class="bar-count">4</div>
+      <div class="bar-track"><div class="bar-fill" style="width:24%; background:var(--safari-c);"></div></div>
+      <div class="bar-count">5</div>
     </div>
     <div class="bar-row">
       <div class="bar-label">Edge</div>
@@ -564,24 +450,18 @@
     <div class="chart-title">Gmail Account</div>
     <div class="donut-wrap">
       <svg width="80" height="80" viewBox="0 0 80 80">
-        <!-- Yes: 16/19 = 84% = 301° -->
         <circle r="28" cx="40" cy="40" fill="none" stroke="#e4e2f0" stroke-width="14"/>
+        <!-- 17/21 = 81% → 143/33 of circumference (2πr≈176) -->
         <circle r="28" cx="40" cy="40" fill="none"
-          stroke="var(--teal)"
-          stroke-width="14"
-          stroke-dasharray="148 28"
-          stroke-dashoffset="42"
-          stroke-linecap="round"/>
+          stroke="var(--teal)" stroke-width="14"
+          stroke-dasharray="143 33" stroke-dashoffset="44" stroke-linecap="round"/>
         <circle r="28" cx="40" cy="40" fill="none"
-          stroke="var(--rose)"
-          stroke-width="14"
-          stroke-dasharray="28 148"
-          stroke-dashoffset="-106"
-          stroke-linecap="round"/>
+          stroke="var(--rose)" stroke-width="14"
+          stroke-dasharray="33 143" stroke-dashoffset="-99" stroke-linecap="round"/>
       </svg>
       <div class="donut-legend">
-        <div class="legend-row"><div class="legend-dot" style="background:var(--teal)"></div><span>Yes — 16</span></div>
-        <div class="legend-row"><div class="legend-dot" style="background:var(--rose)"></div><span>No — 3</span></div>
+        <div class="legend-row"><div class="legend-dot" style="background:var(--teal)"></div><span>Yes — 17</span></div>
+        <div class="legend-row"><div class="legend-dot" style="background:var(--rose)"></div><span>No — 4</span></div>
       </div>
     </div>
   </div>
@@ -592,29 +472,20 @@
     <div class="donut-wrap">
       <svg width="80" height="80" viewBox="0 0 80 80">
         <circle r="28" cx="40" cy="40" fill="none" stroke="#e4e2f0" stroke-width="14"/>
-        <!-- 12/19 = 63% -->
+        <!-- 12/21 = 57% -->
         <circle r="28" cx="40" cy="40" fill="none"
-          stroke="#1d8a4a"
-          stroke-width="14"
-          stroke-dasharray="111 65"
-          stroke-dashoffset="42"
-          stroke-linecap="round"/>
-        <circle r="28" cx="40" cy="40" fill="none"
-          stroke="#e4e2f0"
-          stroke-width="14"
-          stroke-dasharray="65 111"
-          stroke-dashoffset="-69"
-          stroke-linecap="round"/>
+          stroke="#1d8a4a" stroke-width="14"
+          stroke-dasharray="100 76" stroke-dashoffset="44" stroke-linecap="round"/>
       </svg>
       <div class="donut-legend">
         <div class="legend-row"><div class="legend-dot" style="background:#1d8a4a"></div><span>Yes — 12</span></div>
-        <div class="legend-row"><div class="legend-dot" style="background:#c9c9d8"></div><span>No / N/A — 7</span></div>
+        <div class="legend-row"><div class="legend-dot" style="background:#c9c9d8"></div><span>No / N/A — 9</span></div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ── PROFESSIONAL PROFILE SUMMARY ────────────────────────────────── -->
+<!-- ── PROFESSIONAL PROFILE SUMMARY ──────────────────────────────── -->
 <div class="profile-section">
   <div class="profile-header">
     <h2>Cohort Professional Profile</h2>
@@ -631,10 +502,10 @@
           <div class="sector-icon">⚖️</div>
           <div class="sector-info">
             <div class="sector-name">Law &amp; Legal</div>
-            <div class="sector-names">Saul Schapiro, Jerry Wald</div>
+            <div class="sector-names">Saul Schapiro, Jerry Wald, Barbara Kriss</div>
           </div>
           <div class="sector-bar-track"><div class="sector-bar-fill" style="width:100%; background:var(--accent);"></div></div>
-          <div class="sector-count">2</div>
+          <div class="sector-count">3</div>
         </div>
         <div class="sector-row">
           <div class="sector-icon">🏥</div>
@@ -642,7 +513,7 @@
             <div class="sector-name">Medicine &amp; Mental Health</div>
             <div class="sector-names">Cheryl Weinstein, John Cowl</div>
           </div>
-          <div class="sector-bar-track"><div class="sector-bar-fill" style="width:100%; background:var(--teal);"></div></div>
+          <div class="sector-bar-track"><div class="sector-bar-fill" style="width:67%; background:var(--teal);"></div></div>
           <div class="sector-count">2</div>
         </div>
         <div class="sector-row">
@@ -664,21 +535,30 @@
           <div class="sector-count">3</div>
         </div>
         <div class="sector-row">
-          <div class="sector-icon">🏥</div>
+          <div class="sector-icon">📝</div>
           <div class="sector-info">
-            <div class="sector-name">Healthcare Strategy &amp; Policy</div>
-            <div class="sector-names">Margot Walthall</div>
+            <div class="sector-name">Writing, Editing &amp; Publishing</div>
+            <div class="sector-names">Barbara Kriss, Steven Wisensale, Jane Greenwald</div>
           </div>
-          <div class="sector-bar-track"><div class="sector-bar-fill" style="width:50%; background:#7c3aed;"></div></div>
-          <div class="sector-count">1</div>
+          <div class="sector-bar-track"><div class="sector-bar-fill" style="width:100%; background:#7c3aed;"></div></div>
+          <div class="sector-count">3</div>
         </div>
         <div class="sector-row">
           <div class="sector-icon">🤝</div>
           <div class="sector-info">
-            <div class="sector-name">Social Work &amp; Counseling</div>
-            <div class="sector-names">Joe Scholl</div>
+            <div class="sector-name">Social Work &amp; Healthcare</div>
+            <div class="sector-names">Joe Scholl, Gloria Barsamian</div>
           </div>
-          <div class="sector-bar-track"><div class="sector-bar-fill" style="width:50%; background:#0891b2;"></div></div>
+          <div class="sector-bar-track"><div class="sector-bar-fill" style="width:67%; background:#0891b2;"></div></div>
+          <div class="sector-count">2</div>
+        </div>
+        <div class="sector-row">
+          <div class="sector-icon">📊</div>
+          <div class="sector-info">
+            <div class="sector-name">Healthcare Strategy &amp; Marketing</div>
+            <div class="sector-names">Margot Walthall</div>
+          </div>
+          <div class="sector-bar-track"><div class="sector-bar-fill" style="width:33%; background:#b45309;"></div></div>
           <div class="sector-count">1</div>
         </div>
         <div class="sector-row">
@@ -687,31 +567,22 @@
             <div class="sector-name">Consulting &amp; Business</div>
             <div class="sector-names">Jane Greenwald, Norm Ginsberg</div>
           </div>
-          <div class="sector-bar-track"><div class="sector-bar-fill" style="width:100%; background:#b45309;"></div></div>
+          <div class="sector-bar-track"><div class="sector-bar-fill" style="width:67%; background:#be185d;"></div></div>
           <div class="sector-count">2</div>
         </div>
         <div class="sector-row">
           <div class="sector-icon">🎨</div>
           <div class="sector-info">
-            <div class="sector-name">Arts, Culture &amp; Humanities</div>
-            <div class="sector-names">Barbara Apstein, Helaine Silverman, Amy Rubin</div>
+            <div class="sector-name">Arts, Culture &amp; Museums</div>
+            <div class="sector-names">Barbara Apstein, Helaine Silverman, Margot Walthall, Amy Rubin</div>
           </div>
-          <div class="sector-bar-track"><div class="sector-bar-fill" style="width:100%; background:#be185d;"></div></div>
-          <div class="sector-count">3</div>
-        </div>
-        <div class="sector-row">
-          <div class="sector-icon">📰</div>
-          <div class="sector-info">
-            <div class="sector-name">Media &amp; Writing</div>
-            <div class="sector-names">Hal Shear</div>
-          </div>
-          <div class="sector-bar-track"><div class="sector-bar-fill" style="width:50%; background:#047857;"></div></div>
-          <div class="sector-count">1</div>
+          <div class="sector-bar-track"><div class="sector-bar-fill" style="width:100%; background:#047857;"></div></div>
+          <div class="sector-count">4</div>
         </div>
       </div>
     </div>
 
-    <!-- Right column: AI Experience + Shared Interests -->
+    <!-- Right column -->
     <div style="display:flex; flex-direction:column; gap:1.25rem;">
 
       <!-- AI Experience Spectrum -->
@@ -721,12 +592,12 @@
           <div class="exp-cell">
             <div class="exp-icon">🌱</div>
             <div class="exp-label">Beginners</div>
-            <div class="exp-sub">Learning the basics, some apprehension</div>
+            <div class="exp-sub">Learning basics; some apprehension</div>
           </div>
           <div class="exp-cell">
             <div class="exp-icon">🔄</div>
             <div class="exp-label">Casual Users</div>
-            <div class="exp-sub">Occasional use, want to deepen skills</div>
+            <div class="exp-sub">Occasional use; want to deepen skills</div>
           </div>
           <div class="exp-cell">
             <div class="exp-icon">⚡</div>
@@ -735,7 +606,7 @@
           </div>
         </div>
         <p style="font-size:.78rem; color:var(--ink-faint); margin-top:.9rem; line-height:1.5;">
-          Most members self-identify as beginners or casual users. One member (David Rattner) stands out as an active practitioner with multi-tool experience and basic coding ability.
+          Most members identify as beginners or casual users. Barbara Kriss already uses AI daily across literary and medical research. David Rattner stands out as a multi-tool practitioner with basic coding ability.
         </p>
       </div>
 
@@ -746,12 +617,13 @@
           <span class="theme-tag" style="border-color:var(--accent); color:var(--accent); background:var(--accent-soft);">📚 Reading &amp; Literature</span>
           <span class="theme-tag" style="border-color:var(--teal); color:var(--teal); background:var(--teal-soft);">🏛 History &amp; Politics</span>
           <span class="theme-tag" style="border-color:var(--gold); color:var(--gold); background:var(--gold-soft);">🎭 Arts &amp; Museums</span>
-          <span class="theme-tag" style="border-color:var(--rose); color:var(--rose); background:var(--rose-soft);">✍️ Writing</span>
+          <span class="theme-tag" style="border-color:var(--rose); color:var(--rose); background:var(--rose-soft);">✍️ Writing &amp; Poetry</span>
           <span class="theme-tag" style="border-color:#7c3aed; color:#7c3aed; background:#f3e8ff;">🌍 Current Events</span>
           <span class="theme-tag" style="border-color:#0891b2; color:#0891b2; background:#e0f7fa;">🧭 Travel</span>
           <span class="theme-tag" style="border-color:#047857; color:#047857; background:#e8f5ed;">⚽ Sports</span>
           <span class="theme-tag" style="border-color:#b45309; color:#b45309; background:#fdf3e0;">🧠 Psychology</span>
           <span class="theme-tag" style="border-color:#be185d; color:#be185d; background:#fde8ef;">🎵 Music</span>
+          <span class="theme-tag" style="border-color:#0369a1; color:#0369a1; background:#e0f2fe;">🎗 Health Advocacy</span>
         </div>
       </div>
 
@@ -761,17 +633,16 @@
     <div class="profile-card full-width">
       <div class="profile-card-title">Cohort Narrative</div>
       <p class="narrative-text">
-        This is a <strong>predominantly retired, highly educated cohort</strong> drawn from careers in law, medicine, education, technology, the arts, and social services. Nearly everyone describes themselves as a <span class="narrative-highlight">lifelong learner</span> motivated by a shared desire not to be "left behind" as AI reshapes daily life — a phrase that appears, in some form, in nearly a third of responses.
+        This is a <strong>predominantly retired, highly educated cohort</strong> drawn from careers in law, medicine, education, technology, the arts, social work, and publishing. With 21 members, the group now spans an even richer range of professional experience — notably the addition of <strong>Barbara Kriss</strong>, who brings a rare combination of magazine editing, legal training, poetry writing, and health-advocacy web work; and <strong>Gloria Barsamian</strong>, a veteran healthcare social worker.
         <br><br>
-        The group skews toward the humanities: interests in reading, writing, history, politics, and the arts outnumber purely technical pursuits. Several members are actively pursuing new chapters — a Dante course website, art museum docent work, course development — and see AI as a practical tool for those creative projects rather than an end in itself.
+        Nearly everyone describes themselves as a <span class="narrative-highlight">lifelong learner</span> motivated by a shared desire not to be "left behind" as AI reshapes daily life. The group skews strongly toward the humanities: interests in reading, writing, history, politics, and the arts outnumber purely technical pursuits. Several members are actively pursuing new chapters — a Dante course website, art museum docent work, course development, original writing — and see AI as a <strong>practical creative tool</strong> rather than an end in itself.
         <br><br>
-        AI experience ranges from <strong>genuine apprehension</strong> (one member cites "psychological avoidance"; another says she "fears it rather than takes advantage of it") to <strong>confident weekly use</strong>. This spread means the cohort can benefit from both foundational literacy work and applied project-based sessions. The high Turner Street attendance interest (63%) suggests strong appetite for in-person collaboration.
+        AI experience ranges from <strong>genuine apprehension</strong> (one member cites "psychological avoidance"; another says she "fears it rather than takes advantage of it") to <strong>confident daily use</strong> (Barbara Kriss uses it for everything from literary to medical questions). This spectrum means the cohort benefits from foundational literacy sessions alongside applied, project-based work. The strong Turner Street interest (57%) reflects appetite for in-person collaboration.
       </p>
     </div>
 
   </div>
 </div>
-<!-- ── END PROFESSIONAL PROFILE ────────────────────────────────────── -->
 
 <div class="controls">
   <div class="section-label">Member Profiles</div>
@@ -785,7 +656,7 @@
     <button class="filter-btn" onclick="setFilter('pc', this)">PC</button>
     <button class="filter-btn" onclick="setFilter('turner', this)">Turner St.</button>
   </div>
-  <div class="results-count" id="resultsCount">19 profiles</div>
+  <div class="results-count" id="resultsCount">21 profiles</div>
 </div>
 
 <div class="grid" id="cardGrid"></div>
@@ -793,42 +664,44 @@
 <script>
 const MEMBERS = [
   {name:"Helaine Silverman",computer:"Mac",browser:"Chrome",gmail:"No",turner:"Yes",motivation:"",background:"I took the AI Literacy class and enjoyed it very much. I want to practice what I learned to become more proficient."},
-  {name:"Barbara Apstein",computer:"Mac",browser:"Firefox",gmail:"Yes",turner:"Yes",motivation:"",background:"Creating a website for proposed Dante course"},
-  {name:"Margot Walthall",computer:"PC",browser:"Chrome",gmail:"Yes",turner:"Yes",motivation:"Want to do deep research and synthesis of info to create art tours and presentations in my role as a docent at Peabody Essex and Cape Ann Museums. I also want to keep up as AI evolves, leveraging the best tools.",background:"Career in healthcare strategy and marketing in health insurance, health tech, and big data research organizations. Over the past 5 years, cultivating interest in museum studies and art history through Harvard Extension School, BOLLI, Smithsonian Associates, and as a docent."},
+  {name:"Barbara Apstein",computer:"Mac",browser:"Firefox",gmail:"Yes",turner:"Yes",motivation:"",background:"Creating a website for proposed Dante course."},
+  {name:"Margot Walthall",computer:"PC",browser:"Chrome",gmail:"Yes",turner:"Yes",motivation:"Want to do deep research and synthesis of info to create art tours and presentations in my role as a docent at Peabody Essex and Cape Ann Museums. I also want to keep up as AI evolves, leveraging the best tools. I am also interested in the multitude of social, political, moral and economic implications of AI on our human society.",background:"Career in healthcare strategy and marketing in health insurance, health tech, and big data research organizations. Over the past 5 years, cultivating interest in museum studies and art history through Harvard Extension School, BOLLI, Smithsonian Associates, and as a docent."},
   {name:"Saul Schapiro",computer:"Mac",browser:"Safari",gmail:"Yes",turner:"Yes",motivation:"Better prepare for classes and general use and knowledge.",background:"Legal career and many times an SGL."},
   {name:"Cheryl Weinstein",computer:"Mac",browser:"Firefox",gmail:"Yes",turner:"Yes",motivation:"To keep up with the world!",background:"Retired neuropsychologist. Still teaches. Wants to be current and understand how the world is moving forward."},
   {name:"John Cowl",computer:"Mac",browser:"Safari",gmail:"Yes",turner:"",motivation:"Still uncomfortable perhaps due to limited use (psychological avoidance).",background:"Retired physician/psychiatrist who realizes that if he doesn't get going with AI, he will be left behind."},
   {name:"Jerry Wald",computer:"PC",browser:"Chrome",gmail:"No",turner:"Yes",motivation:"This is where the world is headed and I don't want to be left behind.",background:"Former attorney. Enjoys traveling, kayaking, hiking and reading."},
-  {name:"Hal Shear",computer:"Mac",browser:"Chrome",gmail:"Yes",turner:"",motivation:"Improve my life",background:"Interests: current events, sports."},
-  {name:"Kathy K.",computer:"PC",browser:"Firefox",gmail:"Yes",turner:"Yes",motivation:"Curiosity about so many things",background:"Psychology, Literature"},
-  {name:"Jany Finkielsztein",computer:"Mac",browser:"Chrome",gmail:"Yes",turner:"",motivation:"As educator and media consumer",background:"Former public school educator, originally from Bogotá, Colombia."},
-  {name:"Jenny Fariborz",computer:"Mac",browser:"Chrome",gmail:"Yes",turner:"Yes",motivation:"Curiosity",background:"Retired software engineer."},
+  {name:"Hal Shear",computer:"Mac",browser:"Chrome",gmail:"Yes",turner:"",motivation:"Improve my life.",background:"Interests: current events, sports."},
+  {name:"Kathy K.",computer:"PC",browser:"Firefox",gmail:"Yes",turner:"Yes",motivation:"Curiosity about so many things.",background:"Psychology, Literature."},
+  {name:"Jany Finkielsztein",computer:"Mac",browser:"Chrome",gmail:"Yes",turner:"",motivation:"As educator and media consumer.",background:"Former public school educator, originally from Bogotá, Colombia."},
+  {name:"Jenny Fariborz",computer:"Mac",browser:"Chrome",gmail:"Yes",turner:"Yes",motivation:"Curiosity.",background:"Retired software engineer."},
   {name:"Joe Scholl",computer:"Mac",browser:"Safari",gmail:"Yes",turner:"Yes",motivation:"I want to become more AI proficient.",background:"Semi-retired social worker. Interested in history and politics."},
   {name:"Amy Rubin",computer:"PC",browser:"Firefox",gmail:"Yes",turner:"Yes",motivation:"Stay on top of things. Also researching for a possible course.",background:"Researcher exploring possibilities for a new course."},
   {name:"Jane Greenwald",computer:"PC",browser:"Firefox",gmail:"Yes",turner:"",motivation:"Want to keep up with technology; have used it a little.",background:"Retired consultant. Leader of Writers Guild."},
   {name:"Fran Feldman",computer:"Mac",browser:"Safari",gmail:"Yes",turner:"Yes",motivation:"Need to be current!",background:"Knows too little about AI and fears it rather than takes advantage of it."},
   {name:"Steven Wisensale",computer:"PC",browser:"Edge",gmail:"Yes",turner:"",motivation:"To conduct research and assist in writing.",background:"Retired university professor. Interests: reading political books and writing short stories."},
-  {name:"David Rattner",computer:"PC",browser:"Chrome",gmail:"Yes",turner:"",motivation:"Professional use for research and presentations.",background:"Has taken 3 AI courses; adept with Notebook LM and chatbots. Can vibe code. Using AI for research and tasks at least once a week."},
+  {name:"David Rattner",computer:"PC",browser:"Chrome",gmail:"Yes",turner:"",motivation:"Professional use for research and presentations.",background:"Has taken 3 AI courses; adept with Notebook LM and all chatbots. Can vibe code. Using AI for research and tasks at least once a week."},
   {name:"Norm Ginsberg",computer:"PC",browser:"Chrome",gmail:"No",turner:"",motivation:"Keeping somewhat current.",background:"Some usage across stocks, news, and advice."},
   {name:"Abby Pinard",computer:"PC",browser:"Chrome",gmail:"Yes",turner:"Yes",motivation:"Finally realizing AI may be practical and relevant. May take AI Edge in fall.",background:"40-year high-tech career. BOLLI courses mostly lit, arts, music. Book nerd. Political junkie. Baseball fan."},
+  {name:"Barbara Kriss",computer:"Mac",browser:"Firefox",gmail:"Yes",turner:"",motivation:"Already using AI for everything from literary to medical questions, but interested in exploring further and getting the most possible benefit from AI interactions.",background:"Worked as a magazine and book editor, went to law school, has written poetry, short stories, and personal essays, and founded and ran a breast cancer website (learned HTML to do that). Eclectic background. At BOLLI: New Yorker SIG and Book Group."},
+  {name:"Gloria Barsamian",computer:"Mac",browser:"Safari",gmail:"No",turner:"",motivation:"Interested in using AI for editing original writing.",background:"Retired social worker from Lahey Clinic Medical Center after 33 years."},
 ];
 
 const COLORS = [
   "#5c4ef5","#0ea5a0","#c9922a","#c94a6e","#7c3aed","#0891b2",
   "#b45309","#be185d","#1d4ed8","#047857","#9333ea","#0e7490",
-  "#d97706","#db2777","#4f46e5","#0f766e","#c2410c","#7e22ce","#0369a1"
+  "#d97706","#db2777","#4f46e5","#0f766e","#c2410c","#7e22ce","#0369a1",
+  "#0c4a6e","#6b21a8"
 ];
 
 function initials(name) {
   return name.split(' ').slice(0,2).map(p => p[0]).join('').toUpperCase();
 }
-
 function pillClass(browser) {
   const b = browser.toLowerCase();
-  if (b === 'chrome') return 'pill-chrome';
+  if (b === 'chrome')  return 'pill-chrome';
   if (b === 'firefox') return 'pill-firefox';
-  if (b === 'safari') return 'pill-safari';
-  if (b === 'edge') return 'pill-edge';
+  if (b === 'safari')  return 'pill-safari';
+  if (b === 'edge')    return 'pill-edge';
   return '';
 }
 
@@ -838,17 +711,12 @@ function buildCard(m, idx) {
   const bgColor = COLORS[idx % COLORS.length];
   const pillComputer = m.computer === 'Mac' ? 'pill-mac' : 'pill-pc';
   const browserIcon = {Chrome:'🌐',Firefox:'🦊',Safari:'🧭',Edge:'🔷'}[m.browser] || '🖥';
-
   const motivationHTML = m.motivation
-    ? `<div class="section-block"><div class="block-label">Motivation</div><div class="block-text">${m.motivation}</div></div>`
-    : '';
+    ? `<div class="section-block"><div class="block-label">Motivation</div><div class="block-text">${m.motivation}</div></div>` : '';
   const backgroundHTML = m.background
-    ? `<div class="section-block"><div class="block-label">Background &amp; Interests</div><div class="block-text">${m.background}</div></div>`
-    : '';
+    ? `<div class="section-block"><div class="block-label">Background &amp; Interests</div><div class="block-text">${m.background}</div></div>` : '';
   const turnerPill = m.turner.toLowerCase() === 'yes'
-    ? `<span class="pill pill-turner">📍 Turner St.</span>`
-    : '';
-
+    ? `<span class="pill pill-turner">📍 Turner St.</span>` : '';
   return `
   <div class="card" data-computer="${m.computer.toLowerCase()}" data-turner="${m.turner.toLowerCase()}" data-search="${(m.name+' '+m.background+' '+m.motivation).toLowerCase()}">
     <div class="card-top">
@@ -871,8 +739,7 @@ function buildCard(m, idx) {
 }
 
 function renderCards() {
-  const grid = document.getElementById('cardGrid');
-  grid.innerHTML = MEMBERS.map((m, i) => buildCard(m, i)).join('');
+  document.getElementById('cardGrid').innerHTML = MEMBERS.map((m,i) => buildCard(m,i)).join('');
   filterCards();
 }
 
@@ -883,16 +750,14 @@ function filterCards() {
   cards.forEach(card => {
     const matchFilter =
       currentFilter === 'all' ||
-      (currentFilter === 'mac' && card.dataset.computer === 'mac') ||
-      (currentFilter === 'pc' && card.dataset.computer === 'pc') ||
-      (currentFilter === 'turner' && card.dataset.turner === 'yes');
+      (currentFilter === 'mac'    && card.dataset.computer === 'mac') ||
+      (currentFilter === 'pc'     && card.dataset.computer === 'pc') ||
+      (currentFilter === 'turner' && card.dataset.turner   === 'yes');
     const matchSearch = !query || card.dataset.search.includes(query);
     const show = matchFilter && matchSearch;
     card.style.display = show ? '' : 'none';
     if (show) visible++;
   });
-
-  // empty state
   const existing = document.querySelector('.empty-state');
   if (existing) existing.remove();
   if (visible === 0) {
