@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How LLMs Represent English: Tokens, Words & Generation</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap');
+
+  :root {
+    --ink:       #0d0d0d;
+    --paper:     #f7f5f0;
+    --token-blue:#1a3a5c;
+    --token-glow:#2c7be5;
+    --word-rust: #b84b1e;
+    --accent:    #e8c547;
+    --mid:       #6b7280;
+    --rule:      #d1cfc9;
+    --code-bg:   #1a1a2e;
+    --code-text: #a8dadc;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.65;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--token-blue);
+    color: #fff;
+    padding: 80px 5vw 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 59px,
+      rgba(255,255,255,.04) 59px,
+      rgba(255,255,255,.04) 60px
+    );
+  }
+  .hero-eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(2rem, 5vw, 3.8rem);
+    font-weight: 700;
+    line-height: 1.1;
+    max-width: 780px;
+    position: relative;
+  }
+  .hero h1 em { color: var(--accent); font-style: normal; }
+  .hero-sub {
+    font-family: 'Crimson Pro', serif;
+    font-size: 1.15rem;
+    font-style: italic;
+    color: rgba(255,255,255,.7);
+    max-width: 600px;
+    margin-top: 18px;
+    position: relative;
+  }
+
+  /* ── STAT STRIP ── */
+  .stat-strip {
+    display: flex;
+    flex-wrap: wrap;
+    background: var(--accent);
+    color: var(--token-blue);
+  }
+  .stat {
+    flex: 1 1 200px;
+    padding: 24px 28px;
+    border-right: 1px solid rgba(26,58,92,.2);
+  }
+  .stat:last-child { border-right: none; }
+  .stat-num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 2.4rem;
+    font-weight: 700;
+    line-height: 1;
+    display: block;
+  }
+  .stat-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    display: block;
+    margin-top: 4px;
+    opacity: .75;
+  }
+
+  /* ── CONTENT ── */
+  .content { max-width: 860px; margin: 0 auto; padding: 60px 5vw; }
+
+  h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--token-blue);
+    margin: 56px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--accent);
+    display: inline-block;
+  }
+  h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--token-blue);
+    margin: 28px 0 10px;
+  }
+  p { margin-bottom: 1rem; }
+  em.rust { color: var(--word-rust); font-style: normal; font-weight: 600; }
+  em.blue  { color: var(--token-glow); font-style: normal; font-weight: 600; }
+
+  /* ── TOKEN DEMO ── */
+  .token-demo {
+    background: var(--code-bg);
+    border-radius: 6px;
+    padding: 28px;
+    margin: 24px 0;
+    font-family: 'Space Mono', monospace;
+    font-size: .82rem;
+    line-height: 2;
+    color: #e2e8f0;
+  }
+  .token-demo .word { color: #f9c74f; }
+  .tok {
+    display: inline-block;
+    background: rgba(44,123,229,.25);
+    border: 1px solid rgba(44,123,229,.5);
+    border-radius: 3px;
+    padding: 1px 6px;
+    margin: 1px 2px;
+    color: var(--code-text);
+    font-size: .78rem;
+  }
+  .tok.common { background: rgba(44,229,130,.2); border-color: rgba(44,229,130,.5); color: #86efac; }
+  .tok.rare   { background: rgba(229,80,44,.2);  border-color: rgba(229,80,44,.5);  color: #fca5a5; }
+
+  /* ── COMPARISON TABLE ── */
+  .cmp-table { width: 100%; border-collapse: collapse; margin: 24px 0; font-size: .95rem; }
+  .cmp-table th {
+    background: var(--token-blue);
+    color: #fff;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    padding: 12px 16px;
+    text-align: left;
+    font-size: .85rem;
+    letter-spacing: .04em;
+  }
+  .cmp-table td { padding: 11px 16px; border-bottom: 1px solid var(--rule); }
+  .cmp-table tr:nth-child(even) td { background: rgba(26,58,92,.04); }
+  .cmp-table .hi { color: var(--token-glow); font-weight: 600; font-family: 'Space Mono', monospace; }
+
+  /* ── PROBABILITY VIZ ── */
+  .prob-section {
+    background: var(--code-bg);
+    border-radius: 8px;
+    padding: 32px;
+    margin: 28px 0;
+    color: #e2e8f0;
+  }
+  .prob-label {
+    font-family: 'Space Mono', monospace;
+    font-size: .78rem;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+  .prob-sentence {
+    font-family: 'Crimson Pro', serif;
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    color: #f1f5f9;
+  }
+  .prob-sentence .ctx { color: #94a3b8; }
+  .prob-sentence .blank {
+    display: inline-block;
+    border-bottom: 2px solid var(--accent);
+    min-width: 80px;
+    color: var(--accent);
+    font-style: italic;
+  }
+  .prob-bar-wrap { margin: 6px 0; display: flex; align-items: center; gap: 10px; }
+  .prob-token {
+    font-family: 'Space Mono', monospace;
+    font-size: .78rem;
+    color: var(--code-text);
+    width: 100px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .prob-bar {
+    height: 18px;
+    border-radius: 2px;
+    background: var(--token-glow);
+    transition: width .3s;
+    flex-shrink: 0;
+  }
+  .prob-pct {
+    font-family: 'Space Mono', monospace;
+    font-size: .75rem;
+    color: #94a3b8;
+    flex-shrink: 0;
+  }
+  .prob-rest {
+    font-family: 'Space Mono', monospace;
+    font-size: .72rem;
+    color: #475569;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid #1e293b;
+  }
+
+  /* ── COMPUTATION BOX ── */
+  .compute-box {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin: 24px 0;
+  }
+  .compute-card {
+    background: #fff;
+    border: 1px solid var(--rule);
+    border-top: 3px solid var(--token-blue);
+    border-radius: 4px;
+    padding: 20px;
+  }
+  .compute-card .c-num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--token-blue);
+    line-height: 1;
+  }
+  .compute-card .c-unit {
+    font-family: 'Space Mono', monospace;
+    font-size: .7rem;
+    color: var(--mid);
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    margin-top: 2px;
+  }
+  .compute-card .c-desc {
+    font-size: .88rem;
+    color: var(--mid);
+    margin-top: 8px;
+    line-height: 1.4;
+  }
+
+  /* ── FLOW DIAGRAM ── */
+  .flow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    margin: 28px 0;
+    align-items: stretch;
+  }
+  .flow-step {
+    flex: 1 1 140px;
+    background: var(--token-blue);
+    color: #fff;
+    padding: 18px 16px;
+    position: relative;
+    font-size: .88rem;
+  }
+  .flow-step:nth-child(even) { background: #25507a; }
+  .flow-step::after {
+    content: '→';
+    position: absolute;
+    right: -12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--accent);
+    font-size: 1.2rem;
+    z-index: 2;
+  }
+  .flow-step:last-child::after { display: none; }
+  .flow-step .fs-label {
+    font-family: 'Space Mono', monospace;
+    font-size: .65rem;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    margin-bottom: 6px;
+  }
+  .flow-step .fs-desc {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: .83rem;
+    line-height: 1.35;
+  }
+
+  /* ── CALLOUT ── */
+  .callout {
+    border-left: 4px solid var(--accent);
+    background: rgba(232,197,71,.08);
+    padding: 18px 22px;
+    margin: 28px 0;
+    font-style: italic;
+    color: #3d3d3d;
+    border-radius: 0 4px 4px 0;
+  }
+  .callout strong {
+    font-style: normal;
+    color: var(--token-blue);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: .85rem;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--token-blue);
+    color: rgba(255,255,255,.5);
+    text-align: center;
+    padding: 28px;
+    font-family: 'Space Mono', monospace;
+    font-size: .72rem;
+    letter-spacing: .06em;
+    margin-top: 80px;
+  }
+
+  @media (max-width: 600px) {
+    .flow-step::after { display: none; }
+    .stat-strip { flex-direction: column; }
+    .stat { border-right: none; border-bottom: 1px solid rgba(26,58,92,.2); }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">AI Literacy · Language &amp; Computation</div>
+  <h1>English in <em>Tokens</em>:<br>Fewer Units, Infinite Expression</h1>
+  <p class="hero-sub">How large language models compress the English lexicon into a smaller vocabulary of subword units — and use probability to generate fluent text, one token at a time.</p>
+</div>
+
+<!-- STAT STRIP -->
+<div class="stat-strip">
+  <div class="stat">
+    <span class="stat-num">600K</span>
+    <span class="stat-label">Words in the OED</span>
+  </div>
+  <div class="stat">
+    <span class="stat-num">170K</span>
+    <span class="stat-label">Active English words</span>
+  </div>
+  <div class="stat">
+    <span class="stat-num">~100K</span>
+    <span class="stat-label">Tokens in a modern LLM</span>
+  </div>
+  <div class="stat">
+    <span class="stat-num">1</span>
+    <span class="stat-label">Token predicted per cycle</span>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="content">
+
+  <h2>The Compression Problem</h2>
+  <p>
+    English has roughly <em class="rust">170,000 active words</em> and over <em class="rust">600,000</em> historical entries in the Oxford English Dictionary.
+    An LLM tokenizer — the component that converts text to numbers — uses only around <em class="blue">100,000 token types</em>
+    in its fixed vocabulary. Yet it can represent <em>every English word that has ever existed</em>, including brand-new ones.
+  </p>
+  <p>
+    How? Through <strong>subword decomposition</strong>. Instead of assigning one integer to every word,
+    the tokenizer breaks language into frequently-occurring fragments — morphemes, syllables, common character clusters —
+    and composes words from them.
+  </p>
+
+  <h2>Tokens Are Not Words</h2>
+  <p>
+    Most common words map 1-to-1 with a token. Rarer, longer, or newer words are split into pieces.
+    Below is a live example of how a sentence is tokenized:
+  </p>
+
+  <div class="token-demo">
+    <div style="color:#94a3b8; font-size:.72rem; margin-bottom:12px;">INPUT SENTENCE → TOKEN SEQUENCE</div>
+
+    <div style="margin-bottom:14px;">
+      <span class="word">"The "</span>
+      <span class="tok common">The</span>
+      <span style="color:#64748b; font-size:.72rem;">→ 1 token (very common)</span>
+    </div>
+
+    <div style="margin-bottom:14px;">
+      <span class="word">"neurodivergent "</span>
+      <span class="tok rare">neuro</span><span class="tok rare">div</span><span class="tok rare">ergent</span>
+      <span style="color:#64748b; font-size:.72rem;">→ 3 tokens (rare compound)</span>
+    </div>
+
+    <div style="margin-bottom:14px;">
+      <span class="word">"transformer "</span>
+      <span class="tok">transform</span><span class="tok">er</span>
+      <span style="color:#64748b; font-size:.72rem;">→ 2 tokens (morpheme split)</span>
+    </div>
+
+    <div style="margin-bottom:14px;">
+      <span class="word">"unbelievable"</span>
+      <span class="tok">un</span><span class="tok">bel</span><span class="tok">iev</span><span class="tok">able</span>
+      <span style="color:#64748b; font-size:.72rem;">→ 4 tokens (prefix + root + suffix)</span>
+    </div>
+
+    <div style="margin-bottom:14px;">
+      <span class="word">"ChatGPT"</span>
+      <span class="tok rare">Chat</span><span class="tok rare">G</span><span class="tok rare">PT</span>
+      <span style="color:#64748b; font-size:.72rem;">→ 3 tokens (proper noun, post-training)</span>
+    </div>
+
+    <div style="color:#475569; font-size:.72rem; margin-top:14px; border-top:1px solid #1e293b; padding-top:12px;">
+      <span class="tok common">green</span> = 1-to-1 with word &nbsp;|&nbsp;
+      <span class="tok">blue</span> = subword fragment &nbsp;|&nbsp;
+      <span class="tok rare">red</span> = rare / proper noun split
+    </div>
+  </div>
+
+  <h2>Fewer Tokens Than Words: The Comparison</h2>
+
+  <table class="cmp-table">
+    <thead>
+      <tr>
+        <th>Scope</th>
+        <th>Word Count</th>
+        <th>Approximate Tokens Needed</th>
+        <th>Ratio</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Top 10,000 common words</td>
+        <td>10,000</td>
+        <td class="hi">~12,000</td>
+        <td>1.2×</td>
+      </tr>
+      <tr>
+        <td>Educated adult vocabulary</td>
+        <td>~30,000</td>
+        <td class="hi">~45,000–60,000</td>
+        <td>1.5–2×</td>
+      </tr>
+      <tr>
+        <td>Full active English lexicon</td>
+        <td>~170,000</td>
+        <td class="hi">~250,000–400,000</td>
+        <td>1.5–2.3×</td>
+      </tr>
+      <tr>
+        <td>Complete OED</td>
+        <td>~600,000</td>
+        <td class="hi">~1–2 million</td>
+        <td>1.7–3×</td>
+      </tr>
+      <tr style="background: rgba(26,58,92,.06);">
+        <td><strong>LLM tokenizer vocabulary</strong></td>
+        <td>—</td>
+        <td class="hi">~100,000 token types</td>
+        <td>Covers everything</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>
+    The paradox is elegant: <em class="blue">100,000 token types</em> can represent <em class="rust">600,000+ words</em>
+    because words are constructed compositionally. It mirrors the way <strong>26 letters</strong> can spell
+    <strong>any English word</strong>, and how <strong>12 musical notes</strong> can produce <strong>any melody</strong>.
+  </p>
+
+  <div class="callout">
+    <strong>Key insight</strong>
+    A tokenizer vocabulary is not a dictionary. It is a <em>generative basis</em> — a set of primitives from which all words can be built. Fewer units, but unlimited expressibility.
+  </div>
+
+  <h2>Are Any English Words "Missing"?</h2>
+  <p>
+    In principle, <strong>no English word is unrepresentable</strong>. The tokenizer includes every character in Unicode,
+    so any word — however obscure — can always be spelled out character by character as a last resort.
+    In practice, very rare or newly coined words are simply tokenized less efficiently:
+  </p>
+
+  <table class="cmp-table">
+    <thead>
+      <tr><th>Word Type</th><th>Likely Tokenization</th><th>Cost</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>High-frequency words (<em>the, run, cat</em>)</td><td>Single token</td><td>1 token</td></tr>
+      <tr><td>Common compounds (<em>bookshelf</em>)</td><td>2 tokens</td><td>2 tokens</td></tr>
+      <tr><td>Technical terms (<em>hepatosplenomegaly</em>)</td><td>4–7 subword fragments</td><td>4–7 tokens</td></tr>
+      <tr><td>Post-training proper nouns (<em>Anthropic</em>)</td><td>2–3 fragments</td><td>2–3 tokens</td></tr>
+      <tr><td>New slang (<em>rizz, delulu</em>)</td><td>Character-level fallback</td><td>3–6 tokens</td></tr>
+      <tr><td>Emoji / symbols</td><td>1–3 tokens each</td><td>1–3 tokens</td></tr>
+    </tbody>
+  </table>
+
+  <p>
+    The practical consequence: <em class="rust">rare words are expensive</em>. They consume more context-window space,
+    appeared less often in training, and are somewhat harder for the model to reason about.
+    This is why LLMs can occasionally stumble on unusual proper nouns or highly technical vocabulary.
+  </p>
+
+  <h2>The Generative Process: One Token at a Time</h2>
+  <p>
+    When an LLM generates text, it does not write a sentence. It makes a single probabilistic choice —
+    "what token comes next?" — and repeats that choice hundreds of times until the response is complete.
+  </p>
+
+  <div class="flow">
+    <div class="flow-step">
+      <div class="fs-label">Step 1</div>
+      <div class="fs-desc">All prior tokens converted to integer IDs</div>
+    </div>
+    <div class="flow-step">
+      <div class="fs-label">Step 2</div>
+      <div class="fs-desc">Each ID looked up in embedding table → vector</div>
+    </div>
+    <div class="flow-step">
+      <div class="fs-label">Step 3</div>
+      <div class="fs-desc">Vectors pass through transformer layers (attention + FFN)</div>
+    </div>
+    <div class="flow-step">
+      <div class="fs-label">Step 4</div>
+      <div class="fs-desc">Final layer outputs one logit score per vocabulary token</div>
+    </div>
+    <div class="flow-step">
+      <div class="fs-label">Step 5</div>
+      <div class="fs-desc">Softmax converts logits to a probability distribution</div>
+    </div>
+    <div class="flow-step">
+      <div class="fs-label">Step 6</div>
+      <div class="fs-desc">One token sampled → appended → repeat from Step 1</div>
+    </div>
+  </div>
+
+  <h2>The Probability Distribution</h2>
+  <p>
+    At each step, the model assigns a probability to <em>every token in its vocabulary</em> —
+    but the distribution is extremely skewed. Almost all the probability mass concentrates on
+    a handful of plausible continuations, while tens of thousands of tokens receive near-zero probability.
+  </p>
+
+  <!-- PROB VIZ 1 -->
+  <div class="prob-section">
+    <div class="prob-label">EXAMPLE DISTRIBUTION · Context: "The capital of France is"</div>
+    <div class="prob-sentence">
+      <span class="ctx">"The capital of France is </span><span class="blank">___"</span>
+    </div>
+
+    <div class="prob-bar-wrap">
+      <div class="prob-token">"Paris"</div>
+      <div class="prob-bar" style="width:240px; background:#2c7be5;"></div>
+      <div class="prob-pct">48.2%</div>
+    </div>
+    <div class="prob-bar-wrap">
+      <div class="prob-token">"Paris,"</div>
+      <div class="prob-bar" style="width:110px; background:#3b82f6;"></div>
+      <div class="prob-pct">22.1%</div>
+    </div>
+    <div class="prob-bar-wrap">
+      <div class="prob-token">"known"</div>
+      <div class="prob-bar" style="width:55px; background:#60a5fa;"></div>
+      <div class="prob-pct">11.0%</div>
+    </div>
+    <div class="prob-bar-wrap">
+      <div class="prob-token">"the"</div>
+      <div class="prob-bar" style="width:30px; background:#93c5fd;"></div>
+      <div class="prob-pct">6.0%</div>
+    </div>
+    <div class="prob-bar-wrap">
+      <div class="prob-token">"located"</div>
+      <div class="prob-bar" style="width:20px; background:#bfdbfe;"></div>
+      <div class="prob-pct">4.0%</div>
+    </div>
+    <div class="prob-bar-wrap">
+      <div class="prob-token">"also"</div>
+      <div class="prob-bar" style="width:12px; background:#dbeafe;"></div>
+      <div class="prob-pct">2.4%</div>
+    </div>
+    <div class="prob-rest">
+      + ~99,994 remaining tokens sharing the last ~6.3% of probability mass.<br>
+      Most receive p &lt; 0.0001% — effectively zero.
+    </div>
+  </div>
+
+  <!-- PROB VIZ 2 -->
+  <div class="prob-section" style="margin-top:16px;">
+    <div class="prob-label">EXAMPLE DISTRIBUTION · Context: "She picked up the old —" (ambiguous / creative)</div>
+    <div class="prob-sentence">
+      <span class="ctx">"She picked up the old </span><span class="blank">___"</span>
+    </div>
+
+    <div class="prob-bar-wrap">
+      <div class="prob-token">"book"</div>
+      <div class="prob-bar" style="width:90px; background:#2c7be5;"></div>
+      <div class="prob-pct">18%</div>
+    </div>
+    <div class="prob-bar-wrap">
+      <div class="prob-token">"photograph"</div>
+      <div class="prob-bar" style="width:70px; background:#3b82f6;"></div>
+      <div class="prob-pct">14%</div>
+    </div>
+    <div class="prob-bar-wrap">
+      <div class="prob-token">"letter"</div>
+      <div class="prob-bar" style="width:60px; background:#60a5fa;"></div>
+      <div class="prob-pct">12%</div>
+    </div>
+    <div class="prob-bar-wrap">
+      <div class="prob-token">"phone"</div>
+      <div class="prob-bar" style="width:50px; background:#93c5fd;"></div>
+      <div class="prob-pct">10%</div>
+    </div>
+    <div class="prob-bar-wrap">
+      <div class="prob-token">"newspaper"</div>
+      <div class="prob-bar" style="width:35px; background:#bfdbfe;"></div>
+      <div class="prob-pct">7%</div>
+    </div>
+    <div class="prob-bar-wrap">
+      <div class="prob-token">"map"</div>
+      <div class="prob-bar" style="width:25px; background:#dbeafe;"></div>
+      <div class="prob-pct">5%</div>
+    </div>
+    <div class="prob-rest">
+      Remaining ~34% spread across hundreds of plausible tokens.<br>
+      A flatter distribution = more creative / uncertain context. Temperature controls this spread.
+    </div>
+  </div>
+
+  <p style="margin-top:20px;">
+    Notice the contrast: the factual question produces a <strong>sharp, peaked distribution</strong>
+    (the model is "confident"). The ambiguous creative context produces a <strong>flatter distribution</strong>
+    (many continuations are plausible). <em class="blue">Temperature</em> is a parameter that artificially
+    flattens or sharpens this distribution at inference time.
+  </p>
+
+  <h2>The Arithmetic of a Single Prediction</h2>
+  <p>
+    Predicting one token from a modern LLM involves staggering computation. Here are the order-of-magnitude
+    figures for a large model (roughly GPT-4 / Claude class):
+  </p>
+
+  <div class="compute-box">
+    <div class="compute-card">
+      <div class="c-num">~100B</div>
+      <div class="c-unit">Parameters</div>
+      <div class="c-desc">Weights stored in the model, each a floating-point number consulted during inference</div>
+    </div>
+    <div class="compute-card">
+      <div class="c-num">~200B</div>
+      <div class="c-unit">FLOPs / token</div>
+      <div class="c-desc">Multiply-add operations to produce one token's probability distribution</div>
+    </div>
+    <div class="compute-card">
+      <div class="c-num">100K</div>
+      <div class="c-unit">Logits computed</div>
+      <div class="c-desc">One raw score per vocabulary token at the output layer, every single cycle</div>
+    </div>
+    <div class="compute-card">
+      <div class="c-num">400–600</div>
+      <div class="c-unit">Cycles / response</div>
+      <div class="c-desc">A typical ~300-word reply requires 400–600 sequential prediction cycles</div>
+    </div>
+    <div class="compute-card">
+      <div class="c-num">96–128</div>
+      <div class="c-unit">Transformer layers</div>
+      <div class="c-desc">Each layer applies self-attention + feedforward transformations to all positions</div>
+    </div>
+    <div class="compute-card">
+      <div class="c-num">~50ms</div>
+      <div class="c-unit">Per token (A100 GPU)</div>
+      <div class="c-desc">Wall-clock latency per token on high-end server hardware, before batching optimizations</div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <strong>Scale check</strong>
+    A single 300-word response involves roughly <em>200 billion × 500 = 100 trillion floating-point operations</em>.
+    The model does this in seconds because modern GPU clusters execute billions of operations per second in parallel
+    across thousands of cores.
+  </div>
+
+  <h2>Putting It All Together</h2>
+  <p>
+    The architecture is beautifully recursive. A vocabulary of ~100,000 subword <em class="blue">tokens</em>
+    compresses a lexicon of ~600,000 <em class="rust">words</em>. Those tokens flow through hundreds of billions of
+    parameters. At each generation step, all 100,000 token types receive a probability score — and one is chosen.
+    That single choice is appended to the input and the whole process repeats.
+  </p>
+  <p>
+    What feels like "a model writing a sentence" is, at bottom, a sequence of 400+ independent
+    probability-weighted dice rolls — each informed by everything that came before,
+    each backed by 100 trillion arithmetic operations, each producing exactly one next token.
+  </p>
+  <p>
+    The compression is real, the computation is immense, and the language that emerges is — against all odds —
+    fluent, coherent, and often surprising.
+  </p>
+
+</div>
+
+<footer>
+  AI LITERACY · BOLLI · BRANDEIS UNIVERSITY &nbsp;|&nbsp; PREPARED WITH CLAUDE &nbsp;|&nbsp; JUNE 2026
+</footer>
+
+</body>
+</html>

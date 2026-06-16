@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Federal Reserve Policy Explorer</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Sans+3:wght@300;400;600&family=Source+Serif+4:ital,wght@0,400;1,400&display=swap');
+
+  :root {
+    --ink: #1a1a2e;
+    --paper: #f5f2eb;
+    --rule: #c8bfa8;
+    --critic: #8b1a1a;
+    --defender: #1a4a6b;
+    --neutral: #4a5240;
+    --accent: #c17f24;
+    --highlight: #fdf6e3;
+    --muted: #7a7060;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+  }
+
+  /* MASTHEAD */
+  .masthead {
+    border-bottom: 3px double var(--ink);
+    padding: 2rem 2.5rem 1.2rem;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: end;
+    gap: 1rem;
+  }
+  .masthead-left {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+  .masthead-title {
+    text-align: center;
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.6rem, 4vw, 3rem);
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+  }
+  .masthead-title span {
+    display: block;
+    font-size: 0.6em;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    margin-top: 0.3rem;
+  }
+  .masthead-right {
+    text-align: right;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+
+  /* LEGEND BAR */
+  .legend-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2.5rem;
+    padding: 0.7rem 2rem;
+    border-bottom: 1px solid var(--rule);
+    background: var(--highlight);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .legend-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .dot-critic { background: var(--critic); }
+  .dot-defender { background: var(--defender); }
+  .dot-evidence { background: var(--neutral); }
+
+  /* VIEW TOGGLE */
+  .view-controls {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    padding: 1rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .view-btn {
+    background: none;
+    border: 1px solid var(--ink);
+    padding: 0.4rem 1.2rem;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    color: var(--ink);
+    transition: background 0.2s, color 0.2s;
+  }
+  .view-btn:first-child { border-radius: 2px 0 0 2px; }
+  .view-btn:last-child { border-radius: 0 2px 2px 0; border-left: none; }
+  .view-btn.active {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  /* INDICATORS ROW */
+  .indicators {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-bottom: 2px solid var(--ink);
+  }
+  .indicator {
+    padding: 1.2rem 1.5rem;
+    border-right: 1px solid var(--rule);
+    cursor: pointer;
+    transition: background 0.2s;
+    position: relative;
+  }
+  .indicator:last-child { border-right: none; }
+  .indicator:hover, .indicator.active {
+    background: var(--highlight);
+  }
+  .indicator.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px; left: 0; right: 0;
+    height: 3px;
+    background: var(--accent);
+  }
+  .indicator-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.3rem;
+  }
+  .indicator-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+  .indicator-desc {
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-top: 0.2rem;
+    font-style: italic;
+  }
+
+  /* MAIN LAYOUT */
+  .main {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    min-height: 600px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  /* TIMELINE SIDEBAR */
+  .timeline-sidebar {
+    border-right: 1px solid var(--rule);
+    padding: 1.5rem 0;
+    overflow-y: auto;
+    max-height: 680px;
+  }
+  .timeline-heading {
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 0 1.2rem 0.8rem;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 0.5rem;
+  }
+  .era {
+    padding: 0.5rem 1.2rem;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin-top: 0.5rem;
+  }
+  .event-btn {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    padding: 0.7rem 1.2rem;
+    cursor: pointer;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+    position: relative;
+  }
+  .event-btn:hover {
+    background: var(--highlight);
+    border-left-color: var(--rule);
+  }
+  .event-btn.active {
+    background: var(--highlight);
+    border-left-color: var(--accent);
+  }
+  .event-year {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--accent);
+    display: block;
+  }
+  .event-title {
+    font-size: 0.78rem;
+    color: var(--ink);
+    display: block;
+    line-height: 1.3;
+    margin-top: 0.1rem;
+  }
+
+  /* DETAIL PANEL */
+  .detail-panel {
+    padding: 2rem 2.5rem;
+    overflow-y: auto;
+    max-height: 680px;
+  }
+  .detail-eyebrow {
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+  .detail-headline {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 0.4rem;
+  }
+  .detail-year {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  /* SPLIT VIEW */
+  .split-view {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .split-view.hidden { display: none; }
+  .view-col { }
+  .col-header {
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 2px solid;
+  }
+  .col-critic .col-header { color: var(--critic); border-color: var(--critic); }
+  .col-defender .col-header { color: var(--defender); border-color: var(--defender); }
+  .col-text {
+    font-family: 'Source Serif 4', serif;
+    font-size: 0.88rem;
+    line-height: 1.7;
+    color: #2a2a2a;
+  }
+
+  /* UNIFIED VIEW */
+  .unified-view { margin-bottom: 1.5rem; }
+  .unified-view.hidden { display: none; }
+  .unified-text {
+    font-family: 'Source Serif 4', serif;
+    font-size: 0.9rem;
+    line-height: 1.75;
+    color: #2a2a2a;
+  }
+
+  /* EVIDENCE BLOCK */
+  .evidence-block {
+    background: var(--highlight);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--neutral);
+    padding: 1rem 1.2rem;
+    margin-top: 1rem;
+  }
+  .evidence-label {
+    font-size: 0.62rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--neutral);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  .evidence-text {
+    font-size: 0.82rem;
+    line-height: 1.6;
+    color: var(--ink);
+  }
+  .evidence-text strong { font-weight: 600; color: var(--neutral); }
+
+  /* INDICATORS PANEL */
+  .indicators-panel {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.2rem;
+    flex-wrap: wrap;
+  }
+  .ind-chip {
+    font-size: 0.7rem;
+    padding: 0.3rem 0.7rem;
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+  .ind-chip.relevant {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: #fdf6e3;
+  }
+
+  /* FOOTER */
+  .footer {
+    padding: 1.2rem 2.5rem;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.7rem;
+    color: var(--muted);
+  }
+
+  /* PLACEHOLDER */
+  .placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 400px;
+    color: var(--muted);
+    text-align: center;
+    gap: 0.8rem;
+  }
+  .placeholder-icon {
+    font-size: 2.5rem;
+    opacity: 0.3;
+  }
+  .placeholder-text {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1rem;
+  }
+
+  @media (max-width: 700px) {
+    .main { grid-template-columns: 1fr; }
+    .timeline-sidebar { max-height: 220px; border-right: none; border-bottom: 1px solid var(--rule); }
+    .split-view { grid-template-columns: 1fr; }
+    .masthead { grid-template-columns: 1fr; text-align: center; }
+    .masthead-left, .masthead-right { display: none; }
+    .indicators { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-left">
+    Money Supply · Inflation · Unemployment<br>
+    A Balanced Policy Inquiry
+  </div>
+  <div class="masthead-title">
+    The Federal Reserve<br>
+    <span>Policy Decisions Under Scrutiny</span>
+  </div>
+  <div class="masthead-right">
+    Critics · Defenders · Evidence<br>
+    1970 – Present
+  </div>
+</header>
+
+<div class="legend-bar">
+  <div class="legend-item"><div class="legend-dot dot-critic"></div> Critic's View</div>
+  <div class="legend-item"><div class="legend-dot dot-defender"></div> Defender's View</div>
+  <div class="legend-item"><div class="legend-dot dot-evidence"></div> The Evidence</div>
+</div>
+
+<div class="view-controls">
+  <button class="view-btn active" onclick="setView('split', this)">Split View</button>
+  <button class="view-btn" onclick="setView('unified', this)">Unified View</button>
+</div>
+
+<div class="indicators">
+  <div class="indicator active" onclick="filterIndicator('all', this)">
+    <div class="indicator-label">Filter by</div>
+    <div class="indicator-name">All Indicators</div>
+    <div class="indicator-desc">Show every era</div>
+  </div>
+  <div class="indicator" onclick="filterIndicator('inflation', this)">
+    <div class="indicator-label">Indicator</div>
+    <div class="indicator-name">Inflation</div>
+    <div class="indicator-desc">CPI, price stability mandate</div>
+  </div>
+  <div class="indicator" onclick="filterIndicator('unemployment', this)">
+    <div class="indicator-label">Indicator</div>
+    <div class="indicator-name">Unemployment</div>
+    <div class="indicator-desc">Labor market, Phillips Curve</div>
+  </div>
+</div>
+
+<div class="main">
+  <div class="timeline-sidebar">
+    <div class="timeline-heading">Select an Era</div>
+    <div id="timeline-list"></div>
+  </div>
+
+  <div class="detail-panel" id="detail-panel">
+    <div class="placeholder">
+      <div class="placeholder-icon">⚖</div>
+      <div class="placeholder-text">Select an era from the timeline<br>to examine the evidence</div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <span>Sources: Federal Reserve historical records · Bureau of Labor Statistics · Bureau of Economic Analysis</span>
+  <span>Designed for inquiry, not verdict</span>
+</div>
+
+<script>
+const events = [
+  {
+    id: 'burns70',
+    year: '1970–1978',
+    era: 'The Great Inflation',
+    title: 'Burns Era: Money Supply & Stagflation',
+    indicators: ['inflation', 'unemployment'],
+    critic: `Arthur Burns, Fed Chair from 1970–1978, allowed the money supply (M2) to grow at rates exceeding 10% annually while suppressing interest rates under political pressure from the Nixon administration. Critics argue this "stop-go" monetary policy directly caused stagflation — the toxic combination of double-digit inflation and rising unemployment that plagued the mid-1970s. The Fed printed money to fund Vietnam-era deficits and abandoned its price stability mandate. Inflation peaked above 12% by 1974.`,
+    defender: `Burns inherited structural shocks beyond any central bank's control: the collapse of Bretton Woods in 1971, two OPEC oil embargoes (1973, 1979), and wage-price spirals entrenched by years of fiscal expansion. Defenders argue that raising rates sharply enough to kill inflation would have caused a depression-level unemployment crisis. The Fed was also operating with 1970s-era economic models that did not yet account for supply-side inflation. The constraints were real, even if the decisions were ultimately wrong.`,
+    evidence: `M2 money supply grew ~10–13% annually 1971–1978. CPI peaked at 12.3% (1974) and 13.5% (1979). Unemployment reached 9% (1975). Economists broadly agree the Fed was too accommodative, though debate remains on how much was avoidable given the oil shocks and political environment. The Burns era is the canonical case study in central bank independence.`,
+    chips: ['inflation', 'unemployment', 'money supply']
+  },
+  {
+    id: 'volcker79',
+    year: '1979–1982',
+    era: 'The Volcker Shock',
+    title: "Volcker's Disinflation: Cure or Overkill?",
+    indicators: ['inflation', 'unemployment'],
+    critic: `Paul Volcker's decision to raise the federal funds rate to 20% by 1981 was a blunt instrument that caused the deepest recession since the Great Depression. Unemployment reached 10.8% by late 1982 — over 11 million people out of work. Manufacturing communities were devastated, farm foreclosures surged, and the impacts on Black and working-class Americans were disproportionate and lasting. Critics argue the Fed chose a cure that was worse than the disease, and that a more gradual approach could have reduced inflation without mass unemployment.`,
+    defender: `Volcker faced an economy where inflation expectations had become unanchored — people and businesses assumed inflation would always be high, making it self-fulfilling. Only a decisive, credible shock could break that psychology. The short-term pain was severe, but the result — inflation dropping from 13.5% to 3.2% by 1983 — created the foundation for two decades of stable growth. Most economists now regard the Volcker disinflation as a necessary and ultimately successful intervention, even at great human cost.`,
+    evidence: `Fed funds rate peaked at 20% (June 1981). CPI fell from 13.5% (1979) to 3.2% (1983). Unemployment peaked at 10.8% (December 1982). GDP contracted 1.8% in 1982. By most measures, the disinflation succeeded; debate centers on whether gradualism could have achieved similar results with less unemployment. The Volcker Shock is the touchstone for Fed credibility doctrine.`,
+    chips: ['inflation', 'unemployment']
+  },
+  {
+    id: 'greenspan01',
+    year: '2001–2005',
+    era: 'The Greenspan Era',
+    title: 'Low Rates & the Seeds of 2008',
+    indicators: ['inflation', 'unemployment'],
+    critic: `After the dot-com bust, Greenspan cut the federal funds rate to 1% and held it there through 2004 — the lowest in 45 years. This flood of cheap money inflated the housing bubble by making mortgage debt artificially cheap. The Fed also failed to use its regulatory authority to crack down on predatory subprime lending. Critics — including the Fed's own post-mortems — acknowledge the extended low-rate period was a significant contributor to the conditions that produced the 2008 financial crisis. Greenspan himself later admitted to Congress he had found a "flaw" in his ideology.`,
+    defender: `The Fed in 2001–2003 faced a genuine deflationary threat following the dot-com collapse and 9/11. With unemployment rising and inflation falling toward zero, the textbook prescription was low rates. The housing bubble was also driven by global savings gluts, financial innovation (CDOs, mortgage securitization), and regulatory failures at agencies other than the Fed. Defenders argue the Fed correctly diagnosed the macro threat it faced; it did not foresee — and arguably could not have foreseen — how deeply financial engineering had embedded systemic risk.`,
+    evidence: `Fed funds rate: 6.5% (Jan 2001) → 1% (June 2003–June 2004). Home prices rose 60% nationally 2000–2006. Subprime mortgage originations grew from $120B (2001) to $600B (2006). Unemployment fell from 6.3% to 4.4% during the period, suggesting the rate cuts achieved their near-term goal. Whether they caused the housing bubble remains debated; most economists assign partial but not sole causation to Fed policy.`,
+    chips: ['inflation', 'money supply']
+  },
+  {
+    id: 'bernanke08',
+    year: '2008–2010',
+    era: 'The Financial Crisis',
+    title: 'Bernanke & Quantitative Easing',
+    indicators: ['unemployment', 'inflation'],
+    critic: `The Fed's crisis response — near-zero rates and three rounds of quantitative easing (QE) totaling $3.7 trillion in asset purchases — created the largest expansion of the money supply in Fed history. Critics argue QE inflated asset prices (stocks, real estate) primarily benefiting the wealthy while doing little for Main Street unemployment, which remained above 9% for two years. The Fed socialized the losses of Wall Street while the architects of the crisis faced no accountability. Long-term, QE created a dependency on cheap money that made eventual normalization extremely painful.`,
+    defender: `Bernanke, a scholar of the Great Depression, was determined not to repeat the Fed's catastrophic 1930s mistake of tightening policy during a banking collapse. QE prevented a complete financial system seizure. Unemployment, though painful, peaked at 10% — far below Great Depression levels of 25%. Inflation remained controlled throughout, disproving fears of hyperinflation from money supply expansion. The Fed used unconventional tools in genuinely unprecedented circumstances, and the economy did recover, however unevenly.`,
+    evidence: `Fed balance sheet grew from ~$900B (2008) to ~$4.5T (2014). Unemployment peaked at 10% (October 2009). CPI remained below 3% throughout QE period despite massive money supply expansion — challenging traditional quantity theory of money. GDP returned to growth by mid-2009. Academic research on QE's effectiveness remains mixed: most studies find it lowered long-term rates and supported asset prices; evidence for job creation is weaker.`,
+    chips: ['money supply', 'unemployment', 'inflation']
+  },
+  {
+    id: 'powell21',
+    year: '2021–2023',
+    era: 'Post-COVID Inflation',
+    title: 'Powell\'s "Transitory" Miscalculation',
+    indicators: ['inflation', 'unemployment', 'money supply'],
+    critic: `This is the most recent and perhaps most damaging Fed error. As M2 money supply surged 27% in 2020–2021 (the largest two-year expansion since WWII) and inflation began rising in 2021, Powell repeatedly called inflation "transitory" and kept rates near zero. The Fed did not begin raising rates until March 2022 — by which point CPI had reached 7.9%. The delay allowed inflation to become entrenched in wages and expectations. When the Fed finally acted, it was forced into the most aggressive rate-hiking cycle in 40 years, raising rates from 0.25% to 5.5% in 18 months, threatening recession and destabilizing regional banks.`,
+    defender: `The COVID-19 economy was genuinely unprecedented. Supply chain disruptions, not money supply alone, drove much of the 2021 inflation — and supply-side inflation is not something rate hikes can quickly fix. The Fed also faced a dual mandate dilemma: millions remained unemployed, and raising rates too early risked choking a fragile recovery. By 2023, inflation had fallen from 9.1% to below 4% without a recession — a "soft landing" that most economists thought impossible. Defenders argue the Fed ultimately navigated an extraordinarily difficult situation better than the historical record of similar shocks would predict.`,
+    evidence: `M2 grew 26.9% from Feb 2020 – Feb 2022. CPI peaked at 9.1% (June 2022), highest since 1981. Fed funds rate: 0.25% (March 2022) → 5.5% (July 2023). Unemployment fell to 3.4% (January 2023) despite rate hikes. CPI: 3.4% (December 2023). Whether the "soft landing" holds, and whether earlier action would have prevented peak inflation, remains actively debated among economists.`,
+    chips: ['inflation', 'money supply', 'unemployment']
+  }
+];
+
+let currentView = 'split';
+let currentFilter = 'all';
+
+function setView(v, btn) {
+  currentView = v;
+  document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const active = document.querySelector('.event-btn.active');
+  if (active) active.click();
+}
+
+function filterIndicator(filter, el) {
+  currentFilter = filter;
+  document.querySelectorAll('.indicator').forEach(i => i.classList.remove('active'));
+  el.classList.add('active');
+  renderTimeline();
+  const detail = document.getElementById('detail-panel');
+  detail.innerHTML = `<div class="placeholder"><div class="placeholder-icon">⚖</div><div class="placeholder-text">Select an era from the timeline<br>to examine the evidence</div></div>`;
+}
+
+function renderTimeline() {
+  const list = document.getElementById('timeline-list');
+  const filtered = currentFilter === 'all' ? events : events.filter(e => e.indicators.includes(currentFilter));
+  let html = '';
+  let lastEra = '';
+  filtered.forEach(ev => {
+    if (ev.era !== lastEra) {
+      html += `<div class="era">${ev.era}</div>`;
+      lastEra = ev.era;
+    }
+    html += `<button class="event-btn" onclick="showEvent('${ev.id}', this)">
+      <span class="event-year">${ev.year}</span>
+      <span class="event-title">${ev.title}</span>
+    </button>`;
+  });
+  list.innerHTML = html;
+}
+
+function showEvent(id, btn) {
+  document.querySelectorAll('.event-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const ev = events.find(e => e.id === id);
+  if (!ev) return;
+
+  const chips = ['money supply','inflation','unemployment'].map(c =>
+    `<span class="ind-chip ${ev.chips.includes(c) ? 'relevant' : ''}">${c}</span>`
+  ).join('');
+
+  const splitClass = currentView === 'split' ? '' : 'hidden';
+  const unifiedClass = currentView === 'unified' ? '' : 'hidden';
+
+  document.getElementById('detail-panel').innerHTML = `
+    <div class="detail-eyebrow">${ev.era}</div>
+    <div class="detail-headline">${ev.title}</div>
+    <div class="detail-year">${ev.year}</div>
+
+    <div class="split-view ${splitClass}">
+      <div class="view-col col-critic">
+        <div class="col-header">The Critic's Case</div>
+        <div class="col-text">${ev.critic}</div>
+      </div>
+      <div class="view-col col-defender">
+        <div class="col-header">The Defender's Case</div>
+        <div class="col-text">${ev.defender}</div>
+      </div>
+    </div>
+
+    <div class="unified-view ${unifiedClass}">
+      <div class="col-header" style="color:var(--muted);border-color:var(--rule);border-bottom:2px solid var(--rule);margin-bottom:0.8rem;">Overview</div>
+      <div class="unified-text"><strong style="color:var(--critic)">Critics argue</strong> ${ev.critic.replace(/^[^,]+, /,'that ')}<br><br><strong style="color:var(--defender)">Defenders counter</strong> that ${ev.defender.charAt(0).toLowerCase() + ev.defender.slice(1)}</div>
+    </div>
+
+    <div class="evidence-block">
+      <div class="evidence-label">The Evidence</div>
+      <div class="evidence-text">${ev.evidence}</div>
+    </div>
+
+    <div class="indicators-panel">${chips}</div>
+  `;
+}
+
+document.addEventListener('DOMContentLoaded', renderTimeline);
+</script>
+</body>
+</html>

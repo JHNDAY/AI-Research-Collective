@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prompt Evolution — Federal Reserve Monetary Policy</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --parchment: #f4f1eb;
+  --parchment-dark: #ede9df;
+  --ink: #1e1a14;
+  --ink-muted: #6b6356;
+  --ink-faint: #b0a898;
+  --gold: #8a6a10;
+  --gold-light: #f5edcc;
+  --gold-border: #c8a84a;
+  --v1: #b02a1e;
+  --v2: #c06010;
+  --v3: #7a6800;
+  --v4: #1e7a40;
+  --v5: #1a5c96;
+  --vc: #6a2a8e;
+  --rule: #d6cfc2;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--parchment);
+  color: var(--ink);
+  font-family: 'Lora', serif;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+/* ── HEADER ── */
+.site-header {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 4rem 2rem 3rem;
+  text-align: center;
+  border-bottom: 1px solid var(--rule);
+}
+.eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+}
+.site-header h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin-bottom: 0.6rem;
+}
+.site-header h1 em {
+  font-style: italic;
+  color: var(--gold);
+}
+.subtitle {
+  font-family: 'Lora', serif;
+  font-style: italic;
+  color: var(--ink-muted);
+  font-size: 1.05rem;
+  margin-bottom: 1.4rem;
+}
+.premise {
+  font-size: 0.88rem;
+  color: var(--ink-muted);
+  max-width: 560px;
+  margin: 0 auto;
+  line-height: 1.65;
+  border-top: 1px solid var(--rule);
+  padding-top: 1.2rem;
+}
+
+/* ── STICKY NAV ── */
+.sticky-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(244,241,235,0.96);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--rule);
+  padding: 0.7rem 1.5rem;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.nav-pill {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  padding: 0.3rem 0.9rem;
+  border-radius: 999px;
+  border: 1.5px solid;
+  text-decoration: none;
+  transition: opacity 0.15s;
+  white-space: nowrap;
+}
+.nav-pill:hover { opacity: 0.75; }
+.pill-v1 { color: var(--v1); border-color: var(--v1); background: #fdf0ef; }
+.pill-v2 { color: var(--v2); border-color: var(--v2); background: #fdf3ec; }
+.pill-v3 { color: var(--v3); border-color: var(--v3); background: #f8f5e4; }
+.pill-v4 { color: var(--v4); border-color: var(--v4); background: #edf7f1; }
+.pill-v5 { color: var(--v5); border-color: var(--v5); background: #edf3fb; }
+.pill-vc { color: var(--vc); border-color: var(--vc); background: #f5eefb; }
+
+/* ── MAIN CONTENT ── */
+.content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 1.5rem 4rem;
+}
+
+/* ── VERSION BLOCK ── */
+.version-block {
+  padding: 3rem 0 2rem;
+  border-bottom: 1px solid var(--rule);
+}
+.version-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.2rem;
+  margin-bottom: 1.4rem;
+}
+.version-badge {
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.1rem;
+  color: #fff;
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+}
+.version-block h2 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.45rem;
+  line-height: 1.2;
+}
+.version-block h2 .dim-label {
+  font-style: italic;
+  font-weight: 400;
+}
+
+/* dimension pills */
+.dim-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 1rem 0 1.2rem;
+}
+.dim-pill {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.63rem;
+  letter-spacing: 0.07em;
+  padding: 0.25rem 0.7rem;
+  border-radius: 4px;
+  border: 1px solid;
+}
+.dim-pill.present {
+  background: #edf7f1;
+  border-color: #1e7a40;
+  color: #1e7a40;
+}
+.dim-pill.present::before { content: '✓ '; }
+.dim-pill.absent {
+  background: var(--parchment-dark);
+  border-color: var(--rule);
+  color: var(--ink-faint);
+  text-decoration: line-through;
+  text-decoration-color: var(--ink-faint);
+}
+
+/* collapsible prompt */
+.prompt-toggle {
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: var(--ink-muted);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0;
+  transition: background 0.15s;
+}
+.prompt-toggle:hover { background: var(--parchment-dark); }
+.toggle-arrow { transition: transform 0.2s; }
+.toggle-arrow.open { transform: rotate(180deg); }
+
+.prompt-panel {
+  display: none;
+  background: var(--parchment-dark);
+  border: 1px solid var(--rule);
+  border-top: none;
+  border-radius: 0 0 6px 6px;
+  padding: 1.2rem 1.2rem 1rem;
+  font-family: 'Lora', serif;
+  font-size: 0.88rem;
+  line-height: 1.75;
+  color: var(--ink);
+  margin-bottom: 1.2rem;
+}
+.prompt-panel.open { display: block; }
+.prompt-panel .new-text {
+  background: var(--gold-light);
+  border-bottom: 1.5px solid var(--gold-border);
+  color: #4a3200;
+  padding: 0 2px;
+  border-radius: 2px;
+}
+
+/* feedback cards */
+.feedback-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 1.2rem;
+}
+.card {
+  border-radius: 6px;
+  padding: 1rem 1.1rem;
+  font-size: 0.85rem;
+  line-height: 1.65;
+}
+.card-working {
+  background: #edf7f1;
+  border: 1px solid #a8d8b8;
+  color: #1a4a28;
+}
+.card-missing {
+  background: var(--gold-light);
+  border: 1px solid var(--gold-border);
+  color: #4a3200;
+}
+.card-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+.card-working .card-label { color: #1e7a40; }
+.card-missing .card-label { color: var(--gold); }
+
+/* connector */
+.connector {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.2rem 0 0;
+  color: var(--ink-faint);
+}
+.connector-line {
+  flex: 1;
+  height: 1px;
+  background: var(--rule);
+}
+.connector-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  white-space: nowrap;
+  text-align: center;
+  flex-shrink: 0;
+}
+.connector-arrow {
+  font-size: 1.1rem;
+  color: var(--gold);
+}
+
+/* ── COMPARISON SECTION ── */
+.compare-section {
+  padding: 3rem 0 2rem;
+  scroll-margin-top: 60px;
+}
+.compare-section h2 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.6rem;
+  margin-bottom: 0.4rem;
+}
+.compare-eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--vc);
+  margin-bottom: 0.8rem;
+}
+
+/* side-by-side cards */
+.side-by-side {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+  margin: 1.8rem 0;
+}
+.compare-card {
+  border-radius: 8px;
+  padding: 1.3rem;
+  font-size: 0.83rem;
+  line-height: 1.7;
+}
+.compare-card h3 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1rem;
+  margin-bottom: 0.8rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 2px solid;
+}
+.compare-v1 { background: #fdf0ef; border: 1px solid #e8b8b4; }
+.compare-v1 h3 { color: var(--v1); border-color: var(--v1); }
+.compare-v5 { background: #edf3fb; border: 1px solid #b4cce8; }
+.compare-v5 h3 { color: var(--v5); border-color: var(--v5); }
+
+/* delta table */
+.delta-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+  margin: 1.8rem 0;
+}
+.delta-table th {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  border-bottom: 2px solid var(--ink);
+  padding: 0.5rem 0.8rem;
+  text-align: left;
+  background: var(--parchment);
+}
+.delta-table td {
+  padding: 0.75rem 0.8rem;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+  line-height: 1.5;
+}
+.delta-table tr:last-child td { border-bottom: none; }
+.delta-table td:first-child {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--vc);
+  font-weight: 500;
+  white-space: nowrap;
+}
+.delta-table td.state-v1 { color: var(--v1); font-style: italic; }
+.delta-table td.state-final { color: var(--v5); font-style: italic; }
+.delta-table td.impact { color: var(--ink-muted); font-size: 0.78rem; }
+
+/* score bars */
+.score-bars {
+  margin: 2rem 0;
+}
+.score-bars h3 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1rem;
+  margin-bottom: 1.2rem;
+  color: var(--ink-muted);
+}
+.score-row {
+  display: grid;
+  grid-template-columns: 140px 1fr 2.5rem;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 0.8rem;
+}
+.score-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.06em;
+  color: var(--ink-muted);
+  text-align: right;
+}
+.score-track {
+  height: 6px;
+  background: var(--parchment-dark);
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid var(--rule);
+}
+.score-fill {
+  height: 100%;
+  border-radius: 999px;
+  width: 0%;
+  transition: width 1s cubic-bezier(0.4,0,0.2,1);
+}
+.score-pct {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--gold);
+  text-align: right;
+}
+
+/* key lesson */
+.key-lesson {
+  border: 2px solid var(--gold-border);
+  border-radius: 8px;
+  padding: 1.5rem 1.8rem;
+  background: var(--gold-light);
+  margin-top: 2rem;
+}
+.lesson-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.7rem;
+  display: block;
+}
+.key-lesson p {
+  font-family: 'Lora', serif;
+  font-size: 0.9rem;
+  line-height: 1.75;
+  color: #3a2800;
+}
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--rule);
+  padding: 2rem 1.5rem;
+  text-align: center;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  color: var(--ink-faint);
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 600px) {
+  .feedback-cards, .side-by-side { grid-template-columns: 1fr; }
+  .score-row { grid-template-columns: 100px 1fr 2rem; }
+  .delta-table { font-size: 0.75rem; }
+  .delta-table td { padding: 0.5rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .score-fill { transition: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="eyebrow">Prompt Evolution · BOLLI Writing Coaching Session</div>
+  <h1>An Anatomy of a Prompt for:<br><em>Federal Reserve Monetary Policy</em></h1>
+  <p class="subtitle">From verdict to inquiry — five iterations toward a balanced, evidence-seeking prompt</p>
+  <p class="premise">A single prompt was drafted, reviewed, and revised five times in a live coaching session. Each iteration added one new dimension of craft: removing bias, naming focal indicators, balancing perspectives, and finally requesting a visualization artifact. This page traces every step of that evolution.</p>
+</header>
+
+<!-- STICKY NAV -->
+<nav class="sticky-nav" aria-label="Version navigation">
+  <a class="nav-pill pill-v1" href="#v1">V1 · Draft</a>
+  <a class="nav-pill pill-v2" href="#v2">V2 · Focus</a>
+  <a class="nav-pill pill-v3" href="#v3">V3 · Balance</a>
+  <a class="nav-pill pill-v4" href="#v4">V4 · Coherence</a>
+  <a class="nav-pill pill-v5" href="#v5">V5 · Final</a>
+  <a class="nav-pill pill-vc" href="#compare">↓ Compare</a>
+</nav>
+
+<main class="content">
+
+<!-- ══ VERSION 1 ══ -->
+<section class="version-block" id="v1">
+  <div class="version-header">
+    <div class="version-badge" style="background:var(--v1)">1</div>
+    <h2>Version 1 — <span class="dim-label">The Verdict Draft</span></h2>
+  </div>
+
+  <div class="dim-pills">
+    <span class="dim-pill present">Subject</span>
+    <span class="dim-pill present">Identity</span>
+    <span class="dim-pill absent">Purpose</span>
+    <span class="dim-pill absent">Audience</span>
+    <span class="dim-pill absent">Success Criterion</span>
+    <span class="dim-pill absent">Intellectual Frame</span>
+  </div>
+
+  <button class="prompt-toggle" onclick="togglePanel('p1', this)">
+    <span>VIEW PROMPT TEXT</span>
+    <span class="toggle-arrow">▾</span>
+  </button>
+  <div class="prompt-panel" id="p1">
+    <span class="new-text">I want to explore the poor policy decisions on the part of the federal reserve. specifically in monetary policy. I am particularily interested in money supply, inflation, and unemployment. Although the Fed is frequently composed of respected econmic professionals they seem to get it wrong far too many times.</span>
+  </div>
+
+  <div class="feedback-cards">
+    <div class="card card-working">
+      <span class="card-label">✦ What's working</span>
+      The tension embedded in <em>"respected economic professionals… get it wrong"</em> is genuinely compelling — it sets up a real intellectual problem. Naming three specific indicators (money supply, inflation, unemployment) rather than just "the economy" gives Claude meaningful scope.
+    </div>
+    <div class="card card-missing">
+      <span class="card-label">→ What's still missing</span>
+      The prompt opens with a verdict (<em>"poor policy decisions"</em>) before asking a question. Claude is being invited to confirm a conclusion, not pursue an inquiry. There is no indication of what a successful response looks like, and no personal context grounding the curiosity.
+    </div>
+  </div>
+
+  <div class="connector">
+    <div class="connector-line"></div>
+    <div>
+      <div class="connector-arrow" style="text-align:center">↓</div>
+      <div class="connector-label">+ Open-ended framing replaces verdict language</div>
+    </div>
+    <div class="connector-line"></div>
+  </div>
+</section>
+
+<!-- ══ VERSION 2 ══ -->
+<section class="version-block" id="v2">
+  <div class="version-header">
+    <div class="version-badge" style="background:var(--v2)">2</div>
+    <h2>Version 2 — <span class="dim-label">The Inquiry Opens</span></h2>
+  </div>
+
+  <div class="dim-pills">
+    <span class="dim-pill present">Subject</span>
+    <span class="dim-pill present">Identity</span>
+    <span class="dim-pill present">Purpose</span>
+    <span class="dim-pill absent">Audience</span>
+    <span class="dim-pill absent">Success Criterion</span>
+    <span class="dim-pill absent">Intellectual Frame</span>
+  </div>
+
+  <button class="prompt-toggle" onclick="togglePanel('p2', this)">
+    <span>VIEW PROMPT TEXT</span>
+    <span class="toggle-arrow">▾</span>
+  </button>
+  <div class="prompt-panel" id="p2">
+    I want to explore the poor policy decisions on the part of the federal reserve. specifically in monetary policy. I am particularily interested in money supply, inflation, and unemployment. Although the Fed is frequently composed of respected econmic professionals they seem to get it wrong far too many times.<br><br>
+    <span class="new-text">I want to examine Federal Reserve monetary policy — particularly around money supply, inflation, and unemployment — and understand where critics say it has fallen short, where defenders say the constraints made better outcomes impossible, and what the evidence actually shows.</span>
+  </div>
+
+  <div class="feedback-cards">
+    <div class="card card-working">
+      <span class="card-label">✦ What's working</span>
+      The three-part closing structure — <em>critics / defenders / evidence</em> — is a genuine structural achievement. It builds fairness into the prompt's architecture. The phrase <em>"what the evidence actually shows"</em> signals intellectual honesty and will prompt Claude to bring data rather than opinion.
+    </div>
+    <div class="card card-missing">
+      <span class="card-label">→ What's still missing</span>
+      The prompt now has two voices that conflict: the opening paragraph still delivers a verdict, while the second paragraph opens the inquiry. The tension between them will pull Claude's response in two directions. One voice needs to give way.
+    </div>
+  </div>
+
+  <div class="connector">
+    <div class="connector-line"></div>
+    <div>
+      <div class="connector-arrow" style="text-align:center">↓</div>
+      <div class="connector-label">+ Remove "poor" — let the inquiry lead</div>
+    </div>
+    <div class="connector-line"></div>
+  </div>
+</section>
+
+<!-- ══ VERSION 3 ══ -->
+<section class="version-block" id="v3">
+  <div class="version-header">
+    <div class="version-badge" style="background:var(--v3)">3</div>
+    <h2>Version 3 — <span class="dim-label">Bias Reduced</span></h2>
+  </div>
+
+  <div class="dim-pills">
+    <span class="dim-pill present">Subject</span>
+    <span class="dim-pill present">Identity</span>
+    <span class="dim-pill present">Purpose</span>
+    <span class="dim-pill absent">Audience</span>
+    <span class="dim-pill present">Success Criterion</span>
+    <span class="dim-pill absent">Intellectual Frame</span>
+  </div>
+
+  <button class="prompt-toggle" onclick="togglePanel('p3', this)">
+    <span>VIEW PROMPT TEXT</span>
+    <span class="toggle-arrow">▾</span>
+  </button>
+  <div class="prompt-panel" id="p3">
+    <span class="new-text">I want to explore the policy decisions on the part of the federal reserve.</span> specifically in monetary policy. I am particularily interested in money supply, inflation, and unemployment. Although the Fed is frequently composed of respected econmic professionals they seem to get it wrong far too many times.<br><br>
+    I want to examine Federal Reserve monetary policy — particularly around money supply, inflation, and unemployment — and understand where critics say it has fallen short, where defenders say the constraints made better outcomes impossible, and what the evidence actually shows.
+  </div>
+
+  <div class="feedback-cards">
+    <div class="card card-working">
+      <span class="card-label">✦ What's working</span>
+      Opening with <em>"I want to explore the policy decisions"</em> — without the prejudicial adjective "poor" — sets a genuinely investigative tone from the first line. That small edit did significant work. The prompt now has a clear, defensible purpose.
+    </div>
+    <div class="card card-missing">
+      <span class="card-label">→ What's still missing</span>
+      A broken sentence remains (<em>"I specifically in monetary policy"</em> — a cutting accident). More importantly, the fourth sentence still carries verdict-tone: <em>"they seem to get it wrong far too many times."</em> It is the one remaining thing holding the prompt back from full coherence.
+    </div>
+  </div>
+
+  <div class="connector">
+    <div class="connector-line"></div>
+    <div>
+      <div class="connector-arrow" style="text-align:center">↓</div>
+      <div class="connector-label">+ Fix broken sentence + final verdict line removed</div>
+    </div>
+    <div class="connector-line"></div>
+  </div>
+</section>
+
+<!-- ══ VERSION 4 ══ -->
+<section class="version-block" id="v4">
+  <div class="version-header">
+    <div class="version-badge" style="background:var(--v4)">4</div>
+    <h2>Version 4 — <span class="dim-label">Two Voices Reconciled</span></h2>
+  </div>
+
+  <div class="dim-pills">
+    <span class="dim-pill present">Subject</span>
+    <span class="dim-pill present">Identity</span>
+    <span class="dim-pill present">Purpose</span>
+    <span class="dim-pill absent">Audience</span>
+    <span class="dim-pill present">Success Criterion</span>
+    <span class="dim-pill present">Intellectual Frame</span>
+  </div>
+
+  <button class="prompt-toggle" onclick="togglePanel('p4', this)">
+    <span>VIEW PROMPT TEXT</span>
+    <span class="toggle-arrow">▾</span>
+  </button>
+  <div class="prompt-panel" id="p4">
+    I want to explore the policy decisions on the part of the federal reserve. <span class="new-text">I am specifically interested in monetary policy.</span> I am particularily interested in money supply, inflation, and unemployment. Although the Fed is frequently composed of respected econmic professionals they seem to get it wrong far too many times.<br><br>
+    I want to examine Federal Reserve monetary policy — particularly around money supply, inflation, and unemployment — and understand where critics say it has fallen short, where defenders say the constraints made better outcomes impossible, and what the evidence actually shows.
+  </div>
+
+  <div class="feedback-cards">
+    <div class="card card-working">
+      <span class="card-label">✦ What's working</span>
+      The prompt now has genuine intellectual momentum — moving from exploration to specific focus to balanced inquiry in a natural progression that mirrors how good research actually unfolds. The three-part closing structure is clean and rigorous. It reads like someone who has thought carefully about how inquiry works.
+    </div>
+    <div class="card card-missing">
+      <span class="card-label">→ What's still missing</span>
+      The verdict sentence (<em>"they seem to get it wrong far too many times"</em>) still appears and still conflicts with the balanced framing of the second paragraph. The prompt is one sentence away from full coherence. A visualization artifact request would complete the intent.
+    </div>
+  </div>
+
+  <div class="connector">
+    <div class="connector-line"></div>
+    <div>
+      <div class="connector-arrow" style="text-align:center">↓</div>
+      <div class="connector-label">+ Visualization artifact request added</div>
+    </div>
+    <div class="connector-line"></div>
+  </div>
+</section>
+
+<!-- ══ VERSION 5 ══ -->
+<section class="version-block" id="v5" style="border-bottom:2px solid var(--v5)">
+  <div class="version-header">
+    <div class="version-badge" style="background:var(--v5)">5</div>
+    <h2>Version 5 — <span class="dim-label">The Final Prompt</span></h2>
+  </div>
+
+  <div class="dim-pills">
+    <span class="dim-pill present">Subject</span>
+    <span class="dim-pill present">Identity</span>
+    <span class="dim-pill present">Purpose</span>
+    <span class="dim-pill absent">Audience</span>
+    <span class="dim-pill present">Success Criterion</span>
+    <span class="dim-pill present">Intellectual Frame</span>
+  </div>
+
+  <button class="prompt-toggle" onclick="togglePanel('p5', this)">
+    <span>VIEW PROMPT TEXT</span>
+    <span class="toggle-arrow">▾</span>
+  </button>
+  <div class="prompt-panel" id="p5">
+    I want to explore the policy decisions on the part of the federal reserve. I am specifically interested in monetary policy. I am particularily interested in money supply, inflation, and unemployment. Although the Fed is frequently composed of respected econmic professionals they seem to get it wrong far too many times.<br><br>
+    I want to examine Federal Reserve monetary policy — particularly around money supply, inflation, and unemployment — and understand where critics say it has fallen short, where defenders say the constraints made better outcomes impossible, and what the evidence actually shows.<br><br>
+    <span class="new-text">Please create an HTML file artifact that visualizes your response to this narrative — don't create any API calls in the artifact.</span>
+  </div>
+
+  <div class="feedback-cards">
+    <div class="card card-working">
+      <span class="card-label">✦ What's working</span>
+      The explicit artifact request — <em>"visualizes your response… don't create any API calls"</em> — is precise and technically informed. It tells Claude both what to produce and what constraint to observe. The full arc of the prompt (exploration → focus → balance → output format) is now complete.
+    </div>
+    <div class="card card-missing">
+      <span class="card-label">→ What's still missing</span>
+      The one remaining sentence to consider before final use: <em>"they seem to get it wrong far too many times"</em> still carries verdict-tone. For a Current Events session where balance matters most, retiring that line would make this prompt exemplary. The visualization will let the evidence speak for itself.
+    </div>
+  </div>
+</section>
+
+<!-- ══ COMPARISON ══ -->
+<section class="compare-section" id="compare">
+  <div class="compare-eyebrow">Final Analysis</div>
+  <h2>V1 vs. V5 — What Changed</h2>
+
+  <div class="side-by-side">
+    <div class="compare-card compare-v1">
+      <h3>Version 1 · The Verdict Draft</h3>
+      Opens with "poor policy decisions." Asks Claude to confirm a conclusion. Names three indicators without framing them as lenses. No output format specified. One voice, one direction.
+    </div>
+    <div class="compare-card compare-v5">
+      <h3>Version 5 · The Final Prompt</h3>
+      Opens with "explore." Asks Claude to present critics, defenders, and evidence in parallel. Names three indicators as explicit focal areas. Requests a specific artifact with a technical constraint. Two voices negotiating toward truth.
+    </div>
+  </div>
+
+  <table class="delta-table">
+    <thead>
+      <tr>
+        <th>Dimension</th>
+        <th>V1 State</th>
+        <th>Final State</th>
+        <th>Impact on Claude's Output</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Subject</td>
+        <td class="state-v1">Fed "poor decisions"</td>
+        <td class="state-final">Fed policy under scrutiny</td>
+        <td class="impact">Shifts from confirmation to analysis</td>
+      </tr>
+      <tr>
+        <td>Framing</td>
+        <td class="state-v1">Single verdict</td>
+        <td class="state-final">Critics / Defenders / Evidence</td>
+        <td class="impact">Claude presents multiple perspectives rather than one argument</td>
+      </tr>
+      <tr>
+        <td>Indicators</td>
+        <td class="state-v1">Named but unfocused</td>
+        <td class="state-final">Explicit focal lenses</td>
+        <td class="impact">Claude organizes response around M2, CPI, unemployment</td>
+      </tr>
+      <tr>
+        <td>Output Format</td>
+        <td class="state-v1">Unspecified</td>
+        <td class="state-final">HTML artifact, no API calls</td>
+        <td class="impact">Claude produces a specific, constrained deliverable</td>
+      </tr>
+      <tr>
+        <td>Intellectual Frame</td>
+        <td class="state-v1">Absent</td>
+        <td class="state-final">"What the evidence actually shows"</td>
+        <td class="impact">Claude brings data, not just competing opinions</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="score-bars" id="score-bars">
+    <h3>Prompt Strength by Dimension — Final Version</h3>
+
+    <div class="score-row">
+      <div class="score-label">Subject Clarity</div>
+      <div class="score-track"><div class="score-fill" style="background:var(--v5)" data-target="90"></div></div>
+      <div class="score-pct">90%</div>
+    </div>
+    <div class="score-row">
+      <div class="score-label">Balanced Framing</div>
+      <div class="score-track"><div class="score-fill" style="background:var(--v5)" data-target="85"></div></div>
+      <div class="score-pct">85%</div>
+    </div>
+    <div class="score-row">
+      <div class="score-label">Indicator Focus</div>
+      <div class="score-track"><div class="score-fill" style="background:var(--v5)" data-target="95"></div></div>
+      <div class="score-pct">95%</div>
+    </div>
+    <div class="score-row">
+      <div class="score-label">Output Specification</div>
+      <div class="score-track"><div class="score-fill" style="background:var(--v5)" data-target="92"></div></div>
+      <div class="score-pct">92%</div>
+    </div>
+    <div class="score-row">
+      <div class="score-label">Bias Reduction</div>
+      <div class="score-track"><div class="score-fill" style="background:var(--v4)" data-target="72"></div></div>
+      <div class="score-pct">72%</div>
+    </div>
+    <div class="score-row">
+      <div class="score-label">Personal Context</div>
+      <div class="score-track"><div class="score-fill" style="background:var(--v1)" data-target="20"></div></div>
+      <div class="score-pct">20%</div>
+    </div>
+  </div>
+
+  <div class="key-lesson">
+    <span class="lesson-label">◈ The Coaching Principle</span>
+    <p>The most important move in this session was the shift from <em>verdict</em> to <em>inquiry</em>. A prompt that opens with a conclusion ("poor policy decisions") invites Claude to perform agreement. A prompt that opens with genuine curiosity — naming both the critics and the defenders, then asking what the evidence shows — invites Claude to think. The technical artifact request at the end was the final maturation: it transformed a conversation into a deliverable. The one remaining opportunity is personal context: <em>why does this writer care about Fed policy?</em> Lived experience of inflation, unemployment, or financial crisis would make the inquiry richer still — and would help Claude calibrate not just what to say, but who it is speaking to.</p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  BOLLI Writing Coaching Session · Prompt Evolution Series · Brandeis Osher Lifelong Learning Institute
+</footer>
+
+<script>
+function togglePanel(id, btn) {
+  const panel = document.getElementById(id);
+  const arrow = btn.querySelector('.toggle-arrow');
+  const isOpen = panel.classList.contains('open');
+  panel.classList.toggle('open', !isOpen);
+  arrow.classList.toggle('open', !isOpen);
+  btn.style.borderRadius = isOpen ? '6px' : '6px 6px 0 0';
+}
+
+// Animate score bars on scroll
+const fills = document.querySelectorAll('.score-fill');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      fills.forEach(fill => {
+        fill.style.width = fill.dataset.target + '%';
+      });
+      observer.disconnect();
+    }
+  });
+}, { threshold: 0.3 });
+
+const barsSection = document.getElementById('score-bars');
+if (barsSection) observer.observe(barsSection);
+</script>
+</body>
+</html>
