@@ -111,7 +111,7 @@
   .stat-item:last-child { border-right: none; }
   .stat-num {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 2rem;
+    font-size: 2.25rem;
     line-height: 1;
     color: var(--accent);
   }
@@ -387,7 +387,7 @@
     <p class="eyebrow">AI Special Interest Group · Member Directory</p>
     <h1>Who's here &amp; <em>why</em> they joined</h1>
     <div class="header-meta">
-      <span><strong>23</strong> members</span>
+      <span><strong>32</strong> members</span>
       <span>Backgrounds from law, medicine, education &amp; tech</span>
       <span>All pursuing AI literacy</span>
     </div>
@@ -396,11 +396,11 @@
 
 <div class="stat-strip">
   <div class="stat-strip-inner">
-    <div class="stat-item"><div class="stat-num">23</div><div class="stat-label">Members</div></div>
-    <div class="stat-item"><div class="stat-num">14</div><div class="stat-label">Turner St. Yes</div></div>
-    <div class="stat-item"><div class="stat-num">83%</div><div class="stat-label">Have Gmail</div></div>
-    <div class="stat-item"><div class="stat-num">57%</div><div class="stat-label">Mac Users</div></div>
-    <div class="stat-item"><div class="stat-num">43%</div><div class="stat-label">Chrome Users</div></div>
+    <div class="stat-item"><div class="stat-num">32</div><div class="stat-label">Members</div></div>
+    <div class="stat-item"><div class="stat-num">19</div><div class="stat-label">Turner St. Yes</div></div>
+    <div class="stat-item"><div class="stat-num">91%</div><div class="stat-label">Have Gmail</div></div>
+    <div class="stat-item"><div class="stat-num">53%</div><div class="stat-label">Mac Users</div></div>
+    <div class="stat-item"><div class="stat-num">56%</div><div class="stat-label">Chrome Users</div></div>
   </div>
 </div>
 
@@ -410,13 +410,18 @@
     <div class="chart-title">Computer Platform</div>
     <div class="bar-row">
       <div class="bar-label">Mac</div>
-      <div class="bar-track"><div class="bar-fill" style="width:57%; background:var(--accent);"></div></div>
-      <div class="bar-count">13</div>
+      <div class="bar-track"><div class="bar-fill" style="width:53%; background:var(--accent);"></div></div>
+      <div class="bar-count">17</div>
     </div>
     <div class="bar-row">
       <div class="bar-label">PC</div>
-      <div class="bar-track"><div class="bar-fill" style="width:43%; background:var(--teal);"></div></div>
-      <div class="bar-count">10</div>
+      <div class="bar-track"><div class="bar-fill" style="width:44%; background:var(--teal);"></div></div>
+      <div class="bar-count">14</div>
+    </div>
+    <div class="bar-row">
+      <div class="bar-label">Both</div>
+      <div class="bar-track"><div class="bar-fill" style="width:3%; background:var(--gold);"></div></div>
+      <div class="bar-count">1</div>
     </div>
   </div>
 
@@ -425,22 +430,22 @@
     <div class="chart-title">Browser</div>
     <div class="bar-row">
       <div class="bar-label">Chrome</div>
-      <div class="bar-track"><div class="bar-fill" style="width:43%; background:var(--chrome-c);"></div></div>
-      <div class="bar-count">10</div>
+      <div class="bar-track"><div class="bar-fill" style="width:56%; background:var(--chrome-c);"></div></div>
+      <div class="bar-count">18</div>
     </div>
     <div class="bar-row">
       <div class="bar-label">Firefox</div>
-      <div class="bar-track"><div class="bar-fill" style="width:26%; background:var(--firefox-c);"></div></div>
-      <div class="bar-count">6</div>
+      <div class="bar-track"><div class="bar-fill" style="width:22%; background:var(--firefox-c);"></div></div>
+      <div class="bar-count">7</div>
     </div>
     <div class="bar-row">
       <div class="bar-label">Safari</div>
-      <div class="bar-track"><div class="bar-fill" style="width:26%; background:var(--safari-c);"></div></div>
+      <div class="bar-track"><div class="bar-fill" style="width:19%; background:var(--safari-c);"></div></div>
       <div class="bar-count">6</div>
     </div>
     <div class="bar-row">
       <div class="bar-label">Edge</div>
-      <div class="bar-track"><div class="bar-fill" style="width:4%; background:var(--edge-c);"></div></div>
+      <div class="bar-track"><div class="bar-fill" style="width:3%; background:var(--edge-c);"></div></div>
       <div class="bar-count">1</div>
     </div>
   </div>
@@ -451,17 +456,17 @@
     <div class="donut-wrap">
       <svg width="80" height="80" viewBox="0 0 80 80">
         <circle r="28" cx="40" cy="40" fill="none" stroke="#e4e2f0" stroke-width="14"/>
-        <!-- 19/23 = 83% of circumference (2πr≈176) → yes=146, no=30 -->
+        <!-- 29/32 = 91% of circumference (2πr≈176) → yes=159, no=16 -->
         <circle r="28" cx="40" cy="40" fill="none"
           stroke="var(--teal)" stroke-width="14"
-          stroke-dasharray="146 30" stroke-dashoffset="44" stroke-linecap="round"/>
+          stroke-dasharray="159 16" stroke-dashoffset="44" stroke-linecap="round"/>
         <circle r="28" cx="40" cy="40" fill="none"
           stroke="var(--rose)" stroke-width="14"
-          stroke-dasharray="30 146" stroke-dashoffset="-102" stroke-linecap="round"/>
+          stroke-dasharray="16 159" stroke-dashoffset="-115" stroke-linecap="round"/>
       </svg>
       <div class="donut-legend">
-        <div class="legend-row"><div class="legend-dot" style="background:var(--teal)"></div><span>Yes — 19</span></div>
-        <div class="legend-row"><div class="legend-dot" style="background:var(--rose)"></div><span>No — 4</span></div>
+        <div class="legend-row"><div class="legend-dot" style="background:var(--teal)"></div><span>Yes — 29</span></div>
+        <div class="legend-row"><div class="legend-dot" style="background:var(--rose)"></div><span>No — 3</span></div>
       </div>
     </div>
   </div>
@@ -472,14 +477,14 @@
     <div class="donut-wrap">
       <svg width="80" height="80" viewBox="0 0 80 80">
         <circle r="28" cx="40" cy="40" fill="none" stroke="#e4e2f0" stroke-width="14"/>
-        <!-- 14/23 = 61% of circumference (2πr≈176) → yes=107, no=69 -->
+        <!-- 19/32 = 59% of circumference (2πr≈176) → yes=104, no=71 -->
         <circle r="28" cx="40" cy="40" fill="none"
           stroke="#1d8a4a" stroke-width="14"
-          stroke-dasharray="107 69" stroke-dashoffset="44" stroke-linecap="round"/>
+          stroke-dasharray="104 71" stroke-dashoffset="44" stroke-linecap="round"/>
       </svg>
       <div class="donut-legend">
-        <div class="legend-row"><div class="legend-dot" style="background:#1d8a4a"></div><span>Yes — 14</span></div>
-        <div class="legend-row"><div class="legend-dot" style="background:#c9c9d8"></div><span>No / N/A — 9</span></div>
+        <div class="legend-row"><div class="legend-dot" style="background:#1d8a4a"></div><span>Yes — 19</span></div>
+        <div class="legend-row"><div class="legend-dot" style="background:#c9c9d8"></div><span>No / N/A — 13</span></div>
       </div>
     </div>
   </div>
@@ -504,7 +509,7 @@
             <div class="sector-name">Law &amp; Legal</div>
             <div class="sector-names">Saul Schapiro, Jerry Wald, Barbara Kriss</div>
           </div>
-          <div class="sector-bar-track"><div class="sector-bar-fill" style="width:100%; background:var(--accent);"></div></div>
+          <div class="sector-bar-track"><div class="sector-bar-fill" style="width:43%; background:var(--accent);"></div></div>
           <div class="sector-count">3</div>
         </div>
         <div class="sector-row">
@@ -513,35 +518,35 @@
             <div class="sector-name">Medicine &amp; Mental Health</div>
             <div class="sector-names">Cheryl Weinstein, John Cowl</div>
           </div>
-          <div class="sector-bar-track"><div class="sector-bar-fill" style="width:67%; background:var(--teal);"></div></div>
+          <div class="sector-bar-track"><div class="sector-bar-fill" style="width:29%; background:var(--teal);"></div></div>
           <div class="sector-count">2</div>
         </div>
         <div class="sector-row">
           <div class="sector-icon">🎓</div>
           <div class="sector-info">
             <div class="sector-name">Education &amp; Academia</div>
-            <div class="sector-names">Jany Finkielsztein, Steven Wisensale, Kathy K.</div>
+            <div class="sector-names">Jany Finkielsztein, Steven Wisensale, Kathy K., Marina Cunningham, Judith Haber</div>
           </div>
-          <div class="sector-bar-track"><div class="sector-bar-fill" style="width:100%; background:var(--gold);"></div></div>
-          <div class="sector-count">3</div>
+          <div class="sector-bar-track"><div class="sector-bar-fill" style="width:71%; background:var(--gold);"></div></div>
+          <div class="sector-count">5</div>
         </div>
         <div class="sector-row">
           <div class="sector-icon">💻</div>
           <div class="sector-info">
             <div class="sector-name">Technology &amp; Engineering</div>
-            <div class="sector-names">Jenny Fariborz, Abby Pinard, David Rattner</div>
+            <div class="sector-names">Jenny Fariborz, Abby Pinard, David Rattner, Dennis McCarthy, Don Schuler, Paula Corman</div>
           </div>
-          <div class="sector-bar-track"><div class="sector-bar-fill" style="width:100%; background:var(--rose);"></div></div>
-          <div class="sector-count">3</div>
+          <div class="sector-bar-track"><div class="sector-bar-fill" style="width:86%; background:var(--rose);"></div></div>
+          <div class="sector-count">6</div>
         </div>
         <div class="sector-row">
           <div class="sector-icon">📝</div>
           <div class="sector-info">
             <div class="sector-name">Writing, Editing &amp; Publishing</div>
-            <div class="sector-names">Barbara Kriss, Steven Wisensale, Jane Greenwald</div>
+            <div class="sector-names">Barbara Kriss, Steven Wisensale, Jane Greenwald, Dorothy Anger</div>
           </div>
-          <div class="sector-bar-track"><div class="sector-bar-fill" style="width:100%; background:#7c3aed;"></div></div>
-          <div class="sector-count">3</div>
+          <div class="sector-bar-track"><div class="sector-bar-fill" style="width:57%; background:#7c3aed;"></div></div>
+          <div class="sector-count">4</div>
         </div>
         <div class="sector-row">
           <div class="sector-icon">🤝</div>
@@ -549,7 +554,7 @@
             <div class="sector-name">Social Work &amp; Healthcare</div>
             <div class="sector-names">Joe Scholl, Gloria Barsamian</div>
           </div>
-          <div class="sector-bar-track"><div class="sector-bar-fill" style="width:67%; background:#0891b2;"></div></div>
+          <div class="sector-bar-track"><div class="sector-bar-fill" style="width:29%; background:#0891b2;"></div></div>
           <div class="sector-count">2</div>
         </div>
         <div class="sector-row">
@@ -558,17 +563,17 @@
             <div class="sector-name">Healthcare Strategy &amp; Marketing</div>
             <div class="sector-names">Margot Walthall</div>
           </div>
-          <div class="sector-bar-track"><div class="sector-bar-fill" style="width:33%; background:#b45309;"></div></div>
+          <div class="sector-bar-track"><div class="sector-bar-fill" style="width:14%; background:#b45309;"></div></div>
           <div class="sector-count">1</div>
         </div>
         <div class="sector-row">
           <div class="sector-icon">📋</div>
           <div class="sector-info">
             <div class="sector-name">Consulting &amp; Business</div>
-            <div class="sector-names">Jane Greenwald, Norm Ginsberg</div>
+            <div class="sector-names">Jane Greenwald, Norm Ginsberg, Mark Lewis</div>
           </div>
-          <div class="sector-bar-track"><div class="sector-bar-fill" style="width:67%; background:#be185d;"></div></div>
-          <div class="sector-count">2</div>
+          <div class="sector-bar-track"><div class="sector-bar-fill" style="width:43%; background:#be185d;"></div></div>
+          <div class="sector-count">3</div>
         </div>
         <div class="sector-row">
           <div class="sector-icon">🎨</div>
@@ -576,8 +581,35 @@
             <div class="sector-name">Arts, Culture &amp; Museums</div>
             <div class="sector-names">Barbara Apstein, Helaine Silverman, Margot Walthall, Amy Rubin</div>
           </div>
-          <div class="sector-bar-track"><div class="sector-bar-fill" style="width:100%; background:#047857;"></div></div>
+          <div class="sector-bar-track"><div class="sector-bar-fill" style="width:57%; background:#047857;"></div></div>
           <div class="sector-count">4</div>
+        </div>
+        <div class="sector-row">
+          <div class="sector-icon">🗺️</div>
+          <div class="sector-info">
+            <div class="sector-name">Transportation &amp; Public History</div>
+            <div class="sector-names">Mary Stearns, Dennis McCarthy</div>
+          </div>
+          <div class="sector-bar-track"><div class="sector-bar-fill" style="width:29%; background:#0369a1;"></div></div>
+          <div class="sector-count">2</div>
+        </div>
+        <div class="sector-row">
+          <div class="sector-icon">🌍</div>
+          <div class="sector-info">
+            <div class="sector-name">Sociology &amp; International Education</div>
+            <div class="sector-names">Marina Cunningham, Caryl Goodman</div>
+          </div>
+          <div class="sector-bar-track"><div class="sector-bar-fill" style="width:29%; background:#9333ea;"></div></div>
+          <div class="sector-count">2</div>
+        </div>
+        <div class="sector-row">
+          <div class="sector-icon">🏗️</div>
+          <div class="sector-info">
+            <div class="sector-name">Real Estate &amp; Development</div>
+            <div class="sector-names">Mark Lewis</div>
+          </div>
+          <div class="sector-bar-track"><div class="sector-bar-fill" style="width:14%; background:#0e7490;"></div></div>
+          <div class="sector-count">1</div>
         </div>
       </div>
     </div>
@@ -602,11 +634,11 @@
           <div class="exp-cell">
             <div class="exp-icon">⚡</div>
             <div class="exp-label">Active Users</div>
-            <div class="exp-sub">Weekly AI use; multi-tool familiarity</div>
+            <div class="exp-sub">Weekly+ use; multi-tool familiarity</div>
           </div>
         </div>
         <p style="font-size:.78rem; color:var(--ink-faint); margin-top:.9rem; line-height:1.5;">
-          Most members identify as beginners or casual users. Barbara Kriss already uses AI daily across literary and medical research. David Rattner stands out as a multi-tool practitioner with basic coding ability.
+          Most members identify as beginners or casual users. A growing subset is already active: Barbara Kriss uses AI daily for literary and medical questions, Caryl Goodman and Helen Abrams both reference using Claude specifically, and David Rattner is the most technically fluent, having taken three AI courses and being comfortable with light coding.
         </p>
       </div>
 
@@ -624,6 +656,8 @@
           <span class="theme-tag" style="border-color:#b45309; color:#b45309; background:#fdf3e0;">🧠 Psychology</span>
           <span class="theme-tag" style="border-color:#be185d; color:#be185d; background:#fde8ef;">🎵 Music</span>
           <span class="theme-tag" style="border-color:#0369a1; color:#0369a1; background:#e0f2fe;">🎗 Health Advocacy</span>
+          <span class="theme-tag" style="border-color:#9333ea; color:#9333ea; background:#f3e8ff;">🌐 Languages &amp; Global Education</span>
+          <span class="theme-tag" style="border-color:#0e7490; color:#0e7490; background:#e0f7fa;">🏘 Housing &amp; Volunteering</span>
         </div>
       </div>
 
@@ -633,11 +667,11 @@
     <div class="profile-card full-width">
       <div class="profile-card-title">Cohort Narrative</div>
       <p class="narrative-text">
-        This is a <strong>predominantly retired, highly educated cohort</strong> drawn from careers in law, medicine, education, technology, the arts, social work, publishing, and transportation research. With 23 members, the group continues to grow in professional breadth — notably with <strong>Mary Stearns</strong>, whose background in transportation and human factors adds a distinctive applied-research perspective, and <strong>Marcy</strong>, an enthusiastic generalist who already uses AI daily across books, astronomy, and personal curiosity.
+        This is a <strong>predominantly retired, highly educated cohort</strong> drawn from careers in law, medicine, education, technology, the arts, social work, publishing, real estate, and international education. With 32 members, the group has grown into one of BOLLI's broadest special interest groups, now including academics like <strong>Marina Cunningham</strong> (a Ph.D. linguist and former Chief International Officer) and <strong>Judith Haber</strong> (Professor Emerita of English at Tufts), alongside practitioners such as <strong>Don Schuler</strong> and <strong>Paula Corman</strong> who bring decades-old technical and computing backgrounds.
         <br><br>
-        Nearly everyone describes themselves as a <span class="narrative-highlight">lifelong learner</span> motivated by a shared desire not to be "left behind" as AI reshapes daily life. The group skews strongly toward the humanities: interests in reading, writing, history, politics, and the arts outnumber purely technical pursuits. Several members are actively pursuing new chapters — a Dante course website, art museum docent work, course development, original writing — and see AI as a <strong>practical creative tool</strong> rather than an end in itself.
+        Nearly everyone describes themselves as a <span class="narrative-highlight">lifelong learner</span> motivated by a shared desire not to be "left behind" as AI reshapes daily life. The group skews strongly toward the humanities and public service: interests in reading, writing, history, the arts, and volunteer work outnumber purely technical pursuits. Several members are pursuing concrete personal projects — a Dante course website, a book on notable Newton women, museum docent work, organizing an AI assistant for daily life — and see AI as a <strong>practical creative and organizational tool</strong> rather than an end in itself.
         <br><br>
-        AI experience ranges from <strong>genuine apprehension</strong> (one member cites "psychological avoidance"; another says she "fears it rather than takes advantage of it") to <strong>confident daily use</strong> (Barbara Kriss uses it for everything from literary to medical questions). This spectrum means the cohort benefits from foundational literacy sessions alongside applied, project-based work. The strong Turner Street interest (61%) reflects healthy appetite for in-person collaboration.
+        AI experience ranges from <strong>genuine apprehension</strong> (one member cites "psychological avoidance"; another says she "fears it rather than takes advantage of it") to <strong>confident, multi-tool daily use</strong> — several members now specifically reference using Claude alongside ChatGPT. This spectrum means the cohort benefits from foundational literacy sessions alongside applied, project-based work. Turner Street interest remains solid at 59%, reflecting continued appetite for in-person collaboration even as the group scales.
       </p>
     </div>
 
@@ -656,14 +690,14 @@
     <button class="filter-btn" onclick="setFilter('pc', this)">PC</button>
     <button class="filter-btn" onclick="setFilter('turner', this)">Turner St.</button>
   </div>
-  <div class="results-count" id="resultsCount">23 profiles</div>
+  <div class="results-count" id="resultsCount">32 profiles</div>
 </div>
 
 <div class="grid" id="cardGrid"></div>
 
 <script>
 const MEMBERS = [
-  {name:"Helaine Silverman",computer:"Mac",browser:"Chrome",gmail:"No",turner:"Yes",motivation:"",background:"I took the AI Literacy class and enjoyed it very much. I want to practice what I learned to become more proficient."},
+  {name:"Helaine Silverman",computer:"Mac",browser:"Chrome",gmail:"Yes",turner:"Yes",motivation:"I took a course with John Day this past spring, and I want to continue learning.",background:"Wide-ranging interests; open to learning new things. Also took the AI Literacy class and enjoyed it, and wants to practice what she learned to become more proficient."},
   {name:"Barbara Apstein",computer:"Mac",browser:"Firefox",gmail:"Yes",turner:"Yes",motivation:"",background:"Creating a website for proposed Dante course."},
   {name:"Margot Walthall",computer:"PC",browser:"Chrome",gmail:"Yes",turner:"Yes",motivation:"Want to do deep research and synthesis of info to create art tours and presentations in my role as a docent at Peabody Essex and Cape Ann Museums. I also want to keep up as AI evolves, leveraging the best tools. I am also interested in the multitude of social, political, moral and economic implications of AI on our human society.",background:"Career in healthcare strategy and marketing in health insurance, health tech, and big data research organizations. Over the past 5 years, cultivating interest in museum studies and art history through Harvard Extension School, BOLLI, Smithsonian Associates, and as a docent."},
   {name:"Saul Schapiro",computer:"Mac",browser:"Safari",gmail:"Yes",turner:"Yes",motivation:"Better prepare for classes and general use and knowledge.",background:"Legal career and many times an SGL."},
@@ -685,14 +719,24 @@ const MEMBERS = [
   {name:"Barbara Kriss",computer:"Mac",browser:"Firefox",gmail:"Yes",turner:"",motivation:"Already using AI for everything from literary to medical questions, but interested in exploring further and getting the most possible benefit from AI interactions.",background:"Worked as a magazine and book editor, went to law school, has written poetry, short stories, and personal essays, and founded and ran a breast cancer website (learned HTML to do that). Eclectic background. At BOLLI: New Yorker SIG and Book Group."},
   {name:"Gloria Barsamian",computer:"Mac",browser:"Safari",gmail:"No",turner:"",motivation:"Interested in using AI for editing original writing.",background:"Retired social worker from Lahey Clinic Medical Center after 33 years."},
   {name:"Marcy",computer:"Mac",browser:"Chrome",gmail:"Yes",turner:"Yes",motivation:"I want to keep up with the times.",background:"Uses various AI apps for personal reasons. Loves to explore everything with AI — books, astronomy, and anything she wants to learn more about."},
-  {name:"Mary Stearns",computer:"PC",browser:"Safari",gmail:"Yes",turner:"Yes",motivation:"Want to use it.",background:"Expertise in transportation and human factors."},
+  {name:"Mary Stearns",computer:"Mac",browser:"Safari",gmail:"Yes",turner:"Yes",motivation:"Want to use it.",background:"Expertise in transportation and human factors."},
+  {name:"Dennis McCarthy",computer:"Mac, PC",browser:"Chrome",gmail:"Yes",turner:"",motivation:"To better understand its impact on our society and economy.",background:"Retired software engineer. Now active in public history — tour guide and docent work with Boston By Foot, the Boston Public Library, and the Leventhal Map Center; has continued similar volunteer roles in Denver with Historic Denver, the Denver Public Library, and the Colorado Railroad Museum."},
+  {name:"Dorothy Anger",computer:"Mac",browser:"Chrome",gmail:"Yes",turner:"Yes",motivation:"Wants to learn what AI can do and how to get a transcript of recorded Zoom sessions.",background:"Marketing communications and grant writing background. Recently completed a short book highlighting the life stories of five exceptional Newton women."},
+  {name:"Don Schuler",computer:"PC",browser:"Chrome",gmail:"Yes",turner:"Yes",motivation:"Understanding medical tests; general knowledge; maybe help with his NFL pool.",background:"Chip development and software engineering, though from about 20 years ago."},
+  {name:"Helen Abrams",computer:"Mac",browser:"Chrome",gmail:"Yes",turner:"Yes",motivation:"To get help thinking through difficult life choices.",background:"Has used ChatGPT to create meditation leads; a niece fluent in Claude has shown her its deeper querying capabilities. Particularly interested in learning more about housing options and travel opportunities."},
+  {name:"Marina Cunningham",computer:"Mac",browser:"Chrome",gmail:"Yes",turner:"Yes",motivation:"Interested in learning how AI works.",background:"Ph.D. in Slavic Languages and Literature from Northwestern University; B.A. in Spanish and Latin American Literature from the University of Illinois. 25 years of experience teaching at the university level and serving as Chief International Officer and Executive Director of a Global Education Center spanning five continents, including Fulbright programs and academic exchanges. Recipient of multiple grants including Fulbright, the U.S. State Department, the Sotos Foundation, and the Woodrow Wilson Foundation."},
+  {name:"Caryl Goodman",computer:"PC",browser:"Chrome",gmail:"Yes",turner:"",motivation:"Already uses AI — mostly Claude — but is always interested in learning new and better ways to use it.",background:"Retired sociologist. Interested in using AI for volunteer work, travel, and general living."},
+  {name:"Mark Lewis",computer:"PC",browser:"Chrome",gmail:"Yes",turner:"",motivation:"Would like to learn more about using AI.",background:"Semi-retired real estate developer. Already uses AI to assist with research and would like an AI assistant to help him stay organized."},
+  {name:"Paula Corman",computer:"PC",browser:"Chrome",gmail:"Yes",turner:"",motivation:"Information and utility.",background:"Computer user since the 1970s."},
+  {name:"Judith Haber",computer:"PC",browser:"Firefox",gmail:"Yes",turner:"Yes",motivation:"Wants to keep up with what's going on, and possibly help create classes.",background:"Professor Emerita of English at Tufts University."},
 ];
 
 const COLORS = [
   "#5c4ef5","#0ea5a0","#c9922a","#c94a6e","#7c3aed","#0891b2",
   "#b45309","#be185d","#1d4ed8","#047857","#9333ea","#0e7490",
   "#d97706","#db2777","#4f46e5","#0f766e","#c2410c","#7e22ce","#0369a1",
-  "#0c4a6e","#6b21a8","#166534","#9a3412"
+  "#0c4a6e","#6b21a8","#166534","#9a3412","#475569","#b91c1c",
+  "#15803d","#a21caf","#1e40af","#ca8a04","#0d9488","#7c2d12","#4338ca"
 ];
 
 function initials(name) {
@@ -711,7 +755,7 @@ let currentFilter = 'all';
 
 function buildCard(m, idx) {
   const bgColor = COLORS[idx % COLORS.length];
-  const pillComputer = m.computer === 'Mac' ? 'pill-mac' : 'pill-pc';
+  const pillComputer = m.computer === 'PC' ? 'pill-pc' : 'pill-mac';
   const browserIcon = {Chrome:'🌐',Firefox:'🦊',Safari:'🧭',Edge:'🔷'}[m.browser] || '🖥';
   const motivationHTML = m.motivation
     ? `<div class="section-block"><div class="block-label">Motivation</div><div class="block-text">${m.motivation}</div></div>` : '';
@@ -752,8 +796,8 @@ function filterCards() {
   cards.forEach(card => {
     const matchFilter =
       currentFilter === 'all' ||
-      (currentFilter === 'mac'    && card.dataset.computer === 'mac') ||
-      (currentFilter === 'pc'     && card.dataset.computer === 'pc') ||
+      (currentFilter === 'mac'    && card.dataset.computer.includes('mac')) ||
+      (currentFilter === 'pc'     && card.dataset.computer.includes('pc')) ||
       (currentFilter === 'turner' && card.dataset.turner   === 'yes');
     const matchSearch = !query || card.dataset.search.includes(query);
     const show = matchFilter && matchSearch;
