@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Choose Your Topic — AILit SIG Narrative Coach Menu</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,400&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #f4f0e6;
+    --cream-deep: #ece2cc;
+    --paper: #fbf8f1;
+    --ink: #241f1a;
+    --ink-soft: #5a5048;
+    --ink-faint: #948a78;
+    --rule: #d8cdb3;
+    --accent: #a8542e;
+
+    --c-travel: #2f6f63;
+    --c-travel-soft: #e3efea;
+    --c-family: #9c3f56;
+    --c-family-soft: #f3e4e7;
+    --c-writing: #5d4a7a;
+    --c-writing-soft: #e9e3ef;
+    --c-health: #345a78;
+    --c-health-soft: #e2eaef;
+    --c-events: #8d6a1f;
+    --c-events-soft: #f1e9d4;
+    --c-research: #54622c;
+    --c-research-soft: #e7ecdc;
+    --c-curiosity: #a8542e;
+    --c-curiosity-soft: #f3e6dc;
+
+    --shadow: rgba(60, 45, 20, 0.10);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 1.65;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: repeating-linear-gradient(0deg, transparent, transparent 28px, rgba(168,84,46,0.035) 28px, rgba(168,84,46,0.035) 29px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page {
+    position: relative;
+    z-index: 1;
+    max-width: 840px;
+    margin: 0 auto;
+    padding: 56px 36px 90px;
+  }
+
+  /* ---------- HEADER ---------- */
+  header {
+    border-bottom: 3px double var(--rule);
+    padding-bottom: 26px;
+    margin-bottom: 36px;
+  }
+
+  .eyebrow {
+    font-family: 'Courier Prime', monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 700;
+    font-size: clamp(2.1rem, 5vw, 2.9rem);
+    line-height: 1.12;
+    color: var(--ink);
+    margin-bottom: 10px;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .subtitle {
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 16.5px;
+    max-width: 560px;
+  }
+
+  /* ---------- INTRO ---------- */
+  .intro {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-left: 4px solid var(--accent);
+    border-radius: 3px;
+    padding: 24px 28px;
+    margin-bottom: 46px;
+    box-shadow: 0 2px 10px var(--shadow);
+  }
+
+  .intro p { margin-bottom: 12px; color: #3a322a; }
+  .intro p:last-child { margin-bottom: 0; }
+
+  .intro .lede {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.15rem;
+    color: var(--ink);
+  }
+
+  .how-it-works {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px dashed var(--rule);
+    font-family: 'Courier Prime', monospace;
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    line-height: 1.8;
+  }
+  .how-it-works .step-num {
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  /* ---------- CLUSTER ---------- */
+  .cluster {
+    margin-bottom: 50px;
+  }
+
+  .cluster-head {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+
+  .cluster-label {
+    font-family: 'Courier Prime', monospace;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  .cluster-rule {
+    flex: 1;
+    height: 1px;
+    background: var(--rule);
+  }
+
+  .cluster-for {
+    font-size: 13.5px;
+    color: var(--ink-faint);
+    font-style: italic;
+    margin-bottom: 18px;
+    margin-top: -10px;
+  }
+
+  /* ---------- STAIRCASE ---------- */
+  .staircase {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .step-card {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: 18px 22px;
+    box-shadow: 0 2px 8px var(--shadow);
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    position: relative;
+  }
+
+  .step-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .step-card:nth-child(1) { margin-left: 0; border-left: 4px solid var(--cluster-color); }
+  .step-card:nth-child(2) { margin-left: clamp(16px, 4vw, 40px); border-left: 4px solid var(--cluster-color); }
+  .step-card:nth-child(3) { margin-left: clamp(32px, 8vw, 80px); border-left: 4px solid var(--cluster-color); }
+
+  .step-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+
+  .step-rung {
+    font-family: 'Courier Prime', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--cluster-color);
+    background: var(--cluster-soft);
+    border-radius: 100px;
+    padding: 3px 11px;
+  }
+
+  .mode-tag {
+    font-family: 'Courier Prime', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.04em;
+    border-radius: 100px;
+    padding: 3px 11px;
+    border: 1px solid;
+  }
+  .mode-tag.fact { color: #345a78; background: #e2eaef; border-color: #c3d3dd; }
+  .mode-tag.think { color: #6e3f6e; background: #f0e3ee; border-color: #ddc4d8; }
+  .mode-tag.both { color: #8a6a10; background: #f3ecd4; border-color: #ddc998; }
+
+  .step-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+    font-size: 1.12rem;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+
+  .step-desc {
+    color: #443a30;
+    font-size: 15.5px;
+    line-height: 1.6;
+  }
+
+  /* ---------- FOOTER ---------- */
+  .footer-block {
+    margin-top: 60px;
+    background: var(--ink);
+    color: var(--cream);
+    border-radius: 4px;
+    padding: 32px 32px;
+    box-shadow: 0 4px 16px var(--shadow);
+  }
+
+  .footer-block .eyebrow2 {
+    font-family: 'Courier Prime', monospace;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #d4a96a;
+    margin-bottom: 10px;
+  }
+
+  .footer-block h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 14px;
+    color: #fff;
+  }
+
+  .footer-block p {
+    color: #d8d0c2;
+    margin-bottom: 10px;
+    font-size: 15.5px;
+  }
+
+  .footer-checklist {
+    list-style: none;
+    margin: 16px 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .footer-checklist li {
+    font-family: 'Courier Prime', monospace;
+    font-size: 13.5px;
+    color: #e8dfc8;
+    padding-left: 22px;
+    position: relative;
+  }
+  .footer-checklist li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: #d4a96a;
+  }
+
+  .page-footer-note {
+    text-align: center;
+    margin-top: 36px;
+    font-size: 13px;
+    font-style: italic;
+    color: var(--ink-faint);
+  }
+
+  @media (max-width: 600px) {
+    .page { padding: 40px 20px 70px; }
+    h1 { font-size: 1.8rem; }
+    .step-card:nth-child(2), .step-card:nth-child(3) { margin-left: 14px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .step-card { transition: none; opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <div class="eyebrow">Brandeis Osher Lifelong Learning Institute · AI Literacy SIG</div>
+    <h1>Choose Your <em>Topic</em></h1>
+    <p class="subtitle">Twenty-one starting points for the Narrative Prompt Coach — pulled from what this cohort already cares about, spanning everything from quick answers to genuine thinking partnership.</p>
+  </header>
+
+  <div class="intro">
+    <p class="lede">You don't need to know AI to start. You just need a topic that's actually yours.</p>
+    <p>Below are seven areas drawn from what members of this group told us they're curious about, working on, or wrestling with. Each area has three doors in — a gentle one, a more involved one, and one for whoever's ready to push further. Pick whichever calls to you. There's no wrong door.</p>
+    <p style="font-size: 14.5px; color: var(--ink-soft);"><strong style="color: var(--ink);">One thing to keep in mind:</strong> whatever you write becomes part of what's shared back with John and, in aggregate, with the rest of the cohort. A general question works just as well as a deeply personal one — keep specifics to whatever you'd be comfortable having others see.</p>
+    <div class="how-it-works">
+      <span class="step-num">1.</span> Find a topic below that fits something real in your life.<br>
+      <span class="step-num">2.</span> Open the Narrative Prompt Coach and write your first draft — rough is fine.<br>
+      <span class="step-num">3.</span> Revise with Claude's feedback, then generate your response and your prompt-evolution visualization.<br>
+      <span class="step-num">4.</span> Send both to John — they'll become part of our cohort-wide Grand Learning View.
+    </div>
+  </div>
+
+  <!-- CLUSTER: TRAVEL -->
+  <div class="cluster" style="--cluster-color: var(--c-travel); --cluster-soft: var(--c-travel-soft);">
+    <div class="cluster-head">
+      <span class="cluster-label" style="color: var(--c-travel);">Travel, Place &amp; Discovery</span>
+      <span class="cluster-rule"></span>
+    </div>
+    <div class="cluster-for">For the travelers, hikers, kayakers, and docents among us</div>
+    <div class="staircase">
+      <div class="step-card">
+        <div class="step-top"><span class="step-rung">Gentle start</span><span class="mode-tag think">💭 Think With Me</span></div>
+        <div class="step-title">A Place Worth Returning To</div>
+        <div class="step-desc">Describe somewhere you've traveled, hiked, or guided others through — ask Claude to help you write about why it has stayed with you.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-top"><span class="step-rung">Building</span><span class="mode-tag fact">🔎 Fact Finding</span></div>
+        <div class="step-title">Planning the Next Trip</div>
+        <div class="step-desc">Bring a destination you're curious about and have Claude help research and shape a realistic itinerary around it.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-top"><span class="step-rung">Going further</span><span class="mode-tag think">💭 Think With Me</span></div>
+        <div class="step-title">Curating a Tour</div>
+        <div class="step-desc">For the museum docents and tour guides: turn your own research into the bones of a new walking tour or gallery talk.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLUSTER: FAMILY -->
+  <div class="cluster" style="--cluster-color: var(--c-family); --cluster-soft: var(--c-family-soft);">
+    <div class="cluster-head">
+      <span class="cluster-label" style="color: var(--c-family);">Family Stories &amp; Personal History</span>
+      <span class="cluster-rule"></span>
+    </div>
+    <div class="cluster-for">For anyone holding a story, an open question, or a legacy worth shaping</div>
+    <div class="staircase">
+      <div class="step-card">
+        <div class="step-top"><span class="step-rung">Gentle start</span><span class="mode-tag think">💭 Think With Me</span></div>
+        <div class="step-title">A Memory Worth Writing Down</div>
+        <div class="step-desc">Describe a family story or moment you've never quite put into words, and ask Claude to help shape it into something short and lasting.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-top"><span class="step-rung">Building</span><span class="mode-tag fact">🔎 Fact Finding</span></div>
+        <div class="step-title">Tracing a Family Question</div>
+        <div class="step-desc">Bring a question about your family's history that's never been fully answered — a half-remembered story, a hard-to-track relative, a tradition no one explained — and use Claude to help dig into it.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-top"><span class="step-rung">Going further</span><span class="mode-tag both">🔎💭 Both</span></div>
+        <div class="step-title">Honoring Someone's Life</div>
+        <div class="step-desc">Research and structure a tribute to a person, or a group of people, whose story deserves to be told well.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLUSTER: WRITING -->
+  <div class="cluster" style="--cluster-color: var(--c-writing); --cluster-soft: var(--c-writing-soft);">
+    <div class="cluster-head">
+      <span class="cluster-label" style="color: var(--c-writing);">Writing &amp; Storytelling</span>
+      <span class="cluster-rule"></span>
+    </div>
+    <div class="cluster-for">For the poets, novelists, editors, and lifelong readers in the group</div>
+    <div class="staircase">
+      <div class="step-card">
+        <div class="step-top"><span class="step-rung">Gentle start</span><span class="mode-tag think">💭 Think With Me</span></div>
+        <div class="step-title">Unsticking a Sentence</div>
+        <div class="step-desc">Bring a paragraph or a few lines of a poem that aren't working yet, and ask Claude what feels missing.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-top"><span class="step-rung">Building</span><span class="mode-tag think">💭 Think With Me</span></div>
+        <div class="step-title">Deepening a Scene</div>
+        <div class="step-desc">Bring a chapter or story you're revising, and work with Claude on the part that still feels thin.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-top"><span class="step-rung">Going further</span><span class="mode-tag think">💭 Think With Me</span></div>
+        <div class="step-title">Structuring a Bigger Project</div>
+        <div class="step-desc">Shape a syllabus, a course website, or a full manuscript outline out of scattered notes and good intentions.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLUSTER: HEALTH -->
+  <div class="cluster" style="--cluster-color: var(--c-health); --cluster-soft: var(--c-health-soft);">
+    <div class="cluster-head">
+      <span class="cluster-label" style="color: var(--c-health);">Health, Mind &amp; Professional Wisdom</span>
+      <span class="cluster-rule"></span>
+    </div>
+    <div class="cluster-for">For our clinicians, scientists, and the medically curious</div>
+    <div class="staircase">
+      <div class="step-card">
+        <div class="step-top"><span class="step-rung">Gentle start</span><span class="mode-tag fact">🔎 Fact Finding</span></div>
+        <div class="step-title">Decoding a Term</div>
+        <div class="step-desc">Bring a confusing medical, technical, or scientific phrase you've run into — a general term, not a personal test result — and ask for a plain-language explanation.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-top"><span class="step-rung">Building</span><span class="mode-tag fact">🔎 Fact Finding</span></div>
+        <div class="step-title">Staying Sharp</div>
+        <div class="step-desc">Explore current thinking on memory, cognition, or aging well — shaped around your own specific question, not a generic one.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-top"><span class="step-rung">Going further</span><span class="mode-tag think">💭 Think With Me</span></div>
+        <div class="step-title">Bringing a Career Lens to Today</div>
+        <div class="step-desc">Connect decades of clinical, scientific, or professional expertise to a question AI itself raises about health, mind, or society.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLUSTER: CURRENT EVENTS -->
+  <div class="cluster" style="--cluster-color: var(--c-events); --cluster-soft: var(--c-events-soft);">
+    <div class="cluster-head">
+      <span class="cluster-label" style="color: var(--c-events);">Current Events &amp; the Wider World</span>
+      <span class="cluster-rule"></span>
+    </div>
+    <div class="cluster-for">For the political junkies, historians, and news-followers</div>
+    <div class="staircase">
+      <div class="step-card">
+        <div class="step-top"><span class="step-rung">Gentle start</span><span class="mode-tag fact">🔎 Fact Finding</span></div>
+        <div class="step-title">Untangling Today's Headline</div>
+        <div class="step-desc">Pick a news story that's genuinely confused you and have Claude break down what's actually happening.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-top"><span class="step-rung">Building</span><span class="mode-tag fact">🔎 Fact Finding</span></div>
+        <div class="step-title">Then and Now</div>
+        <div class="step-desc">Compare a historical event you know well to something unfolding right now — and see what the comparison reveals.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-top"><span class="step-rung">Going further</span><span class="mode-tag fact">🔎 Fact Finding</span></div>
+        <div class="step-title">Building a Personal Briefing</div>
+        <div class="step-desc">Design a recurring AI-assisted morning roundup of the politics, markets, or sports you track daily.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLUSTER: RESEARCH -->
+  <div class="cluster" style="--cluster-color: var(--c-research); --cluster-soft: var(--c-research-soft);">
+    <div class="cluster-head">
+      <span class="cluster-label" style="color: var(--c-research);">Research, Organizing &amp; Getting Things Done</span>
+      <span class="cluster-rule"></span>
+    </div>
+    <div class="cluster-for">For the engineers, researchers, and project-builders</div>
+    <div class="staircase">
+      <div class="step-card">
+        <div class="step-top"><span class="step-rung">Gentle start</span><span class="mode-tag think">💭 Think With Me</span></div>
+        <div class="step-title">Taming a Backlog</div>
+        <div class="step-desc">Bring a real organizational tangle — files, a schedule, a stalled project — and get unstuck with Claude's help.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-top"><span class="step-rung">Building</span><span class="mode-tag fact">🔎 Fact Finding</span></div>
+        <div class="step-title">Chasing an Old Question</div>
+        <div class="step-desc">Revisit something from your career or studies that never got fully answered, and dig one level deeper.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-top"><span class="step-rung">Going further</span><span class="mode-tag both">🔎💭 Both</span></div>
+        <div class="step-title">Pitching Something New</div>
+        <div class="step-desc">Research and structure a proposal — a new course, a talk, a project — from the ground up.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLUSTER: CURIOSITY -->
+  <div class="cluster" style="--cluster-color: var(--c-curiosity); --cluster-soft: var(--c-curiosity-soft);">
+    <div class="cluster-head">
+      <span class="cluster-label" style="color: var(--c-curiosity);">Open Curiosity</span>
+      <span class="cluster-rule"></span>
+    </div>
+    <div class="cluster-for">For anyone who just wants to follow a question wherever it leads</div>
+    <div class="staircase">
+      <div class="step-card">
+        <div class="step-top"><span class="step-rung">Gentle start</span><span class="mode-tag fact">🔎 Fact Finding</span></div>
+        <div class="step-title">The Question You've Always Wondered About</div>
+        <div class="step-desc">No theme required. Just bring genuine curiosity and see what Claude does with it.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-top"><span class="step-rung">Building</span><span class="mode-tag fact">🔎 Fact Finding</span></div>
+        <div class="step-title">Down the Rabbit Hole</div>
+        <div class="step-desc">Pick a subject — astronomy, history, anything — and let one good question lead naturally to the next.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-top"><span class="step-rung">Going further</span><span class="mode-tag both">🔎💭 Both</span></div>
+        <div class="step-title">Connecting Two Interests</div>
+        <div class="step-desc">Combine two of your passions and ask Claude to find the surprising links between them.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-block">
+    <div class="eyebrow2">What Happens Next</div>
+    <h2>Send it back — it becomes part of something bigger</h2>
+    <p>Every topic above leads to the same place: when you're happy with your narrative, generate Claude's response and your prompt-evolution visualization, then send both files to John.</p>
+    <ul class="footer-checklist">
+      <li>The HTML file showing Claude's response to your finished narrative</li>
+      <li>The HTML file showing how your prompt evolved, version by version</li>
+    </ul>
+    <p style="margin-top:14px;">Together, everyone's submissions become the <strong style="color:#fff;">Grand Learning View</strong> — one cohort-wide picture of just how far AI's reach goes, and how every one of us learned to ask for it better.</p>
+  </div>
+
+  <div class="page-footer-note">AI Literacy SIG &nbsp;·&nbsp; Narrative Prompt Coach &nbsp;·&nbsp; jhnday.github.io</div>
+
+</div>
+
+<script>
+  const cards = document.querySelectorAll('.step-card');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (reduceMotion) {
+    cards.forEach(c => c.classList.add('visible'));
+  } else {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    cards.forEach(c => observer.observe(c));
+  }
+</script>
+</body>
+</html>
