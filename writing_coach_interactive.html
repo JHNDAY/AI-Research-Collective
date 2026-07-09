@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Writing Coach: Interactive Analysis</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --navy: #2c3e50;
+            --gold: #d4af37;
+            --cream: #f9f6f2;
+            --light-navy: #34495e;
+            --sand: #e8dcc8;
+            --text-dark: #2c3e50;
+            --text-light: #5a6c7d;
+            --problem: #e74c3c;
+            --solution: #27ae60;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.7;
+            color: var(--text-dark);
+            background-color: var(--cream);
+        }
+
+        /* Main Navigation Bar */
+        .top-bar {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--light-navy) 100%);
+            color: var(--cream);
+            padding: 0;
+            border-bottom: 4px solid var(--gold);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .top-bar-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 15px 40px;
+            gap: 40px;
+        }
+
+        .title-section h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8em;
+            font-weight: 700;
+            margin-bottom: 3px;
+        }
+
+        .title-section p {
+            font-size: 0.95em;
+            color: var(--navy);
+            font-style: italic;
+            font-weight: 600;
+            background: var(--gold);
+            padding: 6px 12px;
+            border-radius: 4px;
+            display: inline-block;
+            letter-spacing: 0.3px;
+        }
+
+        /* Toggle Control */
+        .view-toggle {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(255,255,255,0.1);
+            padding: 8px 15px;
+            border-radius: 25px;
+            backdrop-filter: blur(10px);
+        }
+
+        .toggle-label {
+            font-size: 0.9em;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--sand);
+        }
+
+        .toggle-switch {
+            display: flex;
+            background: rgba(255,255,255,0.2);
+            border-radius: 20px;
+            padding: 3px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .toggle-switch:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .toggle-option {
+            padding: 6px 12px;
+            border-radius: 18px;
+            font-size: 0.85em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            color: var(--sand);
+        }
+
+        .toggle-option.active {
+            background: var(--gold);
+            color: var(--navy);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+
+        /* Content Wrapper */
+        .content-wrapper {
+            max-width: 1400px;
+            margin: 0 auto;
+            min-height: calc(100vh - 80px);
+            position: relative;
+        }
+
+        /* View Container */
+        .view {
+            opacity: 1;
+            transition: opacity 0.5s ease;
+            visibility: visible;
+        }
+
+        .view.hidden {
+            display: none;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        /* ============ AT A GLANCE VIEW ============ */
+        .at-glance-view {
+            padding: 40px 20px;
+        }
+
+        .page {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .page-header {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--light-navy) 100%);
+            color: var(--cream);
+            padding: 40px 30px;
+            border-bottom: 4px solid var(--gold);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .page-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2em;
+            font-weight: 700;
+        }
+
+        .page-header .tagline {
+            font-size: 0.8em;
+            font-style: italic;
+            color: var(--sand);
+        }
+
+        .page-logo {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: var(--gold);
+            font-family: 'Playfair Display', serif;
+        }
+
+        .page-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: auto 1fr 1fr auto auto auto;
+            padding: 25px;
+            gap: 15px;
+            font-size: 13px;
+        }
+
+        .thesis {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.08), rgba(52, 73, 94, 0.05));
+            border-left: 4px solid var(--gold);
+            padding: 12px 15px;
+            margin-bottom: 5px;
+        }
+
+        .thesis p {
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        .problem-section, .solution-section {
+            padding: 12px;
+            border-radius: 3px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .problem-section {
+            background: #fff8f0;
+            border: 2px solid var(--problem);
+        }
+
+        .problem-section h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1em;
+            color: var(--problem);
+            margin-bottom: 8px;
+            border-bottom: 2px solid var(--problem);
+            padding-bottom: 5px;
+        }
+
+        .solution-section {
+            background: #f0f8f4;
+            border: 2px solid var(--solution);
+        }
+
+        .solution-section h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1em;
+            color: var(--solution);
+            margin-bottom: 8px;
+            border-bottom: 2px solid var(--solution);
+            padding-bottom: 5px;
+        }
+
+        .issue, .mechanism {
+            font-weight: 600;
+            color: var(--navy);
+            font-size: 12px;
+            margin-bottom: 6px;
+        }
+
+        .problem-section ul, .solution-section ul {
+            list-style: none;
+            font-size: 11.5px;
+            line-height: 1.5;
+        }
+
+        .problem-section li, .solution-section li {
+            margin-bottom: 4px;
+            padding-left: 12px;
+            position: relative;
+        }
+
+        .problem-section li::before {
+            content: '✕';
+            position: absolute;
+            left: 0;
+            color: var(--problem);
+            font-weight: bold;
+        }
+
+        .solution-section li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--solution);
+            font-weight: bold;
+        }
+
+        .workflow {
+            grid-column: 1 / -1;
+            background: var(--sand);
+            padding: 12px;
+            border-radius: 3px;
+            border-top: 3px solid var(--gold);
+        }
+
+        .workflow h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1em;
+            color: var(--navy);
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .workflow-steps {
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .workflow-step {
+            flex: 1;
+            background: white;
+            border: 2px solid var(--gold);
+            padding: 8px;
+            text-align: center;
+            border-radius: 3px;
+            font-size: 11px;
+        }
+
+        .workflow-step .number {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3em;
+            color: var(--gold);
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+
+        .workflow-step .label {
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 2px;
+        }
+
+        .workflow-step .desc {
+            font-size: 10px;
+            color: var(--text-light);
+        }
+
+        .arrow {
+            color: var(--gold);
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .gap-section {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 12px;
+            align-items: center;
+            background: white;
+            padding: 12px;
+            border-radius: 3px;
+            border: 1px solid var(--sand);
+        }
+
+        .gap-before, .gap-after {
+            font-size: 11px;
+            line-height: 1.6;
+            padding: 10px;
+            border-radius: 3px;
+        }
+
+        .gap-before {
+            background: #ffe8e8;
+            border-left: 3px solid var(--problem);
+        }
+
+        .gap-before .label {
+            font-weight: 700;
+            color: var(--problem);
+            margin-bottom: 5px;
+            font-size: 12px;
+        }
+
+        .gap-after {
+            background: #e8f8f0;
+            border-left: 3px solid var(--solution);
+        }
+
+        .gap-after .label {
+            font-weight: 700;
+            color: var(--solution);
+            margin-bottom: 5px;
+            font-size: 12px;
+        }
+
+        .gap-transform {
+            text-align: center;
+            font-size: 28px;
+            color: var(--gold);
+            font-weight: bold;
+        }
+
+        .insight {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--light-navy) 100%);
+            color: white;
+            padding: 12px 15px;
+            border-radius: 3px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 12px;
+            line-height: 1.6;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .page-footer {
+            background: var(--navy);
+            color: var(--cream);
+            padding: 12px 25px;
+            text-align: center;
+            border-top: 3px solid var(--gold);
+            font-size: 10px;
+        }
+
+        .page-footer p {
+            margin: 3px 0;
+        }
+
+        .page-footer a {
+            color: var(--gold);
+            text-decoration: none;
+        }
+
+        /* ============ IN-DEPTH VIEW ============ */
+        .in-depth-view {
+            padding: 0;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--light-navy) 100%);
+            color: var(--cream);
+            padding: 80px 40px;
+            text-align: center;
+            border-bottom: 4px solid var(--gold);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, var(--gold) 0%, transparent 70%);
+            opacity: 0.1;
+            border-radius: 50%;
+        }
+
+        .header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8em;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header .subtitle {
+            font-size: 1.2em;
+            color: var(--navy);
+            font-style: italic;
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+            font-weight: 600;
+            background: var(--gold);
+            padding: 12px 20px;
+            border-radius: 4px;
+            display: inline-block;
+            letter-spacing: 0.3px;
+        }
+
+        .depth-thesis {
+            background: white;
+            border-left: 6px solid var(--gold);
+            padding: 40px;
+            margin: 60px auto;
+            max-width: 900px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .depth-thesis h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8em;
+            color: var(--navy);
+            margin-bottom: 15px;
+        }
+
+        .depth-thesis p {
+            font-size: 1.05em;
+            color: var(--text-light);
+            line-height: 1.8;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        section {
+            margin: 80px auto;
+            padding: 60px 40px;
+            background: white;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2em;
+            color: var(--navy);
+            margin-bottom: 30px;
+            border-bottom: 3px solid var(--gold);
+            padding-bottom: 15px;
+        }
+
+        section h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6em;
+            color: var(--light-navy);
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+
+        .problem-box, .solution-box {
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 3px;
+        }
+
+        .problem-box {
+            background: #fff8f0;
+            border-left: 5px solid #e74c3c;
+        }
+
+        .problem-box h4 {
+            color: #c0392b;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+
+        .solution-box {
+            background: #f0f8f4;
+            border-left: 5px solid var(--gold);
+        }
+
+        .solution-box h4 {
+            color: var(--navy);
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+
+        .key-insight {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(52, 73, 94, 0.05));
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+            border-left: 5px solid var(--gold);
+        }
+
+        .key-insight strong {
+            color: var(--navy);
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .quote-block {
+            margin: 40px 0;
+            padding: 25px;
+            background: #f5f5f5;
+            border-left: 4px solid var(--gold);
+            font-style: italic;
+            color: var(--text-light);
+            font-size: 1.05em;
+        }
+
+        .example-box {
+            background: var(--cream);
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 4px;
+            border: 2px dashed var(--gold);
+        }
+
+        .example-box strong {
+            color: var(--navy);
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            background: white;
+        }
+
+        table th {
+            background: var(--navy);
+            color: var(--cream);
+            padding: 15px;
+            text-align: left;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1em;
+        }
+
+        table td {
+            padding: 15px;
+            border-bottom: 1px solid var(--sand);
+        }
+
+        table tr:nth-child(even) {
+            background: var(--cream);
+        }
+
+        table .label {
+            font-weight: 600;
+            color: var(--navy);
+            width: 25%;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 20px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            line-height: 1.8;
+        }
+
+        strong {
+            color: var(--navy);
+            font-weight: 600;
+        }
+
+        em {
+            color: var(--light-navy);
+            font-style: italic;
+        }
+
+        footer {
+            background: var(--navy);
+            color: var(--cream);
+            text-align: center;
+            padding: 40px;
+            margin-top: 80px;
+            border-top: 4px solid var(--gold);
+        }
+
+        footer a {
+            color: var(--gold);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .top-bar-content {
+                flex-direction: column;
+                padding: 15px 20px;
+                gap: 15px;
+            }
+
+            .title-section h1 {
+                font-size: 1.4em;
+            }
+
+            .page-content {
+                grid-template-columns: 1fr;
+            }
+
+            .workflow-steps {
+                flex-direction: column;
+            }
+
+            .gap-section {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                padding: 50px 20px;
+            }
+
+            .header h2 {
+                font-size: 2em;
+            }
+
+            section {
+                padding: 30px 20px;
+            }
+
+            section h2 {
+                font-size: 1.6em;
+            }
+
+            section h3 {
+                font-size: 1.3em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- TOP NAVIGATION BAR -->
+    <div class="top-bar">
+        <div class="top-bar-content">
+            <div class="title-section">
+                <h1>The Writing Coach</h1>
+                <p>Bridging Human Thought & Machine Understanding</p>
+            </div>
+            
+            <div class="view-toggle">
+                <span class="toggle-label">View Mode:</span>
+                <div class="toggle-switch" id="toggleSwitch">
+                    <div class="toggle-option active" data-view="glance">At A Glance</div>
+                    <div class="toggle-option" data-view="depth">In-Depth</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTENT WRAPPER -->
+    <div class="content-wrapper">
+        
+        <!-- ============ AT A GLANCE VIEW ============ -->
+        <div id="glanceView" class="view at-glance-view">
+            <div class="page">
+                <div class="page-header">
+                    <div>
+                        <h2>The Writing Coach</h2>
+                        <p class="tagline">Bridging Human Thought & Machine Understanding</p>
+                    </div>
+                    <div class="page-logo">WC</div>
+                </div>
+
+                <div class="page-content">
+                    <!-- Thesis -->
+                    <div class="thesis">
+                        <p><strong>Core Problem:</strong> Writers assume AI systems understand their implicit knowledge, context, and stakes. This creates incomplete prompts that yield incomplete responses. The Writing Coach solves this through structured dialogue that makes tacit knowledge explicit and discovers new dimensions of thinking.</p>
+                    </div>
+
+                    <!-- Issue 1 -->
+                    <div class="problem-section">
+                        <h3>Issue #1: Incomplete Transcription</h3>
+                        <p class="issue">What the Writer Assumes the Machine Knows</p>
+                        <ul>
+                            <li>Background context invisible in text</li>
+                            <li>Months of thinking → few sentences</li>
+                            <li>Implicit stakes unexpressed</li>
+                            <li>Egocentric bias: "Of course the machine knows this"</li>
+                            <li>Fear of over-explaining the obvious</li>
+                        </ul>
+                    </div>
+
+                    <!-- Solution 1 -->
+                    <div class="solution-section">
+                        <h3>Writing Coach Solution</h3>
+                        <p class="mechanism">Structured Extraction Through Dialogue</p>
+                        <ul>
+                            <li>Collaborative review of initial draft</li>
+                            <li>Targeted coaching feedback on gaps</li>
+                            <li>Questions that surface tacit knowledge</li>
+                            <li>Iterative revision to explicit narrative</li>
+                            <li>Completion of the transcription gap</li>
+                        </ul>
+                    </div>
+
+                    <!-- Issue 2 -->
+                    <div class="problem-section">
+                        <h3>Issue #2: Limited Discovery</h3>
+                        <p class="issue">What the Writer Doesn't Yet Know They're Thinking</p>
+                        <ul>
+                            <li>Generic prompts invite generic answers</li>
+                            <li>Response confirms rather than expands</li>
+                            <li>Vague framing prevents emergence</li>
+                            <li>Hidden assumptions go unexamined</li>
+                            <li>Binary framing blocks new dimensions</li>
+                        </ul>
+                    </div>
+
+                    <!-- Solution 2 -->
+                    <div class="solution-section">
+                        <h3>Writing Coach Solution</h3>
+                        <p class="mechanism">Specificity as Gateway to Emergence</p>
+                        <ul>
+                            <li>Narrative prompts replace abstract questions</li>
+                            <li>Personal context opens new dimensions</li>
+                            <li>Specific identity enables perspective shifts</li>
+                            <li>AI responds to actual thinking, not flat version</li>
+                            <li>Discovery happens in the revision itself</li>
+                        </ul>
+                    </div>
+
+                    <!-- Workflow -->
+                    <div class="workflow">
+                        <h3>Three-Step Process</h3>
+                        <div class="workflow-steps">
+                            <div class="workflow-step">
+                                <div class="number">1</div>
+                                <div class="label">Draft & Coach</div>
+                                <div class="desc">Write narrative prompt, receive specific feedback, revise iteratively</div>
+                            </div>
+                            <div class="arrow">→</div>
+                            <div class="workflow-step">
+                                <div class="number">2</div>
+                                <div class="label">Refine Narrative</div>
+                                <div class="desc">Make implicit knowledge explicit, clarify stakes and context</div>
+                            </div>
+                            <div class="arrow">→</div>
+                            <div class="workflow-step">
+                                <div class="number">3</div>
+                                <div class="label">Visualize Response</div>
+                                <div class="desc">Convert AI response into HTML artifact—concretize and share thinking</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Gap Section -->
+                    <div class="gap-section">
+                        <div class="gap-before">
+                            <div class="label">WITHOUT Coach</div>
+                            <div>Generic question → Safe answer → Confirms assumptions</div>
+                        </div>
+                        <div class="gap-transform">✦</div>
+                        <div class="gap-after">
+                            <div class="label">WITH Coach</div>
+                            <div>Specific narrative → Emergent response → Discovery occurs</div>
+                        </div>
+                    </div>
+
+                    <!-- Insight -->
+                    <div class="insight">
+                        Specificity doesn't constrain AI—it catalyzes emergence. When the machine knows who is asking and why, it can identify hidden assumptions and offer perspective shifts, not just answers.
+                    </div>
+                </div>
+
+                <div class="page-footer">
+                    <p><strong>The Writing Coach</strong> | BOLLI AI Literacy Special Interest Group</p>
+                    <p>Making the implicit explicit. Turning incomplete thoughts into embodied narratives. Enabling discovery through dialogue.</p>
+                    <p style="margin-top: 5px; font-size: 9px;">Designed for retired adult learners exploring AI literacy | <a href="https://jhnday.github.io/AI-Research-Collective/writing_coach" target="_blank">jhnday.github.io</a></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============ IN-DEPTH VIEW ============ -->
+        <div id="depthView" class="view hidden in-depth-view">
+            <div class="header">
+                <h2>The Writing Coach</h2>
+                <p class="subtitle">Bridging the Gap Between Human Thought and Machine Understanding</p>
+            </div>
+
+            <div class="depth-thesis">
+                <h3>The Core Problem</h3>
+                <p>
+                    When writers engage with AI systems, they face a fundamental paradox: the machine can only respond to what is explicitly written, yet writers often assume the machine somehow understands the broader context of their thinking—the background knowledge they possess, the nuances they've considered, the boundaries they assume are obvious. This gap between what is <em>said</em> and what is <em>known</em> creates incomplete prompts that yield incomplete responses. The Writing Coach solves this through structured iteration and dialogue, making implicit knowledge explicit and transforming solitary writing into collaborative discovery.
+                </p>
+            </div>
+
+            <div class="container">
+                <!-- ISSUE 1 -->
+                <section>
+                    <h2>Issue #1: The Incompleteness Gap</h2>
+                    
+                    <h3>The Problem: What the Writer Assumes the Machine Knows</h3>
+                    
+                    <p>
+                        The fundamental challenge in human-to-machine communication is what we might call <strong>assumption collapse</strong>. A writer thinks about their topic continuously—in the shower, during morning coffee, while running. They've accumulated layers of context, half-formed connections, previous conversations, and implicit constraints. When they finally sit down to write a prompt, they've compressed months of thinking into a few sentences. The writer assumes the AI system has access to this background, but it doesn't.
+                    </p>
+
+                    <div class="problem-box">
+                        <h4>⚠ The Transcription Problem</h4>
+                        <p>
+                            <strong>Typical scenario:</strong> A retired engineer writes: "I want to explore AI and creativity." This seems clear to them because they've been thinking about whether machine-generated art constitutes real creativity, whether they value it differently from human-made work, and how this relates to their own sense of creative identity in retirement.
+                        </p>
+                        <p style="margin-top: 15px;">
+                            <strong>What the AI receives:</strong> Seven words with no emotional stakes, no personal context, no boundary markers, no indication of what "explore" means (brainstorm? debate? analyze philosophically?).
+                        </p>
+                        <p style="margin-top: 15px;">
+                            <strong>Result:</strong> Generic response that misses the person entirely.
+                        </p>
+                    </div>
+
+                    <h3>Why This Happens</h3>
+                    
+                    <ul>
+                        <li><strong>Egocentric bias:</strong> The writer knows their own thinking so intimately that they forget it's not publicly visible in their written words.</li>
+                        <li><strong>Context compression:</strong> Months of thought become sentences. The richness gets lost in translation.</li>
+                        <li><strong>Uncertainty about what matters:</strong> Writers often don't know which details are essential and which are noise, so they omit specifics that turn out to be crucial.</li>
+                        <li><strong>Fear of over-explanation:</strong> Especially true for educated adults; there's a hesitation to state the obvious, which isn't obvious at all to the machine.</li>
+                        <li><strong>Invisible scaffolding:</strong> The writer's prior conversations, readings, and arguments exist in their memory but nowhere in the prompt itself.</li>
+                    </ul>
+
+                    <h3>The Writing Coach's Solution: Structured Extraction Through Dialogue</h3>
+                    
+                    <p>
+                        The Writing Coach doesn't solve this by asking the writer to produce a perfect prompt on the first try. Instead, it makes <em>incompleteness visible</em> and converts it into a resource for improvement.
+                    </p>
+
+                    <div class="solution-box">
+                        <h4>✓ How the Writing Coach Addresses Incomplete Transcription</h4>
+                        <p>
+                            <strong>Step 1 — Collaborative Review:</strong> The writer drafts a narrative prompt in the Writing Coach interface. This becomes their first articulation of the topic.
+                        </p>
+                        <p style="margin-top: 15px;">
+                            <strong>Step 2 — Targeted Feedback:</strong> Claude (in the role of BOLLI Writing Coach) provides feedback in three concrete parts:
+                        </p>
+                        <ul style="margin-top: 10px;">
+                            <li><em>Two specific things working well</em> (showing what got through clearly)</li>
+                            <li><em>One concrete suggestion</em> (usually: "Add more personal context," "Be clearer about what you want to learn," or "Reveal more about your relationship to this topic")</li>
+                            <li><em>A note on visualization</em> (what themes would emerge if this were visualized)</li>
+                        </ul>
+                        <p style="margin-top: 15px;">
+                            <strong>Step 3 — Iterative Completion:</strong> The writer revises based on this feedback, making their implicit knowledge explicit. Each iteration fills in more of the gap.
+                        </p>
+                    </div>
+
+                    <div class="key-insight">
+                        <strong>Key Insight:</strong> The Writing Coach doesn't assume the first draft is wrong—it assumes the first draft is <em>incomplete by design</em>. The feedback process is a structured way to make the invisible scaffolding visible. By asking "what do you actually want to learn?" or "what's your stake in this?", the coach forces the writer to transcribe the thinking they didn't know they had to transcribe.
+                    </div>
+
+                    <h3>Concrete Example of Transcription Improvement</h3>
+                    
+                    <div class="example-box">
+                        <strong>Draft 1 (Incomplete):</strong>
+                        <p>"I want to learn about AI and misinformation. How can I think more clearly about which sources to trust?"</p>
+                        
+                        <strong style="margin-top: 20px;">Coaching Feedback:</strong>
+                        <p>This is clear in intention, but the coach asks: <em>"You mention thinking more clearly—what prompted this question? Have you encountered misinformation personally? What would change if you had a better framework?"</em></p>
+                        
+                        <strong style="margin-top: 20px;">Draft 2 (More Complete):</strong>
+                        <p>"I'm a retired librarian, and I'm disturbed by how easily I'm fooled by AI-generated content that looks authentic. I want to develop a personal framework for source evaluation in an era where I can't trust visual or textual 'authenticity' anymore. My stake: I care about passing reliable epistemic habits to my grandchildren."</p>
+                        
+                        <p style="margin-top: 15px;"><em>Notice how Draft 2 contains: professional identity, emotional trigger, specific goal, personal stakes, intergenerational dimension. The machine now has material to work with.</em></p>
+                    </div>
+                </section>
+
+                <!-- ISSUE 2 -->
+                <section>
+                    <h2>Issue #2: The Discovery Dimension</h2>
+                    
+                    <h3>The Problem: What the Writer Doesn't Yet Know They're Thinking</h3>
+                    
+                    <p>
+                        Writers come to AI systems with what they think they want to explore. But the act of writing and revision often reveals new questions, dimensions, and implications that weren't in the initial framing. The danger is that a clumsy first prompt can lead to answers that don't open up these new territories—they merely reinforce what the writer already expected to think.
+                    </p>
+
+                    <div class="problem-box">
+                        <h4>⚠ The Discovery Problem</h4>
+                        <p>
+                            <strong>Typical scenario:</strong> A retired mathematician writes: "I want to understand whether AI can truly reason, or if it's just pattern matching."
+                        </p>
+                        <p style="margin-top: 15px;">
+                            <strong>The initial answer:</strong> Probably a well-articulated response to the binary question posed—and the writer nods along, satisfied. Discussion ends.
+                        </p>
+                        <p style="margin-top: 15px;">
+                            <strong>What got lost:</strong> The opportunity to discover that the very distinction between "true reasoning" and "pattern matching" might be a false dichotomy. That human reasoning <em>is</em> sophisticated pattern matching. That the interesting question might actually be about <em>kinds</em> of reasoning, not existence vs. illusion.
+                        </p>
+                    </div>
+
+                    <h3>Why Vague Prompts Prevent Discovery</h3>
+                    
+                    <ul>
+                        <li><strong>Narrow framing:</strong> Generic prompts invite generic responses that fit neatly into existing categories.</li>
+                        <li><strong>Assumption confirmation:</strong> When a prompt is vague, the AI often produces something the writer already suspected, reinforcing rather than expanding their thinking.</li>
+                        <li><strong>Missing context clues:</strong> Without knowing who is asking and why, the AI can't identify the hidden assumptions embedded in the question itself.</li>
+                        <li><strong>Lost personalization:</strong> Discovery is personal. A generic response about "reasoning" won't spark anything for a mathematician; a response that connects to how <em>they</em> think might crack open new territory.</li>
+                    </ul>
+
+                    <h3>The Writing Coach's Solution: Specificity as a Gateway to Emergence</h3>
+                    
+                    <p>
+                        The Writing Coach creates conditions for discovery by moving from <strong>generic questions</strong> to <strong>specific narratives</strong>. This specificity doesn't constrain the AI's response—it expands it by giving the AI something real to work with.
+                    </p>
+
+                    <div class="solution-box">
+                        <h4>✓ How the Writing Coach Enables Discovery</h4>
+                        <p>
+                            <strong>The mechanism:</strong> When a writer includes personal stakes, professional background, and specific examples in their narrative prompt, the AI's response becomes contextual. Instead of answering an abstract question, it's engaging with a particular human's particular thinking. This opens new dimensions.
+                        </p>
+                        <p style="margin-top: 15px;">
+                            <strong>The iteration effect:</strong> As the writer refines their narrative through coaching feedback, they often discover <em>while writing</em> that they care about something different than they initially thought. The revision process itself is discovery. The coach's questions ("What's your stake in this?" "What would change?") are invitations to surprise yourself.
+                        </p>
+                    </div>
+
+                    <div class="key-insight">
+                        <strong>Key Insight:</strong> Specificity is not a constraint on AI—it's a catalyst for emergence. When the AI knows who is asking and why, it can identify the <em>actual</em> question beneath the surface question. It can spot the hidden assumptions and gently disturb them. It can offer not just answers but perspective shifts.
+                    </div>
+
+                    <h3>Comparison: Generic vs. Specific Prompts</h3>
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Dimension</th>
+                                <th>Generic Prompt</th>
+                                <th>Specific Narrative (via Writing Coach)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="label">Question</td>
+                                <td>"What is consciousness?"</td>
+                                <td>"I'm a retired neuroscientist who spent 40 years studying brain imaging. I see the limits of reductionist approaches. What might consciousness be if I let go of the requirement that it must be measurable?"</td>
+                            </tr>
+                            <tr>
+                                <td class="label">AI Response Type</td>
+                                <td>Philosophical overview, multiple theories, safe middle ground</td>
+                                <td>Engages with neuroscientific expertise, explores post-materialist frameworks, identifies hidden assumptions in the person's professional training</td>
+                            </tr>
+                            <tr>
+                                <td class="label">Discovery Potential</td>
+                                <td>Low—confirms what writer probably already knew</td>
+                                <td>High—response speaks to the person's actual thinking, can identify blind spots</td>
+                            </tr>
+                            <tr>
+                                <td class="label">Texture</td>
+                                <td>Smooth, expected, forgettable</td>
+                                <td>Rough, unexpected, memorable—contains genuine dialogue</td>
+                            </tr>
+                            <tr>
+                                <td class="label">Follow-up Thinking</td>
+                                <td>"That was interesting..." [conversation ends]</td>
+                                <td>"I didn't expect that... now I'm wondering..." [deeper exploration begins]</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- INTEGRATION -->
+                <section>
+                    <h2>How These Issues Interweave</h2>
+                    
+                    <p>
+                        Incompleteness and discovery are not separate problems—they're two faces of the same phenomenon: <strong>the translation problem between human tacit knowledge and machine-interpretable text.</strong>
+                    </p>
+
+                    <div class="key-insight">
+                        <strong>Gap 1 — The Transcription Gap:</strong> What humans think is not automatically what they write. Writing reveals incompleteness. The Writing Coach makes this incompleteness productive by asking: "What are you assuming I know? What's your stake in this question? What would change if you succeeded?"
+                    </div>
+
+                    <div class="key-insight">
+                        <strong>Gap 2 — The Discovery Gap:</strong> Generic questions invite generic answers. Specific, embodied narratives invite perspective shifts and emergent thinking. The Writing Coach creates conditions for the writer to surprise themselves and for the AI to offer genuine insight rather than safe generalization.
+                    </div>
+
+                    <div class="key-insight">
+                        <strong>Gap 3 — The Artifact Gap:</strong> Thinking that exists only in text feels ephemeral. Visualizing the response in HTML makes the dialogue concrete, shareable, and memorable. It transforms a conversation into a creation.
+                    </div>
+
+                    <h3>The Three-Step Value Chain</h3>
+                    
+                    <div class="solution-box">
+                        <h4>1. Making Implicit Knowledge Explicit</h4>
+                        <p>The coaching feedback forces writers to articulate what they've been assuming without knowing they were assuming it. "What's your stake in this?" surfaces the emotional and intellectual weight of the question.</p>
+                    </div>
+
+                    <div class="solution-box">
+                        <h4>2. Creating Specific Narratives</h4>
+                        <p>Specificity is not about limiting the AI's response—it's about giving it real ground to stand on. A narrative that includes identity, stakes, and embodied knowledge invites the AI to engage with a particular human rather than an abstract question.</p>
+                    </div>
+
+                    <div class="solution-box">
+                        <h4>3. Enabling Emergence Through Response Visualization</h4>
+                        <p>Converting the refined prompt + AI response into a polished HTML artifact concretizes the thinking and makes patterns visible that were implicit in the text.</p>
+                    </div>
+
+                    <h3>Why This Matters for Retired Adult Learners</h3>
+                    
+                    <p>
+                        The Writing Coach emerges from BOLLI's mission to serve <strong>retired adult learners aged 60–85</strong>. This population brings unique assets and challenges to AI literacy:
+                    </p>
+
+                    <h3>Assets</h3>
+                    <ul>
+                        <li><strong>Embodied expertise:</strong> Decades of professional experience and deep knowledge in specific domains.</li>
+                        <li><strong>Reflective capacity:</strong> Time and disposition for thoughtful engagement with ideas.</li>
+                        <li><strong>Clear stakes:</strong> Questions often emerge from genuine life challenges and intellectual curiosities.</li>
+                        <li><strong>Narrative sophistication:</strong> Ability to craft nuanced stories and articulate complex ideas.</li>
+                    </ul>
+
+                    <h3>Challenges</h3>
+                    <ul>
+                        <li><strong>Technical friction:</strong> The interface and process of "prompting" can feel alien and unintuitive.</li>
+                        <li><strong>Assumption about "knowing it all":</strong> A lifetime of expertise can make it harder to articulate fundamentals to a machine.</li>
+                        <li><strong>First-draft assumptions:</strong> The tendency to assume a prompt is good enough because the writer understands it perfectly.</li>
+                    </ul>
+
+                    <p style="margin-top: 30px;">
+                        The Writing Coach solves these by:
+                    </p>
+
+                    <div class="key-insight">
+                        <strong>Translating embodied expertise into machine-interpretable narratives</strong> through a warm, feedback-based process that treats incomplete first drafts as a feature, not a bug. It says: "Your thinking is sophisticated—now let's make it explicit so the machine can engage with your actual questions, not a flat version of them."
+                    </div>
+                </section>
+
+                <!-- SYNTHESIS -->
+                <section>
+                    <h2>Core Insights: Making the Invisible Visible</h2>
+                    
+                    <p>
+                        The Writing Coach succeeds because it recognizes and addresses a fundamental gap in how humans and machines communicate:
+                    </p>
+
+                    <div class="key-insight">
+                        <strong>Gap 1 — The Transcription Gap:</strong> What humans think is not automatically what they write. Writing reveals incompleteness. The Writing Coach makes this incompleteness productive by asking: "What are you assuming I know? What's your stake in this question? What would change if you succeeded?"
+                    </div>
+
+                    <div class="key-insight">
+                        <strong>Gap 2 — The Discovery Gap:</strong> Generic questions invite generic answers. Specific, embodied narratives invite perspective shifts and emergent thinking. The Writing Coach creates conditions for the writer to surprise themselves and for the AI to offer genuine insight rather than safe generalization.
+                    </div>
+
+                    <div class="key-insight">
+                        <strong>Gap 3 — The Artifact Gap:</strong> Thinking that exists only in text feels ephemeral. Visualizing the response in HTML makes the dialogue concrete, shareable, and memorable. It transforms a conversation into a creation.
+                    </div>
+
+                    <h3>The Writing Coach's Real Innovation</h3>
+                    
+                    <p>
+                        The Writing Coach doesn't improve prompting by teaching people to write better prompts. It improves prompting by <strong>recognizing that human thinking is tacit, embodied, and emergent</strong>—and creating a structured process to make it explicit, specific, and discoverable. It treats the gap between human knowledge and machine interpretation not as an engineering problem but as a creative opportunity.
+                    </p>
+
+                    <div class="quote-block">
+                        "The goal is not to engineer the perfect prompt from the start. The goal is to use dialogue—with a coach and with an AI—to discover what you actually want to know."
+                    </div>
+                </section>
+            </div>
+
+            <footer>
+                <p><strong>The Writing Coach</strong> | BOLLI AI Literacy Special Interest Group</p>
+                <p style="margin-top: 15px; font-size: 0.9em;">
+                    Explore the tool at <a href="https://jhnday.github.io/AI-Research-Collective/writing_coach" target="_blank">jhnday.github.io/AI-Research-Collective/writing_coach</a>
+                </p>
+                <p style="margin-top: 15px; font-size: 0.85em; color: #d4af37;">
+                    ✦ Designed for retired adult learners exploring AI literacy through narrative and dialogue
+                </p>
+            </footer>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT FOR TOGGLE -->
+    <script>
+        const toggleSwitch = document.getElementById('toggleSwitch');
+        const glanceView = document.getElementById('glanceView');
+        const depthView = document.getElementById('depthView');
+        const toggleOptions = document.querySelectorAll('.toggle-option');
+
+        // Initialize from localStorage if available
+        const savedView = localStorage.getItem('writingCoachView') || 'glance';
+        showView(savedView);
+
+        // Toggle switch event listeners
+        toggleOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                const view = this.getAttribute('data-view');
+                showView(view);
+            });
+        });
+
+        function showView(view) {
+            // Update toggle button state
+            toggleOptions.forEach(opt => opt.classList.remove('active'));
+            document.querySelector(`[data-view="${view}"]`).classList.add('active');
+
+            // Toggle view visibility
+            if (view === 'glance') {
+                glanceView.classList.remove('hidden');
+                depthView.classList.add('hidden');
+            } else {
+                glanceView.classList.add('hidden');
+                depthView.classList.remove('hidden');
+            }
+
+            // Save preference
+            localStorage.setItem('writingCoachView', view);
+
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        // Keyboard shortcut: Press 'T' to toggle
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 't' || e.key === 'T') {
+                const currentView = localStorage.getItem('writingCoachView') || 'glance';
+                const newView = currentView === 'glance' ? 'depth' : 'glance';
+                showView(newView);
+            }
+        });
+    </script>
+</body>
+</html>
