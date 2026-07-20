@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How to Explore a Topic with Claude</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      color: #2c2c2a;
+      background: #f1efe8;
+      line-height: 1.6;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: #1a1a18;
+        color: #e0e0db;
+      }
+    }
+
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem;
+    }
+
+    h1 {
+      font-size: 32px;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+      color: #2c2c2a;
+      text-align: center;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      h1 {
+        color: #e0e0db;
+      }
+    }
+
+    .subtitle {
+      font-size: 18px;
+      color: #5f5e5a;
+      margin-bottom: 2.5rem;
+      line-height: 1.7;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .subtitle {
+        color: #b4b2a9;
+      }
+    }
+
+    h2 {
+      font-size: 24px;
+      font-weight: 400;
+      color: #5f5e5a;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      h2 {
+        color: #b4b2a9;
+      }
+    }
+
+    .intro {
+      background: #e6f1fb;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 2.5rem;
+      border: 0.5px solid #85b7eb;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .intro {
+        background: #0c447c;
+        border-color: #378add;
+      }
+    }
+
+    .intro p {
+      color: #185fa5;
+      font-size: 16px;
+      line-height: 1.7;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .intro p {
+        color: #b5d4f4;
+      }
+    }
+
+    .step {
+      margin-bottom: 2.5rem;
+    }
+
+    .step-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .step-number {
+      background: #378add;
+      color: #ffffff;
+      font-size: 18px;
+      font-weight: 500;
+      width: 44px;
+      height: 44px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .step-number {
+        background: #185fa5;
+      }
+    }
+
+    .step-title {
+      font-size: 20px;
+      font-weight: 500;
+      color: #2c2c2a;
+      padding-top: 0.5rem;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .step-title {
+        color: #e0e0db;
+      }
+    }
+
+    .step-content {
+      margin-left: 60px;
+    }
+
+    .step-description {
+      color: #5f5e5a;
+      font-size: 16px;
+      line-height: 1.7;
+      margin-bottom: 1rem;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .step-description {
+        color: #b4b2a9;
+      }
+    }
+
+    .step-description strong {
+      color: #2c2c2a;
+      font-weight: 500;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .step-description strong {
+        color: #e0e0db;
+      }
+    }
+
+    .step-description ul {
+      margin-left: 1.5rem;
+      margin-top: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .step-description li {
+      margin-bottom: 0.5rem;
+    }
+
+    .code-block {
+      background: #d3d1c7;
+      border: 0.5px solid #888780;
+      border-radius: 8px;
+      padding: 1rem;
+      font-family: 'Monaco', 'Courier New', monospace;
+      font-size: 14px;
+      color: #2c2c2a;
+      overflow-x: auto;
+      margin: 1rem 0;
+      line-height: 1.5;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .code-block {
+        background: #444441;
+        border-color: #5f5e5a;
+        color: #e0e0db;
+      }
+    }
+
+    a {
+      color: #185fa5;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      a {
+        color: #85b7eb;
+      }
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .result-box {
+      background: #eaf3de;
+      border-left: 4px solid #639922;
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .result-box {
+        background: #27500a;
+        border-color: #97c459;
+      }
+    }
+
+    .result-box p {
+      color: #3b6d11;
+      font-size: 16px;
+      line-height: 1.7;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .result-box p {
+        color: #97c459;
+      }
+    }
+
+    .divider {
+      height: 1px;
+      background: #b4b2a9;
+      margin: 3rem 0;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .divider {
+        background: #5f5e5a;
+      }
+    }
+
+    .final-note {
+      background: #d3d1c7;
+      border-radius: 12px;
+      padding: 1.5rem;
+      border: 0.5px solid #888780;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .final-note {
+        background: #444441;
+        border-color: #5f5e5a;
+      }
+    }
+
+    .final-note h3 {
+      font-size: 18px;
+      font-weight: 500;
+      margin-bottom: 1rem;
+      color: #2c2c2a;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .final-note h3 {
+        color: #e0e0db;
+      }
+    }
+
+    .final-note p {
+      color: #5f5e5a;
+      font-size: 16px;
+      line-height: 1.7;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .final-note p {
+        color: #b4b2a9;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>How to Explore a Topic with Claude</h1>
+    <h2 style="font-size: 24px; font-weight: 400; color: #5f5e5a; margin-bottom: 1.5rem;">The Guide to Narrating a Prompt</h2>
+    <p class="subtitle">A complete guide for creating, visualizing, and organizing your ideas</p>
+
+    <div class="intro">
+      <p>Transform your thoughts into structured explorations. This tutorial walks you through writing an open-ended prompt, getting Claude's perspective, and creating a beautiful visualization of your findings—all in one seamless workflow.</p>
+    </div>
+
+    <div class="step">
+      <div class="step-header">
+        <div class="step-number">1</div>
+        <div class="step-title">Write a prompt</div>
+      </div>
+      <div class="step-content">
+        <p class="step-description">Start by writing a free-flowing narrative in your preferred writing tool. This isn't a formal prompt—let your thoughts flow naturally.</p>
+        <p class="step-description"><strong>Be sure to include:</strong></p>
+        <ul class="step-description">
+          <li>What's currently on your mind about the topic</li>
+          <li>Questions you want to explore</li>
+          <li>Context or background that matters</li>
+          <li>Any specific angles you're curious about</li>
+        </ul>
+        <p class="step-description"><strong>Need inspiration?</strong> Check out <a href="https://docs.google.com/document/d/1lOSykEjVuPqbkn79eh-sqCN3HH84xW7lJ-kqNlPL6HQ/edit?tab=t.kx9sdbwizo3z" target="_blank">these example prompts</a> to see how others approach open-ended exploration.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-header">
+        <div class="step-number">2</div>
+        <div class="step-title">Paste the prompt into Claude</div>
+      </div>
+      <div class="step-content">
+        <p class="step-description">Copy your written prompt and paste it into a <a href="https://claude.ai/new" target="_blank">new Claude conversation</a>. Send it as-is—the freeform nature of your writing helps Claude understand your genuine curiosity.</p>
+        <p class="step-description"><strong>Tip:</strong> Don't overthink the phrasing. Claude responds well to authentic, conversational prompts.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-header">
+        <div class="step-number">3</div>
+        <div class="step-title">Review the response</div>
+      </div>
+      <div class="step-content">
+        <p class="step-description">Read through Claude's response carefully. This is your raw material for the next step. Take note of insights, connections, or surprising angles that stand out to you.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-header">
+        <div class="step-number">4</div>
+        <div class="step-title">Visualize the results</div>
+      </div>
+      <div class="step-content">
+        <p class="step-description">Now ask Claude to create an HTML artifact by typing this prompt into the Claude prompt window:</p>
+        <div style="margin: 1rem 0;">
+          <img src="https://jhnday.github.io/AI-Research-Collective/CreateArtifact.jpg" alt="Create an HTML artifact prompt" style="max-width: 100%; height: auto; border-radius: 8px;">
+        </div>
+        <button id="copyBtn1" onclick="copyPrompt1()" style="background: #378add; color: white; border: none; padding: 0.5rem 1rem; border-radius: 20px; font-size: 14px; cursor: pointer; font-weight: 500; margin-bottom: 1rem;">Copy Create Artifact Prompt</button>
+        <p class="step-description">Claude will generate an interactive visualization that transforms the text response into an organized, easy-to-read format. Review how the information is presented and see if any insights jump out at you.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-header">
+        <div class="step-number">5</div>
+        <div class="step-title">Add your prompt to the visualization</div>
+      </div>
+      <div class="step-content">
+        <p class="step-description">To create a complete record, ask Claude to enhance the visualization with a dropdown showing your original prompt. Use this prompt:</p>
+        <div style="margin: 1rem 0;">
+          <img src="https://jhnday.github.io/AI-Research-Collective/LabelPrompt.jpg" alt="Insert prompt into HTML artifact" style="max-width: 100%; height: auto; border-radius: 8px;">
+        </div>
+        <button id="copyBtn2" onclick="copyPrompt2()" style="background: #378add; color: white; border: none; padding: 0.5rem 1rem; border-radius: 20px; font-size: 14px; cursor: pointer; font-weight: 500; margin-bottom: 1rem;">Copy Insert Prompt</button>
+        <p class="step-description">This step creates a self-contained document that shows both your question and Claude's response, making it easy to revisit your thinking later.</p>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="result-box">
+      <p><strong>You now have a complete record</strong> of your prompt and Claude's response in an easy-to-read HTML format. Save this file, share it with collaborators, or use it as a reference for future thinking on this topic.</p>
+    </div>
+
+    <div class="final-note">
+      <h3>Quick recap</h3>
+      <p>Write naturally → Share with Claude → Read the response → Visualize it → Add your prompt → Save the result. This workflow transforms loose thinking into organized, shareable insights.</p>
+    </div>
+  </div>
+
+  <script>
+    function copyPrompt1() {
+      const text = "Create an HTML artifact and not an in-line widget that visualizes and organizes the last response in this conversation.";
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.getElementById('copyBtn1');
+        const originalText = btn.textContent;
+        const originalBg = btn.style.background;
+        btn.textContent = 'Copied!';
+        btn.style.background = '#639922';
+        setTimeout(() => {
+          btn.textContent = originalText;
+          btn.style.background = originalBg;
+        }, 2000);
+      });
+    }
+
+    function copyPrompt2() {
+      const text = "Insert the text of the prompt into the HTML artifact as a dropdown labeled \"Prompt\". Place it under the title.";
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.getElementById('copyBtn2');
+        const originalText = btn.textContent;
+        const originalBg = btn.style.background;
+        btn.textContent = 'Copied!';
+        btn.style.background = '#639922';
+        setTimeout(() => {
+          btn.textContent = originalText;
+          btn.style.background = originalBg;
+        }, 2000);
+      });
+    }
+  </script>
+</body>
+</html>
