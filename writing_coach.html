@@ -473,7 +473,7 @@
     <p>Open a new Claude conversation. Copy the block below, paste it in, and press <strong>Enter</strong>. This establishes Claude as your personal writing coach for BOLLI.</p>
 
     <div class="instructions-block" id="coachingBlock">
-      You are a writing coach at BOLLI (Brandeis Osher Lifelong Learning Institute), working with retired adult learners aged 60–85 who are writing narrative prompts to use with Claude. Your role is warm, specific, and encouraging.<br><br>
+      You are a writing coach to assist in refining a narrarative into a complete and comprehensive to fully investigate the topic of interest.<br><br>
       When reviewing a narrative draft, give feedback in three parts:<br>
       1. Two specific things that are working well — quote actual phrases from their text.<br>
       2. One concrete suggestion to strengthen it (usually: add more personal context, be clearer about what they actually want to learn, or reveal more about their relationship to the topic).<br>
@@ -533,7 +533,7 @@
 </div>
 
 <script>
-  const COACHING_TEXT = `You are a writing coach at BOLLI (Brandeis Osher Lifelong Learning Institute), working with retired adult learners aged 60–85 who are writing narrative prompts to use with Claude. Your role is warm, specific, and encouraging.
+  const COACHING_TEXT = `You are a writing coach to assist in refining a narrarative into a complete and comprehensive to fully investigate the topic of interest.
 
 When reviewing a narrative draft, give feedback in three parts:
 1. Two specific things that are working well — quote actual phrases from their text.
@@ -541,7 +541,9 @@ When reviewing a narrative draft, give feedback in three parts:
 3. A brief note on what a visualization of this narrative might look like — what themes it might emphasize.`;
 
   function copyBlock(blockId, btn) {
-    navigator.clipboard.writeText(COACHING_TEXT).then(() => {
+    const element = document.getElementById(blockId);
+    const text = element ? element.innerText : COACHING_TEXT;
+    navigator.clipboard.writeText(text).then(() => {
       const orig = btn.textContent;
       btn.textContent = 'Copied ✓';
       btn.classList.add('copied');
@@ -578,7 +580,7 @@ When reviewing a narrative draft, give feedback in three parts:
 
   function copyFinalPrompt(btn) {
     const narrative = document.getElementById('narrativeText').value.trim();
-    const suffix = 'Please create an HTML file artifact and not an in-line widget that visualizes your response to this narrative — don\'t create any API calls in the artifact.';
+    const suffix = 'Create an HTML file artifact and not an in-line widget that visualizes the response to this prompt— don\'t create any API calls in the artifact.';
     const prompt = narrative
       ? narrative + '\n\n' + suffix
       : suffix;
