@@ -1,0 +1,1397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompt Evolution: From Questions to Investigation</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Lora:wght@400;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Lora', serif;
+            background-color: #f4f1eb;
+            color: #2c2c2c;
+            line-height: 1.4;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 60px 40px;
+        }
+
+        /* HEADER */
+        .header {
+            margin-bottom: 40px;
+            border-bottom: 2px solid #8a6a10;
+            padding-bottom: 30px;
+        }
+
+        .eyebrow {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.8rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: #8a6a10;
+            margin-bottom: 12px;
+        }
+
+        h1 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 8px;
+            color: #1a1a1a;
+            font-weight: 400;
+        }
+
+        .subtitle {
+            font-family: 'Lora', serif;
+            font-style: italic;
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 12px;
+        }
+
+        .premise {
+            font-size: 0.95rem;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        /* NAV */
+        .nav {
+            margin: 30px 0;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .nav a {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.75rem;
+            text-decoration: none;
+            color: #1a1a1a;
+            padding: 6px 12px;
+            border: 1px solid #d4d0c8;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .nav a:hover {
+            background: #1a1a1a;
+            color: #f4f1eb;
+        }
+
+        /* VERSION SECTIONS */
+        .version {
+            margin-bottom: 60px;
+        }
+
+        .version-number {
+            font-family: 'DM Serif Display', serif;
+            font-size: 3rem;
+            color: #8a6a10;
+            margin-bottom: -10px;
+        }
+
+        .version h2 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+            color: #1a1a1a;
+        }
+
+        .dimensions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .dimension {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: 4px 8px;
+            border: 1px solid #ccc;
+            border-radius: 2px;
+            color: #666;
+        }
+
+        .dimension.checked {
+            background: #e8f5e9;
+            border-color: #4caf50;
+            color: #2e7d32;
+        }
+
+        .dimension.missing {
+            text-decoration: line-through;
+            color: #999;
+        }
+
+        .prompt-text {
+            background: white;
+            border: 2px solid #d4d0c8;
+            padding: 16px;
+            margin: 12px 0;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.85rem;
+            line-height: 1.4;
+            color: #333;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            border-radius: 2px;
+        }
+
+        .new-text {
+            background-color: #8a6a10;
+            color: white;
+            padding: 2px 4px;
+        }
+
+        .feedback {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 16px 0 20px 0;
+        }
+
+        @media (max-width: 768px) {
+            .feedback {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .feedback-card {
+            padding: 14px;
+            border-radius: 2px;
+            border-left: 4px solid;
+        }
+
+        .feedback-card.working {
+            background: #f1f8e9;
+            border-left-color: #2e7d32;
+        }
+
+        .feedback-card.missing {
+            background: #fefdf7;
+            border-left-color: #8a6a10;
+        }
+
+        .feedback-card h3 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1rem;
+            margin-bottom: 8px;
+        }
+
+        .feedback-card.working h3 {
+            color: #2e7d32;
+        }
+
+        .feedback-card.missing h3 {
+            color: #8a6a10;
+        }
+
+        .feedback-card p {
+            font-size: 0.9rem;
+            line-height: 1.4;
+            color: #555;
+        }
+
+        /* CONNECTOR */
+        .connector {
+            text-align: center;
+            margin: 20px 0;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #8a6a10;
+        }
+
+        /* COMPARISON */
+        .comparison {
+            margin: 40px 0;
+            padding: 30px 40px;
+            background: #fafaf8;
+            border-top: 2px solid #8a6a10;
+            border-bottom: 2px solid #8a6a10;
+        }
+
+        .comparison h2 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 28px;
+        }
+
+        @media (max-width: 768px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .comparison-card {
+            border: 2px solid;
+            padding: 20px;
+            border-radius: 2px;
+        }
+
+        .comparison-card.v1 {
+            border-color: #b02a1e;
+            background: rgba(176, 42, 30, 0.05);
+        }
+
+        .comparison-card.final {
+            border-color: #1a5c96;
+            background: rgba(26, 92, 150, 0.05);
+        }
+
+        .comparison-card h3 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.2rem;
+            margin-bottom: 12px;
+        }
+
+        .comparison-card.v1 h3 {
+            color: #b02a1e;
+        }
+
+        .comparison-card.final h3 {
+            color: #1a5c96;
+        }
+
+        .comparison-card p {
+            font-size: 0.9rem;
+            color: #555;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        /* TABLE */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 24px 0;
+            font-size: 0.85rem;
+        }
+
+        th {
+            font-family: 'DM Mono', monospace;
+            text-align: left;
+            padding: 10px;
+            border-bottom: 2px solid #8a6a10;
+            font-weight: 600;
+            background: #f4f1eb;
+        }
+
+        td {
+            padding: 10px;
+            border-bottom: 1px solid #d4d0c8;
+        }
+
+        tr:hover {
+            background: rgba(138, 106, 16, 0.05);
+        }
+
+        /* SCORE BARS */
+        .scores {
+            margin: 40px 0;
+        }
+
+        .score-item {
+            margin-bottom: 16px;
+        }
+
+        .score-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 6px;
+            color: #666;
+        }
+
+        .score-bar {
+            height: 20px;
+            background: #e0e0e0;
+            border-radius: 2px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .score-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #8a6a10, #d4af37);
+            width: 0%;
+            transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border-radius: 2px;
+        }
+
+        .score-value {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-family: 'DM Mono', monospace;
+            font-size: 0.7rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* KEY LESSON */
+        .key-lesson {
+            border: 3px solid #8a6a10;
+            padding: 20px;
+            border-radius: 2px;
+            background: #fffef9;
+            margin: 30px 0;
+        }
+
+        .key-lesson h3 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.2rem;
+            color: #8a6a10;
+            margin-bottom: 10px;
+        }
+
+        .key-lesson p {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: #555;
+        }
+
+        /* FOOTER */
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #8a6a10;
+            text-align: center;
+            color: #999;
+            font-size: 0.85rem;
+        }
+
+        /* DRILLDOWN STYLES */
+        .version {
+            border-left: 4px solid #d4d0c8;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .version.collapsed {
+            background: #fafaf8;
+            margin-bottom: 16px;
+        }
+
+        .version.expanded {
+            background: white;
+            border-left-color: #8a6a10;
+        }
+
+        .version-header-clickable {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 12px;
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.3s ease;
+        }
+
+        .version:not(.expanded) .version-header-clickable:hover {
+            background: #f4f1eb;
+        }
+
+        .toggle-icon {
+            font-family: 'DM Mono', monospace;
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .version.collapsed .toggle-icon {
+            transform: rotate(0deg);
+        }
+
+        .version.expanded .toggle-icon {
+            transform: rotate(90deg);
+        }
+
+        .version-title-row {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .version-number-compact {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.5rem;
+            color: #8a6a10;
+            flex-shrink: 0;
+            width: 40px;
+        }
+
+        .version-info {
+            flex: 1;
+        }
+
+        .version-info h2 {
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        .version-info .dimensions {
+            display: none;
+        }
+
+        .version.collapsed .version-info .dimensions {
+            display: flex;
+            gap: 4px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+
+        .version.collapsed .version-info .dimensions .dimension {
+            font-size: 0.6rem;
+            padding: 2px 6px;
+        }
+
+        .version-details {
+            max-height: 2000px;
+            overflow: hidden;
+            transition: max-height 0.4s ease, opacity 0.3s ease;
+            opacity: 1;
+            padding: 16px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .version.collapsed .version-details {
+            display: none;
+        }
+
+        /* DETAIL LAYERS */
+        .detail-layer {
+            margin-bottom: 16px;
+        }
+
+        .detail-layer-title {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #8a6a10;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .layer-toggle {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #8a6a10;
+            background: none;
+            border: 1px solid #d4d0c8;
+            padding: 4px 8px;
+            cursor: pointer;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+            margin-bottom: 12px;
+        }
+
+        .layer-toggle:hover {
+            background: #8a6a10;
+            color: white;
+        }
+
+        .layer-content {
+            max-height: 1000px;
+            overflow: hidden;
+            transition: max-height 0.3s ease, opacity 0.3s ease;
+            opacity: 1;
+        }
+
+        .layer-content.collapsed {
+            max-height: 0;
+            opacity: 0;
+        }
+
+        .what-changed {
+            background: #fffef9;
+            border-left: 3px solid #8a6a10;
+            padding: 12px;
+            margin: 12px 0;
+            font-size: 0.9rem;
+            color: #555;
+            line-height: 1.4;
+        }
+
+        .why-it-matters {
+            background: #e8f5e9;
+            border-left: 3px solid #2e7d32;
+            padding: 12px;
+            margin: 12px 0;
+            font-size: 0.9rem;
+            color: #1b5e20;
+            line-height: 1.4;
+        }
+
+        .dimension-breakdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin: 12px 0;
+        }
+
+        .dimension-detail {
+            background: #fafaf8;
+            border: 1px solid #d4d0c8;
+            padding: 10px;
+            border-radius: 2px;
+            font-size: 0.85rem;
+        }
+
+        .dimension-detail .dim-name {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            color: #8a6a10;
+            margin-bottom: 3px;
+            font-weight: 600;
+        }
+
+        .dimension-detail .dim-status {
+            font-size: 0.75rem;
+            color: #666;
+            line-height: 1.2;
+        }
+
+        .dimension-detail.checked .dim-status {
+            color: #2e7d32;
+            font-weight: 600;
+        }
+
+        /* COMPARISON LAYER TOGGLE */
+        .comparison-layer-toggle {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #8a6a10;
+            background: none;
+            border: 1px solid #d4d0c8;
+            padding: 6px 12px;
+            cursor: pointer;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .comparison-layer-toggle:hover {
+            background: #8a6a10;
+            color: white;
+        }
+
+        .comparison-layer {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: max-height 0.4s ease, opacity 0.3s ease;
+        }
+
+        .comparison-layer.open {
+            max-height: 2000px;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header">
+            <div class="eyebrow">📝 Coaching Iterations</div>
+            <h1>An Anatomy of a Prompt for: Research Question Refinement</h1>
+            <p class="subtitle">From scattered curiosity to focused narrative investigation</p>
+            <p class="premise">This visualization traces the evolution of a research question through six iterations of narrative coaching—showing how targeted feedback transforms an open exploration into a coherent investigation with a clear puzzle, hypothesis, and research compass.</p>
+        </div>
+
+        <!-- NAV -->
+        <div class="nav">
+            <a href="#v1">V1 · Raw</a>
+            <a href="#v2">V2 · Interest</a>
+            <a href="#v3">V3 · Frame</a>
+            <a href="#v4">V4 · Puzzle</a>
+            <a href="#v5">V5 · Hypothesis</a>
+            <a href="#comparison">Comparison</a>
+        </div>
+
+        <!-- VERSION 1 -->
+        <div class="version collapsed" id="v1" data-version="1">
+            <div class="version-header-clickable">
+                <span class="toggle-icon">▸</span>
+                <div class="version-title-row">
+                    <div class="version-number-compact">1</div>
+                    <div class="version-info">
+                        <h2>Version 1 — Raw Questions</h2>
+                        <div class="dimensions">
+                            <span class="dimension missing">Subject</span>
+                            <span class="dimension missing">Identity</span>
+                            <span class="dimension missing">Purpose</span>
+                            <span class="dimension missing">Audience</span>
+                            <span class="dimension missing">Success Criterion</span>
+                            <span class="dimension missing">Intellectual Frame</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="version-details">
+                <!-- DIMENSIONS BREAKDOWN -->
+                <div class="detail-layer">
+                    <div class="detail-layer-title">Dimension Status</div>
+                    <div class="dimension-breakdown">
+                        <div class="dimension-detail">
+                            <div class="dim-name">Subject</div>
+                            <div class="dim-status">✗ Missing</div>
+                        </div>
+                        <div class="dimension-detail">
+                            <div class="dim-name">Identity</div>
+                            <div class="dim-status">✗ Missing</div>
+                        </div>
+                        <div class="dimension-detail">
+                            <div class="dim-name">Purpose</div>
+                            <div class="dim-status">✗ Missing</div>
+                        </div>
+                        <div class="dimension-detail">
+                            <div class="dim-name">Audience</div>
+                            <div class="dim-status">✗ Missing</div>
+                        </div>
+                        <div class="dimension-detail">
+                            <div class="dim-name">Success Criterion</div>
+                            <div class="dim-status">✗ Missing</div>
+                        </div>
+                        <div class="dimension-detail">
+                            <div class="dim-name">Intellectual Frame</div>
+                            <div class="dim-status">✗ Missing</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FULL PROMPT -->
+                <div class="detail-layer">
+                    <div class="detail-layer-title">Full Prompt</div>
+                    <div class="prompt-text">Ukraine has been striking deeper into Russia with drones
+Recently the US declared they would give the Patriot to Ukraine
+How does the Partriot compare with the Ukrainian Drones
+how they are similiar and their major differences
+specultate how the Ukranians may use the design of the patriot (which they are being given by the US government) to build  better,faster,cheaper a version that they could use against russia 
+What impact might this Ukrainian version fo the Patriot have on the war with russia</div>
+                </div>
+
+                <!-- FEEDBACK -->
+                <div class="detail-layer">
+                    <div class="detail-layer-title">Coaching Feedback</div>
+                    <div class="feedback">
+                        <div class="feedback-card working">
+                            <h3>✦ What's Working</h3>
+                            <p><strong>"Ukraine has been striking deeper into Russia with drones"</strong> — Opens with observable, escalating action. Sets stakes immediately.</p>
+                        </div>
+                        <div class="feedback-card missing">
+                            <h3>→ What's Still Missing</h3>
+                            <p>No unified through-line. Five separate questions sitting side-by-side. No author's position. No hypothesis or framework to pull reader through the investigation.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- WHAT CHANGED -->
+                <div class="detail-layer">
+                    <div class="what-changed">
+                        <strong>Status:</strong> Starting point. Zero dimensions defined. Curiosity exists but scattered across five separate questions with no connecting frame.
+                    </div>
+                </div>
+
+                <!-- WHY IT MATTERS -->
+                <div class="detail-layer">
+                    <div class="why-it-matters">
+                        <strong>Why This Stage Matters:</strong> This is the diagnosis—showing what scattered questions look like before coaching. The baseline against which all improvement is measured. Many researchers stop here and try to investigate with five parallel threads instead of one unified spine.
+                    </div>
+                </div>
+            </div>
+
+            <div class="connector">↓ ADD PERSONAL STAKE</div>
+        </div>
+
+        <!-- VERSION 2 -->
+        <div class="version collapsed" id="v2" data-version="2">
+            <div class="version-header-clickable">
+                <span class="toggle-icon">▸</span>
+                <div class="version-title-row">
+                    <div class="version-number-compact">2</div>
+                    <div class="version-info">
+                        <h2>Version 2 — Author's Interest Statement</h2>
+                        <div class="dimensions">
+                            <span class="dimension checked">Subject</span>
+                            <span class="dimension missing">Identity</span>
+                            <span class="dimension missing">Purpose</span>
+                            <span class="dimension missing">Audience</span>
+                            <span class="dimension missing">Success Criterion</span>
+                            <span class="dimension missing">Intellectual Frame</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="version-details">
+                <div class="detail-layer">
+                    <div class="detail-layer-title">Dimension Status</div>
+                    <div class="dimension-breakdown">
+                        <div class="dimension-detail checked">
+                            <div class="dim-name">Subject</div>
+                            <div class="dim-status">✓ Added</div>
+                        </div>
+                        <div class="dimension-detail">
+                            <div class="dim-name">Identity</div>
+                            <div class="dim-status">✗ Missing</div>
+                        </div>
+                        <div class="dimension-detail">
+                            <div class="dim-name">Purpose</div>
+                            <div class="dim-status">✗ Missing</div>
+                        </div>
+                        <div class="dimension-detail">
+                            <div class="dim-name">Audience</div>
+                            <div class="dim-status">✗ Missing</div>
+                        </div>
+                        <div class="dimension-detail">
+                            <div class="dim-name">Success Criterion</div>
+                            <div class="dim-status">✗ Missing</div>
+                        </div>
+                        <div class="dimension-detail">
+                            <div class="dim-name">Intellectual Frame</div>
+                            <div class="dim-status">✗ Missing</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-layer">
+                    <div class="detail-layer-title">What Changed</div>
+                    <div class="what-changed">
+                        <strong>Added text:</strong> "I am interested in the geopolitics of technology transfer (what it means that the US is giving Patriot to Ukraine) and the engineering question (can Ukraine actually adapt/improve on Patriot design)?"
+                        <br/><br/>
+                        This statement reveals the author's dual intellectual interests—positioning yourself rather than remaining neutral observer.
+                    </div>
+                </div>
+
+                <div class="detail-layer">
+                    <div class="detail-layer-title">Full Prompt</div>
+                    <div class="prompt-text">Ukraine has been striking deeper into Russia with drones
+Recently the US declared they would give the Patriot to Ukraine
+How does the Partriot compare with the Ukrainian Drones
+how they are similiar and their major differences
+specultate how the Ukranians may use the design of the patriot (which they are being given by the US government) to build  better,faster,cheaper a version that they could use against russia 
+What impact might this Ukrainian version fo the Patriot have on the war with russia
+<span class="new-text">I am interested in the geopolitics of technology transfer (what it means that the US is giving Patriot to Ukraine) and the engineering question (can Ukraine actually adapt/improve on Patriot design)?</span></div>
+                </div>
+
+                <div class="detail-layer">
+                    <div class="detail-layer-title">Coaching Feedback</div>
+                    <div class="feedback">
+                        <div class="feedback-card working">
+                            <h3>✦ What's Working</h3>
+                            <p><strong>"I am interested in the geopolitics of technology transfer...and the engineering question"</strong> — Now we know the author's dual focus. Two lenses instead of scattered queries.</p>
+                        </div>
+                        <div class="feedback-card missing">
+                            <h3>→ What's Still Missing</h3>
+                            <p>Still two separate questions. No unified puzzle. No hypothesis about what will actually happen. No clarity on what success looks like in the investigation.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-layer">
+                    <div class="why-it-matters">
+                        <strong>Why This Stage Matters:</strong> You've moved from neutral observer to positioned investigator. You've declared your intellectual interests, which reduces the scatter. But interests aren't the same as a unified puzzle—the two lenses still operate independently rather than feeding each other.
+                    </div>
+                </div>
+            </div>
+
+            <div class="connector">↓ UNIFY THE QUESTIONS</div>
+        </div>
+
+        <!-- VERSION 3 -->
+        <div class="version collapsed" id="v3" data-version="3">
+            <div class="version-header-clickable">
+                <span class="toggle-icon">▸</span>
+                <div class="version-title-row">
+                    <div class="version-number-compact">3</div>
+                    <div class="version-info">
+                        <h2>Version 3 — Dual Intellectual Frame</h2>
+                        <div class="dimensions">
+                            <span class="dimension checked">Subject</span>
+                            <span class="dimension checked">Identity</span>
+                            <span class="dimension missing">Purpose</span>
+                            <span class="dimension missing">Audience</span>
+                            <span class="dimension missing">Success Criterion</span>
+                            <span class="dimension checked">Intellectual Frame</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="version-details">
+                <div class="detail-layer">
+                    <div class="detail-layer-title">Dimension Status</div>
+                    <div class="dimension-breakdown">
+                        <div class="dimension-detail checked">
+                            <div class="dim-name">Subject</div>
+                            <div class="dim-status">✓ Defined</div>
+                        </div>
+                        <div class="dimension-detail checked">
+                            <div class="dim-name">Identity</div>
+                            <div class="dim-status">✓ Positioned</div>
+                        </div>
+                        <div class="dimension-detail">
+                            <div class="dim-name">Purpose</div>
+                            <div class="dim-status">✗ Missing</div>
+                        </div>
+                        <div class="dimension-detail">
+                            <div class="dim-name">Audience</div>
+                            <div class="dim-status">✗ Missing</div>
+                        </div>
+                        <div class="dimension-detail">
+                            <div class="dim-name">Success Criterion</div>
+                            <div class="dim-status">✗ Missing</div>
+                        </div>
+                        <div class="dimension-detail checked">
+                            <div class="dim-name">Intellectual Frame</div>
+                            <div class="dim-status">✓ Emergent</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-layer">
+                    <div class="detail-layer-title">What Changed</div>
+                    <div class="what-changed">
+                        <strong>Added text:</strong> "How can a resource-constrained nation actually reverse-engineer and improve upon a cutting-edge Western system? Does Ukrainian adaptation of Western tech represent a new model of distributed innovation?"
+                        <br/><br/>
+                        You've added two higher-order questions that elevate beyond Ukraine alone and start hinting at a broader intellectual frame: constraint-driven innovation and distributed systems thinking.
+                    </div>
+                </div>
+
+                <div class="detail-layer">
+                    <div class="detail-layer-title">Full Prompt</div>
+                    <div class="prompt-text">I am interested in the geopolitics of technology transfer (what it means that the US is giving Patriot to Ukraine) and the engineering question (can Ukraine actually adapt/improve on Patriot design)? <span class="new-text">How can a resource-constrained nation actually reverse-engineer and improve upon a cutting-edge Western system? Does Ukrainian adaptation of Western tech represent a new model of distributed innovation?</span></div>
+                </div>
+
+                <div class="detail-layer">
+                    <div class="detail-layer-title">Coaching Feedback</div>
+                    <div class="feedback">
+                        <div class="feedback-card working">
+                            <h3>✦ What's Working</h3>
+                            <p><strong>"Does Ukrainian adaptation of Western tech represent a new model of distributed innovation?"</strong> — This elevates beyond Ukraine alone. You're asking if this is anomaly or pattern.</p>
+                        </div>
+                        <div class="feedback-card missing">
+                            <h3>→ What's Still Missing</h3>
+                            <p>Still asking questions as separate items. No central tension that unifies them. No hypothesis about outcome. No narrative spine that pulls through the investigation.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-layer">
+                    <div class="why-it-matters">
+                        <strong>Why This Stage Matters:</strong> You've added intellectual frames (constraint-driven innovation, distributed systems, pattern recognition). But these are still parallel questions, not yet woven into a single investigation. The puzzle hasn't crystallized yet—you're still asking "what should I think about?" rather than "what puzzle am I solving?"
+                    </div>
+                </div>
+            </div>
+
+            <div class="connector">↓ NAME THE CENTRAL PUZZLE</div>
+        </div>
+
+        <!-- VERSION 4 -->
+        <div class="version collapsed" id="v4" data-version="4">
+            <div class="version-header-clickable">
+                <span class="toggle-icon">▸</span>
+                <div class="version-title-row">
+                    <div class="version-number-compact">4</div>
+                    <div class="version-info">
+                        <h2>Version 4 — Central Investigation Framing</h2>
+                        <div class="dimensions">
+                            <span class="dimension checked">Subject</span>
+                            <span class="dimension checked">Identity</span>
+                            <span class="dimension checked">Purpose</span>
+                            <span class="dimension missing">Audience</span>
+                            <span class="dimension checked">Success Criterion</span>
+                            <span class="dimension checked">Intellectual Frame</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="version-details">
+                <div class="detail-layer">
+                    <div class="detail-layer-title">Dimension Status</div>
+                    <div class="dimension-breakdown">
+                        <div class="dimension-detail checked">
+                            <div class="dim-name">Subject</div>
+                            <div class="dim-status">✓ Defined</div>
+                        </div>
+                        <div class="dimension-detail checked">
+                            <div class="dim-name">Identity</div>
+                            <div class="dim-status">✓ Positioned</div>
+                        </div>
+                        <div class="dimension-detail checked">
+                            <div class="dim-name">Purpose</div>
+                            <div class="dim-status">✓ Crystallized</div>
+                        </div>
+                        <div class="dimension-detail">
+                            <div class="dim-name">Audience</div>
+                            <div class="dim-status">✗ Implicit</div>
+                        </div>
+                        <div class="dimension-detail checked">
+                            <div class="dim-name">Success Criterion</div>
+                            <div class="dim-status">✓ Defined</div>
+                        </div>
+                        <div class="dimension-detail checked">
+                            <div class="dim-name">Intellectual Frame</div>
+                            <div class="dim-status">✓ Central</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-layer">
+                    <div class="detail-layer-title">What Changed — The Pivot</div>
+                    <div class="what-changed">
+                        <strong>Added "Central Investigation" statement:</strong> You've named the puzzle and made it testable. Two competing hypotheses: either Ukraine CAN adapt via constraint-driven innovation, or they CAN'T because the system requires manufacturing infrastructure they don't have.
+                        <br/><br/>
+                        <strong>This is the turning point.</strong> All previous questions now serve this one puzzle. Everything before was research context; this is what you're actually investigating.
+                    </div>
+                </div>
+
+                <div class="detail-layer">
+                    <div class="detail-layer-title">Full Prompt</div>
+                    <div class="prompt-text">I am interested in the geopolitics of technology transfer (what it means that the US is giving Patriot to Ukraine) and the engineering question (can Ukraine actually adapt/improve on Patriot design)? How can a resource-constrained nation actually reverse-engineer and improve upon a cutting-edge Western system? Does Ukrainian adaptation of Western tech represent a new model of distributed innovation?
+
+<span class="new-text">Central Investigation: The US gave Ukraine Patriot systems. Ukraine is known for battlefield improvisation with drones. The puzzle: Does Ukraine's constraint-driven innovation mean they'll adapt/improve the Patriot—or does a system this complex require manufacturing infrastructure Ukraine doesn't have? And if they DO adapt it, what does that mean about the future of Western arms transfer—do we now expect recipients to improve on our designs faster than we can?</span></div>
+                </div>
+
+                <div class="detail-layer">
+                    <div class="detail-layer-title">Coaching Feedback</div>
+                    <div class="feedback">
+                        <div class="feedback-card working">
+                            <h3>✦ What's Working</h3>
+                            <p><strong>"The puzzle: Does Ukraine's constraint-driven innovation mean they'll adapt/improve the Patriot?"</strong> — This is testable and specific. Not abstract; it's a real engineering + geopolitical premise.</p>
+                        </div>
+                        <div class="feedback-card missing">
+                            <h3>→ What's Still Missing</h3>
+                            <p>No working hypothesis—just the puzzle. Author hasn't taken a position on whether Ukraine will succeed. No clarity on what specifically "adapt" means technically.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-layer">
+                    <div class="why-it-matters">
+                        <strong>Why This Stage Matters:</strong> This is where scattered curiosity becomes focused investigation. You've named the central tension and made it binary-testable. But you're still neutral—you haven't taken a position on which outcome you expect. That neutrality, while seeming careful, actually creates investigation-paralysis: without a hypothesis, you can't distinguish signal from noise in your research.
+                    </div>
+                </div>
+            </div>
+
+            <div class="connector">↓ STAKE YOUR HYPOTHESIS</div>
+        </div>
+
+        <!-- VERSION 5 -->
+        <div class="version collapsed" id="v5" data-version="5">
+            <div class="version-header-clickable">
+                <span class="toggle-icon">▸</span>
+                <div class="version-title-row">
+                    <div class="version-number-compact">5</div>
+                    <div class="version-info">
+                        <h2>Version 5 — Working Hypothesis</h2>
+                        <div class="dimensions">
+                            <span class="dimension checked">Subject</span>
+                            <span class="dimension checked">Identity</span>
+                            <span class="dimension checked">Purpose</span>
+                            <span class="dimension missing">Audience</span>
+                            <span class="dimension checked">Success Criterion</span>
+                            <span class="dimension checked">Intellectual Frame</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="version-details">
+                <div class="detail-layer">
+                    <div class="detail-layer-title">Dimension Status</div>
+                    <div class="dimension-breakdown">
+                        <div class="dimension-detail checked">
+                            <div class="dim-name">Subject</div>
+                            <div class="dim-status">✓ Clear</div>
+                        </div>
+                        <div class="dimension-detail checked">
+                            <div class="dim-name">Identity</div>
+                            <div class="dim-status">✓ Positioned</div>
+                        </div>
+                        <div class="dimension-detail checked">
+                            <div class="dim-name">Purpose</div>
+                            <div class="dim-status">✓ Unified</div>
+                        </div>
+                        <div class="dimension-detail">
+                            <div class="dim-name">Audience</div>
+                            <div class="dim-status">✗ Implicit</div>
+                        </div>
+                        <div class="dimension-detail checked">
+                            <div class="dim-name">Success Criterion</div>
+                            <div class="dim-status">✓ Binary</div>
+                        </div>
+                        <div class="dimension-detail checked">
+                            <div class="dim-name">Intellectual Frame</div>
+                            <div class="dim-status">✓ Strong</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-layer">
+                    <div class="detail-layer-title">What Changed — Taking a Position</div>
+                    <div class="what-changed">
+                        <strong>Added working hypothesis:</strong> You're now predicting Ukraine WILL adapt faster than expected. This is a betting statement—you've picked a side.
+                        <br/><br/>
+                        <strong>Geopolitical reframing:</strong> You've moved from "technology transfer happens" to "adaptive innovation cycles are the new model." The outcome of your investigation now has implications for how geopolitics works going forward.
+                    </div>
+                </div>
+
+                <div class="detail-layer">
+                    <div class="detail-layer-title">Full Prompt</div>
+                    <div class="prompt-text">Central Investigation: The US gave Ukraine Patriot systems. Ukraine is known for battlefield improvisation with drones. The puzzle: Does Ukraine's constraint-driven innovation mean they'll adapt/improve the Patriot—or does a system this complex require manufacturing infrastructure Ukraine doesn't have? And if they DO adapt it, what does that mean about the future of Western arms transfer—do we now expect recipients to improve on our designs faster than we can?
+
+<span class="new-text">My working hypothesis: Ukraine's distributed innovation model suggests they will find ways to adapt Patriot systems faster than Western analysts expect. If true, this signals a fundamental shift in how arms transfer works—not as one-way technology flow, but as adaptive innovation cycles.</span></div>
+                </div>
+
+                <div class="detail-layer">
+                    <div class="detail-layer-title">Coaching Feedback</div>
+                    <div class="feedback">
+                        <div class="feedback-card working">
+                            <h3>✦ What's Working</h3>
+                            <p><strong>"not as one-way technology flow, but as adaptive innovation cycles"</strong> — Reframes entire geopolitics angle. Both sides of relationship get transformed by exchange.</p>
+                        </div>
+                        <div class="feedback-card missing">
+                            <h3>→ What's Still Missing</h3>
+                            <p>What does "adapt" actually mean? Reverse-engineer the full system? Hybridize components? Strip for parts? Without this clarity, research will lack focus.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-layer">
+                    <div class="why-it-matters">
+                        <strong>Why This Stage Matters:</strong> You've moved from asking "what will happen?" to betting "here's what I think will happen." This changes your entire research stance. Now you're looking for confirmation AND falsification. You can distinguish between sources that support the hypothesis and ones that undermine it. But without definitional clarity on "adapt," you risk confirming the hypothesis on loose grounds.
+                    </div>
+                </div>
+            </div>
+
+            <div class="connector">↓ DEFINE TECHNICAL SPECIFICITY</div>
+        </div>
+
+        <!-- VERSION FINAL -->
+        <div class="version collapsed" id="final" data-version="final">
+            <div class="version-header-clickable">
+                <span class="toggle-icon">▸</span>
+                <div class="version-title-row">
+                    <div class="version-number-compact" style="color: #1a5c96;">✓</div>
+                    <div class="version-info">
+                        <h2>Final Version — Technical Clarity & Research Compass</h2>
+                        <div class="dimensions">
+                            <span class="dimension checked">Subject</span>
+                            <span class="dimension checked">Identity</span>
+                            <span class="dimension checked">Purpose</span>
+                            <span class="dimension checked">Audience</span>
+                            <span class="dimension checked">Success Criterion</span>
+                            <span class="dimension checked">Intellectual Frame</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="version-details">
+                <div class="detail-layer">
+                    <div class="detail-layer-title">Dimension Status — Complete</div>
+                    <div class="dimension-breakdown">
+                        <div class="dimension-detail checked">
+                            <div class="dim-name">Subject</div>
+                            <div class="dim-status">✓ Patriot adaptation</div>
+                        </div>
+                        <div class="dimension-detail checked">
+                            <div class="dim-name">Identity</div>
+                            <div class="dim-status">✓ Geopolitics + Engineering</div>
+                        </div>
+                        <div class="dimension-detail checked">
+                            <div class="dim-name">Purpose</div>
+                            <div class="dim-status">✓ Speed asymmetry puzzle</div>
+                        </div>
+                        <div class="dimension-detail checked">
+                            <div class="dim-name">Audience</div>
+                            <div class="dim-status">✓ Policy + Technical</div>
+                        </div>
+                        <div class="dimension-detail checked">
+                            <div class="dim-name">Success Criterion</div>
+                            <div class="dim-status">✓ Integration vs. New infra</div>
+                        </div>
+                        <div class="dimension-detail checked">
+                            <div class="dim-name">Intellectual Frame</div>
+                            <div class="dim-status">✓ Constraint innovation</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-layer">
+                    <div class="detail-layer-title">Final Move — Operational Definition</div>
+                    <div class="what-changed">
+                        <strong>Added technical specificity:</strong> "By 'adapt,' I mean: can Ukraine integrate Patriot technology into their existing distributed drone innovation ecosystem—or will they need to build entirely new infrastructure, which would break the speed advantage?"
+                        <br/><br/>
+                        <strong>This is the research compass.</strong> You've moved from "will they adapt?" to "what specific type of adaptation would prove your hypothesis true?" Now you can recognize the right evidence when you find it.
+                    </div>
+                </div>
+
+                <div class="detail-layer">
+                    <div class="detail-layer-title">Full Prompt</div>
+                    <div class="prompt-text">My working hypothesis: Ukraine's distributed innovation model suggests they will find ways to adapt Patriot systems faster than Western analysts expect. If true, this signals a fundamental shift in how arms transfer works—not as one-way technology flow, but as adaptive innovation cycles.
+
+<span class="new-text">By 'adapt,' I mean: can Ukraine integrate Patriot technology into their existing distributed drone innovation ecosystem—or will they need to build entirely new infrastructure, which would break the speed advantage?</span></div>
+                </div>
+
+                <div class="detail-layer">
+                    <div class="detail-layer-title">Coaching Feedback</div>
+                    <div class="feedback">
+                        <div class="feedback-card working">
+                            <h3>✦ What's Working</h3>
+                            <p><strong>"can Ukraine integrate Patriot technology into their existing distributed drone innovation ecosystem"</strong> — Shifts from abstract "adaptation" to measurable question about systems integration.</p>
+                        </div>
+                        <div class="feedback-card missing">
+                            <h3>→ What's Next</h3>
+                            <p>Investigation is research-ready. Now you search for: evidence of Ukrainian adaptation patterns, Patriot architecture details (modularity, black boxes), current reporting on field modifications.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-layer">
+                    <div class="why-it-matters">
+                        <strong>Why This Stage Matters:</strong> You've achieved what most research questions never reach—complete operational clarity. Every dimension is defined. Your hypothesis is testable. Your definition of success is measurable. You're not just ready to research; you're ready to recognize the answer when you find it. This is the difference between investigation and wandering.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- COMPARISON SECTION -->
+        <div class="comparison" id="comparison">
+            <h2>From Scattered Questions to Narrative Investigation</h2>
+            
+            <button class="comparison-layer-toggle" data-target="comparison-details">Explore Full Analysis ▸</button>
+
+            <div class="comparison-layer" id="comparison-details">
+            <div class="comparison-grid">
+                <div class="comparison-card v1">
+                    <h3>V1: Raw Questions</h3>
+                    <p><strong>Structure:</strong> Five independent questions listed sequentially.</p>
+                    <p><strong>Author's position:</strong> None stated. Observer only.</p>
+                    <p><strong>Framework:</strong> None. Just curiosity scattered across multiple angles.</p>
+                    <p><strong>Direction:</strong> Unclear what would count as an answer.</p>
+                </div>
+                <div class="comparison-card final">
+                    <h3>Final: Narrative Investigation</h3>
+                    <p><strong>Structure:</strong> Central puzzle + working hypothesis + technical specificity.</p>
+                    <p><strong>Author's position:</strong> Clear hypothesis (Ukraine WILL adapt, faster than expected).</p>
+                    <p><strong>Framework:</strong> "Adaptive innovation cycles" as the organizing principle.</p>
+                    <p><strong>Direction:</strong> Specific research targets defined. Success measurable.</p>
+                </div>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Dimension</th>
+                        <th>V1 State</th>
+                        <th>Final State</th>
+                        <th>Impact on Investigation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Central Question</strong></td>
+                        <td>Five separate questions</td>
+                        <td>One unified puzzle</td>
+                        <td>Research now has a spine instead of branches</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Author Position</strong></td>
+                        <td>Unspecified; observer role</td>
+                        <td>Explicit hypothesis; predicts outcome</td>
+                        <td>Investigation now investigates something specific, not just explores</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Success Criterion</strong></td>
+                        <td>Unclear; any answer would work</td>
+                        <td>Measurable: integration vs. new infrastructure</td>
+                        <td>Researcher knows what to look for; sources can be filtered</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Intellectual Frame</strong></td>
+                        <td>Implicit and scattered</td>
+                        <td>Explicit: constraint-driven innovation & speed asymmetry</td>
+                        <td>Now a coherent narrative theme, not background noise</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Geopolitical Stakes</strong></td>
+                        <td>Stated as interest only</td>
+                        <td>Integrated into hypothesis (reshapes arms transfer model)</td>
+                        <td>Geopolitics is now the implication of engineering success, not separate question</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Technical Clarity</strong></td>
+                        <td>None; "build better" is vague</td>
+                        <td>Defined: systems integration vs. new infrastructure</td>
+                        <td>Research can distinguish between different types of adaptation</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 style="font-family: 'DM Serif Display', serif; margin-top: 40px; margin-bottom: 30px;">Prompt Maturity Across Dimensions</h3>
+
+            <div class="scores">
+                <div class="score-item">
+                    <div class="score-label">Unity (single through-line)</div>
+                    <div class="score-bar">
+                        <div class="score-fill" style="width: 0;" data-target="85"></div>
+                        <span class="score-value">85%</span>
+                    </div>
+                </div>
+
+                <div class="score-item">
+                    <div class="score-label">Author Position (hypothesis clarity)</div>
+                    <div class="score-bar">
+                        <div class="score-fill" style="width: 0;" data-target="90"></div>
+                        <span class="score-value">90%</span>
+                    </div>
+                </div>
+
+                <div class="score-item">
+                    <div class="score-label">Technical Specificity</div>
+                    <div class="score-bar">
+                        <div class="score-fill" style="width: 0;" data-target="80"></div>
+                        <span class="score-value">80%</span>
+                    </div>
+                </div>
+
+                <div class="score-item">
+                    <div class="score-label">Research Actionability</div>
+                    <div class="score-bar">
+                        <div class="score-fill" style="width: 0;" data-target="88"></div>
+                        <span class="score-value">88%</span>
+                    </div>
+                </div>
+
+                <div class="score-item">
+                    <div class="score-label">Intellectual Rigor</div>
+                    <div class="score-bar">
+                        <div class="score-fill" style="width: 0;" data-target="86"></div>
+                        <span class="score-value">86%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="key-lesson">
+                <h3>The Core Coaching Principle</h3>
+                <p>
+                    A research question evolves from <em>scattered curiosity into narrative investigation</em> when the author moves from asking <em>"what should I investigate?"</em> to asking <em>"what puzzle am I trying to solve, and what do I suspect is true?"</em> This shift happens in layers: first unifying the separate questions into a central puzzle, then staking a working hypothesis about the outcome, then clarifying technical specificity so the investigation stays focused. The result is not loss of breadth—it's <em>focused depth</em>. All the original curiosity remains, but now organized around a north star that tells the researcher which sources matter and which are tangential.
+                </p>
+            </div>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="footer">
+            <p>Prompt evolution visualization created for narrative investigation coaching</p>
+            <p style="margin-top: 8px; font-size: 0.8rem;">Each iteration represents a coaching decision point in moving from scattered questions to focused research.</p>
+        </div>
+    </div>
+
+    <script>
+        // VERSION SECTION DRILLDOWN
+        document.querySelectorAll('.version-header-clickable').forEach(header => {
+            header.addEventListener('click', () => {
+                const versionDiv = header.closest('.version');
+                versionDiv.classList.toggle('collapsed');
+                versionDiv.classList.toggle('expanded');
+            });
+        });
+
+        // COMPARISON LAYER TOGGLE
+        document.querySelectorAll('.comparison-layer-toggle').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const targetId = btn.getAttribute('data-target');
+                const target = document.getElementById(targetId);
+                target.classList.toggle('open');
+                
+                // Update button text
+                if (target.classList.contains('open')) {
+                    btn.textContent = 'Close Analysis ▾';
+                } else {
+                    btn.textContent = 'Explore Full Analysis ▸';
+                }
+            });
+        });
+
+        // ANIMATE SCORE BARS ON SCROLL
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const fill = entry.target.querySelector('.score-fill');
+                    const target = parseInt(fill.getAttribute('data-target'));
+                    setTimeout(() => {
+                        fill.style.width = target + '%';
+                    }, 200);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        document.querySelectorAll('.score-bar').forEach(bar => {
+            observer.observe(bar);
+        });
+
+        // SMOOTH NAV SCROLL
+        document.querySelectorAll('.nav a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = document.querySelector(link.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                    // Auto-expand the section if it's collapsed
+                    if (target.classList.contains('collapsed')) {
+                        target.classList.remove('collapsed');
+                        target.classList.add('expanded');
+                    }
+                }
+            });
+        });
+
+        // INITIAL STATE: All versions start collapsed
+        document.querySelectorAll('.version').forEach(v => {
+            if (!v.id.includes('comparison') && !v.id.includes('footer')) {
+                v.classList.add('collapsed');
+            }
+        });
+    </script>
+</body>
+</html>
