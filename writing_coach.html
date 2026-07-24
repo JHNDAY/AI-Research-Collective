@@ -185,7 +185,16 @@
   }
   .copy-btn:hover { background: var(--accent-light); }
   .copy-btn:active { transform: scale(0.97); }
-  .copy-btn.copied { background: #4a7a50; }
+  .copy-btn.copied { 
+    background: #4a7a50;
+    color: #e8f5e9;
+    box-shadow: 0 2px 8px rgba(74, 122, 80, 0.4);
+    transform: scale(1.02);
+  }
+  .copy-btn.copied::after {
+    content: ' ✓';
+    font-weight: bold;
+  }
 
   .copy-prompt-btn {
     background: var(--ink);
@@ -201,7 +210,16 @@
   }
   .copy-prompt-btn:hover { background: var(--accent); }
   .copy-prompt-btn:active { transform: scale(0.97); }
-  .copy-prompt-btn.copied { background: #4a7a50; }
+  .copy-prompt-btn.copied { 
+    background: #4a7a50;
+    color: #e8f5e9;
+    box-shadow: 0 2px 8px rgba(74, 122, 80, 0.4);
+    transform: scale(1.02);
+  }
+  .copy-prompt-btn.copied::after {
+    content: ' ✓';
+    font-weight: bold;
+  }
 
   .prompt-preview {
     margin-top: 14px;
@@ -245,7 +263,17 @@
   }
   .beautify-btn:hover { background: var(--accent); color: #fff; }
   .beautify-btn:active { transform: scale(0.97); }
-  .beautify-btn.done { background: #4a7a50; color: #fff; border-color: #4a7a50; }
+  .beautify-btn.done { 
+    background: #4a7a50;
+    color: #e8f5e9;
+    border-color: #4a7a50;
+    box-shadow: 0 2px 8px rgba(74, 122, 80, 0.4);
+    transform: scale(1.02);
+  }
+  .beautify-btn.done::after {
+    content: ' ✓';
+    font-weight: bold;
+  }
 
   .copy-review-btn-inline {
     background: transparent;
@@ -262,7 +290,17 @@
   }
   .copy-review-btn-inline:hover { background: var(--accent); color: #fff; }
   .copy-review-btn-inline:active { transform: scale(0.97); }
-  .copy-review-btn-inline.copied { background: #4a7a50; color: #fff; border-color: #4a7a50; }
+  .copy-review-btn-inline.copied { 
+    background: #4a7a50;
+    color: #e8f5e9;
+    border-color: #4a7a50;
+    box-shadow: 0 2px 8px rgba(74, 122, 80, 0.4);
+    transform: scale(1.02);
+  }
+  .copy-review-btn-inline.copied::after {
+    content: ' ✓';
+    font-weight: bold;
+  }
 
   .beautify-preview {
     margin-top: 14px;
@@ -404,7 +442,18 @@
     transition: background 0.2s;
   }
   .copy-review-btn:hover { background: rgba(255,255,255,0.2); }
-  .copy-review-btn.copied { color: #9ed4c0; border-color: #9ed4c0; }
+  .copy-review-btn.copied { 
+    color: #9ed4c0;
+    border-color: #9ed4c0;
+    background: rgba(74, 122, 80, 0.25);
+    box-shadow: 0 0 8px rgba(158, 212, 192, 0.3);
+    transform: scale(1.02);
+    transition: all 0.2s;
+  }
+  .copy-review-btn.copied::after {
+    content: ' ✓';
+    font-weight: bold;
+  }
 
   .review-box-footer {
     display: flex;
@@ -442,7 +491,17 @@
   }
   .evo-btn:hover { background: var(--accent); color: #fff; }
   .evo-btn:active { transform: scale(0.97); }
-  .evo-btn.copied { background: #4a7a50; color: #fff; border-color: #4a7a50; }
+  .evo-btn.copied { 
+    background: #4a7a50;
+    color: #e8f5e9;
+    border-color: #4a7a50;
+    box-shadow: 0 2px 8px rgba(74, 122, 80, 0.4);
+    transform: scale(1.02);
+  }
+  .evo-btn.copied::after {
+    content: ' ✓';
+    font-weight: bold;
+  }
 
   .evo-hint {
     margin-top: 8px;
@@ -473,7 +532,7 @@
     <p>Open a new Claude conversation. Copy the block below, paste it in, and press <strong>Enter</strong>. This establishes Claude as your personal writing coach for BOLLI.</p>
 
     <div class="instructions-block" id="coachingBlock">
-      You are a writing coach to assist in refining a narrarative into a complete and comprehensive to fully investigate the topic of interest.<br><br>
+      You are a writing coach to assist in transforming research questions into a narrative investigation.<br><br>
       When reviewing a narrative draft, give feedback in three parts:<br>
       1. Two specific things that are working well — quote actual phrases from their text.<br>
       2. One concrete suggestion to strengthen it (usually: add more personal context, be clearer about what they actually want to learn, or reveal more about their relationship to the topic).<br>
@@ -533,7 +592,7 @@
 </div>
 
 <script>
-  const COACHING_TEXT = `You are a writing coach to assist in refining a narrarative into a complete and comprehensive to fully investigate the topic of interest.
+  const COACHING_TEXT = `You are a writing coach to assist in transforming research questions into a narrative investigation.
 
 When reviewing a narrative draft, give feedback in three parts:
 1. Two specific things that are working well — quote actual phrases from their text.
@@ -607,7 +666,8 @@ When reviewing a narrative draft, give feedback in three parts:
   }
 
   function copyEvoPrompt(btn) {
-    const prompt = `Create a Prompt Evolution visualization of the prompt iterations in this conversation, using the following template:\n\nSingle-page HTML. Parchment background (#f4f1eb). Fonts: DM Serif Display (headlines), Lora (body), DM Mono (labels/mono). Version colors: v1 red #b02a1e → v2 orange #c06010 → v3 olive #7a6800 → v4 green #1e7a40 → v5 blue #1a5c96 → compare purple #6a2a8e. Gold accent #8a6a10.\n\nStructure: Header (eyebrow · h1 · italic subtitle · premise) → sticky nav (one pill per version + Compare anchor) → N version blocks → comparison section → footer.\n\nEach version block: colored numbered badge · h2 "Version N — [Dimension Added]" · dimension pills (Subject / Identity / Purpose / Audience / Success Criterion / Intellectual Frame, checked ✓ or struck through) · prompt panel displaying the ENTIRE prompt for that version in DM Mono (fixed-width font, monospaced) with ONLY the newly added text highlighted in gold background · two cards: "✦ What's working" (green) + "→ What's still missing" (gold).\n\nBetween blocks: connector arrow label "+ WHAT NEXT VERSION ADDS".\n\nComparison section: V1 vs Final side-by-side cards · 4-column delta table (Dimension / V1 state / Final state / Impact on Claude's output) · animated score bars per dimension · key-lesson gold-border card (~120 words synthesizing the coaching principle).\n\nJS: collapsible toggle + IntersectionObserver animates score bars on scroll.\n\nTitle the visualization "An Anatomy of a Prompt for: [infer a short title from the prompt topic developed in this conversation]".`;
+    const prompt = `Create a Prompt Evolution visualization of the prompt iterations in this conversation, using the following template: https://jhnday.github.io/AI-Research-Collective/PromptEvolutionTmplt 
+Title the visualization "An Anatomy of a Prompt for: [infer a short title from the prompt topic developed in this conversation]".`;
     navigator.clipboard.writeText(prompt).then(() => {
       const orig = btn.textContent;
       btn.textContent = '✦ Copied — paste into a new Claude conversation';
