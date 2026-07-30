@@ -176,6 +176,36 @@
       border-top: 1px solid var(--rule);
       margin: 16px 0;
     }
+
+    /* ── INVITATION CARD ── */
+    .card-invitation {
+      background: linear-gradient(135deg, rgba(232,240,248,.8) 0%, rgba(228,242,243,.6) 100%);
+      border: 1px solid var(--teal);
+    }
+
+    .invitation-text {
+      font-size: .95rem;
+      color: var(--ink);
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+
+    .invitation-text:last-of-type {
+      margin-bottom: 0;
+    }
+
+    .email-link {
+      color: var(--teal);
+      text-decoration: none;
+      font-weight: 600;
+      border-bottom: 1px solid var(--teal);
+      transition: all 0.2s ease;
+    }
+
+    .email-link:hover {
+      color: var(--navy-dk);
+      border-bottom-color: var(--navy-dk);
+    }
   </style>
 </head>
 <body>
@@ -240,6 +270,18 @@
         <p class="link-summary">A comprehensive visual summary of today's session materials, key concepts, and discussion threads. This artifact synthesizes the prompting approaches, narrative frameworks, and practical examples into an integrated learning landscape.</p>
       </div>
     </div>
+  </div>
+
+  <div class="card card-invitation">
+    <div class="card-title">
+      Create Your Own Exploration
+    </div>
+    <p class="invitation-text">
+      We invite you to develop your own investigation using the tools and frameworks introduced in this session. Choose either <strong>Narrating a Prompt</strong> to document your thinking evolution, or the <strong>Writing Coach</strong> to iteratively refine your analysis. Your exploration can address any aspect of technology innovation, policy implications, or the narrative structures that shape our understanding of complex systems.
+    </p>
+    <p class="invitation-text">
+      When you've completed your exploration, email it to <a href="mailto:jhnday@gmail.com" class="email-link">jhnday@gmail.com</a>. I will collect these investigations in a GitHub repository and create a comprehensive overview synthesizing the composite set of explorations. We'll discuss these collective insights at a future session, exploring patterns, divergences, and emergent themes across your investigations.
+    </p>
   </div>
 </div>
 
