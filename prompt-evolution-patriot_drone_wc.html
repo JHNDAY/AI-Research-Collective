@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompt Evolution: Weaponizing Speed</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #f4f1eb;
+            font-family: 'Lora', serif;
+            color: #2c2c2c;
+            line-height: 1.7;
+        }
+
+        /* Header */
+        header {
+            padding: 3rem 2rem;
+            text-align: center;
+            border-bottom: 3px solid #8a6a10;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .eyebrow {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            color: #8a6a10;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        h1 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 2.5rem;
+            margin: 0.5rem 0;
+            color: #2c2c2c;
+        }
+
+        .subtitle {
+            font-style: italic;
+            color: #6b6b6b;
+            font-size: 1.1rem;
+            margin: 0.5rem 0 1.5rem;
+        }
+
+        .premise {
+            background: rgba(138, 106, 16, 0.08);
+            padding: 1.5rem;
+            border-left: 4px solid #8a6a10;
+            margin-top: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        /* Navigation Pills */
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+            padding: 0 2rem;
+        }
+
+        .nav-pill {
+            padding: 0.6rem 1.2rem;
+            background: white;
+            border: 2px solid #8a6a10;
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            color: #8a6a10;
+        }
+
+        .nav-pill:hover {
+            background: #8a6a10;
+            color: white;
+        }
+
+        .nav-pill.active {
+            background: #8a6a10;
+            color: white;
+        }
+
+        /* Main container */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Expand/Collapse All Button */
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 2rem 0;
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
+        }
+
+        .toggle-all-btn {
+            padding: 0.6rem 1.2rem;
+            background: #8a6a10;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Lora', serif;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-all-btn:hover {
+            background: #6b5409;
+        }
+
+        /* Version blocks */
+        .version-block {
+            margin: 2rem 0;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .version-header {
+            padding: 1.5rem;
+            background: #fafaf8;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 6px solid #8a6a10;
+            transition: background 0.3s ease;
+        }
+
+        .version-header:hover {
+            background: #f0ede8;
+        }
+
+        .version-number {
+            font-family: 'DM Serif Display', serif;
+            font-size: 2.5rem;
+            color: #8a6a10;
+            font-weight: bold;
+            margin-right: 1.5rem;
+            min-width: 60px;
+        }
+
+        .version-title-area {
+            flex: 1;
+        }
+
+        .version-title {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.5rem;
+            color: #2c2c2c;
+            margin-bottom: 0.3rem;
+        }
+
+        .dimension-pills {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .dimension-pill {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.7rem;
+            padding: 0.3rem 0.6rem;
+            background: #8a6a10;
+            color: white;
+            border-radius: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .toggle-arrow {
+            font-size: 1.5rem;
+            color: #8a6a10;
+            transition: transform 0.3s ease;
+        }
+
+        .version-block.collapsed .toggle-arrow {
+            transform: rotate(0deg);
+        }
+
+        .version-block.expanded .toggle-arrow {
+            transform: rotate(90deg);
+        }
+
+        .version-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+
+        .version-block.expanded .version-content {
+            max-height: 2000px;
+        }
+
+        .version-body {
+            padding: 2rem;
+        }
+
+        .prompt-section {
+            margin-bottom: 2rem;
+        }
+
+        .prompt-section h3 {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #8a6a10;
+            margin-bottom: 0.75rem;
+        }
+
+        .prompt-text {
+            background: #fafaf8;
+            padding: 1rem;
+            border-radius: 6px;
+            border-left: 4px solid #8a6a10;
+            font-family: 'Lora', serif;
+            font-size: 0.95rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, rgba(138, 106, 16, 0.3) 0%, rgba(138, 106, 16, 0.1) 100%);
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+
+        .feedback-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .feedback-card {
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid;
+        }
+
+        .feedback-card.working {
+            background: #f1f8e9;
+            border-left-color: #2e7d32;
+        }
+
+        .feedback-card.missing {
+            background: #fefdf7;
+            border-left-color: #8a6a10;
+        }
+
+        .feedback-card h4 {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.75rem;
+            color: #2c2c2c;
+        }
+
+        .feedback-card p {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .detail-layer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(138, 106, 16, 0.2);
+        }
+
+        .version-block.expanded .detail-layer {
+            max-height: 500px;
+        }
+
+        .detail-text {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 0.75rem;
+            font-style: italic;
+        }
+
+        .callout {
+            background: rgba(138, 106, 16, 0.05);
+            padding: 1rem;
+            border-left: 3px solid #8a6a10;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            color: #333;
+        }
+
+        .callout strong {
+            color: #8a6a10;
+        }
+
+        /* Connectors */
+        .connector {
+            text-align: center;
+            margin: 2rem 0;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.85rem;
+            color: #8a6a10;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .connector-arrow {
+            font-size: 1.5rem;
+            margin: 0.5rem 0;
+        }
+
+        /* Comparison section */
+        .comparison-section {
+            margin: 3rem 0;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .comparison-header {
+            padding: 1.5rem;
+            background: #fafaf8;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 6px solid #8a6a10;
+        }
+
+        .comparison-header:hover {
+            background: #f0ede8;
+        }
+
+        .comparison-header h3 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.3rem;
+            color: #2c2c2c;
+        }
+
+        .comparison-toggle {
+            font-size: 1.5rem;
+            color: #8a6a10;
+            transition: transform 0.3s ease;
+        }
+
+        .comparison-section.collapsed .comparison-toggle {
+            transform: rotate(0deg);
+        }
+
+        .comparison-section.expanded .comparison-toggle {
+            transform: rotate(90deg);
+        }
+
+        .comparison-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+
+        .comparison-section.expanded .comparison-content {
+            max-height: 3000px;
+        }
+
+        .comparison-body {
+            padding: 2rem;
+        }
+
+        /* Side-by-side cards */
+        .comparison-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .comparison-card {
+            background: #fafaf8;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-top: 4px solid #8a6a10;
+        }
+
+        .comparison-card h4 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: #8a6a10;
+        }
+
+        .comparison-card .full-prompt {
+            font-size: 0.9rem;
+            line-height: 1.8;
+            color: #333;
+        }
+
+        /* Delta table */
+        .delta-table {
+            width: 100%;
+            margin: 2rem 0;
+            border-collapse: collapse;
+        }
+
+        .delta-table th {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background: #8a6a10;
+            color: white;
+            padding: 0.75rem;
+            text-align: left;
+        }
+
+        .delta-table td {
+            padding: 1rem 0.75rem;
+            border-bottom: 1px solid #e0dbd5;
+            font-size: 0.9rem;
+        }
+
+        .delta-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .delta-table tr:nth-child(even) {
+            background: #fafaf8;
+        }
+
+        .delta-dimension {
+            font-family: 'DM Mono', monospace;
+            color: #8a6a10;
+            font-weight: 600;
+        }
+
+        /* Score bars */
+        .score-bars {
+            margin: 2rem 0;
+        }
+
+        .score-bar-item {
+            margin-bottom: 1.5rem;
+        }
+
+        .score-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .score-label-text {
+            font-family: 'DM Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #2c2c2c;
+        }
+
+        .score-percent {
+            font-family: 'DM Mono', monospace;
+            color: #8a6a10;
+            font-weight: 600;
+        }
+
+        .score-bar-container {
+            height: 12px;
+            background: #e0dbd5;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .score-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #8a6a10, #b8930f);
+            width: 0%;
+            transition: width 0.8s ease;
+            border-radius: 6px;
+        }
+
+        /* Key lesson card */
+        .key-lesson {
+            background: rgba(138, 106, 16, 0.05);
+            border: 2px solid #8a6a10;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .key-lesson h4 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.2rem;
+            color: #8a6a10;
+            margin-bottom: 1rem;
+        }
+
+        .key-lesson p {
+            font-size: 0.95rem;
+            line-height: 1.8;
+            color: #333;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: #8a6a10;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.85rem;
+            border-top: 1px solid #e0dbd5;
+            margin-top: 3rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .version-number {
+                font-size: 2rem;
+            }
+
+            .feedback-cards,
+            .comparison-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .dimension-pills {
+                flex-direction: column;
+            }
+
+            nav {
+                flex-direction: column;
+            }
+
+            .nav-pill {
+                width: 100%;
+            }
+
+            .delta-table {
+                font-size: 0.85rem;
+            }
+
+            .delta-table td,
+            .delta-table th {
+                padding: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="eyebrow">COACHING SESSION</div>
+        <h1>An Anatomy of a Prompt for: Weaponizing Speed</h1>
+        <p class="subtitle">How a scattered research question evolved into a focused investigation</p>
+        <div class="premise">
+            <strong>The premise:</strong> Through six iterative cycles of feedback, a researcher moved from six scattered questions about Ukrainian drone innovation to a single, testable hypothesis about the speed of technological transfer in wartime alliances.
+        </div>
+    </header>
+
+    <nav>
+        <div class="nav-pill" onclick="scrollToVersion(1)">Version 1</div>
+        <div class="nav-pill" onclick="scrollToVersion(2)">Version 2</div>
+        <div class="nav-pill" onclick="scrollToVersion(3)">Version 3</div>
+        <div class="nav-pill" onclick="scrollToVersion(4)">Version 4</div>
+        <div class="nav-pill" onclick="scrollToVersion(5)">Version 5</div>
+        <div class="nav-pill" onclick="scrollToVersion(6)">Version 6</div>
+        <div class="nav-pill" onclick="scrollToComparison()">Compare</div>
+    </nav>
+
+    <div class="container">
+        <div class="controls">
+            <button class="toggle-all-btn" onclick="toggleAllVersions()">Expand All ▸</button>
+            <span style="font-family: 'DM Mono', monospace; font-size: 0.85rem; color: #8a6a10;">6 iterations of refinement</span>
+        </div>
+
+        <!-- VERSION 1 -->
+        <div class="version-block collapsed" id="version-1">
+            <div class="version-header" onclick="toggleVersion(1)">
+                <div style="display: flex; align-items: center; flex: 1;">
+                    <div class="version-number">1</div>
+                    <div class="version-title-area">
+                        <div class="version-title">Raw Curiosity</div>
+                        <div class="dimension-pills">
+                            <span class="dimension-pill">Scattered questions</span>
+                            <span class="dimension-pill">No through-line</span>
+                        </div>
+                    </div>
+                </div>
+                <span class="toggle-arrow">▸</span>
+            </div>
+            <div class="version-content">
+                <div class="version-body">
+                    <div class="prompt-section">
+                        <h3>The Full Prompt</h3>
+                        <div class="prompt-text">
+                            Ukraine has been striking deeper into Russia with drones<br><br>
+                            Recently the US declared they would give the Patriot design to Ukraine<br><br>
+                            How does the Patriot compare with the Ukrainian Drones<br><br>
+                            how are they similiar and what are their major differences<br><br>
+                            specultate how the Ukranians may use the design of the patriot to improve the dones they are currently using<br><br>
+                            What impact might this version of the current Ukranian drone with technology appropriated form the Patriot have on the war with russia
+                        </div>
+                    </div>
+
+                    <div class="feedback-cards">
+                        <div class="feedback-card working">
+                            <h4>✦ What's Working</h4>
+                            <p><strong>"Ukraine has been striking deeper into Russia with drones"</strong> — concrete and vivid. Shows motion and escalation rather than abstract policy.</p>
+                            <div class="detail-layer">
+                                <div class="detail-text">This opens with evidence, not theory. The reader immediately understands there's a real capability being demonstrated in the world.</div>
+                            </div>
+                        </div>
+                        <div class="feedback-card missing">
+                            <h4>→ What's Still Missing</h4>
+                            <p>No unifying thread. These are six separate questions, each pointing in a different direction. There's curiosity here, but no clarity about what the investigation actually is.</p>
+                            <div class="detail-layer">
+                                <div class="detail-text">The reader doesn't know if this is about tech specs, strategic outcomes, alliance dynamics, or pure speculation. Each question could be a separate essay.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="callout">
+                        <strong>Why This Stage Matters:</strong> This is where most research begins—with genuine interest scattered across multiple angles. The job of coaching is to help the researcher *choose* which thread to pull.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="connector">
+            + WHAT NEXT VERSION ADDS<br>
+            <div class="connector-arrow">↓</div>
+            <em>Clarifying which questions actually matter</em>
+        </div>
+
+        <!-- VERSION 2 -->
+        <div class="version-block collapsed" id="version-2">
+            <div class="version-header" onclick="toggleVersion(2)">
+                <div style="display: flex; align-items: center; flex: 1;">
+                    <div class="version-number">2</div>
+                    <div class="version-title-area">
+                        <div class="version-title">Strategic Clarity</div>
+                        <div class="dimension-pills">
+                            <span class="dimension-pill">Clarifying questions added</span>
+                            <span class="dimension-pill">Still searching</span>
+                        </div>
+                    </div>
+                </div>
+                <span class="toggle-arrow">▸</span>
+            </div>
+            <div class="version-content">
+                <div class="version-body">
+                    <div class="prompt-section">
+                        <h3>The Full Prompt</h3>
+                        <div class="prompt-text">
+                            [Original six questions]<br><br>
+                            <span class="highlight">How might Ukraine repurpose its design into offensive drones? (technical adaptation)</span><br><br>
+                            <span class="highlight">What would this mean for the war? (strategic impact)</span>
+                        </div>
+                    </div>
+
+                    <div class="feedback-cards">
+                        <div class="feedback-card working">
+                            <h4>✦ What's Working</h4>
+                            <p><strong>You've done the hard work of self-interrogation.</strong> By adding those clarifying questions, you're showing you know which threads matter. That's growth in one cycle.</p>
+                            <div class="detail-layer">
+                                <div class="detail-text">The researcher is beginning to see the shape of their own thinking. They're not just listing questions anymore—they're naming the two directions that actually matter.</div>
+                            </div>
+                        </div>
+                        <div class="feedback-card missing">
+                            <h4>→ What's Still Missing</h4>
+                            <p>You've clarified *what* you want to know, but not *why you care*. The investigation still reads like curiosity, not conviction.</p>
+                            <div class="detail-layer">
+                                <div class="detail-text">A reader should sense why this person is asking. What would change in their understanding if they found the answer? Without that stake, the whole thing feels academic.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="callout">
+                        <strong>Why This Stage Matters:</strong> Clarity about *what* precedes clarity about *why*. Once the researcher can see which questions matter, coaching can move to the deeper question: what's your actual stake in this?
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="connector">
+            + WHAT NEXT VERSION ADDS<br>
+            <div class="connector-arrow">↓</div>
+            <em>Personal conviction about the topic</em>
+        </div>
+
+        <!-- VERSION 3 -->
+        <div class="version-block collapsed" id="version-3">
+            <div class="version-header" onclick="toggleVersion(3)">
+                <div style="display: flex; align-items: center; flex: 1;">
+                    <div class="version-number">3</div>
+                    <div class="version-title-area">
+                        <div class="version-title">Personal Conviction</div>
+                        <div class="dimension-pills">
+                            <span class="dimension-pill">Stakes emerge</span>
+                            <span class="dimension-pill">Topic centered</span>
+                        </div>
+                    </div>
+                </div>
+                <span class="toggle-arrow">▸</span>
+            </div>
+            <div class="version-content">
+                <div class="version-body">
+                    <div class="prompt-section">
+                        <h3>The Full Prompt</h3>
+                        <div class="prompt-text">
+                            [Versions 1 & 2 content]<br><br>
+                            <span class="highlight">i am tracking how innovation actually happens in warfare</span>
+                        </div>
+                    </div>
+
+                    <div class="feedback-cards">
+                        <div class="feedback-card working">
+                            <h4>✦ What's Working</h4>
+                            <p><strong>You've found your "why."</strong> This sentence transforms the entire investigation from "tell me about drones" into "I'm studying a principle."</p>
+                            <div class="detail-layer">
+                                <div class="detail-text">The researcher has named what they actually care about. This is no longer scattered curiosity—it's a systematic inquiry into how warfare drives innovation. That's a research program.</div>
+                            </div>
+                        </div>
+                        <div class="feedback-card missing">
+                            <h4>→ What's Still Missing</h4>
+                            <p>You have conviction about the *topic*, but you haven't yet named the *claim* beneath it. What do you believe about how innovation actually works?</p>
+                            <div class="detail-layer">
+                                <div class="detail-text">There's a difference between "I'm interested in how innovation happens" and "I believe innovation happens faster when..." That claimed principle is the spine of everything that follows.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="callout">
+                        <strong>Why This Stage Matters:</strong> Personal "why" moves the researcher from observer to investigator. Now coaching can push toward the theoretical claim that shapes all the evidence gathering.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="connector">
+            + WHAT NEXT VERSION ADDS<br>
+            <div class="connector-arrow">↓</div>
+            <em>A theoretical claim about how systems actually work</em>
+        </div>
+
+        <!-- VERSION 4 -->
+        <div class="version-block collapsed" id="version-4">
+            <div class="version-header" onclick="toggleVersion(4)">
+                <div style="display: flex; align-items: center; flex: 1;">
+                    <div class="version-number">4</div>
+                    <div class="version-title-area">
+                        <div class="version-title">Theoretical Grounding</div>
+                        <div class="dimension-pills">
+                            <span class="dimension-pill">Specific claim stated</span>
+                            <span class="dimension-pill">Alliance focus</span>
+                        </div>
+                    </div>
+                </div>
+                <span class="toggle-arrow">▸</span>
+            </div>
+            <div class="version-content">
+                <div class="version-body">
+                    <div class="prompt-section">
+                        <h3>The Full Prompt</h3>
+                        <div class="prompt-text">
+                            [Versions 1-3 content]<br><br>
+                            <span class="highlight">that the US-Ukraine relationship reveals something true about how war accelerates technological transfer between allies</span>
+                        </div>
+                    </div>
+
+                    <div class="feedback-cards">
+                        <div class="feedback-card working">
+                            <h4>✦ What's Working</h4>
+                            <p><strong>"The US-Ukraine relationship reveals something true about how war accelerates technological transfer between allies"</strong> — this is your spine. It's not just military history; it's a claim about how *alliances work under pressure*.</p>
+                            <div class="detail-layer">
+                                <div class="detail-text">The researcher has moved from topic (innovation in warfare) to a specific theoretical claim (wartime accelerates technological sharing in alliances). This is the architecture that everything else hangs on.</div>
+                            </div>
+                        </div>
+                        <div class="feedback-card missing">
+                            <h4>→ What's Still Missing</h4>
+                            <p>You have the claim, but not yet the specific question that interrogates it. What exactly are you investigating *within* this principle?</p>
+                            <div class="detail-layer">
+                                <div class="detail-text">The difference between "war accelerates transfer" and "war accelerates *speed of* transfer" matters. The specificity of your question shapes what evidence you'll look for.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="callout">
+                        <strong>Why This Stage Matters:</strong> A clear claim is the filter that separates relevant evidence from distraction. Now the investigator can ask: what evidence would prove or disprove this specific principle?
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="connector">
+            + WHAT NEXT VERSION ADDS<br>
+            <div class="connector-arrow">↓</div>
+            <em>A testable hypothesis focusing the investigation</em>
+        </div>
+
+        <!-- VERSION 5 -->
+        <div class="version-block collapsed" id="version-5">
+            <div class="version-header" onclick="toggleVersion(5)">
+                <div style="display: flex; align-items: center; flex: 1;">
+                    <div class="version-number">5</div>
+                    <div class="version-title-area">
+                        <div class="version-title">Testable Hypothesis</div>
+                        <div class="dimension-pills">
+                            <span class="dimension-pill">Measurable focus</span>
+                            <span class="dimension-pill">Stakes clarified</span>
+                        </div>
+                    </div>
+                </div>
+                <span class="toggle-arrow">▸</span>
+            </div>
+            <div class="version-content">
+                <div class="version-body">
+                    <div class="prompt-section">
+                        <h3>The Full Prompt</h3>
+                        <div class="prompt-text">
+                            [Versions 1-4 content]<br><br>
+                            <span class="highlight">how fast Ukraine can actually weaponize borrowed designs, and whether speed matters to the war's outcome</span>
+                        </div>
+                    </div>
+
+                    <div class="feedback-cards">
+                        <div class="feedback-card working">
+                            <h4>✦ What's Working</h4>
+                            <p><strong>"How fast Ukraine can actually weaponize borrowed designs, and whether speed matters to the war's outcome"</strong> — this is no longer a question. It's a *testable hypothesis with stakes*.</p>
+                            <div class="detail-layer">
+                                <div class="detail-text">The researcher can now look for evidence: Did Ukraine adapt faster because of the alliance? Did that speed change outcomes? This is investigable. It's no longer theory floating in air.</div>
+                            </div>
+                        </div>
+                        <div class="feedback-card missing">
+                            <h4>→ What's Still Missing</h4>
+                            <p>You know what you're investigating, but not yet *how* you'll know when you've answered it. What evidence will you look for?</p>
+                            <div class="detail-layer">
+                                <div class="detail-text">The difference between "I have a question" and "I have a method." A researcher needs to know: What counts as proof? What would change my mind?</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="callout">
+                        <strong>Why This Stage Matters:</strong> A testable hypothesis with measurable outcomes moves the investigation from philosophical to empirical. Now coaching can turn to research design: what evidence matters?
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="connector">
+            + WHAT NEXT VERSION ADDS<br>
+            <div class="connector-arrow">↓</div>
+            <em>Specific focus on evidence and barriers</em>
+        </div>
+
+        <!-- VERSION 6 -->
+        <div class="version-block collapsed" id="version-6">
+            <div class="version-header" onclick="toggleVersion(6)">
+                <div style="display: flex; align-items: center; flex: 1;">
+                    <div class="version-number">6</div>
+                    <div class="version-title-area">
+                        <div class="version-title">Actionable Investigation Scope</div>
+                        <div class="dimension-pills">
+                            <span class="dimension-pill">Barriers identified</span>
+                            <span class="dimension-pill">Ready to research</span>
+                        </div>
+                    </div>
+                </div>
+                <span class="toggle-arrow">▸</span>
+            </div>
+            <div class="version-content">
+                <div class="version-body">
+                    <div class="prompt-section">
+                        <h3>The Full Prompt</h3>
+                        <div class="prompt-text">
+                            [Versions 1-5 content]<br><br>
+                            <span class="highlight">let's focus on Speed of adaptation (timeline from design transfer → working prototype → deployment)</span>
+                        </div>
+                    </div>
+
+                    <div class="feedback-cards">
+                        <div class="feedback-card working">
+                            <h4>✦ What's Working</h4>
+                            <p><strong>Your entire journey is visible in what you've kept.</strong> You started with six separate questions. Now you have one. That's disciplined thinking.</p>
+                            <div class="detail-layer">
+                                <div class="detail-text">The researcher has made dozens of small choices—cutting, clarifying, deepening—that led to this precise focus. Each version was genuinely better than the last.</div>
+                            </div>
+                        </div>
+                        <div class="feedback-card missing">
+                            <h4>→ What's Still Missing</h4>
+                            <p><strong>You're ready to investigate.</strong> The only remaining move is to name the barriers to speed—what you think will matter most in determining whether adaptation happens fast or slow.</p>
+                            <div class="detail-layer">
+                                <div class="detail-text">Are the barriers technical? Manufacturing? Political? Testing? Once you name which barriers you'll hunt for evidence about, your investigation has a clear research plan.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="callout">
+                        <strong>Why This Stage Matters:</strong> This is where coaching ends and research begins. The prompt is now specific enough, grounded enough, and clear enough to drive genuine investigation. The researcher knows what matters and roughly where to look.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- COMPARISON SECTION -->
+        <div class="comparison-section collapsed" id="comparison-section">
+            <div class="comparison-header" onclick="toggleComparison()">
+                <h3>Explore Full Analysis</h3>
+                <span class="comparison-toggle">▸</span>
+            </div>
+            <div class="comparison-content">
+                <div class="comparison-body">
+                    <div class="comparison-cards">
+                        <div class="comparison-card">
+                            <h4>Version 1 — The Starting Point</h4>
+                            <div class="full-prompt">
+                                <strong>Characteristics:</strong> Six separate questions. No unifying thread. Evidence of curiosity but no clarity about direction.<br><br>
+                                <strong>The prompt:</strong> How does the Patriot compare with Ukrainian drones? How are they similar and different? How might Ukrainians use the Patriot design to improve their drones? What impact would this have on the war?<br><br>
+                                <strong>What's missing:</strong> A "why" that ties all these questions together.
+                            </div>
+                        </div>
+                        <div class="comparison-card">
+                            <h4>Version 6 — The Refined Hypothesis</h4>
+                            <div class="full-prompt">
+                                <strong>Characteristics:</strong> Single focus on speed of adaptation. Specific timeline identified. Clear research scope. Ready for investigation.<br><br>
+                                <strong>The prompt:</strong> Speed of adaptation — focusing on the timeline from design transfer to working prototype to deployment. This tests whether rapid technological transfer in wartime alliances actually affects war outcomes.<br><br>
+                                <strong>What's ready:</strong> An investigator who knows what questions matter and why.
+                            </div>
+                        </div>
+                    </div>
+
+                    <table class="delta-table">
+                        <thead>
+                            <tr>
+                                <th>Dimension</th>
+                                <th>Version 1 State</th>
+                                <th>Version 6 State</th>
+                                <th>Impact on Investigation</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="delta-dimension">Research Focus</td>
+                                <td>Six scattered questions</td>
+                                <td>One testable hypothesis</td>
+                                <td>Researcher can now filter evidence; knows what's relevant and what's distraction</td>
+                            </tr>
+                            <tr>
+                                <td class="delta-dimension">Personal Stake</td>
+                                <td>Implied curiosity</td>
+                                <td>Explicit: tracking how innovation actually works in warfare via alliance dynamics</td>
+                                <td>Investigation now has intellectual integrity; reader knows why this person cares</td>
+                            </tr>
+                            <tr>
+                                <td class="delta-dimension">Theoretical Grounding</td>
+                                <td>None articulated</td>
+                                <td>Clear claim about war accelerating technological transfer between allies</td>
+                                <td>Every piece of evidence can be connected to a larger principle; findings become meaningful</td>
+                            </tr>
+                            <tr>
+                                <td class="delta-dimension">Measurable Outcome</td>
+                                <td>Vague impact ("what impact might this have")</td>
+                                <td>Specific timeline mapping with barrier identification</td>
+                                <td>Researcher knows what success looks like; can gather concrete evidence rather than speculation</td>
+                            </tr>
+                            <tr>
+                                <td class="delta-dimension">Depth of Conviction</td>
+                                <td>Casual ("how similar," "speculate")</td>
+                                <td>Committed ("investigating a principle about wartime innovation")</td>
+                                <td>Effort and rigor increase proportionally to intellectual commitment</td>
+                            </tr>
+                            <tr>
+                                <td class="delta-dimension">Research Actionability</td>
+                                <td>Not actionable; too many directions</td>
+                                <td>Highly actionable; clear scope and specific barriers to investigate</td>
+                                <td>Researcher can now write, design interviews, gather data, and build meaningful conclusions</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="score-bars">
+                        <div class="score-bar-item">
+                            <div class="score-label">
+                                <span class="score-label-text">Unity (Single Through-Line)</span>
+                                <span class="score-percent"><span class="percent-value">0</span>%</span>
+                            </div>
+                            <div class="score-bar-container">
+                                <div class="score-bar-fill" data-target="90"></div>
+                            </div>
+                        </div>
+
+                        <div class="score-bar-item">
+                            <div class="score-label">
+                                <span class="score-label-text">Author Position (Explicit Stake)</span>
+                                <span class="score-percent"><span class="percent-value">0</span>%</span>
+                            </div>
+                            <div class="score-bar-container">
+                                <div class="score-bar-fill" data-target="85"></div>
+                            </div>
+                        </div>
+
+                        <div class="score-bar-item">
+                            <div class="score-label">
+                                <span class="score-label-text">Technical Specificity</span>
+                                <span class="score-percent"><span class="percent-value">0</span>%</span>
+                            </div>
+                            <div class="score-bar-container">
+                                <div class="score-bar-fill" data-target="80"></div>
+                            </div>
+                        </div>
+
+                        <div class="score-bar-item">
+                            <div class="score-label">
+                                <span class="score-label-text">Research Actionability</span>
+                                <span class="score-percent"><span class="percent-value">0</span>%</span>
+                            </div>
+                            <div class="score-bar-container">
+                                <div class="score-bar-fill" data-target="88"></div>
+                            </div>
+                        </div>
+
+                        <div class="score-bar-item">
+                            <div class="score-label">
+                                <span class="score-label-text">Intellectual Rigor</span>
+                                <span class="score-percent"><span class="percent-value">0</span>%</span>
+                            </div>
+                            <div class="score-bar-container">
+                                <div class="score-bar-fill" data-target="87"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="key-lesson">
+                        <h4>The Core Coaching Principle</h4>
+                        <p>A strong research question isn't born complete. It emerges through cycles of <strong>clarification, commitment, and constraint</strong>. The researcher began with curiosity scattered across six questions. Through deliberate refinement—first finding clarity about *what* mattered, then conviction about *why*, then a theoretical claim that anchored everything, then a testable hypothesis with measurable scope—the investigation became genuinely actionable. By version 6, the researcher knows not just what they want to know, but why the answer matters, and roughly where to look for evidence. This progression from scattered curiosity to focused investigation is the work of narrative coaching: helping researchers discover the through-line that was always there, hidden in their own best instincts.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>This visualization is built from an actual coaching session. The principles demonstrated here apply to any research question that begins in genuine curiosity but needs shape, stake, and specificity to become real investigation.</p>
+    </footer>
+
+    <script>
+        function toggleVersion(versionNum) {
+            const block = document.getElementById(`version-${versionNum}`);
+            block.classList.toggle('collapsed');
+            block.classList.toggle('expanded');
+        }
+
+        function toggleComparison() {
+            const section = document.getElementById('comparison-section');
+            section.classList.toggle('collapsed');
+            section.classList.toggle('expanded');
+        }
+
+        function toggleAllVersions() {
+            const btn = document.querySelector('.toggle-all-btn');
+            const blocks = document.querySelectorAll('.version-block');
+            const allExpanded = Array.from(blocks).every(b => b.classList.contains('expanded'));
+            
+            blocks.forEach(block => {
+                if (allExpanded) {
+                    block.classList.add('collapsed');
+                    block.classList.remove('expanded');
+                } else {
+                    block.classList.add('expanded');
+                    block.classList.remove('collapsed');
+                }
+            });
+
+            btn.textContent = allExpanded ? 'Expand All ▸' : 'Collapse All ▾';
+        }
+
+        function scrollToVersion(versionNum) {
+            const block = document.getElementById(`version-${versionNum}`);
+            if (block.classList.contains('collapsed')) {
+                toggleVersion(versionNum);
+            }
+            block.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function scrollToComparison() {
+            const section = document.getElementById('comparison-section');
+            if (section.classList.contains('collapsed')) {
+                toggleComparison();
+            }
+            section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // Animate score bars on scroll
+        function animateScoreBars() {
+            const bars = document.querySelectorAll('.score-bar-fill');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const target = entry.target.getAttribute('data-target');
+                        entry.target.style.width = target + '%';
+                        const percentSpan = entry.target.parentElement.parentElement.querySelector('.percent-value');
+                        
+                        let current = 0;
+                        const increment = target / 40;
+                        const counter = setInterval(() => {
+                            current += increment;
+                            if (current >= target) {
+                                current = target;
+                                clearInterval(counter);
+                            }
+                            percentSpan.textContent = Math.round(current);
+                        }, 20);
+                        
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            bars.forEach(bar => observer.observe(bar));
+        }
+
+        document.addEventListener('DOMContentLoaded', animateScoreBars);
+    </script>
+</body>
+</html>
