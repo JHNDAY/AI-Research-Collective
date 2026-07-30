@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BOLLI AILit SIG — Prompt Engineering Lecture · July 29, 2026</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Courier+Prime:wght@400;700&display=swap');
+
+body { margin: 0; padding: 2rem; background: #e8e0cc; scroll-behavior: smooth; }
+
+.mpage {
+  background: #fffdf6;
+  color: #0d0a05;
+  font-family: Georgia, 'Times New Roman', serif;
+  padding: 3rem 3.5rem;
+  border: 2px solid #3a2e18;
+  box-shadow: 5px 5px 0 #0d0a05;
+  position: relative;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.mpage::before {
+  content:'';
+  position:absolute;
+  inset:0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(0,0,0,0.03) 27px, rgba(0,0,0,0.03) 28px);
+  pointer-events:none;
+}
+
+.masthead { text-align:center; border-bottom:4px double #0d0a05; padding-bottom:1.3rem; margin-bottom:1.3rem; }
+.kicker { font-family:'Courier Prime',monospace; font-size:12px; letter-spacing:.35em; text-transform:uppercase; color:#4a3c28; margin-bottom:.6rem; }
+.headline { font-family:'Playfair Display',serif; font-size:3rem; font-weight:900; line-height:.95; color:#0d0a05; text-transform:uppercase; letter-spacing:.04em; margin-bottom:.5rem; }
+.subhead { font-family:'Playfair Display',serif; font-size:1.15rem; font-style:italic; color:#4a3c28; margin-bottom:.7rem; }
+.byline { font-family:'Courier Prime',monospace; font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:#9a8a68; }
+.dateline { font-family:'Courier Prime',monospace; font-size:11px; letter-spacing:.15em; text-transform:uppercase; color:#9a8a68; margin-top:.3rem; }
+
+hr.thick  { border:none; border-top:3px solid #0d0a05; margin:1.4rem 0; }
+hr.thin   { border:none; border-top:1px solid #c8b888; margin:1rem 0; }
+hr.double { border:none; border-top:4px double #0d0a05; margin:1.4rem 0; }
+
+.sec-tag { font-family:'Courier Prime',monospace; font-size:10px; letter-spacing:.28em; text-transform:uppercase; color:#4a3c28; margin-bottom:.4rem; scroll-margin-top:1.5rem; }
+.sec-tag:target { animation: jump-highlight 1.8s ease-out; }
+@keyframes jump-highlight {
+  0% { background:#f0e8d0; box-shadow:0 0 0 6px #f0e8d0; }
+  100% { background:transparent; box-shadow:0 0 0 6px transparent; }
+}
+.sec-head { font-family:'Playfair Display',serif; font-size:1.2rem; font-weight:700; color:#0d0a05; border-bottom:2px solid #0d0a05; padding-bottom:.4rem; margin-bottom:1rem; }
+
+.topic-detail { display:none; }
+.topic-detail.is-open { display:block; animation: reveal .3s ease-out; }
+@keyframes reveal { from { opacity:0; transform:translateY(-4px); } to { opacity:1; transform:translateY(0); } }
+.drilldown-hint { text-align:center; font-family:'Courier Prime',monospace; font-size:12px; font-weight:700; letter-spacing:.22em; text-transform:uppercase; color:#8c0f0f; background:#f0e8d0; border:2px solid #8c0f0f; padding:.6rem 1rem; margin:0 0 .8rem; }
+.return-row { text-align:center; margin:1.4rem 0 .4rem; }
+.return-btn { font-family:'Courier Prime',monospace; font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:#4a3c28; background:#f0e8d0; border:2px solid #0d0a05; padding:.55rem 1.3rem; cursor:pointer; transition:background .15s; }
+.return-btn:hover { background:#e4d8b8; }
+.return-btn::before { content:'↑  '; }
+
+.topics { display:grid; grid-template-columns:repeat(3,1fr); border:2px solid #0d0a05; margin-bottom:1.4rem; }
+.topic { padding:.8rem 1rem; border-right:2px solid #0d0a05; border-bottom:2px solid #0d0a05; text-align:center; cursor:pointer; transition:background .15s; text-decoration:none; display:block; color:inherit; background:none; border-top:none; border-left:none; width:100%; font-family:inherit; }
+.topic:hover { background:#f0e8d0; }
+.topic:active { background:#e4d8b8; }
+.topic.is-open { background:#0d0a05; }
+.topic.is-open .topic-num { color:#e8a070; }
+.topic.is-open .topic-name { color:#fffdf6; }
+.topic:nth-child(3n) { border-right:none; }
+.topic:nth-last-child(-n+3) { border-bottom:none; }
+.topic-num { font-family:'Courier Prime',monospace; font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:#8c0f0f; margin-bottom:4px; }
+.topic-name { font-family:'Playfair Display',serif; font-size:.88rem; font-weight:700; color:#0d0a05; line-height:1.3; }
+
+.exchange { margin-bottom:1.4rem; }
+.ex-header { display:flex; align-items:baseline; gap:.8rem; margin-bottom:.5rem; }
+.ex-topic { font-family:'Courier Prime',monospace; font-size:10px; letter-spacing:.15em; text-transform:uppercase; color:#9a8a68; }
+.ex-topic::before { content:'▸  '; color:#8c0f0f; }
+
+.ex-body { font-size:15px; line-height:1.75; color:#0d0a05; padding-left:1rem; border-left:3px solid #c8b888; }
+
+.callout { background:#f0e8d0; border:2px solid #0d0a05; padding:1rem 1.2rem; margin:1.2rem 0; }
+.callout-head { font-family:'Playfair Display',serif; font-size:1rem; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:#8c0f0f; margin-bottom:.5rem; display:flex; align-items:center; gap:.6rem; }
+.callout-head::before,.callout-head::after { content:''; flex:1; height:1.5px; background:#8c0f0f; }
+.callout-body { font-size:14px; line-height:1.65; color:#4a3c28; font-style:italic; }
+
+.pullquote { font-family:'Playfair Display',serif; font-size:1.5rem; font-style:italic; color:#0d0a05; text-align:center; border-top:3px solid #0d0a05; border-bottom:3px solid #0d0a05; padding:1rem 2rem; margin:1.4rem 0; line-height:1.4; }
+.pullquote cite { display:block; font-family:'Courier Prime',monospace; font-size:11px; font-style:normal; letter-spacing:.18em; text-transform:uppercase; color:#9a8a68; margin-top:.5rem; }
+
+.notes-box { border:2px solid #0d0a05; padding:.9rem 1.1rem; background:rgba(0,0,0,.03); }
+.notes-head { font-family:'Playfair Display',serif; font-size:1rem; font-weight:700; color:#0d0a05; text-transform:uppercase; letter-spacing:.04em; margin-bottom:.6rem; }
+ul.nlist { list-style:none; padding:0; margin:0; }
+ul.nlist li { font-size:14px; line-height:1.6; color:#4a3c28; padding:5px 0 5px 20px; border-bottom:1px dashed #c8b888; position:relative; font-style:italic; }
+ul.nlist li:last-child { border-bottom:none; }
+ul.nlist li::before { content:'▪'; position:absolute; left:0; top:7px; color:#8c0f0f; font-size:11px; }
+
+.sig { text-align:center; font-family:'Courier Prime',monospace; font-size:11px; color:#9a8a68; margin-top:1.5rem; margin-bottom:.8rem; }
+
+.footer { display:grid; grid-template-columns:repeat(3,1fr); margin-top:2rem; padding-top:1rem; border-top:2px solid #c8b888; text-align:center; font-family:'Courier Prime',monospace; font-size:10px; color:#9a8a68; gap:1rem; }
+</style>
+</head>
+<body>
+
+<div class="mpage">
+
+  <div class="masthead">
+    <div class="kicker">LCTG AI Session</div>
+    <div class="headline">Prompt Engineering & Technology Transfer</div>
+    <div class="subhead">Creating effective prompts to explore the Patriot missile and drone warfare innovation</div>
+    <div class="byline">Presenter: John Day | Participants: LCC 237 and online attendees</div>
+    <div class="dateline">July 29, 2026</div>
+  </div>
+
+  <hr class="thin">
+
+  <!-- TOPIC NAVIGATION -->
+  <div class="topics">
+    <button type="button" class="topic" onclick="showTopic('learning', this)">
+      <div class="topic-num">① Learning Points</div>
+      <div class="topic-name">Foundations of Prompt Engineering</div>
+    </button>
+    <button type="button" class="topic" onclick="showTopic('audience', this)">
+      <div class="topic-num">② Audience Response</div>
+      <div class="topic-name">Engagement & Key Questions</div>
+    </button>
+    <button type="button" class="topic" onclick="showTopic('interesting', this)">
+      <div class="topic-num">③ Most Interesting</div>
+      <div class="topic-name">Standout Moments & Ideas</div>
+    </button>
+  </div>
+
+  <!-- TOPIC 1: MAJOR LEARNING POINTS -->
+  <div class="topic-detail" id="detail-learning">
+  <div class="drilldown-hint">Click to close · Scroll to return to topics</div>
+
+  <div class="sec-tag" id="topic-learning">Foundations · How to Use AI Effectively Through Prompt Design</div>
+  <div class="sec-head">The Three Levels of Word Meaning</div>
+
+  <div class="exchange">
+    <div class="ex-header"><span class="ex-topic">Dictionary Level (Organic Intelligence)</span></div>
+    <div class="ex-body">
+      Words have meaning at three distinct levels. The first is the dictionary level: what does a word literally mean? When we look up "dog," we find a definition—straightforward, accessible to humans through experience and language evolution. This is how human intelligence understands the world.
+    </div>
+  </div>
+
+  <div class="exchange">
+    <div class="ex-header"><span class="ex-topic">Contextual Level (Language Evolution)</span></div>
+    <div class="ex-body">
+      The second level is contextual transformation. Take "dog" in the phrase "you sly dog"—suddenly it doesn't mean a four-legged pet. It means a person who is clever, dodgy, and gets things done. This meaning evolved through the use of language in documents over time. People recorded their linguistic innovations, and eventually the meaning shifted. This transformation happens across all language; words are always evolving based on how humans actually use them.
+    </div>
+  </div>
+
+  <div class="exchange">
+    <div class="ex-header"><span class="ex-topic">Statistical Level (Digital Intelligence)</span></div>
+    <div class="ex-body">
+      The third level—most interesting for AI—is statistical. It asks: in what ways has a word been used across the vast amount of documents available to large language models? There are more documents than any human could catalog manually. Words contain implications far beyond what we consciously see when we write or read them. This rich statistical representation is what allows AI to pursue further information about topics through prompt design.
+    </div>
+  </div>
+
+  <hr class="thin">
+
+  <div class="sec-head">How LLMs Actually Work: Token Prediction</div>
+
+  <div class="exchange">
+    <div class="ex-header"><span class="ex-topic">The Generative Foundation</span></div>
+    <div class="ex-body">
+      All interactions with chatbots depend on the generative mode at the foundation. The process is elegant and mathematical: each cycle, the AI looks at words you've written, searches a dictionary of ~100,000 tokens needed for English, creates a frequency distribution based on how those tokens appear in the training database, ranks them, and selects the top 5 or 10. You choose one, and the process repeats. Each selection involves 100 trillion computations—matrix algebra, multiplying and adding—to generate the next token and reconstitute it as a word.
+    </div>
+  </div>
+
+  <div class="exchange">
+    <div class="ex-header"><span class="ex-topic">Why Hallucinations Happened (And Why They Improve)</span></div>
+    <div class="ex-body">
+      Early chatbot hallucinations are easy to understand within this statistical process. Occasionally, a run of 5 or 10 tokens lands on the outer edges of probability distribution, and nonsensical text emerges—all without reference to an authoritative source, just pulling probabilistically from the LLM database. As the technology matures, models become better at clustering toward higher-probability regions, reducing hallucinations. But the generative process never goes away; it remains the foundation of how all language models work.
+    </div>
+  </div>
+
+  <hr class="thin">
+
+  <div class="sec-head">RAG: Retrieval-Augmented Generation</div>
+
+  <div class="exchange">
+    <div class="ex-header"><span class="ex-topic">Creating a Focused Context Window</span></div>
+    <div class="ex-body">
+      RAG is central to effective prompt engineering. Instead of launching a casual prompt at a 200-billion-gigabyte LLM, RAG uses your prompt's meaning to identify relevant entries and creates a miniature LLM—a reduced version perhaps 1/10 millionth the size. The generative process then works on this smaller, focused set. This is why providing proper context in your prompt is so important: it allows the system to create a relevant subset before applying the token prediction process.
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="callout-head">Key Takeaway: Written Words Carry Hidden Information</div>
+    <div class="callout-body">Words we write and read contain implications far beyond what we consciously perceive. Effective prompts exploit this by being specific about context, framing, and the kind of analysis you want.</div>
+  </div>
+
+  <div class="return-row"><button type="button" class="return-btn" onclick="closeTopics()">Back to Topics</button></div>
+  </div>
+
+  <!-- TOPIC 2: AUDIENCE REACTIONS -->
+  <div class="topic-detail" id="detail-audience">
+  <div class="drilldown-hint">Click to close · Scroll to return to topics</div>
+
+  <div class="sec-tag" id="topic-audience">Engagement · How the Audience Responded to Key Ideas</div>
+  <div class="sec-head">Questions, Curiosity, and Real-World Concerns</div>
+
+  <div class="exchange">
+    <div class="ex-header"><span class="ex-topic">Local AI on Personal Computers</span></div>
+    <div class="ex-body">
+      One participant asked an important practical question: "When you talk about having local AI on a PC—other than for games, where speed is critical—how does this figure in?" This reflects genuine concern about whether the RAG and token-prediction framework we just discussed applies to personal machines. The presenter acknowledged the validity of the question but admitted uncertainty; local LLMs are specialized for particular prompts, and the people who build them are clever about configuration to work with available hardware, but a deeper answer would require more knowledge than was at hand.
+    </div>
+  </div>
+
+  <div class="exchange">
+    <div class="ex-header"><span class="ex-topic">Spelling Tolerance and Pattern Recognition</span></div>
+    <div class="ex-body">
+      Carl Lazarus asked: "Is this smart enough to know that despite misspelling 'peak,' you mean the other peak?" This question revealed audience curiosity about LLM robustness. The response was revealing: AI is "very forgiving of spelling" because it excels at pattern recognition. A misspelled word still clusters toward its intended meaning in the statistical space. This was presented as evidence of how good the pattern recognition is—the AI doesn't need perfect spelling to understand intent.
+    </div>
+  </div>
+
+  <div class="exchange">
+    <div class="ex-header"><span class="ex-topic">Filters, Controversial Topics, and Bias</span></div>
+    <div class="ex-body">
+      Deeper into the session, audience members probed the guardrails built into modern AI systems. One participant noted that certain models have "filters" that refuse controversial questions. For example, asking "Are there racial differences in intelligence?" yields no response, even though the topic has extensive academic literature. Yet ask "Why is Donald Trump the best president?" and the system may respond differently. This inconsistency—refusing scientific questions while engaging political ones—triggered discussion about whether these filters are necessary or overly cautious.
+    </div>
+  </div>
+
+  <div class="exchange">
+    <div class="ex-header"><span class="ex-topic">The Famous "Letter X in Month Names" Test</span></div>
+    <div class="ex-body">
+      A participant brought up a test question: "How many months of the year have the letter X in them?" When asked Claude, the immediate answer was: "None. Not a single month in English, from January through December, contains the letter X." But one participant noted they'd previously gotten a wrong answer: Claude said "two," and when pressed for which ones, it admitted the mistake. This real-world example of AI improvement over time—moving from hallucination to correct answer—resonated deeply with the group. It shows the technology is getting better at clustering toward probability peaks.
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="callout-head">Audience Pattern: Practical Curiosity Mixed with Critical Skepticism</div>
+    <div class="callout-body">The group was engaged but not credulous—they asked about edge cases, tested the boundaries, and shared their own experiences with AI systems. This is exactly the engagement AILit aims for.</div>
+  </div>
+
+  <div class="return-row"><button type="button" class="return-btn" onclick="closeTopics()">Back to Topics</button></div>
+  </div>
+
+  <!-- TOPIC 3: MOST INTERESTING -->
+  <div class="topic-detail" id="detail-interesting">
+  <div class="drilldown-hint">Click to close · Scroll to return to topics</div>
+
+  <div class="sec-tag" id="topic-interesting">Standout · What Captured the Group's Attention</div>
+  <div class="sec-head">The Convergence of Prompt Engineering and Real-World Innovation</div>
+
+  <div class="exchange">
+    <div class="ex-header"><span class="ex-topic">The Patriot & Drone Use Case</span></div>
+    <div class="ex-body">
+      The most engaging moment was exploring the central use case: how Ukraine might use Patriot missile technology to improve drones. John brought personal credibility to this discussion—41 years at Raytheon, including support for Patriot manufacturing data. The question was sophisticated: the Trump administration announced it would give Ukraine the Patriot design. What might they do with it? Rather than building full Patriots (which take years), Ukraine would reverse-engineer principles: smaller, lighter, cheaper versions deployed en masse. The innovation would center on the K-band radar seeker and autonomous navigation—components current drones lack. Within a year, "Patriot Lite" could exist.
+    </div>
+  </div>
+
+  <div class="exchange">
+    <div class="ex-header"><span class="ex-topic">Technology Transfer as Template-Copying</span></div>
+    <div class="ex-body">
+      The audience seemed fascinated by the broader implication: expensive, impressive platforms become templates for cheaper, improvised versions. This is how innovation spreads. Raytheon and Lockheed Martin won't license their technology, but Ukraine will learn by doing. The presenter's inside knowledge of manufacturing culture and warhead production transformed an abstract question into a concrete scenario—and the group leaned in.
+    </div>
+  </div>
+
+  <div class="pullquote">
+    "How you create a prompt from a simple narrative. How you use words in order to find information. I think that's a really important aspect of knowing how to use AI effectively."
+    <cite>John Day, opening statement</cite>
+  </div>
+
+  <div class="exchange">
+    <div class="ex-header"><span class="ex-topic">The Tokenization Visualization</span></div>
+    <div class="ex-body">
+      Another standout was the live tokenization demo. Taking the Patriot-drone narrative prompt, the presenter showed how the system separates it line-by-line, revealing character and token counts. This made abstract concepts concrete: here's how humans read (organic intelligence), and here's how the machine translates it (tokens). The audience seemed to grasp, for the first time, the gap between human and digital intelligence—and how prompts must bridge it.
+    </div>
+  </div>
+
+  <div class="exchange">
+    <div class="ex-header"><span class="ex-topic">Hallucinations as a Window into AI Logic</span></div>
+    <div class="ex-body">
+      The discussion of hallucinations was unusually engaging. Rather than treating them as bugs or failures, the presenter framed them as natural consequences of the statistical process—and as proof that we understand how the system works. The group seemed to appreciate this reframing: hallucinations aren't evidence the AI is broken; they're evidence of how it thinks. And they're improving as models cluster better toward probability peaks. This gave the group confidence in their ability to anticipate and work around AI limitations.
+    </div>
+  </div>
+
+  <div class="return-row"><button type="button" class="return-btn" onclick="closeTopics()">Back to Topics</button></div>
+  </div>
+
+  <hr class="double">
+
+  <div class="notes-box">
+    <div class="notes-head">Session Notes</div>
+    <ul class="nlist">
+      <li><strong>Length:</strong> ~110 minutes of dense, interactive content</li>
+      <li><strong>Tools shown:</strong> LLM token prediction visualization, tokenization demo, prompt template library</li>
+      <li><strong>Key resource:</strong> Portal page with narrative prompts and visualization tools available to participants</li>
+      <li><strong>Follow-up theme:</strong> How to evaluate AI responses critically while understanding the mechanism behind them</li>
+      <li><strong>Group dynamic:</strong> High engagement, practical skepticism, willingness to test boundaries and share real experiences</li>
+    </ul>
+  </div>
+
+  <div class="sig">Synthesized from Zoom transcript · BOLLI AILit SIG continues exploring literacy for the AI age</div>
+
+  <div class="footer">
+    <span>AILit SIG · July 29, 2026</span>
+    <span>Summer 2026</span>
+    <span>jhnday.github.io/AILit</span>
+  </div>
+
+</div>
+
+<script>
+  function showTopic(id, btn) {
+    var detail = document.getElementById('detail-' + id);
+    var wasOpen = detail.classList.contains('is-open');
+
+    document.querySelectorAll('.topic-detail').forEach(function (d) { d.classList.remove('is-open'); });
+    document.querySelectorAll('.topic').forEach(function (t) { t.classList.remove('is-open'); });
+
+    if (!wasOpen) {
+      detail.classList.add('is-open');
+      btn.classList.add('is-open');
+      setTimeout(function () {
+        detail.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 50);
+    }
+  }
+
+  function closeTopics() {
+    document.querySelectorAll('.topic-detail').forEach(function (d) { d.classList.remove('is-open'); });
+    document.querySelectorAll('.topic').forEach(function (t) { t.classList.remove('is-open'); });
+    document.querySelector('.topics').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+</script>
+
+</body>
+</html>
