@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zoom Login Sequence - BOLLI Current Events</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 50px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .flow-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .flow-section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .flow-section.first-time h2 {
+            border-bottom-color: #667eea;
+            color: #667eea;
+        }
+
+        .flow-section.subsequent h2 {
+            border-bottom-color: #10b981;
+            color: #10b981;
+        }
+
+        .step {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+        }
+
+        .step-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .flow-section.first-time .step-number {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .flow-section.subsequent .step-number {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-title {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+            color: #2d3748;
+        }
+
+        .step-description {
+            color: #718096;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .arrow {
+            text-align: center;
+            font-size: 1.5rem;
+            color: #cbd5e0;
+            margin: 5px 0;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border-left: 4px solid #0284c7;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-size: 0.95rem;
+            color: #0c4a6e;
+        }
+
+        .flow-section.subsequent .highlight-box {
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            border-left-color: #10b981;
+            color: #065f46;
+        }
+
+        .comparison-section {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            grid-column: 1 / -1;
+        }
+
+        .comparison-section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            text-align: center;
+            color: #2d3748;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .comparison-card {
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .comparison-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .comparison-card.first-time h3 {
+            color: #667eea;
+        }
+
+        .comparison-card.first-time h3::before {
+            content: "⏱️";
+            font-size: 1.5rem;
+        }
+
+        .comparison-card.subsequent h3 {
+            color: #10b981;
+        }
+
+        .comparison-card.subsequent h3::before {
+            content: "⚡";
+            font-size: 1.5rem;
+        }
+
+        .comparison-list {
+            list-style: none;
+        }
+
+        .comparison-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .comparison-list li:last-child {
+            border-bottom: none;
+        }
+
+        .comparison-list li::before {
+            content: "✓";
+            color: #10b981;
+            font-weight: bold;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .comparison-card.first-time .comparison-list li::before {
+            color: #667eea;
+        }
+
+        .tips-section {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 40px;
+            border-left: 5px solid #f59e0b;
+            grid-column: 1 / -1;
+        }
+
+        .tips-section h3 {
+            font-size: 1.3rem;
+            color: #92400e;
+            margin-bottom: 15px;
+        }
+
+        .tips-section ul {
+            list-style-position: inside;
+            color: #78350f;
+            line-height: 1.8;
+        }
+
+        .tips-section li {
+            margin-bottom: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Zoom Login Sequence</h1>
+            <p>BOLLI Current Events Discussion Groups</p>
+        </div>
+
+        <!-- Two Flow Sections -->
+        <div class="content-grid">
+            <!-- First Time Flow -->
+            <div class="flow-section first-time">
+                <h2>First Time Setup</h2>
+                
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <div class="step-title">Download Zoom App</div>
+                        <div class="step-description">Download the Zoom application to your device (computer, tablet, or phone)</div>
+                    </div>
+                </div>
+
+                <div class="arrow">↓</div>
+
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <div class="step-title">Open Zoom App</div>
+                        <div class="step-description">Launch the Zoom application</div>
+                    </div>
+                </div>
+
+                <div class="arrow">↓</div>
+
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <div class="step-title">Create Account or Sign In</div>
+                        <div class="step-description">Create a free Zoom account with your email, or sign in with Google/Microsoft/Apple ID</div>
+                    </div>
+                </div>
+
+                <div class="arrow">↓</div>
+
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <div class="step-title">Click the Meeting Link</div>
+                        <div class="step-description">Click or copy-paste the meeting URL:<br><code style="background: #f5f5f5; padding: 5px 8px; border-radius: 4px;">https://brandeis.zoom.us/j/92280950998?pwd=...</code></div>
+                    </div>
+                </div>
+
+                <div class="arrow">↓</div>
+
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <div class="step-title">Join Meeting</div>
+                        <div class="step-description">You're authenticated and joined with your identity recognized</div>
+                    </div>
+                </div>
+
+                <div class="highlight-box">
+                    <strong>⏱️ Time Required:</strong> Approximately 5-10 minutes (one time only)
+                </div>
+            </div>
+
+            <!-- Subsequent Times Flow -->
+            <div class="flow-section subsequent">
+                <h2>Subsequent Sessions</h2>
+                
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <div class="step-title">You're Already Logged In</div>
+                        <div class="step-description">Your Zoom app remains logged in from the first session (unless you manually log out)</div>
+                    </div>
+                </div>
+
+                <div class="arrow">↓</div>
+
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <div class="step-title">Click the Meeting Link</div>
+                        <div class="step-description">Click or copy-paste the same meeting URL:<br><code style="background: #f5f5f5; padding: 5px 8px; border-radius: 4px;">https://brandeis.zoom.us/j/92280950998?pwd=...</code></div>
+                    </div>
+                </div>
+
+                <div class="arrow">↓</div>
+
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <div class="step-title">Join Immediately</div>
+                        <div class="step-description">You're already authenticated—one click and you're in the meeting with your identity recognized</div>
+                    </div>
+                </div>
+
+                <div class="highlight-box">
+                    <strong>⚡ Time Required:</strong> Less than 1 minute (just one click!)
+                </div>
+            </div>
+        </div>
+
+        <!-- Comparison Section -->
+        <div class="comparison-section">
+            <h2>Quick Comparison</h2>
+            
+            <div class="comparison-grid">
+                <div class="comparison-card first-time">
+                    <h3>First Time</h3>
+                    <ul class="comparison-list">
+                        <li>Download Zoom app</li>
+                        <li>Create account</li>
+                        <li>Sign in to app</li>
+                        <li>Click meeting link</li>
+                        <li>5-10 minutes total</li>
+                        <li>One-time setup</li>
+                    </ul>
+                </div>
+
+                <div class="comparison-card subsequent">
+                    <h3>Every Meeting After</h3>
+                    <ul class="comparison-list">
+                        <li>App is still logged in</li>
+                        <li>No login needed</li>
+                        <li>Click meeting link</li>
+                        <li>Join instantly</li>
+                        <li>Less than 1 minute</li>
+                        <li>Same smooth experience</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tips Section -->
+        <div class="tips-section">
+            <h3>💡 Tips for BOLLI Members</h3>
+            <ul>
+                <li><strong>Do this once:</strong> The initial setup takes just one meeting—after that, it's effortless.</li>
+                <li><strong>Bookmark the link:</strong> Save your meeting URL to your browser favorites for quick access.</li>
+                <li><strong>Test your audio/video:</strong> Join a few minutes early to test your microphone and camera before the discussion begins.</li>
+                <li><strong>You're automatically recognized:</strong> Once you're logged into the Zoom app, facilitators Sally, George, and John can track attendance and identify participants.</li>
+                <li><strong>Stay logged in:</strong> Don't log out of the Zoom app between sessions—you'll stay logged in automatically for each Wednesday's meeting.</li>
+                <li><strong>Questions?</strong> Contact John Day at jhnday@gmail.com if you have any setup issues.</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
