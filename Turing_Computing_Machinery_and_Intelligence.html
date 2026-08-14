@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Computing Machinery and Intelligence — Alan M. Turing</title>
+<link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=IM+Fell+English+SC&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1008;
+    --ink-faded: #2e1f0a;
+    --parchment: #e8d9b0;
+    --parchment-dark: #d4be8a;
+    --parchment-shadow: #b89e6a;
+    --rule: #6b4c1e;
+    --ornament: #5a3e10;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #3a2e1a;
+    background-image:
+      radial-gradient(ellipse at center, #4a3a20 0%, #1e1508 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 40px 20px;
+    font-family: 'IM Fell English', serif;
+  }
+
+  .page {
+    width: 760px;
+    max-width: 100%;
+    background: var(--parchment);
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E"),
+      linear-gradient(160deg, #edddb8 0%, #e2cb98 40%, #d8bf88 70%, #e4d0a2 100%);
+    box-shadow:
+      0 0 0 1px var(--parchment-shadow),
+      0 4px 8px rgba(0,0,0,0.4),
+      0 16px 40px rgba(0,0,0,0.5),
+      inset 0 0 60px rgba(120,80,20,0.15);
+    padding: 60px 70px;
+    position: relative;
+    color: var(--ink);
+    animation: pageReveal 1.2s ease-out;
+  }
+
+  @keyframes pageReveal {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Aged corners */
+  .page::before, .page::after {
+    content: '';
+    position: absolute;
+    width: 60px; height: 60px;
+    background: radial-gradient(ellipse at corner, rgba(90,60,10,0.3), transparent 70%);
+  }
+  .page::before { top: 0; left: 0; border-radius: 0 0 100% 0; }
+  .page::after  { bottom: 0; right: 0; border-radius: 100% 0 0 0; }
+
+  /* ── MASTHEAD ── */
+  .masthead {
+    text-align: center;
+    margin-bottom: 18px;
+  }
+
+  .blackletter {
+    font-family: 'UnifrakturMaguntia', cursive;
+    font-size: 2.2rem;
+    color: var(--ink);
+    letter-spacing: 2px;
+    line-height: 1.1;
+    text-shadow: 1px 1px 0 rgba(90,60,10,0.3);
+  }
+
+  .journal-header {
+    font-family: 'IM Fell English SC', serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    color: var(--ink-faded);
+    margin-top: 4px;
+  }
+
+  /* ── RULES ── */
+  .rule-thick {
+    border: none;
+    border-top: 3px double var(--rule);
+    margin: 10px 0;
+  }
+  .rule-thin {
+    border: none;
+    border-top: 1px solid var(--rule);
+    margin: 6px 0;
+  }
+  .rule-ornamental {
+    text-align: center;
+    font-size: 1.1rem;
+    color: var(--ornament);
+    margin: 8px 0;
+    letter-spacing: 0.5em;
+    opacity: 0.75;
+  }
+
+  /* ── COLUMN HEADLINE ── */
+  .headline-block {
+    text-align: center;
+    margin: 16px 0 12px;
+  }
+
+  .kicker {
+    font-family: 'IM Fell English SC', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    color: var(--ink-faded);
+    text-transform: uppercase;
+  }
+
+  h1.speech-title {
+    font-family: 'IM Fell English SC', serif;
+    font-size: 1.5rem;
+    font-weight: normal;
+    line-height: 1.25;
+    color: var(--ink);
+    margin: 6px 0 4px;
+    letter-spacing: 0.05em;
+  }
+
+  h2.speech-subtitle {
+    font-family: 'IM Fell English', serif;
+    font-style: italic;
+    font-size: 0.9rem;
+    font-weight: normal;
+    color: var(--ink-faded);
+    margin: 2px 0;
+  }
+
+  .dateline {
+    font-family: 'IM Fell English SC', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--ink-faded);
+    margin-top: 6px;
+  }
+
+  /* ── BODY TEXT ── */
+  .speech-body {
+    column-count: 2;
+    column-gap: 32px;
+    column-rule: 1px solid var(--parchment-shadow);
+    margin-top: 16px;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  .speech-body p {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    margin-bottom: 0.8em;
+    color: var(--ink);
+  }
+
+  .speech-body p:first-child::first-letter {
+    font-family: 'IM Fell English SC', serif;
+    font-size: 3.6rem;
+    float: left;
+    line-height: 0.82;
+    margin-right: 5px;
+    margin-top: 6px;
+    color: var(--ink);
+  }
+
+  /* Section headers */
+  .section-header {
+    font-family: 'IM Fell English SC', serif;
+    font-size: 1rem;
+    font-weight: normal;
+    color: var(--ink);
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    text-transform: capitalize;
+    letter-spacing: 0.05em;
+  }
+
+  /* Subsection headers */
+  .subsection-header {
+    font-family: 'IM Fell English', serif;
+    font-style: italic;
+    font-size: 0.9rem;
+    color: var(--ink-faded);
+    margin-top: 0.8em;
+    margin-bottom: 0.4em;
+  }
+
+  /* Question/quote styling */
+  .question {
+    font-style: italic;
+    border-left: 2px solid var(--parchment-shadow);
+    padding-left: 10px;
+    margin: 0.5em 0 0.8em;
+    color: var(--ink-faded);
+  }
+
+  /* ── FOOTER ── */
+  .footer-block {
+    margin-top: 28px;
+    text-align: center;
+  }
+
+  .colophon {
+    font-family: 'IM Fell English SC', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--ink-faded);
+    margin-top: 10px;
+  }
+
+  .ornament-footer {
+    font-size: 1.4rem;
+    color: var(--ornament);
+    opacity: 0.6;
+    letter-spacing: 0.8em;
+    margin-top: 6px;
+  }
+
+  /* Stain / age mark accents */
+  .stain {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(120,80,20,0.12), transparent 70%);
+    pointer-events: none;
+  }
+  .stain-1 { width:120px; height:80px; top:80px; right:40px; transform: rotate(-20deg); }
+  .stain-2 { width:90px;  height:60px; bottom:140px; left:30px; transform: rotate(15deg); }
+</style>
+</head>
+<body>
+<article class="page">
+
+  <!-- Age stains -->
+  <div class="stain stain-1"></div>
+  <div class="stain stain-2"></div>
+
+  <!-- Masthead -->
+  <div class="masthead">
+    <div class="blackletter">MIND</div>
+    <div class="journal-header">A Quarterly Review of Psychology and Philosophy &nbsp;·&nbsp; Vol. LIX, No. 236 &nbsp;·&nbsp; October, 1950</div>
+  </div>
+
+  <hr class="rule-thick">
+  <hr class="rule-thin">
+
+  <!-- Headline -->
+  <div class="headline-block">
+    <div class="kicker">Part I: A Question Reformulated</div>
+    <h1 class="speech-title">Computing Machinery<br>and Intelligence</h1>
+    <h2 class="speech-subtitle">By A. M. Turing</h2>
+    <div class="dateline">University of Manchester</div>
+  </div>
+
+  <hr class="rule-thin">
+  <div class="rule-ornamental">❧ &nbsp; ✦ &nbsp; ❧</div>
+  <hr class="rule-thin">
+
+  <!-- Speech body -->
+  <div class="speech-body">
+    <p>
+      I propose to consider the question, 'Can machines think?' This should begin with definitions of the meaning of the terms 'machine' and 'think'. The definitions might be framed so as to reflect so far as possible the normal use of the words, but this attitude is dangerous. If the meaning of the words 'machine' and 'think' are to be found by examining how they are commonly used it is difficult to escape the conclusion that the meaning and the answer to the question, 'Can machines think?' is to be sought in a statistical survey such as a Gallup poll. But this is absurd. Instead of attempting such a definition I shall replace the question by another, which is closely related to it and is expressed in relatively unambiguous words.
+    </p>
+
+    <h3 class="section-header">1. The Imitation Game</h3>
+
+    <p>
+      The new form of the problem can be described in terms of a game which we call the 'imitation game'. It is played with three people, a man (A), a woman (B), and an interrogator (C) who may be of either sex. The interrogator stays in a room apart from the other two. The object of the game for the interrogator is to determine which of the other two is the man and which is the woman. He knows them by labels X and Y, and at the end of the game he says either 'X is A and Y is B' or 'X is B and Y is A'.
+    </p>
+
+    <p>
+      The interrogator is allowed to put questions to A and B. The answers should be written, or better still, typewritten. The ideal arrangement is to have a teleprinter communicating between the two rooms. The object of the game for the third player (B) is to help the interrogator. The best strategy for her is probably to give truthful answers. The object for the man is to try and cause C to make the wrong identification.
+    </p>
+
+    <p class="question">
+      "What will happen when a machine takes the part of A in this game? Will the interrogator decide wrongly as often when the game is played like this as he does when the game is played between a man and a woman?"
+    </p>
+
+    <p>
+      These questions replace our original, 'Can machines think?' The game provides a test which does not penalise the machine for its inability to shine in beauty competitions, nor does it penalise a man for losing in a race against an aeroplane. The conditions of our game make these disabilities irrelevant.
+    </p>
+
+    <h3 class="section-header">2. Digital Computers</h3>
+
+    <p>
+      The digital computers considered in our analysis may be classified amongst the 'discrete state machines'. These are the machines which move by sudden jumps or clicks from one quite definite state to another. Strictly speaking there are no such machines. Everything really moves continuously. But there are many kinds of machine which can profitably be thought of as being discrete state machines.
+    </p>
+
+    <p>
+      A digital computer can usually be regarded as consisting of three parts: the Store, which is a store of information and corresponds to the human computer's paper; the Executive unit, which carries out the various individual operations involved in a calculation; and the Control, which sees that the instructions are obeyed correctly and in the right order.
+    </p>
+
+    <p>
+      The reader must accept it as a fact that digital computers can be constructed, and indeed have been constructed, according to the principles we have described, and that they can in fact mimic the actions of a human computer very closely. A special property of digital computers is that they are universal machines. That is, they can mimic any discrete state machine. The existence of machines with this property has the important consequence that, considerations of speed apart, it is unnecessary to design various new machines to do various computing processes.
+    </p>
+
+    <h3 class="section-header">3. Contrary Views on the Main Question</h3>
+
+    <p>
+      I believe that in about fifty years' time it will be possible to programme computers, with a storage capacity of about 10<sup>9</sup>, to make them play the imitation game so well that an average interrogator will not have more than 70 per cent chance of making the right identification after five minutes of questioning. The original question, 'Can machines think!' I believe to be too meaningless to deserve discussion. Nevertheless I believe that at the end of the century the use of words and general educated opinion will have altered so much that one will be able to speak of machines thinking without expecting to be contradicted.
+    </p>
+
+    <h4 class="subsection-header">The Theological Objection</h4>
+
+    <p>
+      Thinking is a function of man's immortal soul. God has given an immortal soul to every man and woman, but not to any other animal or to machines. Hence no animal or machine can think.
+    </p>
+
+    <p>
+      I am unable to accept any part of this, but will attempt to reply in theological terms. It appears to me that the argument quoted above implies a serious restriction of the omnipotence of the Almighty. Should we not believe that He has freedom to confer a soul on an elephant if He sees fit? An argument of exactly similar form may be made for the case of machines.
+    </p>
+
+    <h4 class="subsection-header">The Mathematical Objection</h4>
+
+    <p>
+      There are a number of results of mathematical logic which can be used to show that there are limitations to the powers of discrete-state machines. The best known of these results is known as Gödel's theorem, and shows that in any sufficiently powerful logical system statements can be formulated which can neither be proved nor disproved within the system, unless possibly the system itself is inconsistent.
+    </p>
+
+    <p>
+      The short answer to this argument is that although it is established that there are limitations to the powers of any particular machine, it has only been stated, without any sort of proof, that no such limitations apply to the human intellect. We too often give wrong answers to questions ourselves to be justified in being very pleased at evidence of fallibility on the part of the machines.
+    </p>
+
+    <h4 class="subsection-header">The Argument from Consciousness</h4>
+
+    <p>
+      "Not until a machine can write a sonnet or compose a concerto because of thoughts and emotions felt, and not by the chance fall of symbols, could we agree that machine equals brain—that is, not only write it but know that it had written it. No mechanism could feel pleasure at its successes, grief when its valves fuse, be warmed by flattery, be made miserable by its mistakes, be charmed by sex, be angry or depressed when it cannot get what it wants."
+    </p>
+
+    <p>
+      This argument appears to be a denial of the validity of our test. According to the most extreme form of this view the only way by which one could be sure that a machine thinks is to be the machine and to feel oneself thinking. It is the solipsist point of view. I am sure that most who hold this view would be quite willing to accept the imitation game as a test.
+    </p>
+
+    <h3 class="section-header">4. Learning Machines</h3>
+
+    <p>
+      It is proposed to consider the children-machines first, as a solution to the problem of machine intelligence. Instead of trying to produce a programme to simulate the adult mind, why not rather try to produce one which simulates the child's? If this were then subjected to an appropriate course of education one would obtain the adult brain.
+    </p>
+
+    <p>
+      We have thus divided our problem into two parts. The child-programme and the education process. These two remain very closely connected. We cannot expect to find a good child-machine at the first attempt. One must experiment with teaching one such machine and see how well it learns. One can then try another and see if it is better or worse.
+    </p>
+
+    <p>
+      There is an obvious connection between this process and evolution, by the identifications: Structure of the child machine = Hereditary material; Changes in the machine = Mutations; Natural selection = Judgment of the experimenter. One may hope, however, that this process will be more expeditious than evolution. The survival of the fittest is a slow method for measuring advantages. The experimenter, by the exercise of intelligence, should be able to speed it up.
+    </p>
+
+    <p>
+      It will not be possible to apply exactly the same teaching process to the machine as to a normal child. It will not, for instance, be provided with legs. But the example of Miss Helen Keller shows that education can take place provided that communication in both directions between teacher and pupil can take place by some means or other.
+    </p>
+
+    <p>
+      We can only see a short distance ahead, but we can see plenty there that needs to be done.
+    </p>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="footer-block">
+    <hr class="rule-thin">
+    <div class="rule-ornamental">— ✦ —</div>
+    <hr class="rule-thin">
+    <div class="colophon">
+      Alan Mathison Turing &nbsp;·&nbsp; University of Manchester &nbsp;·&nbsp; Originally Published in <i>Mind</i>, Vol. LIX, No. 236 (1950)
+    </div>
+    <div class="ornament-footer">❦</div>
+  </div>
+
+</article>
+</body>
+</html>

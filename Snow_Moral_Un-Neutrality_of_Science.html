@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Moral Un-Neutrality of Science — Charles P. Snow</title>
+<link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=IM+Fell+English+SC&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1008;
+    --ink-faded: #2e1f0a;
+    --parchment: #e8d9b0;
+    --parchment-dark: #d4be8a;
+    --parchment-shadow: #b89e6a;
+    --rule: #6b4c1e;
+    --ornament: #5a3e10;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #3a2e1a;
+    background-image:
+      radial-gradient(ellipse at center, #4a3a20 0%, #1e1508 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 40px 20px;
+    font-family: 'IM Fell English', serif;
+  }
+
+  .page {
+    width: 760px;
+    max-width: 100%;
+    background: var(--parchment);
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E"),
+      linear-gradient(160deg, #edddb8 0%, #e2cb98 40%, #d8bf88 70%, #e4d0a2 100%);
+    box-shadow:
+      0 0 0 1px var(--parchment-shadow),
+      0 4px 8px rgba(0,0,0,0.4),
+      0 16px 40px rgba(0,0,0,0.5),
+      inset 0 0 60px rgba(120,80,20,0.15);
+    padding: 60px 70px;
+    position: relative;
+    color: var(--ink);
+    animation: pageReveal 1.2s ease-out;
+  }
+
+  @keyframes pageReveal {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Aged corners */
+  .page::before, .page::after {
+    content: '';
+    position: absolute;
+    width: 60px; height: 60px;
+    background: radial-gradient(ellipse at corner, rgba(90,60,10,0.3), transparent 70%);
+  }
+  .page::before { top: 0; left: 0; border-radius: 0 0 100% 0; }
+  .page::after  { bottom: 0; right: 0; border-radius: 100% 0 0 0; }
+
+  /* ── MASTHEAD ── */
+  .masthead {
+    text-align: center;
+    margin-bottom: 18px;
+  }
+
+  .blackletter {
+    font-family: 'UnifrakturMaguntia', cursive;
+    font-size: 2.4rem;
+    color: var(--ink);
+    letter-spacing: 2px;
+    line-height: 1.1;
+    text-shadow: 1px 1px 0 rgba(90,60,10,0.3);
+  }
+
+  .edition-line {
+    font-family: 'IM Fell English SC', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    color: var(--ink-faded);
+    margin-top: 4px;
+  }
+
+  /* ── RULES ── */
+  .rule-thick {
+    border: none;
+    border-top: 3px double var(--rule);
+    margin: 10px 0;
+  }
+  .rule-thin {
+    border: none;
+    border-top: 1px solid var(--rule);
+    margin: 6px 0;
+  }
+  .rule-ornamental {
+    text-align: center;
+    font-size: 1.1rem;
+    color: var(--ornament);
+    margin: 8px 0;
+    letter-spacing: 0.5em;
+    opacity: 0.75;
+  }
+
+  /* ── COLUMN HEADLINE ── */
+  .headline-block {
+    text-align: center;
+    margin: 16px 0 12px;
+  }
+
+  .kicker {
+    font-family: 'IM Fell English SC', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    color: var(--ink-faded);
+    text-transform: uppercase;
+  }
+
+  h1.speech-title {
+    font-family: 'IM Fell English SC', serif;
+    font-size: 1.55rem;
+    font-weight: normal;
+    line-height: 1.25;
+    color: var(--ink);
+    margin: 6px 0 4px;
+    letter-spacing: 0.05em;
+  }
+
+  h2.speech-subtitle {
+    font-family: 'IM Fell English', serif;
+    font-style: italic;
+    font-size: 0.95rem;
+    font-weight: normal;
+    color: var(--ink-faded);
+    margin: 2px 0;
+  }
+
+  .dateline {
+    font-family: 'IM Fell English SC', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--ink-faded);
+    margin-top: 6px;
+  }
+
+  /* ── BODY TEXT ── */
+  .speech-body {
+    column-count: 2;
+    column-gap: 32px;
+    column-rule: 1px solid var(--parchment-shadow);
+    margin-top: 16px;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  .speech-body p {
+    font-size: 0.95rem;
+    line-height: 1.75;
+    margin-bottom: 0.9em;
+    color: var(--ink);
+  }
+
+  .speech-body p:first-child::first-letter {
+    font-family: 'IM Fell English SC', serif;
+    font-size: 3.6rem;
+    float: left;
+    line-height: 0.82;
+    margin-right: 5px;
+    margin-top: 6px;
+    color: var(--ink);
+  }
+
+  /* Section headers */
+  .section-header {
+    font-family: 'IM Fell English SC', serif;
+    font-size: 1.1rem;
+    font-weight: normal;
+    color: var(--ink);
+    margin-top: 1.2em;
+    margin-bottom: 0.6em;
+    text-transform: capitalize;
+    letter-spacing: 0.05em;
+  }
+
+  /* Decorative quote paragraph */
+  .scripture {
+    font-style: italic;
+    border-left: 2px solid var(--parchment-shadow);
+    padding-left: 10px;
+    margin: 0.5em 0 0.9em;
+    color: var(--ink-faded);
+  }
+
+  /* ── FOOTER ── */
+  .footer-block {
+    margin-top: 28px;
+    text-align: center;
+  }
+
+  .colophon {
+    font-family: 'IM Fell English SC', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--ink-faded);
+    margin-top: 10px;
+  }
+
+  .ornament-footer {
+    font-size: 1.4rem;
+    color: var(--ornament);
+    opacity: 0.6;
+    letter-spacing: 0.8em;
+    margin-top: 6px;
+  }
+
+  /* Stain / age mark accents */
+  .stain {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(120,80,20,0.12), transparent 70%);
+    pointer-events: none;
+  }
+  .stain-1 { width:120px; height:80px; top:80px; right:40px; transform: rotate(-20deg); }
+  .stain-2 { width:90px;  height:60px; bottom:140px; left:30px; transform: rotate(15deg); }
+</style>
+</head>
+<body>
+<article class="page">
+
+  <!-- Age stains -->
+  <div class="stain stain-1"></div>
+  <div class="stain stain-2"></div>
+
+  <!-- Masthead -->
+  <div class="masthead">
+    <div class="blackletter">The Scientist's Conscience</div>
+    <div class="edition-line">New York City &nbsp;·&nbsp; December 27, 1960 &nbsp;·&nbsp; AAAS Annual Meeting</div>
+  </div>
+
+  <hr class="rule-thick">
+  <hr class="rule-thin">
+
+  <!-- Headline -->
+  <div class="headline-block">
+    <div class="kicker">A Landmark Address Delivered to the American Association for the Advancement of Science</div>
+    <h1 class="speech-title">The Moral Un-Neutrality<br>of Science</h1>
+    <h2 class="speech-subtitle">By Charles P. Snow</h2>
+    <div class="dateline">A Consideration of the Scientist's Unique Responsibility in the Nuclear Age</div>
+  </div>
+
+  <hr class="rule-thin">
+  <div class="rule-ornamental">❧ &nbsp; ✦ &nbsp; ❧</div>
+  <hr class="rule-thin">
+
+  <!-- Speech body -->
+  <div class="speech-body">
+    <p>
+      Scientists are the most important occupational group in the world today. At this moment, what they do is of passionate concern to the whole of human society. At this moment, the scientists have little influence on the world effect of what they do. Yet, potentially, they can have great influence. The rest of the world is frightened both of what they do—that is, of the intellectual discoveries of science—and of its effect. The rest of the world, transferring its fears, is frightened of the scientists themselves and tends to think of them as radically different from other men.
+    </p>
+
+    <p>
+      As an ex-scientist, if I may call myself so, I know that is nonsense. I know well enough that scientists are very much like other men. After all, we are all human, even if some of us don't give that appearance. I think I would be prepared to risk a generalization. The scientists I have known have been in certain respects just perceptibly more morally admirable than most other groups of intelligent men.
+    </p>
+
+    <p>
+      That is a sweeping statement, and I mean it only in a statistical sense. The moral qualities I admire in scientists are quite simple ones: like courage, truth-telling, kindness—in which, judged by the low standards which the rest of us manage to achieve, the scientists are not deficient. I think on the whole the scientists make slightly better husbands and fathers than most of us, and I admire them for it.
+    </p>
+
+    <p class="scripture">
+      "So scientists are not much different from other men."
+    </p>
+
+    <p>
+      But they do differ from other men in one thing. Whether they like it or not, what they do is of critical importance for the human race. Intellectually, it has transformed the climate of our time. Socially, it will decide whether we live or die, and how we live or die. It holds decisive powers for good and evil. That is the situation in which the scientists find themselves. They may not have asked for it, or may only have asked for it in part, but they cannot escape it.
+    </p>
+
+    <h3 class="section-header">The Doctrine of Ethical Neutrality</h3>
+
+    <p>
+      There is of course one way to contract out. It consists of the invention of categories—or, if you like, of the division of moral labor. That is, the scientists who want to contract out say, we produce the tools. We stop there. It is for you—the rest of the world, the politicians—to say how the tools are used. The tools may be used for purposes which most of us would regard as bad. If so, we are sorry. But as scientists, that is no concern of ours.
+    </p>
+
+    <p>
+      This is the doctrine of the ethical neutrality of science. I can't accept it for an instant. I don't believe any scientist of serious feeling can accept it. We nearly all feel intuitively that the invention of comfortable categories is a moral trap. It is one of the easier methods of letting the conscience rust. It is exactly what the early nineteenth century economists did in the face of the facts of the first industrial revolution. Are we going to let our consciences rust? Can we ignore that intimation we nearly all have, that scientists have a unique responsibility?
+    </p>
+
+    <h3 class="section-header">The Beauty of Science</h3>
+
+    <p>
+      Anyone who has ever worked in any science knows how much esthetic joy he has obtained. In the actual activity of science, in the process of making a discovery, however humble it is, one can't help feeling an awareness of beauty. The subjective experience, the esthetic satisfaction, seems exactly the same as the satisfaction one gets from writing a poem or composing a piece of music. The literature of scientific discovery is full of this esthetic joy.
+    </p>
+
+    <p>
+      The result of the activity of science, the actual finished piece of scientific work, has an esthetic value in itself. The judgments passed on it by other scientists will more often than not be expressed in esthetic terms: "That's beautiful!" or "That really is very pretty!" Scientists know their kinds of beauty when they see them. They are suspicious, and scientific history shows they have always been right to have been so, when a subject is in an "ugly" state.
+    </p>
+
+    <h3 class="section-header">The Search for Truth</h3>
+
+    <p>
+      By truth I don't intend anything complicated. I am using the word as a scientist uses it. Truth, as they use the word and as the rest of us use it in the language of common speech, is what makes science work. That is good enough for them. On it rests the whole great edifice of modern science.
+    </p>
+
+    <p>
+      Anyway, truth in their own straightforward sense is what the scientists are trying to find. They want to find what is there. Without that desire, there is no science. It is the driving force of the whole activity. It compels the scientist to have an overriding respect for truth, every stretch of the way. That is, if you're going to find what is there, you mustn't deceive yourself or anyone else.
+    </p>
+
+    <p>
+      Curiously enough, scientists do try to behave like that. A short time ago, I wrote a novel in which the story hinged on a case of scientific fraud. But I made one of my characters, who was himself a very good scientist, say that, considering the opportunities and temptations, it is astonishing how few such cases there are. We have all heard of perhaps half a dozen open and notorious ones on the record.
+    </p>
+
+    <p>
+      The remarkable thing is not the handful of scientists who deviate from the search for truth but the overwhelming numbers who keep to it. That is a demonstration, absolutely clear for anyone to see, of moral behavior on a very large scale. The desire to find the truth is itself a moral impulse, or at least contains a moral impulse. The way in which a scientist tries to find the truth imposes on him a constant moral discipline.
+    </p>
+
+    <h3 class="section-header">The Physicist as Military Resource</h3>
+
+    <p>
+      With the discovery of fission, physicists became, almost overnight, the most important military resource a nation-state could call on. A large number of physicists became soldiers not in uniform. So they have remained, in the advanced societies, ever since. It is very difficult to see what else they could have done. All this began in the Hitler war. Most scientists thought then that Nazism was as near absolute evil as a human society can manage. That being so, Nazism had to be fought.
+    </p>
+
+    <p>
+      But the trouble is, when you get onto any kind of moral escalator, to know whether you're ever going to be able to get off. When scientists became soldiers they gave up something, so imperceptibly that they didn't realize it, of the full scientific life. Scientists have to question and if necessary rebel. Loyalty can easily turn into conformity, and conformity can often be a cloak for the timid and self-seeking. If you doubt the dangers of unchecked obedience, read William Shirer's <i>Rise and Fall of the Third Reich</i>.
+    </p>
+
+    <h3 class="section-header">A Spur to Moral Action</h3>
+
+    <p>
+      I believe that there is a spring of moral action in the scientific activity which is at least as strong as the search for truth. The name of the spring is knowledge. Scientists know certain things in a fashion more immediate and more certain than those who don't comprehend what science is. Unless we are abnormally weak or abnormally wicked men, this knowledge is bound to shape our actions.
+    </p>
+
+    <p>
+      All physical scientists know that it is relatively easy to make plutonium. We know this, not as a journalistic fact at second hand, but as a fact in our own experience. We can work out the number of scientific and engineering personnel needed for a nation-state to equip itself with fission and fusion bombs. We know that, for a dozen or more states, it will only take perhaps six years, perhaps less. We know, with the certainty of engineering truth, that if enough of these weapons are made, by enough different states, some of them are going to blow up, through accident, or folly, or madness.
+    </p>
+
+    <p>
+      All this we know. It throws upon scientists a direct and personal responsibility. It is not enough to say that scientists have a responsibility as citizens. They have a much greater one than that, and one different in kind. For scientists have a moral imperative to say what they know. It is going to make them unpopular in their own nation-states. That doesn't matter.
+    </p>
+
+    <h3 class="section-header">Alternatives</h3>
+
+    <p>
+      For we genuinely know the risks. We are faced with an either-or, and we haven't much time. The either is acceptance of a restriction of nuclear armaments. This is going to begin, just as a token, with an agreement on the stopping of nuclear tests. I am not going to conceal from you that this course involves certain risks. That is the either. The or is not a risk but a certainty. There is no agreement on tests. The nuclear arms race between the United States and U.S.S.R. not only continues but accelerates. Other countries join in. Within, at the most, six years, China and several other states have a stock of nuclear bombs. Within, at the most, ten years, some of those bombs are going off.
+    </p>
+
+    <p>
+      That is the certainty. On the one side, therefore, we have a finite risk. On the other side we have a certainty of disaster. Between a risk and a certainty, a sane man does not hesitate.
+    </p>
+
+    <p>
+      It is the plain duty of scientists to explain this either-or. It is a duty which seems to me to come from the moral nature of the scientific activity itself. We possess every scientific fact we need to transform the physical life of half the world, and transform it within the span of people now living. We have all the resources to help half the world live as long as we do and eat enough. All that is missing is the will. We know that.
+    </p>
+
+    <p>
+      For all these reasons, I believe the world community of scientists has a final responsibility upon it—a greater responsibility than is pressing on any other body of men. I do not pretend to know how they will bear this responsibility. These may be famous last words, but I have an inextinguishable hope. For, as I have said, there is no doubt that the scientific activity is both beautiful and truthful. I believe that, simply because scientists cannot escape their own knowledge, they also won't be able to avoid showing themselves disposed to good.
+    </p>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="footer-block">
+    <hr class="rule-thin">
+    <div class="rule-ornamental">— ✦ —</div>
+    <hr class="rule-thin">
+    <div class="colophon">
+      Text by Charles Percy Snow &nbsp;·&nbsp; A Lecture on Science and Moral Responsibility &nbsp;·&nbsp; Typeset in the Manner of Historical Broadsides
+    </div>
+    <div class="ornament-footer">❦</div>
+  </div>
+
+</article>
+</body>
+</html>
