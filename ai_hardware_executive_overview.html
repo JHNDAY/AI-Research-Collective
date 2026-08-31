@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Hardware Market 2026 - Executive Overview</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -401,6 +403,36 @@
                 padding: 8px;
             }
         }
+        
+        /* Map styles */
+        .map-wrapper { background: white; border: 1px solid #ddd; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); width: 100%; height: 700px; flex: 1; }
+        #datacenters-map { width: 100%; height: 100%; }
+        .map-sidebar { background: white; border: 1px solid #ddd; border-radius: 8px; padding: 20px; height: 100%; max-height: 750px; overflow-y: auto; }
+        .map-sidebar h3 { font-size: 14px; font-weight: 600; margin-bottom: 16px; color: #1e40af; }
+        .map-legend { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 16px; }
+        .map-legend-item { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+        .map-legend-dot { width: 20px; height: 20px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
+        .map-legend-dot.tier1 { background: #059669; }
+        .map-legend-dot.tier2 { background: #f59e0b; }
+        .map-stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid #eee; }
+        .map-stat { padding: 12px; background: #f9fafb; border-radius: 6px; }
+        .map-stat-label { font-size: 12px; color: #999; }
+        .map-stat-value { font-size: 20px; font-weight: 600; margin-top: 4px; }
+        .map-stat-value.tier1 { color: #059669; }
+        .map-stat-value.tier2 { color: #f59e0b; }
+        .map-details-list { display: flex; flex-direction: column; gap: 10px; }
+        .map-detail-card { padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; cursor: pointer; transition: all 0.2s; font-size: 13px; }
+        .map-detail-card:hover { border-color: #059669; background: #f0fdf4; }
+        .map-detail-card.selected { border: 2px solid #059669; background: #f0fdf4; }
+        .map-detail-card-title { font-weight: 600; margin-bottom: 6px; font-size: 14px; }
+        .map-detail-card-row { display: flex; justify-content: space-between; margin: 4px 0; }
+        .map-detail-card-label { font-size: 12px; color: #999; }
+        .map-detail-card-value { font-weight: 500; color: #333; font-size: 12px; }
+        .map-status-badge { display: inline-block; font-size: 11px; padding: 3px 8px; border-radius: 3px; margin-top: 6px; font-weight: 500; }
+        .map-status-operational { background: #d1fae5; color: #065f46; }
+        .map-status-planned { background: #fef3c7; color: #92400e; }
+        .map-source-note { font-size: 10px; color: #999; margin-top: 16px; padding-top: 12px; border-top: 1px solid #eee; line-height: 1.5; }
+        .map-source-note strong { color: #666; font-weight: 600; }
     </style>
 </head>
 <body>
@@ -417,6 +449,7 @@
             <button class="toggle-btn" onclick="showSection('details', event)">📋 See Details</button>
             <button class="toggle-btn" onclick="showSection('components', event)">🔧 AI Hardware Guide</button>
             <button class="toggle-btn" onclick="showSection('gozinta', event)">🔄 The Gozintas & Gozoutas</button>
+            <a href="https://jhnday.github.io/AI-Research-Collective/us_ai_data_centers_geographic_map" target="_blank" class="toggle-btn" style="text-decoration: none;">🗺️ Data Centers</a>
             <button class="toggle-btn" onclick="showSection('sources', event)">📚 Sources</button>
         </div>
     </div>
@@ -2284,31 +2317,31 @@
         </div>
     </div>
 
+    <!-- ===== DATA CENTERS SECTION ===== -->
     <script>
         function showSection(section, event) {
             if (!event) return;
             
-            // Hide all sections
-            const glance = document.getElementById('glance');
-            const details = document.getElementById('details');
-            const components = document.getElementById('components');
-            const gozinta = document.getElementById('gozinta');
-            const sources = document.getElementById('sources');
+            console.log('showSection called with:', section);
             
-            if (glance) glance.classList.remove('active');
-            if (details) details.classList.remove('active');
-            if (components) components.classList.remove('active');
-            if (gozinta) gozinta.classList.remove('active');
-            if (sources) sources.classList.remove('active');
+            // Remove active class from all sections and hide them
+            document.querySelectorAll('.content-section').forEach(sec => {
+                sec.classList.remove('active');
+                sec.style.display = 'none';  // Force hide with inline style
+            });
             
             // Remove active class from all buttons
             document.querySelectorAll('.toggle-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
             
-            // Show selected section
+            // Add active class to target section and FORCE DISPLAY
             const targetSection = document.getElementById(section);
-            if (targetSection) targetSection.classList.add('active');
+            if (targetSection) {
+                console.log('Showing section:', section);
+                targetSection.classList.add('active');
+                targetSection.style.display = 'block';  // Force show with inline style
+            }
             
             // Add active class to clicked button
             if (event.target) event.target.classList.add('active');
@@ -2316,6 +2349,7 @@
             // Scroll to top
             window.scrollTo(0, 0);
         }
+
     </script>
 </body>
 </html>
