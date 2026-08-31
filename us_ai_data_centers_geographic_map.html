@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>US AI Data Centers Geographic Map 2026</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f7fa; color: #333; }
+        .header { background: #1e40af; color: white; padding: 24px; text-align: center; }
+        .header h1 { font-size: 28px; margin-bottom: 8px; }
+        .header p { font-size: 14px; opacity: 0.9; }
+        .container { max-width: 1600px; margin: 0 auto; padding: 20px; }
+        .controls { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+        .btn { padding: 10px 20px; border: 2px solid #ddd; background: white; cursor: pointer; border-radius: 6px; font-size: 14px; font-weight: 500; transition: all 0.2s; }
+        .btn.active { background: #059669; color: white; border-color: #059669; }
+        .btn:hover { border-color: #059669; }
+        .content { display: grid; grid-template-columns: 1fr 340px; gap: 20px; }
+        .map-wrapper { background: white; border: 1px solid #ddd; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        #map { width: 100%; height: 700px; }
+        .sidebar { background: white; border: 1px solid #ddd; border-radius: 8px; padding: 20px; max-height: 700px; overflow-y: auto; }
+        .sidebar h3 { font-size: 14px; font-weight: 600; margin-bottom: 16px; color: #1e40af; }
+        .legend { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 16px; }
+        .legend-item { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+        .legend-dot { width: 20px; height: 20px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
+        .legend-dot.tier1 { background: #059669; }
+        .legend-dot.tier2 { background: #f59e0b; }
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid #eee; }
+        .stat { padding: 12px; background: #f9fafb; border-radius: 6px; }
+        .stat-label { font-size: 12px; color: #999; }
+        .stat-value { font-size: 20px; font-weight: 600; margin-top: 4px; }
+        .stat-value.tier1 { color: #059669; }
+        .stat-value.tier2 { color: #f59e0b; }
+        .details-list { display: flex; flex-direction: column; gap: 10px; }
+        .detail-card { padding: 12px; border: 1px solid #e5e7eb; border-radius: 6px; cursor: pointer; transition: all 0.2s; font-size: 13px; }
+        .detail-card:hover { border-color: #059669; background: #f0fdf4; }
+        .detail-card.selected { border: 2px solid #059669; background: #f0fdf4; }
+        .detail-card-title { font-weight: 600; margin-bottom: 6px; font-size: 14px; }
+        .detail-card-row { display: flex; justify-content: space-between; margin: 4px 0; }
+        .detail-card-label { font-size: 12px; color: #999; }
+        .detail-card-value { font-weight: 500; color: #333; font-size: 12px; }
+        .status-badge { display: inline-block; font-size: 11px; padding: 3px 8px; border-radius: 3px; margin-top: 6px; font-weight: 500; }
+        .status-operational { background: #d1fae5; color: #065f46; }
+        .status-planned { background: #fef3c7; color: #92400e; }
+        .source-note { font-size: 10px; color: #999; margin-top: 16px; padding-top: 12px; border-top: 1px solid #eee; line-height: 1.5; }
+        .source-note strong { color: #666; font-weight: 600; }
+        .leaflet-popup-content { font-size: 13px; line-height: 1.4; }
+        .popup-title { font-weight: 600; margin-bottom: 8px; font-size: 14px; }
+        .popup-row { display: flex; justify-content: space-between; margin: 4px 0; }
+        .popup-label { color: #666; font-size: 12px; }
+        .popup-value { font-weight: 500; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>US AI Data Centers Geographic Map 2026</h1>
+        <p>Operational and planned AI infrastructure | Verified data: Epoch AI, SEC EDGAR, company earnings (Q1-Q2 2026)</p>
+    </div>
+
+    <div class="container">
+        <div class="controls">
+            <button class="btn active" onclick="switchTier('both')">Show All Facilities</button>
+            <button class="btn" onclick="switchTier('tier1')">✓ Operational Only</button>
+            <button class="btn" onclick="switchTier('tier2')">📋 Planned Only</button>
+        </div>
+
+        <div class="content">
+            <div class="map-wrapper">
+                <div id="map"></div>
+            </div>
+
+            <div class="sidebar">
+                <h3>Overview</h3>
+                <div class="stats-grid">
+                    <div class="stat">
+                        <div class="stat-label">Operational</div>
+                        <div class="stat-value tier1" id="tier1-count">8</div>
+                        <div class="stat-label" style="margin-top: 8px; font-size: 13px;">Capacity: ~8.8 GW</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-label">Planned</div>
+                        <div class="stat-value tier2" id="tier2-count">6</div>
+                        <div class="stat-label" style="margin-top: 8px; font-size: 13px;">Capacity: ~12–15 GW</div>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 20px;">Legend</h3>
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-dot tier1"></div>
+                        <span>Operational (Tier 1)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-dot tier2"></div>
+                        <span>Planned (Tier 2)</span>
+                    </div>
+                </div>
+
+                <h3>Locations</h3>
+                <div class="details-list" id="detailsList"></div>
+
+                <div class="source-note">
+                    <strong>Capacity Definition:</strong><br>
+                    All GW figures = electrical power consumed at full load (not compute capacity)
+                    <br><br>
+                    <strong>GPU/TPU Estimates:</strong><br>
+                    Calculated using 3–4 kW per accelerator (full system: GPU + memory + cooling + networking). Example: 1.2 GW ÷ 3.5 kW ≈ 340k GPUs
+                    <br><br>
+                    <strong>Data verified from:</strong><br>
+                    Epoch AI, Neowin, Synergy Research, SEC EDGAR, company earnings (2026)
+                    <br><br>
+                    <strong>Power aggregates:</strong><br>
+                    <strong>Op.:</strong> 1.2+0.35+0.8+1.0+0.5+0.8+0.6+3.0 = 8.8 GW<br>
+                    <strong>Plan.:</strong> 2.0+2.2+1.3+2–5.0+0.5+1.6–3.5 = 12–15 GW
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const datacenters = {
+            tier1: [
+                {
+                    name: 'Abilene, TX',
+                    owner: 'Oracle/Stargate',
+                    lat: 32.4487,
+                    lng: -99.7331,
+                    capacity: '1.2 GW',
+                    capacityNote: '(electrical power at full load)',
+                    hardware: '450,000 NVIDIA GB200',
+                    status: 'Operational (Sep 2025)',
+                    details: 'First two buildings online. Six additional buildings planned completion by mid-2026.',
+                    power: 'On-site gas microgrid'
+                },
+                {
+                    name: 'Mount Pleasant, WI',
+                    owner: 'Microsoft Fairwater',
+                    lat: 42.5315,
+                    lng: -87.9141,
+                    capacity: '0.35 GW',
+                    capacityNote: '(electrical power at full load)',
+                    hardware: '~100–120k NVIDIA GB200/GB300',
+                    status: 'Operational (Oct 2025)',
+                    details: 'Former Foxconn site. 15 new data centers approved with $13B taxable value.',
+                    power: 'Grid-connected'
+                },
+                {
+                    name: 'Louisiana (Rainier)',
+                    owner: 'AWS',
+                    lat: 30.8,
+                    lng: -92.2,
+                    capacity: '0.8 GW',
+                    capacityNote: '(electrical power at full load)',
+                    hardware: '~200–230k NVIDIA (Hopper+GB200 mix)',
+                    status: 'Operational (Late 2025)',
+                    details: 'Infrastructure for training Anthropic Claude models. 1,200+ acres.',
+                    power: 'Custom infrastructure'
+                },
+                {
+                    name: 'Ohio',
+                    owner: 'Meta Prometheus',
+                    lat: 40.3888,
+                    lng: -82.7649,
+                    capacity: '1.0 GW',
+                    capacityNote: '(electrical power at full load)',
+                    hardware: '~280–320k NVIDIA GPUs (H100/H200)',
+                    status: 'Operational (2026)',
+                    details: 'Gigawatt-scale AI supercluster.',
+                    power: 'Grid-connected'
+                },
+                {
+                    name: 'Virginia',
+                    owner: 'AWS',
+                    lat: 37.5407,
+                    lng: -77.4360,
+                    capacity: '0.5 GW',
+                    capacityNote: '(electrical power at full load)',
+                    hardware: '~140–170k Trainium2 + NVIDIA GPUs',
+                    status: 'Operational',
+                    details: 'Multiple facilities. 7 sites tracked.',
+                    power: 'Grid-connected'
+                },
+                {
+                    name: 'Iowa',
+                    owner: 'Google',
+                    lat: 42.0115,
+                    lng: -93.2101,
+                    capacity: '0.8 GW',
+                    capacityNote: '(electrical power at full load)',
+                    hardware: '~220–250k Google TPU v5/v6',
+                    status: 'Operational',
+                    details: 'Mainstay AI training hub. 4 major sites.',
+                    power: 'Grid-connected'
+                },
+                {
+                    name: 'Nebraska',
+                    owner: 'Google',
+                    lat: 40.8258,
+                    lng: -96.6852,
+                    capacity: '0.6 GW',
+                    capacityNote: '(electrical power at full load)',
+                    hardware: '~170–200k Google TPU v5/v6',
+                    status: 'Operational',
+                    details: 'Key training region. 4 major sites.',
+                    power: 'Grid-connected'
+                },
+                {
+                    name: 'Texas (Multi-site)',
+                    owner: 'Multiple',
+                    lat: 31.968,
+                    lng: -99.9018,
+                    capacity: '3.0 GW',
+                    capacityNote: '(electrical power at full load)',
+                    hardware: '~850–1000k Mixed (NVIDIA, custom)',
+                    status: 'Operational',
+                    details: 'Concentrated region. 14 major sites tracked.',
+                    power: 'Mixed power sources'
+                }
+            ],
+            tier2: [
+                {
+                    name: 'Shackelford, TX',
+                    owner: 'OpenAI Stargate (Vantage)',
+                    lat: 35.5307,
+                    lng: -100.6544,
+                    capacity: '2.0 GW',
+                    capacityNote: '(electrical power target)',
+                    hardware: '~450–550k NVIDIA GB200',
+                    status: 'Planned (Late 2026 - Q4 2028)',
+                    details: 'Construction underway. First buildings late 2026, full capacity Q4 2028.',
+                    power: 'On-site gas microgrid'
+                },
+                {
+                    name: 'Doña Ana County, NM',
+                    owner: 'Stargate (STACK)',
+                    lat: 32.3792,
+                    lng: -106.6504,
+                    capacity: '2.2 GW',
+                    capacityNote: '(electrical power target)',
+                    hardware: '~600–650k NVIDIA GPUs',
+                    status: 'Planned (2027)',
+                    details: 'Foundations underway. Projected on track.',
+                    power: 'On-site gas'
+                },
+                {
+                    name: 'Port Washington, WI',
+                    owner: 'Stargate (Vantage)',
+                    lat: 43.3835,
+                    lng: -87.8616,
+                    capacity: '1.3 GW',
+                    capacityNote: '(electrical power target)',
+                    hardware: '~370–400k NVIDIA GPUs',
+                    status: 'Planned (2027)',
+                    details: 'Wisconsin expansion. Distributed Fairwater superfactory.',
+                    power: 'Grid-connected'
+                },
+                {
+                    name: 'Louisiana Hyperion',
+                    owner: 'Meta + Blue Owl Capital',
+                    lat: 31.0054,
+                    lng: -92.4425,
+                    capacity: '2.0–5.0 GW phased',
+                    capacityNote: '(electrical power target)',
+                    hardware: '~600–1400k NVIDIA GPUs (phased)',
+                    status: 'Planned (2027-2028+)',
+                    details: '$27 billion joint venture. 2,250 acres, 4M sq ft. Initial 2 GW, scaling to 5 GW.',
+                    power: 'Major grid expansion'
+                },
+                {
+                    name: 'North Carolina',
+                    owner: 'Microsoft + Duke Energy',
+                    lat: 35.0734,
+                    lng: -80.2465,
+                    capacity: '0.5 GW (4.5 GW grid contract)',
+                    capacityNote: '(electrical power contract)',
+                    hardware: '~140–170k NVIDIA GPUs (first phase)',
+                    status: 'Planned (2027)',
+                    details: 'Multiple data center complexes. Full grid contract 4.5 GW.',
+                    power: 'Utility partnership'
+                },
+                {
+                    name: 'Afton, TX',
+                    owner: 'Galaxy Digital + CoreWeave',
+                    lat: 32.8,
+                    lng: -102.0,
+                    capacity: '1.6–3.5 GW potential',
+                    capacityNote: '(electrical power target)',
+                    hardware: '~450–1000k Mixed GPU (pending)',
+                    status: 'Planned (2026-2027)',
+                    details: 'Former Bitcoin mining facility. 1,500-acre site. Ultra-high-density deployment.',
+                    power: 'ERCOT market'
+                }
+            ]
+        };
+
+        let map;
+        let markers = { tier1: [], tier2: [] };
+        let currentTier = 'both';
+
+        function initMap() {
+            map = L.map('map').setView([39.8283, -98.5795], 4);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors',
+                maxZoom: 19
+            }).addTo(map);
+
+            createMarkers();
+            updateMarkersDisplay();
+            renderDetails('both');
+        }
+
+        function createMarkers() {
+            ['tier1', 'tier2'].forEach(tier => {
+                datacenters[tier].forEach((dc, idx) => {
+                    const color = tier === 'tier1' ? '#059669' : '#f59e0b';
+                    const icon = L.divIcon({
+                        className: 'custom-marker',
+                        html: `<div style="width: 32px; height: 32px; background: ${color}; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; font-size: 14px;">${tier === 'tier1' ? '✓' : '📋'}</div>`,
+                        iconSize: [32, 32],
+                        iconAnchor: [16, 16]
+                    });
+
+                    const popupContent = `
+                        <div class="popup-title">${dc.name}</div>
+                        <div class="popup-row">
+                            <span class="popup-label">Owner:</span>
+                            <span class="popup-value">${dc.owner}</span>
+                        </div>
+                        <div class="popup-row">
+                            <span class="popup-label">Power Capacity:</span>
+                            <span class="popup-value">${dc.capacity}</span>
+                        </div>
+                        <div class="popup-row">
+                            <span class="popup-label">GPUs/TPUs:</span>
+                            <span class="popup-value">${dc.hardware}</span>
+                        </div>
+                        <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid #eee; font-size: 12px;">
+                            ${dc.status}
+                        </div>
+                    `;
+
+                    const marker = L.marker([dc.lat, dc.lng], { icon: icon })
+                        .bindPopup(popupContent);
+
+                    marker.tier = tier;
+                    marker.dcIndex = idx;
+                    marker.on('click', function() {
+                        selectDatacenter(idx, tier);
+                    });
+
+                    markers[tier].push(marker);
+                });
+            });
+        }
+
+        function updateMarkersDisplay() {
+            markers.tier1.forEach(m => {
+                if (currentTier === 'both' || currentTier === 'tier1') {
+                    m.addTo(map);
+                } else {
+                    map.removeLayer(m);
+                }
+            });
+            markers.tier2.forEach(m => {
+                if (currentTier === 'both' || currentTier === 'tier2') {
+                    m.addTo(map);
+                } else {
+                    map.removeLayer(m);
+                }
+            });
+        }
+
+        function switchTier(tier) {
+            currentTier = tier;
+            document.querySelectorAll('.controls .btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+
+            updateMarkersDisplay();
+            renderDetails(tier);
+        }
+
+        function renderDetails(tier) {
+            const list = document.getElementById('detailsList');
+            let centers = [];
+
+            if (tier === 'both' || tier === 'tier1') {
+                centers = centers.concat(datacenters.tier1.map((dc, idx) => ({ ...dc, tier: 'tier1', idx })));
+            }
+            if (tier === 'both' || tier === 'tier2') {
+                centers = centers.concat(datacenters.tier2.map((dc, idx) => ({ ...dc, tier: 'tier2', idx })));
+            }
+
+            list.innerHTML = centers.map(dc => {
+                const statusClass = dc.tier === 'tier2' ? 'status-planned' : 'status-operational';
+                return `
+                    <div class="detail-card" onclick="selectDatacenter(${dc.idx}, '${dc.tier}')">
+                        <div class="detail-card-title">${dc.name}</div>
+                        <div class="detail-card-row">
+                            <span class="detail-card-label">Owner:</span>
+                            <span class="detail-card-value">${dc.owner}</span>
+                        </div>
+                        <div class="detail-card-row">
+                            <span class="detail-card-label">Power:</span>
+                            <span class="detail-card-value">${dc.capacity}</span>
+                        </div>
+                        <div class="detail-card-row">
+                            <span class="detail-card-label">GPUs/TPUs:</span>
+                            <span class="detail-card-value" style="font-size: 11px;">${dc.hardware}</span>
+                        </div>
+                        <div><span class="status-badge ${statusClass}">${dc.status}</span></div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function selectDatacenter(idx, tier) {
+            document.querySelectorAll('.detail-card').forEach(c => c.classList.remove('selected'));
+            const cards = document.querySelectorAll('.detail-card');
+            
+            // Find the correct card index based on current tier display
+            let cardIdx = 0;
+            if (currentTier === 'both') {
+                cardIdx = tier === 'tier2' ? datacenters.tier1.length + idx : idx;
+            } else if (currentTier === 'tier2') {
+                cardIdx = idx;
+            } else {
+                cardIdx = idx;
+            }
+            
+            if (cards[cardIdx]) cards[cardIdx].classList.add('selected');
+
+            if (markers[tier] && markers[tier][idx]) {
+                const marker = markers[tier][idx];
+                map.setView([marker.getLatLng().lat, marker.getLatLng().lng], 6);
+                marker.openPopup();
+            }
+        }
+
+        initMap();
+    </script>
+</body>
+</html>
