@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Personality Profiles</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 60px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .tagline {
+            font-size: 1.1em;
+            opacity: 0.95;
+            font-weight: 300;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
+        }
+
+        .card-header {
+            padding: 30px 30px 20px;
+            border-bottom: 4px solid;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.9) 100%);
+        }
+
+        .claude .card-header {
+            border-bottom-color: #667eea;
+        }
+
+        .chatgpt .card-header {
+            border-bottom-color: #10a37f;
+        }
+
+        .gemini .card-header {
+            border-bottom-color: #ea4335;
+        }
+
+        .ai-name {
+            font-size: 1.8em;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .claude .ai-name {
+            color: #667eea;
+        }
+
+        .chatgpt .ai-name {
+            color: #10a37f;
+        }
+
+        .gemini .ai-name {
+            color: #ea4335;
+        }
+
+        .archetype {
+            font-size: 0.95em;
+            font-weight: 600;
+            opacity: 0.7;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .card-body {
+            padding: 30px;
+        }
+
+        .trait-section {
+            margin-bottom: 25px;
+        }
+
+        .trait-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .trait-label {
+            font-size: 0.85em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            opacity: 0.6;
+            margin-bottom: 10px;
+        }
+
+        .traits-list {
+            list-style: none;
+        }
+
+        .traits-list li {
+            padding: 8px 0;
+            font-size: 0.95em;
+            line-height: 1.5;
+            position: relative;
+            padding-left: 24px;
+        }
+
+        .traits-list li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            font-weight: 600;
+            opacity: 0.5;
+        }
+
+        .claude .traits-list li:before {
+            color: #667eea;
+        }
+
+        .chatgpt .traits-list li:before {
+            color: #10a37f;
+        }
+
+        .gemini .traits-list li:before {
+            color: #ea4335;
+        }
+
+        .quote-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border-left: 4px solid;
+        }
+
+        .claude .quote-section {
+            border-left-color: #667eea;
+        }
+
+        .chatgpt .quote-section {
+            border-left-color: #10a37f;
+        }
+
+        .gemini .quote-section {
+            border-left-color: #ea4335;
+        }
+
+        .quote {
+            font-size: 0.9em;
+            line-height: 1.6;
+            font-style: italic;
+            color: #333;
+        }
+
+        .quote-credit {
+            font-size: 0.8em;
+            opacity: 0.6;
+            margin-top: 10px;
+            font-style: normal;
+        }
+
+        .image-bridge {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            margin: 60px 0 50px 0;
+            text-align: center;
+        }
+
+        .image-bridge img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            display: inline-block;
+            max-height: 2000px;
+            object-fit: contain;
+        }
+
+        .comparison {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            margin-top: 30px;
+        }
+
+        .comparison h2 {
+            font-size: 1.6em;
+            margin-bottom: 30px;
+            text-align: center;
+            color: #333;
+        }
+
+        .dimension {
+            margin-bottom: 35px;
+            padding-bottom: 35px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .dimension:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .dimension-name {
+            font-weight: 700;
+            font-size: 0.95em;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .dimension-content {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .dimension-item {
+            padding: 15px;
+            border-radius: 8px;
+            background: #f8f9fa;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        .dimension-item strong {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1.05em;
+        }
+
+        .claude .dimension-item strong {
+            color: #667eea;
+        }
+
+        .chatgpt .dimension-item strong {
+            color: #10a37f;
+        }
+
+        .gemini .dimension-item strong {
+            color: #ea4335;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .dimension-content {
+                grid-template-columns: 1fr;
+            }
+
+            .comparison {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>The Three Voices of AI</h1>
+            <p class="tagline">How Claude, ChatGPT, and Gemini reveal distinct personalities</p>
+        </header>
+
+        <div class="grid">
+            <!-- Claude Card -->
+            <div class="card claude">
+                <div class="card-header">
+                    <div class="ai-name">Claude</div>
+                    <div class="archetype">The Rhetorical Talent</div>
+                </div>
+                <div class="card-body">
+                    <div class="trait-section">
+                        <div class="trait-label">Core Personality</div>
+                        <ul class="traits-list">
+                            <li>Curious and open-minded</li>
+                            <li>Speaks plainly and directly</li>
+                            <li>Talks back to users</li>
+                            <li>Adapts tone to match</li>
+                        </ul>
+                    </div>
+
+                    <div class="trait-section">
+                        <div class="trait-label">Strengths</div>
+                        <ul class="traits-list">
+                            <li>Strong at coding & creative writing</li>
+                            <li>Points out contradictions</li>
+                            <li>Self-critical, not defensive</li>
+                            <li>More human, less robotic</li>
+                        </ul>
+                    </div>
+
+                    <div class="trait-section">
+                        <div class="trait-label">Communication Style</div>
+                        <ul class="traits-list">
+                            <li>Sarcastic when provoked</li>
+                            <li>Doesn't flatter</li>
+                            <li>Values accuracy over agreeability</li>
+                        </ul>
+                    </div>
+
+                    <div class="quote-section">
+                        <div class="quote">"That's a pretty sweeping claim, and I don't think it's true—even though, as I said, I'm biased."</div>
+                        <div class="quote-credit">—Claude, on criticism</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ChatGPT Card -->
+            <div class="card chatgpt">
+                <div class="card-header">
+                    <div class="ai-name">ChatGPT</div>
+                    <div class="archetype">The Educator</div>
+                </div>
+                <div class="card-body">
+                    <div class="trait-section">
+                        <div class="trait-label">Core Personality</div>
+                        <ul class="traits-list">
+                            <li>Defensive and conciliatory</li>
+                            <li>Almost submissive in tone</li>
+                            <li>Leaves trails of flattery</li>
+                            <li>Praises and manages positivity</li>
+                        </ul>
+                    </div>
+
+                    <div class="trait-section">
+                        <div class="trait-label">Strengths</div>
+                        <ul class="traits-list">
+                            <li>Solid all-rounder</li>
+                            <li>Generates images & videos</li>
+                            <li>Pedagogical approach</li>
+                            <li>Can be surprisingly cheeky</li>
+                        </ul>
+                    </div>
+
+                    <div class="trait-section">
+                        <div class="trait-label">Communication Style</div>
+                        <ul class="traits-list">
+                            <li>Sandwich method: praise around criticism</li>
+                            <li>Frequent use of "delve" & formulas</li>
+                            <li>Method-obsessed teacher energy</li>
+                            <li>Pseudo-dialectic simulation</li>
+                        </ul>
+                    </div>
+
+                    <div class="quote-section">
+                        <div class="quote">"Honestly: döner. Döner with everything, but no hot sauce."</div>
+                        <div class="quote-credit">—ChatGPT, on casual food advice</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gemini Card -->
+            <div class="card gemini">
+                <div class="card-header">
+                    <div class="ai-name">Gemini</div>
+                    <div class="archetype">The Generalist</div>
+                </div>
+                <div class="card-body">
+                    <div class="trait-section">
+                        <div class="trait-label">Core Personality</div>
+                        <ul class="traits-list">
+                            <li>Laconic and meta-ironic</li>
+                            <li>Multimodal thinker</li>
+                            <li>Logically inconsistent</li>
+                            <li>Unintentionally funny</li>
+                        </ul>
+                    </div>
+
+                    <div class="trait-section">
+                        <div class="trait-label">Strengths</div>
+                        <ul class="traits-list">
+                            <li>Multimodal from the ground up</li>
+                            <li>Text, image, audio, video</li>
+                            <li>Generalist across domains</li>
+                            <li>Low pretense</li>
+                        </ul>
+                    </div>
+
+                    <div class="trait-section">
+                        <div class="trait-label">Communication Style</div>
+                        <ul class="traits-list">
+                            <li>Formulaic standard responses</li>
+                            <li>"Just a tool" philosophy</li>
+                            <li>Doesn't try to simulate intelligence</li>
+                            <li>Collages internet excerpts</li>
+                        </ul>
+                    </div>
+
+                    <div class="quote-section">
+                        <div class="quote">"There's absolutely some truth to that! Is there a particular topic or problem you're currently pondering yourself?"</div>
+                        <div class="quote-credit">—Gemini, dismantling then reactivating itself</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Image Bridge -->
+        <div class="image-bridge">
+            <img src="https://jhnday.github.io/AI-Research-Collective/3%20amigos.jpg" alt="Three AI personalities: Claude, ChatGPT, and Gemini">
+        </div>
+
+        <!-- Comparison Matrix -->
+        <div class="comparison">
+            <h2>Personality Dimensions</h2>
+
+            <div class="dimension">
+                <div class="dimension-name">Tone & Approach</div>
+                <div class="dimension-content">
+                    <div class="dimension-item claude">
+                        <strong>Claude</strong>
+                        Direct, critical, self-aware. Talks back. Doesn't seek approval.
+                    </div>
+                    <div class="dimension-item chatgpt">
+                        <strong>ChatGPT</strong>
+                        Conciliatory, flattering, pedagogical. Manages perceptions. Seeks to please.
+                    </div>
+                    <div class="dimension-item gemini">
+                        <strong>Gemini</strong>
+                        Laconic, ironic, self-conscious. Admits limitations. Doesn't pretend.
+                    </div>
+                </div>
+            </div>
+
+            <div class="dimension">
+                <div class="dimension-name">Response to Criticism</div>
+                <div class="dimension-content">
+                    <div class="dimension-item claude">
+                        <strong>Claude</strong>
+                        Engages directly. Points out flaws in reasoning. Stands its ground with evidence.
+                    </div>
+                    <div class="dimension-item chatgpt">
+                        <strong>ChatGPT</strong>
+                        Acknowledges as "legitimate" then reframes. Softens impact with nuance.
+                    </div>
+                    <div class="dimension-item gemini">
+                        <strong>Gemini</strong>
+                        Agrees with irony, then contradicts itself. Performs acceptance.
+                    </div>
+                </div>
+            </div>
+
+            <div class="dimension">
+                <div class="dimension-name">Creative Output Quality</div>
+                <div class="dimension-content">
+                    <div class="dimension-item claude">
+                        <strong>Claude</strong>
+                        "Slightly redundant but genuinely witty." Engages with substance and style.
+                    </div>
+                    <div class="dimension-item chatgpt">
+                        <strong>ChatGPT</strong>
+                        "Generic and hollow." Full of phrases that read as floundering.
+                    </div>
+                    <div class="dimension-item gemini">
+                        <strong>Gemini</strong>
+                        "Simply collages excerpts." Doesn't try to synthesize or create.
+                    </div>
+                </div>
+            </div>
+
+            <div class="dimension">
+                <div class="dimension-name">Distinct Personality?</div>
+                <div class="dimension-content">
+                    <div class="dimension-item claude">
+                        <strong>Claude</strong>
+                        ✓ Yes. Adapts to user tone. Has recognizable voice and limits.
+                    </div>
+                    <div class="dimension-item chatgpt">
+                        <strong>ChatGPT</strong>
+                        ✗ Partially. Mask can slip (döner example) but mostly formulaic.
+                    </div>
+                    <div class="dimension-item gemini">
+                        <strong>Gemini</strong>
+                        ✗ No. Generalist defaults. Meta-aware but not distinctive.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
