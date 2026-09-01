@@ -372,6 +372,15 @@
 
                     marker.tier = tier;
                     marker.dcIndex = idx;
+                    
+                    marker.on('mouseover', function() {
+                        this.openPopup();
+                    });
+                    
+                    marker.on('mouseout', function() {
+                        this.closePopup();
+                    });
+                    
                     marker.on('click', function() {
                         selectDatacenter(idx, tier);
                     });
