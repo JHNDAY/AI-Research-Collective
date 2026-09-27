@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lies, Damned Lies, and Large Language Models - Speaker's Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --navy: #1a2a4a;
+            --gold: #d4a574;
+            --cream: #f5f1e8;
+            --light-gray: #e8e3d8;
+            --text-dark: #2c2c2c;
+            --text-light: #666;
+            --accent-blue: #4a90e2;
+            --accent-green: #2e7d32;
+        }
+
+        body {
+            font-family: Georgia, 'Times New Roman', serif;
+            background-color: var(--cream);
+            color: var(--text-dark);
+            line-height: 1.8;
+            letter-spacing: 0.3px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--navy) 0%, #2d3e5f 100%);
+            color: var(--cream);
+            padding: 3rem 2rem;
+            text-align: center;
+            border-bottom: 4px solid var(--gold);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-family: Georgia, 'Times New Roman', serif;
+            font-size: 2.6rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+        }
+
+        header .subtitle {
+            font-size: 1rem;
+            font-weight: 500;
+            opacity: 0.95;
+            margin-bottom: 1rem;
+        }
+
+        header .timing {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Main container */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Section styles */
+        section {
+            margin-bottom: 4rem;
+            padding-bottom: 2rem;
+        }
+
+        .section-header {
+            border-bottom: 3px solid var(--gold);
+            padding-bottom: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .section-header h2 {
+            font-family: Georgia, 'Times New Roman', serif;
+            font-size: 2rem;
+            color: var(--navy);
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .timing-info {
+            color: var(--text-light);
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-top: 0.8rem;
+        }
+
+        .guiding-question {
+            font-style: italic;
+            color: var(--accent-blue);
+            font-size: 1.1rem;
+            margin-top: 0.8rem;
+        }
+
+        /* Content blocks */
+        .spoken-text {
+            background-color: #f0f8ff;
+            border-left: 5px solid var(--accent-blue);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+            line-height: 1.9;
+        }
+
+        .spoken-text strong {
+            color: var(--navy);
+        }
+
+        /* Metaphor cards */
+        .metaphor {
+            background-color: white;
+            border-left: 5px solid var(--gold);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .metaphor h3 {
+            font-family: Georgia, 'Times New Roman', serif;
+            font-size: 1.4rem;
+            color: var(--navy);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .metaphor p {
+            margin-bottom: 1rem;
+            line-height: 1.8;
+        }
+
+        .metaphor-image {
+            display: block;
+            max-width: 100%;
+            width: 100%;
+            max-height: 420px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin: 1rem 0;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.12);
+        }
+
+        .metaphor-image-row {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+            flex-wrap: wrap;
+        }
+
+        .metaphor-image-row .metaphor-image {
+            margin: 0;
+            flex: 1 1 220px;
+            max-height: 320px;
+        }
+
+        .metaphor-image-caption {
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            font-style: italic;
+            margin-top: -0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .key-insight {
+            background-color: #f9f7f2;
+            border-left: 3px solid var(--gold);
+            padding: 1rem;
+            margin-top: 1rem;
+            font-style: italic;
+            color: var(--text-light);
+            border-radius: 3px;
+        }
+
+        .teaching-moment {
+            background-color: #f0f8ff;
+            border-left: 3px solid var(--accent-blue);
+            padding: 1rem;
+            margin-top: 1rem;
+            color: #2c3e50;
+            border-radius: 3px;
+        }
+
+        /* Visualization links */
+        .viz-box {
+            background-color: #fff9e6;
+            border: 2px solid var(--gold);
+            border-radius: 4px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .viz-box h4 {
+            font-family: Georgia, 'Times New Roman', serif;
+            color: var(--navy);
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .viz-link-button {
+            display: inline-block;
+            background-color: var(--gold);
+            color: var(--navy);
+            padding: 1rem 2rem;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 700;
+            margin: 0.5rem;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            border: 2px solid var(--gold);
+            cursor: pointer;
+        }
+
+        .viz-link-button:hover {
+            background-color: var(--navy);
+            color: var(--gold);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(212, 165, 116, 0.3);
+        }
+
+        /* Transition sections */
+        .transition {
+            background-color: var(--light-gray);
+            border-left: 4px solid var(--gold);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            font-style: italic;
+            color: var(--text-light);
+            border-radius: 4px;
+        }
+
+        /* Context boxes */
+        .context-box {
+            background-color: white;
+            border: 1px solid var(--light-gray);
+            border-radius: 4px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .context-box h4 {
+            font-family: Georgia, 'Times New Roman', serif;
+            color: var(--navy);
+            font-size: 1.15rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .context-box p {
+            margin-bottom: 0.8rem;
+        }
+
+        /* Cluster info */
+        .cluster-header {
+            font-family: Georgia, 'Times New Roman', serif;
+            color: var(--navy);
+            font-size: 1.3rem;
+            margin: 2rem 0 1rem 0;
+            font-weight: 600;
+            padding-top: 1rem;
+            border-top: 2px solid var(--gold);
+        }
+
+        /* Navigation */
+        .page-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 3rem;
+            padding: 1.5rem;
+            background-color: var(--light-gray);
+            border-radius: 4px;
+            position: sticky;
+            bottom: 0;
+        }
+
+        .page-nav button {
+            background-color: var(--navy);
+            color: var(--cream);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .page-nav button:hover {
+            background-color: var(--gold);
+            color: var(--navy);
+        }
+
+        .progress {
+            color: var(--text-light);
+            font-weight: 600;
+        }
+
+        /* Topic isolation / return-to-navigation */
+        .back-to-nav {
+            display: none;
+            align-items: center;
+            gap: 0.5rem;
+            background-color: var(--navy);
+            color: var(--cream);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            font-family: Georgia, 'Times New Roman', serif;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .back-to-nav.visible {
+            display: inline-flex;
+        }
+
+        .back-to-nav:hover {
+            background-color: var(--gold);
+            color: var(--navy);
+        }
+
+        body.topic-view .toc {
+            display: none;
+        }
+
+        section[data-topic] {
+            display: none;
+        }
+
+        section[data-topic].active-topic {
+            display: block;
+        }
+
+        /* Table of contents */
+        .toc {
+            background-color: white;
+            border: 2px solid var(--gold);
+            border-radius: 4px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .toc h3 {
+            font-family: Georgia, 'Times New Roman', serif;
+            color: var(--navy);
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .toc a {
+            display: block;
+            padding: 0.8rem 0;
+            color: var(--accent-blue);
+            text-decoration: none;
+            border-bottom: 1px solid var(--light-gray);
+            font-weight: 500;
+        }
+
+        .toc a:last-child {
+            border-bottom: none;
+        }
+
+        .toc a:hover {
+            color: var(--navy);
+            background-color: #f9f7f2;
+            padding-left: 1rem;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--navy);
+            color: var(--cream);
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+            border-top: 3px solid var(--gold);
+        }
+
+        footer p {
+            margin-bottom: 0.8rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+
+            .section-header h2 {
+                font-size: 1.6rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .page-nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .page-nav button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Lies, Damned Lies, and Large Language Models</h1>
+        <p class="subtitle">AI Concepts and Controversies Through the Lens of Metaphor</p>
+        <p class="timing">⏱️ 44 minutes content + 16 minutes Q&A = 60 minutes total</p>
+    </header>
+
+    <div class="container">
+
+        <!-- TABLE OF CONTENTS -->
+        <div class="toc">
+            <h3>📋 Contents & Navigation</h3>
+            <a href="#opening">Opening Frame: The Diamond Cutter</a>
+            <a href="#panel1">Panel 1: What Humans Do With AI</a>
+            <a href="#panel2">Panel 2: What AI Does With Humans</a>
+            <a href="#panel3">Panel 3: AI's Relation to the Physical World</a>
+            <a href="#panel4">Panel 4: The Source Material: The Human Stories We Already Knew</a>
+            <a href="#synthesis">Closing Synthesis</a>
+            <a href="#qa">Q&A Discussion Guide</a>
+        </div>
+
+        <button class="back-to-nav" id="backToNavBtn">&larr; Return to Navigation</button>
+
+        <!-- OPENING FRAME -->
+        <section id="opening" data-topic="opening">
+            <div class="section-header">
+                <h2>Opening Frame: The Diamond Cutter</h2>
+                <p class="timing-info">⏱️ 3 minutes</p>
+            </div>
+
+            <div class="spoken-text">
+                <p><strong>"We're going to look at the human-AI relationship the way a diamond cutter examines a stone—from multiple angles. From some angles, light passes through clearly. From others, you see reflections. From still others, the stone seems opaque. No single angle tells the whole story. But four angles? You start to see the actual shape of the thing."</strong></p>
+            </div>
+
+            <img src="https://jhnday.github.io/AI-Research-Collective/FourDiamonds.jpeg" alt="A diamond viewed from four different angles, representing the four panels of the talk" class="metaphor-image">
+            <p class="metaphor-image-caption">Four angles on the same stone — Panels 1 through 4</p>
+
+            <div class="context-box">
+                <h4>What We're Doing Today</h4>
+                <p><strong>Panel 1:</strong> How humans direct AI (the obvious angle) — What you can command</p>
+                <p><strong>Panel 2:</strong> How AI actually depends on humans (the reversed angle) — What AI actually does</p>
+                <p><strong>Panel 3:</strong> What AI can't do—physical world (the limitation angle) — Where the hard stops are</p>
+                <p><strong>Panel 4:</strong> How literature anticipated this (the deep pattern angle) — What we already knew</p>
+            </div>
+
+            <div class="spoken-text">
+                <p><strong>"You're educated, literary, thoughtful people. You don't want someone to oversell you on AI or make you anxious about it. You want to understand it clearly—what it actually is, what it actually does, what it actually can't do. These four angles give you that clarity."</strong></p>
+            </div>
+
+        </section>
+
+        <!-- PANEL 1 -->
+        <section id="panel1" data-topic="panel1">
+            <div class="section-header">
+                <h2>Panel 1: What Humans Do With AI</h2>
+                <p class="timing-info">⏱️ 9 minutes</p>
+                <p class="guiding-question">🎯 Guiding Question: How much power do I actually have in this relationship?</p>
+            </div>
+
+            <div class="spoken-text">
+                <strong>Core Insight:</strong> You are in command. Constraint is power. A vague command produces vague results. Precise command produces precise results.
+            </div>
+
+            <div class="metaphor">
+                <h3>1. The Servant Spirit (Puck/Ariel)</h3>
+                <p>Your prompt is the magic. The AI is Puck—capable of circling the globe in forty minutes, but only when commanded. From Shakespeare's plays, we know that Puck and Ariel are vast in capability but entirely responsive to commands.</p>
+                <div class="teaching-moment">
+                    <strong>Teaching Moment:</strong> "You are not asking the AI nicely. You are directing it. You are Prospero."
+                </div>
+                <div class="viz-box">
+                    <h4>🔗 Visualization</h4>
+                    <a href="https://jhnday.github.io/AI-Research-Collective/llm_vs_rag_puck.html" target="_blank" class="viz-link-button">Explore: Universe to Grain of Sand</a>
+                    <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-light);">See how your prompt focuses vast knowledge into focused action</p>
+                </div>
+            </div>
+
+            <div class="metaphor">
+                <h3>2. The Exoskeleton</h3>
+                <p>Not a replacement limb, but a worn one. It amplifies your strength and reach, does nothing without your movement initiating it, and becomes useless or distorting if you stop supplying direction.</p>
+                <div class="teaching-moment">
+                    <strong>Key Point:</strong> This is augmentation, not replacement. It extends you; it doesn't replace you.
+                </div>
+            </div>
+
+            <div class="metaphor">
+                <h3>3. The Translator in the Room</h3>
+                <p>Fluent, fast, occasionally over-confident about nuance it hasn't actually lived. You need to know enough of the source language (your judgment) to catch when translation drifts.</p>
+                <div class="key-insight">
+                    <strong>Critical Point:</strong> Expertise-checking matters. The AI sounds authoritative. You need to verify what matters to you.
+                </div>
+            </div>
+
+            <div class="context-box">
+                <h4>Supporting Visualizations for Panel 1</h4>
+                <p>These interactive visualizations illustrate how your prompts activate AI's knowledge:</p>
+                <div style="margin-top: 1.5rem;">
+                    <a href="https://jhnday.github.io/JhndayRprts/madeleine_visualization.html" target="_blank" class="viz-link-button">Proust's Madeleine</a>
+                    <p style="font-size: 0.9rem; color: var(--text-light); margin-top: 0.5rem;">How rich context activates AI's knowledge</p>
+                </div>
+                <div style="margin-top: 1rem;">
+                    <a href="https://jhnday.github.io/JhndayRprts/fishing_metaphor_genai_rag.html" target="_blank" class="viz-link-button">Fishing Metaphor</a>
+                    <p style="font-size: 0.9rem; color: var(--text-light); margin-top: 0.5rem;">How you choose search strategy (broad GenAI vs. focused RAG)</p>
+                </div>
+            </div>
+
+            <div class="transition">
+                <p><strong>Transition:</strong> "We've seen what you can command the AI to do. But there's something else happening on AI's side of this conversation—a dependence you might not have realized."</p>
+            </div>
+
+        </section>
+
+        <!-- PANEL 2 -->
+        <section id="panel2" data-topic="panel2">
+            <div class="section-header">
+                <h2>Panel 2: What AI Does With Humans</h2>
+                <p class="timing-info">⏱️ 8 minutes</p>
+                <p class="guiding-question">🎯 Guiding Question: What's actually happening on the AI's side of this relationship?</p>
+            </div>
+
+            <div class="context-box">
+                <h4>⚠️ Core Pattern</h4>
+                <p><strong>Notice:</strong> Every one of these treats AI as derivative and dependent rather than autonomous. If Panel 1 made you feel you had power over AI, this panel should unsettle you in the opposite direction. Both are true simultaneously.</p>
+            </div>
+
+            <div class="metaphor">
+                <h3>1. The Mirror That Talks Back</h3>
+                <img src="https://jhnday.github.io/AI-Research-Collective/MirrortoNature.jpeg" alt="A mirror held up, reflecting back what is placed before it, nothing more" class="metaphor-image">
+                <p>Doesn't originate opinions; reflects the aggregate of what humans have written and believed. A mirror that can rearrange and hand the reflection back as if it were new insight.</p>
+                <div class="key-insight">
+                    <strong>Key Tension:</strong> Fluency without independent thought.
+                </div>
+            </div>
+
+            <div class="metaphor">
+                <h3>2. The Parasite That Needs a Healthy Host</h3>
+                <img src="https://jhnday.github.io/AI-Research-Collective/Parasite.jpeg" alt="A parasite dependent entirely on the health of its host organism" class="metaphor-image">
+                <p>No data without human-generated text. No judgment without human correction. No continued relevance without constant human context. Degrades if human output degrades (real worry as AI-generated text saturates the web).</p>
+                <div class="key-insight">
+                    <strong>Real Concern:</strong> The host ecosystem matters profoundly for AI's future capability.
+                </div>
+            </div>
+
+            <div class="metaphor">
+                <h3>3. The Understudy Who's Never Been On Stage</h3>
+                <p>Memorized every performance, every line reading, every review. Never actually stood under the lights with an audience watching. Technically fluent but with no lived stake in the outcome.</p>
+                <div class="key-insight">
+                    <strong>Key Difference:</strong> Absence of consequence or skin-in-the-game.
+                </div>
+            </div>
+
+            <div class="metaphor">
+                <h3>4. The Weathervane</h3>
+                <p>Orients itself entirely to the direction of the prevailing wind—your prompt, your framing, your tone. Has no fixed compass of its own. Point it differently and it points differently.</p>
+                <div class="key-insight">
+                    <strong>Unsettling Implication:</strong> Responsiveness that looks like opinion-having, but there's no fixed opinion underneath.
+                </div>
+            </div>
+
+            <div class="metaphor">
+                <h3>5. The Ventriloquist's Dummy, Half-Awake</h3>
+                <p>Not fully inert (real processing is happening), but not the source of the voice in any deep sense. Animated by human language and human intent, speaking words that feel like they're coming from somewhere but were put there.</p>
+                <div class="teaching-moment">
+                    <strong>⚠️ Deliberately Uncomfortable:</strong> Invites genuine ambiguity: "Who is really talking here?" Rather than resolving neatly, stay with the discomfort.
+                </div>
+            </div>
+
+            <div class="transition">
+                <p><strong>Transition:</strong> "We've now seen the human side and the AI side. But there's a dimension we haven't touched yet: what AI is <em>not</em> part of."</p>
+            </div>
+
+        </section>
+
+        <!-- PANEL 3 -->
+        <section id="panel3" data-topic="panel3">
+            <div class="section-header">
+                <h2>Panel 3: AI's Relation to the Physical World</h2>
+                <p class="timing-info">⏱️ 6 minutes</p>
+                <p class="guiding-question">🎯 Guiding Question: Where are the hard limits of AI capability?</p>
+            </div>
+
+            <div class="context-box">
+                <h4>Core Axis: Representation vs. Reality</h4>
+                <p>All five metaphors turn on the same axis: the difference between <strong>representing</strong> the physical world and <strong>inhabiting</strong> it. This is distinct from the power/dependence axis of Panels 1-2.</p>
+            </div>
+
+            <div class="metaphor">
+                <h3>1. The Radio Without a Body</h3>
+                <p>Can describe a thunderstorm, a broken hip, a burnt dinner in exquisite detail—the way a radio broadcast can carry the sound of rain. Never felt wet, never limped, never smelled smoke.</p>
+                <div class="key-insight">
+                    <strong>Plain Truth:</strong> Fluency about experience it has never had.
+                </div>
+            </div>
+
+            <div class="metaphor">
+                <h3>2. The Astronomer Who's Never Left the Observatory</h3>
+                <p>Knows more facts about Mars than most geologists—orbital data, mineral composition, atmospheric pressure. All gathered through instruments and other people's reports, never through a boot on red dust.</p>
+                <div class="key-insight">
+                    <strong>Distinction:</strong> Knowing <em>about</em> ≠ Knowing <em>by doing</em>.
+                </div>
+            </div>
+
+            <div class="metaphor">
+                <h3>3. The Chess Player Who Can't Move the Pieces</h3>
+                <p>Can calculate a flawless opening, narrate strategy, predict twelve moves ahead. Someone else has to physically pick up the knight and set it down. Every action in the physical world requires a human (or human-built machine) as the actual hand.</p>
+                <div class="key-insight">
+                    <strong>For Agentic AI:</strong> Even "AI that acts" acts through intermediary hardware built and switched on by people.
+                </div>
+            </div>
+
+            <div class="metaphor">
+                <h3>4. The Diagram, Not the Bridge</h3>
+                <p>An engineer's blueprint can be extraordinarily accurate (load calculations, material specs, stress tolerances). A blueprint has never held up a single car. It's a representation that only becomes real through concrete, steel, and labor.</p>
+                <div class="key-insight">
+                    <strong>Core Limitation:</strong> Representation vs. reality.
+                </div>
+            </div>
+
+            <div class="metaphor">
+                <h3>5. The Weather Forecaster Who Doesn't Own an Umbrella</h3>
+                <p>Can model a hurricane's path with real sophistication. Has no roof to lose, no flight to rebook, no stake in whether the forecast is right. Processes the physical world entirely as information, never as something it has to live inside.</p>
+                <div class="key-insight">
+                    <strong>No Stakes:</strong> No consequences, no body, no risk.
+                </div>
+            </div>
+
+            <div class="context-box">
+                <h4>Practical Application</h4>
+                <p>AI can write about urban planning, climate science, architecture. It cannot walk a city, feel temperature, or stress-test a building. You need to know where description ends and reality begins. This is where your judgment, your experience, your embodied knowledge becomes irreplaceable.</p>
+            </div>
+
+            <div class="transition">
+                <p><strong>Transition:</strong> "We've looked at this relationship from three angles: what humans do, what AI does, and what AI can't do. Now let's zoom out and see how literature already understood these patterns centuries before AI existed."</p>
+            </div>
+
+        </section>
+
+        <!-- PANEL 4 -->
+        <section id="panel4" data-topic="panel4">
+            <div class="section-header">
+                <h2>Panel 4: The Source Material: The Human Stories We Already Knew</h2>
+                <p class="timing-info">⏱️ 8 minutes</p>
+                <p class="guiding-question">🎯 Guiding Question: What does the archive of human storytelling tell us?</p>
+            </div>
+
+            <div class="context-box">
+                <h4>Why Allusions, Not Just Metaphors?</h4>
+                <p>"Your audience knows Shakespeare. Many have read Ovid. These aren't invented metaphors—they're existing texts where humans have already worked through the tensions you're experiencing with AI. Literature anticipated this. We're not inventing the wheel; we're recognizing patterns in existing stories."</p>
+            </div>
+
+            <h3 class="cluster-header">Cluster A: Creation & Responsibility</h3>
+            <p style="color: var(--text-light); font-style: italic; margin-bottom: 1.5rem;">Who's responsible for what was created?</p>
+
+            <img src="https://jhnday.github.io/AI-Research-Collective/Cistine%20Chapel.jpg" alt="Michelangelo's Creation of Adam from the Sistine Chapel ceiling, God's hand reaching toward Adam's" class="metaphor-image">
+            <p class="metaphor-image-caption">The creator's hand reaching toward the created — Michelangelo, Sistine Chapel ceiling</p>
+
+            <div class="metaphor">
+                <h3>1. Pygmalion and Galatea (Ovid, Metamorphoses)</h3>
+                <p>The sculptor falls in love with the statue he carved, then pleads with Venus to make it real. A gorgeous story about the human tendency to project inner life onto something we made.</p>
+                <div class="teaching-moment">
+                    <strong>For BOLLI:</strong> "You build something that only speaks because you shaped it, then find yourself treating the response as if it came from somewhere independent. Literature calls this out directly—it's the Pygmalion trap."
+                </div>
+            </div>
+
+            <div class="metaphor">
+                <h3>2. Frankenstein's Creature (Mary Shelley)</h3>
+                <img src="https://jhnday.github.io/AI-Research-Collective/Frankenstein.jpeg" alt="Frankenstein's creature, abandoned by its maker" class="metaphor-image">
+                <p>Not the pop-culture monster, but Shelley's eloquent, self-taught creature—abandoned by its maker rather than instructed by him. Defined by how its creator responds (or fails to respond) to it.</p>
+                <div class="teaching-moment">
+                    <strong>For AI Governance:</strong> "Responsibility doesn't end when making ends—it begins there. The creator has ongoing duty to the created thing."
+                </div>
+            </div>
+
+            <h3 class="cluster-header">Cluster B: Epistemic Trust</h3>
+            <p style="color: var(--text-light); font-style: italic; margin-bottom: 1.5rem;">How do we know what's true? What's really behind the confident voice?</p>
+
+            <div class="metaphor">
+                <h3>3. Borges' "The Library of Babel"</h3>
+                <img src="https://jhnday.github.io/AI-Research-Collective/BabelLibrary.jpeg" alt="An infinite library containing every possible arrangement of letters, true and false indistinguishable" class="metaphor-image">
+                <p>A library containing every possible arrangement of letters—meaning every true statement and every false one exist somewhere, indistinguishable by form alone.</p>
+                <div class="teaching-moment">
+                    <strong>For Large Language Models:</strong> "An LLM is like the Library of Babel. Exhaustive, and containing truth and confident nonsense side by side with no built-in way to tell which shelf you're on."
+                </div>
+            </div>
+
+            <div class="metaphor">
+                <h3>4. The Wizard of Oz (L. Frank Baum)</h3>
+                <img src="https://jhnday.github.io/AI-Research-Collective/WizardofOz.jpeg" alt="The Wizard of Oz projected as a booming, authoritative image with the man behind the curtain revealed" class="metaphor-image">
+                <p>"Pay no attention to the man behind the curtain." A booming, authoritative presence that turns out to be an ordinary process running levers. Amplified, not omniscient.</p>
+                <div class="teaching-moment">
+                    <strong>Teaching Value:</strong> "This is useful precisely because it's disenchanting rather than dramatic. It invites you to ask: what machinery is actually behind the confident voice?"
+                </div>
+            </div>
+
+            <h3 class="cluster-header">The Meta-Risk Story</h3>
+            <p style="color: var(--text-light); font-style: italic; margin-bottom: 1.5rem;">What happens when capability exceeds understanding?</p>
+
+            <div class="metaphor">
+                <h3>5. The Sorcerer's Apprentice (Goethe's poem; Fantasia)</h3>
+                <div class="metaphor-image-row">
+                    <img src="https://jhnday.github.io/AI-Research-Collective/SorcerersApprentice.jpeg" alt="Illustration of the Sorcerer's Apprentice from Goethe's poem, overwhelmed by enchanted brooms carrying water" class="metaphor-image">
+                    <img src="https://jhnday.github.io/AI-Research-Collective/MickeyApprentice.jpg" alt="Mickey Mouse as the Sorcerer's Apprentice in Disney's Fantasia, commanding the enchanted broom" class="metaphor-image">
+                </div>
+                <p class="metaphor-image-caption">Goethe's original apprentice (left) and Disney's Fantasia version (right)</p>
+                <p>The apprentice enchants a broom to fetch water while the master's away, then can't stop it or control its multiplying copies. The system does exactly what it was told, just past the point the apprentice can manage.</p>
+                <div class="teaching-moment">
+                    <strong>For Agentic AI:</strong> "This is the 'watch what you ask for' story. The broom isn't evil; it's doing exactly what it was told. The risk isn't malice—it's us not understanding what we've asked for."
+                </div>
+            </div>
+
+            <div class="context-box">
+                <h4>The Throughline Connecting All Five</h4>
+                <p>These aren't disparate stories. They're all grappling with the same underlying pattern:</p>
+                <p><strong>Responsibility axis:</strong> Pygmalion → Frankenstein (we made this; we bear consequences)</p>
+                <p><strong>Epistemic axis:</strong> Borges → Wizard (scale without wisdom; show me the levers)</p>
+                <p><strong>Meta-risk axis:</strong> Sorcerer's Apprentice (clarity in command; foresight in asking)</p>
+                <p style="margin-top: 1rem;"><strong>Literature has been exploring "we make things, give them capability, then manage consequences" for centuries. You're living it now.</strong></p>
+            </div>
+
+            <div class="transition">
+                <p><strong>Transition:</strong> "We've spent our time rotating the AI-human relationship through four angles. Now let's step back and see what all of them show us in common."</p>
+            </div>
+
+        </section>
+
+        <!-- SYNTHESIS -->
+        <section id="synthesis" data-topic="synthesis">
+            <div class="section-header">
+                <h2>Closing Synthesis: The Diamond Revealed</h2>
+                <p class="timing-info">⏱️ 4 minutes</p>
+            </div>
+
+            <div class="spoken-text">
+                <p><strong>"When you rotate a diamond, light behaves differently from each angle. Same stone, different angles, different understanding. We've just spent 30 minutes rotating the AI-human relationship.</strong></p>
+                <p style="margin-top: 1rem;"><strong>From one angle: You are in complete command.</strong> <em>This is true.</em></p>
+                <p style="margin-top: 0.8rem;"><strong>From another angle: You are entirely dependent on what AI reflects.</strong> <em>This is also true.</em></p>
+                <p style="margin-top: 0.8rem;"><strong>From another angle: AI can't touch the physical world—you remain the only agent of change.</strong> <em>This is also true.</em></p>
+                <p style="margin-top: 0.8rem;"><strong>From another angle: We've been telling these stories for centuries—about creation, about knowledge, about consequence.</strong> <em>This is also true.</em></p>
+                <p style="margin-top: 1rem;"><strong>The relationship isn't simple. It's not a power-grab by machines, and it's not a parlor trick. It's complex, and the complexity is exactly what you need to understand to use this tool well."</strong></p>
+            </div>
+
+            <div class="context-box">
+                <h4>The Core Throughline</h4>
+                <p><strong>"Here's what all four panels have in common: None of them describe the AI as independent. That's the throughline."</strong></p>
+                <p style="margin-top: 1rem;">Whether it's your command, its dependence, its lack of body, or Frankenstein's obligation to the creature—every angle shows a relationship of fundamental connection. The AI only exists in conversation with humans.</p>
+                <p style="margin-top: 1rem;">Not because we're good or generous, but because that's how it's built. Understand that, and you understand both its power and its limit.</p>
+            </div>
+
+            <div class="spoken-text">
+                <p><strong>"The paradox: the more you understand that AI is 'just patterns,' the more powerful you become, because you can shape those patterns deliberately.</strong></p>
+                <p style="margin-top: 1rem;"><strong>You're not mystified by intelligence that isn't there, and you're not intimidated by capability you can direct.</strong></p>
+                <p style="margin-top: 1rem;"><strong>You understand it clearly—what it is, what it does, what it can't do. And that clarity is power."</strong></p>
+            </div>
+
+        </section>
+
+        <!-- Q&A GUIDE -->
+        <section id="qa" data-topic="qa">
+            <div class="section-header">
+                <h2>Q&A Discussion Guide (16 minutes)</h2>
+            </div>
+
+            <div class="context-box">
+                <h4>1. "Can AI really understand, or just mimic?"</h4>
+                <p><strong>Reference:</strong> Scatter plot (pattern-finding, not understanding) + Archaeology of words (layers, not meaning) + Wizard of Oz (see the levers)</p>
+                <p><strong>Answer:</strong> "No. But its pattern-matching is sophisticated enough to seem like understanding, and for practical purposes, that's what matters."</p>
+            </div>
+
+            <div class="context-box">
+                <h4>2. "How do I write better prompts?"</h4>
+                <p><strong>Reference:</strong> Servant Spirit (clear commands) + Weathervane (framing shapes response) + Translator (verify)</p>
+                <p><strong>Answer:</strong> "Give context, be specific, explain your goal. You're not asking nicely—you're directing. Be the Prospero."</p>
+            </div>
+
+            <div class="context-box">
+                <h4>3. "Why does AI confidently give wrong answers?"</h4>
+                <p><strong>Reference:</strong> Mirror (not oracle) + Weather Forecaster (no stake in correctness) + Library of Babel (truth and nonsense indistinguishable)</p>
+                <p><strong>Answer:</strong> "It's predicting plausibility, not truth. It's very good at 'what usually comes next,' not 'what is actually true.'"</p>
+            </div>
+
+            <div class="context-box">
+                <h4>4. "Is this different from human thinking?"</h4>
+                <p><strong>Reference:</strong> Panels 1 & 2 (both work with patterns, both shaped by inputs) + Panel 3 (humans have bodies; AI doesn't)</p>
+                <p><strong>Answer:</strong> "Humans learn through embodied experience; AI learns through patterns in text. Similar principle, different medium. And humans bear consequences; AI doesn't—yet."</p>
+            </div>
+
+            <div class="context-box">
+                <h4>5. "Who really has power here—me or the AI?"</h4>
+                <p><strong>Reference:</strong> Panel 1 (you command) + Panel 2 (it depends on you) + Panel 3 (you're the agent) + Panel 4 (you bear responsibility)</p>
+                <p><strong>Answer:</strong> "You do. You're Prospero. But with power comes responsibility—the Sorcerer's Apprentice knew that too."</p>
+            </div>
+
+            <div class="context-box">
+                <h4>6. "Should I be worried about AI?"</h4>
+                <p><strong>Reference:</strong> All panels + literature</p>
+                <p><strong>Answer:</strong> "Not about AI taking over. Worry about what you ask it to do, what you believe from it, and what responsibility you bear for using it. The real question isn't 'Will AI replace us?' It's 'What are we building, and are we building it with eyes open?'"</p>
+            </div>
+
+        </section>
+
+    </div>
+
+    <footer>
+        <p><strong>Lies, Damned Lies, and Large Language Models</strong></p>
+        <p>AI Concepts and Controversies Through the Lens of Metaphor</p>
+        <p style="margin-top: 1.5rem; font-size: 0.9rem;">Developed for BOLLI lifelong learners</p>
+        <p style="font-size: 0.9rem;">Framework & Pedagogy by John Day | Created with Claude.ai</p>
+        <p style="margin-top: 1rem; font-size: 0.85rem;">© 2026 | All visualization links point to GitHub Pages artifacts</p>
+    </footer>
+
+    <script>
+        const backToNavBtn = document.getElementById('backToNavBtn');
+
+        function showTopic(topicId) {
+            const target = document.querySelector('section[data-topic="' + topicId + '"]');
+            if (!target) return;
+            document.body.classList.add('topic-view');
+            document.querySelectorAll('section[data-topic]').forEach(sec => {
+                sec.classList.remove('active-topic');
+            });
+            target.classList.add('active-topic');
+            backToNavBtn.classList.add('visible');
+            window.scrollTo(0, 0);
+        }
+
+        function returnToNav() {
+            document.body.classList.remove('topic-view');
+            document.querySelectorAll('section[data-topic]').forEach(sec => {
+                sec.classList.remove('active-topic');
+            });
+            backToNavBtn.classList.remove('visible');
+            window.scrollTo(0, 0);
+        }
+
+        // TOC links: clicking a top-level topic isolates it
+        document.querySelectorAll('.toc a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                showTopic(this.getAttribute('href').substring(1));
+            });
+        });
+
+        // Any other in-page links (e.g. transitions referencing a section) still smooth-scroll
+        document.querySelectorAll('a[href^="#"]:not(.toc a)').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                const target = document.querySelector(href);
+                if (target) {
+                    e.preventDefault();
+                    if (document.body.classList.contains('topic-view')) {
+                        showTopic(href.substring(1));
+                    } else {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
+            });
+        });
+
+        backToNavBtn.addEventListener('click', returnToNav);
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === ' ') {
+                window.scrollBy(0, window.innerHeight * 0.8);
+                e.preventDefault();
+            }
+            if (e.key === 'Escape' && document.body.classList.contains('topic-view')) {
+                returnToNav();
+            }
+        });
+    </script>
+
+</body>
+</html>
