@@ -551,15 +551,18 @@
 <!-- ═══════════════ MAIN CONTENT ═══════════════ -->
 <div class="container">
 
-  <!-- ── TOP TWO-COL: Agenda + For Your Consideration ── -->
-  <div class="two-col fade-in" style="margin-bottom:40px;">
+  <!-- ── AGENDA: FULL WIDTH ── -->
+  <div class="fade-in" style="margin-bottom:40px;">
 
     <!-- AGENDA -->
-    <div class="agenda-section">
-      <div class="section-label">Upcoming Session</div>
-      <div class="section-title">Agenda</div>
+    <div class="agenda-section" style="display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;">
+      <div style="grid-column:1/-1;">
+        <div class="section-label">Upcoming Session</div>
+        <div class="section-title">Agenda</div>
+      </div>
 
-      <div class="card">
+      <!-- Session Theme: full width -->
+      <div class="card" style="grid-column:1/-1;">
         <div class="card-title">
           <span class="date-badge">Oct 2, 2026</span>
           Session Theme
@@ -570,18 +573,21 @@
         </div>
       </div>
 
+      <!-- Left: Essential Ideas -->
       <div class="card">
-        <div class="card-title">
-          <span class="date-badge">Oct 2, 2026</span>
-          Session Materials
-        </div>
+        <div class="card-title">Essential Ideas</div>
         <div class="links col">
-          <div style="font-family:'Oswald',sans-serif;font-size:.8rem;letter-spacing:.18em;text-transform:uppercase;color:#E8B84B;font-weight:600;margin:14px 0 6px;">Essential Ideas</div>
           <a href="https://jhnday.github.io/AI-Research-Collective/Foundations" class="link-btn" target="_blank" rel="noopener">🏛️ Foundations of AI Conversation</a>
           <p style="font-size:.82rem;color:rgba(255,255,255,.65);margin:2px 0 10px;">A grounding overview of what AI is and how it works. The conceptual foundation that every session builds on.</p>
           <a href="https://jhnday.github.io/AI-Research-Collective/transduction_interactive_tokenizer" class="link-btn" target="_blank" rel="noopener">🔭 The Bifocal View : The Semantic Dissolve</a>
           <p style="font-size:.82rem;color:rgba(255,255,255,.65);margin:2px 0 10px;">An interactive tokenizer that shows how AI reads your words — not as meaning, but as fragments. Seeing the machine's view changes how you write for it.</p>
-          <hr style="border:none;border-top:1px solid rgba(232,184,75,.6);width:100%;margin:6px 0;">
+        </div>
+      </div>
+
+      <!-- Right: Prompting + Reading -->
+      <div class="card">
+        <div class="card-title">Session Materials</div>
+        <div class="links col">
           <div style="font-family:'Oswald',sans-serif;font-size:.8rem;letter-spacing:.18em;text-transform:uppercase;color:#E8B84B;font-weight:600;margin:14px 0 6px;">Prompting</div>
           <a href="https://jhnday.github.io/AI-Research-Collective/how-to-prompt-and-visualize" class="link-btn" target="_blank" rel="noopener">📄 Narrating a Prompt Tutorial</a>
           <p style="font-size:.82rem;color:rgba(255,255,255,.65);margin:2px 0 10px;">A step-by-step guide to turning your own words into a prompt. You narrate; Claude listens, interprets, and responds.</p>
@@ -597,8 +603,8 @@
       </div>
     </div>
 
-    <!-- FOR YOUR INFORMATION -->
-    <div>
+    <!-- FOR YOUR CONSIDERATION -->
+    <div style="margin-top:32px;">
       <div class="section-label">Curated Resources</div>
       <div class="section-title">💡 For Your Consideration</div>
 
