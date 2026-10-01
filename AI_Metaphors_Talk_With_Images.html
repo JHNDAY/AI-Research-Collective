@@ -497,7 +497,7 @@
                 </div>
                 <div class="viz-box">
                     <h4>🔗 Visualization</h4>
-                    <a href="https://jhnday.github.io/AI-Research-Collective/llm_vs_rag_puck.html" target="_blank" class="viz-link-button">Explore: Universe to Grain of Sand</a>
+                    <a href="https://jhnday.github.io/AI-Research-Collective/SpiritServant" target="_blank" class="viz-link-button">Explore: Universe to Grain of Sand</a>
                     <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-light);">See how your prompt focuses vast knowledge into focused action</p>
                 </div>
             </div>
@@ -847,6 +847,8 @@
 
     <script>
         const backToNavBtn = document.getElementById('backToNavBtn');
+        const topicOrder = ['opening', 'panel1', 'panel2', 'panel3', 'panel4', 'synthesis', 'qa'];
+        let currentHeadingIndex = -1;
 
         function showTopic(topicId) {
             const target = document.querySelector('section[data-topic="' + topicId + '"]');
@@ -857,6 +859,7 @@
             });
             target.classList.add('active-topic');
             backToNavBtn.classList.add('visible');
+            currentHeadingIndex = -1;
             window.scrollTo(0, 0);
         }
 
@@ -866,7 +869,26 @@
                 sec.classList.remove('active-topic');
             });
             backToNavBtn.classList.remove('visible');
+            currentHeadingIndex = -1;
             window.scrollTo(0, 0);
+        }
+
+        function getCurrentHeadings() {
+            return Array.from(document.querySelectorAll('section[data-topic].active-topic .metaphor > h3'));
+        }
+
+        function scrollToHeadingElement(heading) {
+            const headerEl = document.querySelector('header');
+            const headerHeight = headerEl ? headerEl.getBoundingClientRect().height : 0;
+            const targetY = heading.getBoundingClientRect().top + window.pageYOffset - headerHeight - 16;
+            window.scrollTo({ top: Math.max(targetY, 0), behavior: 'smooth' });
+        }
+
+        function goToHeading(delta) {
+            const headings = getCurrentHeadings();
+            if (!headings.length) return;
+            currentHeadingIndex = (currentHeadingIndex + delta + headings.length) % headings.length;
+            scrollToHeadingElement(headings[currentHeadingIndex]);
         }
 
         // TOC links: clicking a top-level topic isolates it
@@ -897,12 +919,25 @@
 
         // Keyboard navigation
         document.addEventListener('keydown', function(e) {
+            if (document.body.classList.contains('topic-view')) {
+                if (e.key === 'ArrowRight') {
+                    goToHeading(1);
+                    e.preventDefault();
+                    return;
+                }
+                if (e.key === 'ArrowLeft') {
+                    goToHeading(-1);
+                    e.preventDefault();
+                    return;
+                }
+                if (e.key === 'Escape') {
+                    returnToNav();
+                    return;
+                }
+            }
             if (e.key === ' ') {
                 window.scrollBy(0, window.innerHeight * 0.8);
                 e.preventDefault();
-            }
-            if (e.key === 'Escape' && document.body.classList.contains('topic-view')) {
-                returnToNav();
             }
         });
     </script>
