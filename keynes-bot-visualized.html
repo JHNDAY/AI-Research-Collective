@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Keynes Bot — A Visual Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital@0;1&family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #14213d;
+    --navy-soft: #2b3a5c;
+    --gold: #b8892b;
+    --gold-light: #e6cf94;
+    --cream: #f7f1e3;
+    --paper: #fffdf7;
+    --ink: #1d1d1b;
+    --muted: #5b5a52;
+    --warn: #8c2f2b;
+    --rule: #cfc4a6;
+    --serif-display: "Playfair Display", Georgia, "Times New Roman", serif;
+    --serif-body: Georgia, "Times New Roman", serif;
+    --machine: "Courier Prime", "Courier New", monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --cream: #10182b;
+      --paper: #17213a;
+      --ink: #eee8d6;
+      --muted: #b4b09f;
+      --rule: #3a4668;
+      --navy: #e6cf94;
+      --navy-soft: #cdbd8c;
+      --gold: #e0b44f;
+      --warn: #f0928b;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--cream);
+    color: var(--ink);
+    font-family: var(--serif-body);
+    font-size: 1.15rem;
+    line-height: 1.7;
+  }
+  a { color: var(--navy); }
+  a:focus-visible, summary:focus-visible, button:focus-visible {
+    outline: 3px solid var(--gold);
+    outline-offset: 3px;
+  }
+  .wrap { max-width: 920px; margin: 0 auto; padding: 0 1.4rem; }
+
+  /* Masthead */
+  header.mast {
+    background: var(--navy);
+    color: var(--cream);
+    padding: 3.2rem 0 2.6rem;
+    border-bottom: 6px double var(--gold);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) header.mast { background: #0a1020; color: #eee8d6; }
+  }
+  header.mast h1 {
+    font-family: var(--serif-display);
+    font-weight: 900;
+    font-size: clamp(2.2rem, 6vw, 3.9rem);
+    line-height: 1.08;
+    margin: 0 0 1rem;
+    letter-spacing: -0.01em;
+  }
+  header.mast .dek {
+    font-style: italic;
+    font-size: 1.3rem;
+    max-width: 38em;
+    color: var(--gold-light);
+    margin: 0 0 1.4rem;
+  }
+  header.mast .byline { font-size: 1rem; color: #d9d2bd; margin: 0; }
+  header.mast .source-link { margin: 1rem 0 0; font-size: 1.05rem; }
+  header.mast .source-link a { color: var(--gold-light); text-decoration-thickness: 2px; text-underline-offset: 4px; }
+  header.mast .source-link a:hover { color: #fff; }
+  header.mast .source-link a:focus-visible { outline-color: var(--gold-light); }
+  @media print { header.mast .source-link a { color: #000; } }
+
+  /* Sections */
+  section { padding: 3rem 0 1rem; }
+  h2 {
+    font-family: var(--serif-display);
+    font-weight: 700;
+    font-size: clamp(1.7rem, 4vw, 2.3rem);
+    line-height: 1.2;
+    color: var(--navy);
+    margin: 0 0 0.4rem;
+  }
+  .rule { height: 3px; width: 72px; background: var(--gold); margin: 0.7rem 0 1.6rem; border: 0; }
+  p { margin: 0 0 1.1rem; max-width: 40em; }
+  .lede { font-size: 1.28rem; }
+
+  /* Machine voice: everything the bot says is set in typewriter type */
+  .bot, .bot-quote {
+    font-family: var(--machine);
+    font-size: 1.05rem;
+    line-height: 1.65;
+  }
+  .bot-quote {
+    background: var(--paper);
+    border-left: 5px solid var(--gold);
+    padding: 1rem 1.2rem;
+    margin: 1.2rem 0;
+    max-width: 40em;
+  }
+  .bot-quote cite {
+    display: block;
+    margin-top: 0.5rem;
+    font-family: var(--serif-body);
+    font-size: 0.9rem;
+    color: var(--muted);
+    font-style: normal;
+  }
+  .key {
+    font-size: 0.98rem;
+    color: var(--muted);
+    border: 1px solid var(--rule);
+    background: var(--paper);
+    padding: 0.7rem 1rem;
+    max-width: 40em;
+    margin: 1rem 0 0;
+  }
+  .key .bot { color: var(--ink); }
+
+  /* Timeline SVG */
+  figure { margin: 1.8rem 0; }
+  figure svg { width: 100%; height: auto; display: block; }
+  figcaption { font-size: 0.95rem; color: var(--muted); margin-top: 0.5rem; max-width: 40em; }
+  svg text { font-family: var(--serif-body); fill: var(--ink); }
+  svg .disp { font-family: var(--serif-display); font-weight: 700; }
+  svg .mono { font-family: var(--machine); }
+
+  /* Conversation arc */
+  .arc { list-style: none; margin: 1.5rem 0 0; padding: 0; counter-reset: step; }
+  .arc li {
+    position: relative;
+    padding: 0 0 1.6rem 3.6rem;
+    border-left: 2px solid var(--rule);
+    margin-left: 1.15rem;
+    max-width: 44em;
+  }
+  .arc li:last-child { border-left-color: transparent; padding-bottom: 0.5rem; }
+  .arc li::before {
+    counter-increment: step;
+    content: counter(step);
+    position: absolute;
+    left: -1.2rem;
+    top: 0;
+    width: 2.3rem; height: 2.3rem;
+    border-radius: 50%;
+    background: var(--navy);
+    color: var(--paper);
+    font-family: var(--serif-display);
+    font-weight: 700;
+    display: grid; place-items: center;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .arc li::before { color: #10182b; }
+  }
+  .arc h3 { font-family: var(--serif-display); font-size: 1.25rem; margin: 0 0 0.2rem; color: var(--navy); }
+  .arc p { margin: 0; font-size: 1.05rem; }
+
+  /* Two groups */
+  .tabs { display: flex; gap: 0.6rem; flex-wrap: wrap; margin: 1.2rem 0 0; }
+  .tabs button {
+    font: inherit; font-size: 1.02rem;
+    padding: 0.7rem 1.1rem;
+    border: 2px solid var(--navy);
+    background: transparent;
+    color: var(--navy);
+    cursor: pointer;
+    font-family: var(--serif-display);
+    font-weight: 700;
+  }
+  .tabs button[aria-selected="true"] { background: var(--navy); color: var(--paper); }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .tabs button[aria-selected="true"] { color: #10182b; }
+  }
+  .panel {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-top: 5px solid var(--gold);
+    padding: 1.4rem 1.5rem 0.6rem;
+    max-width: 44em;
+  }
+  .panel[hidden] { display: none; }
+  .meters { display: grid; grid-template-columns: 6.2rem 1fr; gap: 0.5rem 1rem; align-items: center; margin-bottom: 1.2rem; font-size: 0.98rem; }
+  .meter { height: 14px; background: var(--rule); position: relative; }
+  .meter > span { position: absolute; inset: 0 auto 0 0; background: var(--navy); }
+  .meter > span.low { background: var(--warn); }
+
+  /* Authorship stack */
+  .stack { margin: 1.6rem 0 0; display: grid; gap: 0; max-width: 46em; }
+  .stack details { border: 1px solid var(--rule); background: var(--paper); margin-top: -1px; }
+  .stack summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 1rem 1.2rem;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 1rem;
+    align-items: center;
+    font-family: var(--serif-display);
+    font-weight: 700;
+    font-size: 1.12rem;
+    color: var(--navy);
+  }
+  .stack summary::-webkit-details-marker { display: none; }
+  .stack summary::after { content: "+"; font-size: 1.5rem; line-height: 1; color: var(--gold); }
+  .stack details[open] summary::after { content: "–"; }
+  .stack .layer-body { padding: 0 1.2rem 1rem; font-size: 1.05rem; }
+  .stack .layer-body p { margin-bottom: 0.7rem; }
+  .stack details { border-left-width: 8px; }
+  .stack .l1 { border-left-color: #14213d; }
+  .stack .l2 { border-left-color: #3d5a80; }
+  .stack .l3 { border-left-color: var(--gold); }
+  .stack .l4 { border-left-color: #c9a64f; }
+  .stack .l5 { border-left-color: var(--warn); }
+  .stack-note { font-size: 0.98rem; color: var(--muted); max-width: 40em; margin-top: 0.8rem; }
+
+  /* Voice comparison */
+  .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin: 1.6rem 0; max-width: 46em; }
+  .compare > div { background: var(--paper); border: 1px solid var(--rule); padding: 1.1rem 1.2rem; }
+  .compare h3 { font-family: var(--serif-display); font-size: 1.1rem; margin: 0 0 0.5rem; color: var(--navy); }
+  .compare p { font-size: 1rem; margin: 0 0 0.6rem; }
+  .compare .warnbox { border-top: 5px solid var(--warn); }
+  .compare .goldbox { border-top: 5px solid var(--gold); }
+  @media (max-width: 680px) { .compare { grid-template-columns: 1fr; } }
+
+  /* Unknowns table */
+  table { border-collapse: collapse; width: 100%; max-width: 46em; font-size: 1rem; margin: 1.2rem 0; background: var(--paper); }
+  th, td { text-align: left; vertical-align: top; padding: 0.7rem 0.9rem; border: 1px solid var(--rule); }
+  th { font-family: var(--serif-display); color: var(--navy); background: var(--cream); }
+
+  .discuss { background: var(--navy); color: var(--cream); padding: 2rem 1.6rem; margin: 2.5rem 0 0; max-width: 46em; border-top: 5px solid var(--gold); }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .discuss { background: #0a1020; color: #eee8d6; }
+  }
+  .discuss h2 { color: var(--gold-light); font-size: 1.6rem; }
+  .discuss ul { padding-left: 1.2rem; margin: 0.8rem 0 0; }
+  .discuss li { margin-bottom: 0.7rem; }
+
+  footer { padding: 2.4rem 0 3.5rem; font-size: 0.92rem; color: var(--muted); }
+  footer p { max-width: 46em; }
+
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  @media print {
+    header.mast { background: none; color: #000; border-bottom: 2px solid #000; }
+    header.mast .dek, header.mast .byline { color: #333; }
+    .discuss { background: none; color: #000; border: 1px solid #000; }
+    .stack details { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<header class="mast">
+  <div class="wrap">
+    <h1>What Would Keynes Say About A.I.? The Keynes Bot Told Us.</h1>
+    <p class="dek">A Princeton economist rebuilt John Maynard Keynes as an A.I. avatar and asked him whether technology would finally free us from work.</p>
+    <p class="byline">New York Times Opinion &middot; Sept. 30, 2026 &middot; Markus Brunnermeier (Princeton), video by Sarah Kramer and Mehron Abdi</p>
+    <p class="source-link"><a href="https://www.nytimes.com/2026/09/30/opinion/john-maynard-keynes-ai-economist.html?unlocked_article_code=1.FlE.tEp5.Y7Q9UWmKYwKy&amp;smid=url-share" target="_blank" rel="noopener">Read the original article and watch the video at The New York Times</a></p>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- 1. The premise -->
+  <section id="premise">
+    <h2>The premise</h2>
+    <hr class="rule">
+    <p class="lede">In 1930, Keynes predicted that technology would raise productivity so sharply that people in wealthy countries would work far less within a century. Skeptics doubted him then. Today's A.I. boosters and critics are having much the same argument.</p>
+    <p>Markus Brunnermeier and his team built a bot trained on more than 12,000 pages of Keynes's writings and transcripts, plus the few recordings of him that exist. Then Brunnermeier interviewed it. Times Opinion distilled the long conversation into a short video exchange.</p>
+
+    <figure>
+      <svg viewBox="0 0 840 250" role="img" aria-labelledby="tl-t tl-d">
+        <title id="tl-t">Keynes's forecast timeline</title>
+        <desc id="tl-d">A timeline from 1930 to 2030 marking Keynes's essay, today in 2026, and the 2030 forecast horizon, with the wealth prediction met and the 15-hour week not met.</desc>
+        <line x1="60" y1="110" x2="780" y2="110" stroke="var(--navy)" stroke-width="4"/>
+        <!-- 1930 -->
+        <circle cx="60" cy="110" r="10" fill="var(--navy)"/>
+        <text x="60" y="80" text-anchor="middle" class="disp" font-size="22">1930</text>
+        <text x="60" y="150" text-anchor="middle" font-size="15">Keynes publishes</text>
+        <text x="60" y="169" text-anchor="middle" font-size="15">his essay</text>
+        <!-- 2026 -->
+        <circle cx="636" cy="110" r="10" fill="var(--gold)"/>
+        <text x="636" y="80" text-anchor="middle" class="disp" font-size="22">2026</text>
+        <text x="636" y="150" text-anchor="middle" font-size="15">The interview</text>
+        <!-- 2030 -->
+        <circle cx="780" cy="110" r="10" fill="var(--navy)"/>
+        <text x="780" y="80" text-anchor="middle" class="disp" font-size="22">2030</text>
+        <text x="780" y="150" text-anchor="middle" font-size="15">Forecast horizon</text>
+        <!-- Outcomes -->
+        <rect x="330" y="190" width="250" height="44" fill="var(--paper)" stroke="var(--gold)" stroke-width="2"/>
+        <text x="455" y="217" text-anchor="middle" font-size="15">Wealth: 8× per head, reached early</text>
+        <rect x="596" y="190" width="224" height="44" fill="var(--paper)" stroke="var(--warn)" stroke-width="2"/>
+        <text x="708" y="217" text-anchor="middle" font-size="15">15-hour week: not here</text>
+      </svg>
+      <figcaption>Per the bot, the U.S. is already about eight times richer per head than in 1930, matching Keynes's 2030 estimate four years early. The short workweek never arrived.</figcaption>
+    </figure>
+  </section>
+
+  <!-- 2. The conversation -->
+  <section id="conversation">
+    <h2>The conversation, step by step</h2>
+    <hr class="rule">
+    <p>The exchange moves from vindication to warning to a call for action. The arc is a real sequence, so it is numbered.</p>
+    <ol class="arc">
+      <li>
+        <h3>Prediction partly confirmed</h3>
+        <p>Brunnermeier recalls that the essay appeared at the start of the Great Depression. The bot notes America's wealth target was beaten, but the leisure it expected has not followed.</p>
+      </li>
+      <li>
+        <h3>A.I. as a new complication</h3>
+        <p>Asked whether A.I. could finally deliver the 15-hour week, the bot says it fears a split: overworked professionals with money but no time, and everyone else with time but no money.</p>
+      </li>
+      <li>
+        <h3>Expertise concentrates</h3>
+        <p>As A.I. absorbs more sophisticated tasks, the bot argues, expertise gathers in a few hands, and those few might end up managing much of the economy.</p>
+      </li>
+      <li>
+        <h3>The "nervous breakdown" returns</h3>
+        <p>Brunnermeier raises Keynes's warning that humanity, bred to fight scarcity, may struggle once the fight is over. The bot says the strain would hit two groups in different ways (see below).</p>
+      </li>
+      <li>
+        <h3>Not inevitable</h3>
+        <p>The bot insists the outcome is not fixed by the technology. It depends on whether government has the political courage to use laws and taxes so that A.I. benefits all citizens.</p>
+      </li>
+      <li>
+        <h3>The question handed back</h3>
+        <p>The bot closes by returning to Keynes's old question about what to do with growing powers of production and invention, and says the answer is up to us.</p>
+      </li>
+    </ol>
+  </section>
+
+  <!-- 3. Two groups -->
+  <section id="two-groups">
+    <h2>Two groups, two kinds of breakdown</h2>
+    <hr class="rule">
+    <p>The darkest turn in the video is the bot's claim that A.I. could split society in two. Choose a group to see how the bot describes it.</p>
+
+    <div class="tabs" role="tablist" aria-label="Choose a group">
+      <button role="tab" id="tab-a" aria-selected="true" aria-controls="panel-a">The employed and dominant</button>
+      <button role="tab" id="tab-b" aria-selected="false" aria-controls="panel-b">The displaced</button>
+    </div>
+
+    <div class="panel" id="panel-a" role="tabpanel" aria-labelledby="tab-a">
+      <div class="meters" aria-label="Relative scale of money, time and purpose for this group">
+        <span>Money</span><div class="meter"><span style="width:88%"></span></div>
+        <span>Time</span><div class="meter"><span class="low" style="width:14%"></span></div>
+        <span>Purpose</span><div class="meter"><span style="width:60%"></span></div>
+      </div>
+      <p>These workers make labor their whole identity. When A.I. takes over part of what they do, they do not step back. They grind harder at whatever the machine cannot yet handle, trying to prove they still matter. The result is burnout.</p>
+      <p class="key" style="margin-bottom:1.2rem">The meters are an illustration of the bot's "money but no time" framing, not data from the article.</p>
+    </div>
+
+    <div class="panel" id="panel-b" role="tabpanel" aria-labelledby="tab-b" hidden>
+      <div class="meters" aria-label="Relative scale of money, time and purpose for this group">
+        <span>Money</span><div class="meter"><span class="low" style="width:14%"></span></div>
+        <span>Time</span><div class="meter"><span style="width:90%"></span></div>
+        <span>Purpose</span><div class="meter"><span class="low" style="width:18%"></span></div>
+      </div>
+      <p>The bot says this group worries it more. They lose something money cannot replace: the daily reassurance that someone needs them to show up. Finding a new purpose could take a generation. If the gains are not shared, they suffer materially too, so scarcity does not end for them. It deepens.</p>
+      <p>Beyond individuals, the bot warns of strain on democracies and the fraying of the bonds that hold a society together.</p>
+      <p class="key" style="margin-bottom:1.2rem">The meters are an illustration of the bot's "time but no money" framing, not data from the article.</p>
+    </div>
+  </section>
+
+  <!-- 4. KEYNES AS AN AI ENTITY -->
+  <section id="keynes-as-ai">
+    <h2>How the author represented Keynes as an A.I. entity</h2>
+    <hr class="rule">
+    <p class="lede">The Keynes in this video is not a single thing. It is a stack of choices, some made by a language model and many made by people. The article is unusually open about several of them, and silent about others.</p>
+
+    <h3 style="font-family:var(--serif-display);color:var(--navy);margin:1.8rem 0 0.2rem;">The five layers of the avatar</h3>
+    <p style="margin-bottom:0">Open each layer. The stack runs from the historical source at the top to the finished video at the bottom.</p>
+
+    <div class="stack">
+      <details class="l1">
+        <summary>Source: Keynes's own words</summary>
+        <div class="layer-body">
+          <p>The agent was trained on more than 12,000 pages of Keynes's writings and transcripts. The team instructed it to draw mainly from "Economic Possibilities for Our Grandchildren," the 1930 essay at the heart of the conversation, while keeping the wider body of work available.</p>
+          <p>Practical effect: the bot is anchored to one prediction, so its answers orbit that essay.</p>
+        </div>
+      </details>
+      <details class="l2">
+        <summary>Generation: ChatGPT in a prescribed voice</summary>
+        <div class="layer-body">
+          <p>Brunnermeier and Ph.D. student Pablo Balsinde built the bot using ChatGPT. They told it to answer in the first person, with early 20th-century British cadence and restrained wit.</p>
+          <p>The article notes the language itself was model-generated, which means the bot's sentences are plausible in Keynes's manner but are not things he wrote.</p>
+        </div>
+      </details>
+      <details class="l3">
+        <summary>Human editing: rephrasing, quotes, cuts</summary>
+        <div class="layer-body">
+          <p>First drafts were often long-winded and unclear. The team asked the model to rephrase, prompted it to answer with famous Keynes quotations, and cut parts of responses. The research team also edited responses for clarity and brevity.</p>
+          <p>Practical effect: what viewers hear is a curated edit of many possible answers.</p>
+        </div>
+      </details>
+      <details class="l4">
+        <summary>Translation: modern English, shortened</summary>
+        <div class="layer-body">
+          <p>The narrator admits that Keynes wrote and spoke more formally than we do, so the language was updated to contemporary English and the conversation was trimmed for brevity. What aired is an edited transcript of an interview that was longer and in-depth.</p>
+        </div>
+      </details>
+      <details class="l5">
+        <summary>Embodiment: face, desk and voice</summary>
+        <div class="layer-body">
+          <p><strong>Face:</strong> the team uploaded a public-domain image of Keynes and used DeepSeek to change the surroundings, placing him behind a desk.</p>
+          <p><strong>Voice:</strong> audio resembling Keynes was created using a BBC recording of him as a reference.</p>
+          <p><strong>Greeting:</strong> the bot opens by noting how unexpected it is to be reanimated as an A.I. so long after 1883, a self-aware line that tells viewers it knows it is a revival.</p>
+        </div>
+      </details>
+    </div>
+    <p class="stack-note">The deeper the layer, the more it is a person's or a model's construction rather than Keynes's record.</p>
+
+    <h3 style="font-family:var(--serif-display);color:var(--navy);margin:2.4rem 0 0.2rem;">How the video frames the bot for viewers</h3>
+    <div class="compare">
+      <div class="goldbox">
+        <h3>Signals of authenticity</h3>
+        <p>The bot speaks as "I," in period cadence, and answers Brunnermeier by name. It addresses viewers as the "grandchildren" Keynes wrote about.</p>
+        <p>Keynes's descendants were consulted: his family members gave the go-ahead.</p>
+        <p>Archival Keynes audio appears in the video itself, which invites comparison with the synthetic voice.</p>
+      </div>
+      <div class="warnbox">
+        <h3>Signals of artifice</h3>
+        <p>The narrator interrupts repeatedly, admits the language was modernized, and says plainly that they cannot know whether Keynes would approve.</p>
+        <p>The article describes the construction methods openly, including edits for clarity.</p>
+        <p>A disclosure notes the Times has sued OpenAI and Microsoft, a relevant fact since ChatGPT is the engine behind the bot.</p>
+      </div>
+    </div>
+
+    <h3 style="font-family:var(--serif-display);color:var(--navy);margin:2rem 0 0.2rem;">What the bot's voice looks like on the page</h3>
+    <p>In this guide, anything the bot says is set in typewriter type, so you can always tell the machine from the humans. Here is the sort of line the video relies on:</p>
+    <div class="bot-quote">
+      "Whether A.I. ends up as a source of broadly shared prosperity and purpose or a machine for manufacturing a new dominant class is not preordained."
+      <cite>Keynes bot, as quoted in the video transcript (shortened)</cite>
+    </div>
+
+    <h3 style="font-family:var(--serif-display);color:var(--navy);margin:2rem 0 0.2rem;">What the article does not say</h3>
+    <p>These are gaps in what the piece reports. They matter for judging how far to trust the bot as a stand-in for Keynes.</p>
+    <table>
+      <thead><tr><th>Question</th><th>What the article tells us</th></tr></thead>
+      <tbody>
+        <tr><td>Which ChatGPT model, and what exact instructions?</td><td>Names ChatGPT and the style instruction only. No model version or full prompt.</td></tr>
+        <tr><td>How many answers were discarded?</td><td>Says responses were edited and cut, but not how heavily.</td></tr>
+        <tr><td>Did the bot use the same wording as the aired transcript?</td><td>The transcript is described as edited, modernized and shortened.</td></tr>
+        <tr><td>Were quotations in the bot's answers verified?</td><td>The team prompted for famous Keynes quotes. Verification is not mentioned.</td></tr>
+        <tr><td>Could Keynes have anticipated A.I.?</td><td>The piece itself calls him a Keynes "who never lived to see the A.I. age."</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 5. Voice vs narrator -->
+  <section id="who-speaks">
+    <h2>Who is making the argument?</h2>
+    <hr class="rule">
+    <p>The bot and the narrator do not say quite the same thing. Compare their conclusions.</p>
+    <div class="compare">
+      <div class="goldbox">
+        <h3>The Keynes bot</h3>
+        <p class="bot">The outcome is not preordained. It will depend on whether government has the political courage to use laws and taxes so A.I. benefits everyone. The choice is yours.</p>
+      </div>
+      <div class="warnbox">
+        <h3>The narrator</h3>
+        <p>Says it is "obvious" that the power of A.I. cannot end up with the few, and that ongoing regulation and government intervention are needed.</p>
+      </div>
+    </div>
+    <p>The bot frames a choice and names levers (laws and tax systems). The narrator turns that into a firmer policy conclusion. That shift is worth noticing: the A.I. persona hands the editorial argument a borrowed authority.</p>
+  </section>
+
+  <!-- Discussion -->
+  <section id="discuss" style="padding-top:1rem">
+    <div class="discuss">
+      <h2>Questions for discussion</h2>
+      <ul>
+        <li>When a model speaks in a historical figure's voice, whose argument are we hearing: the figure's, the model's, or the editors'?</li>
+        <li>Does the openness about methods (editing, modernizing, cutting) make the bot more trustworthy or less?</li>
+        <li>Would the bot's warning land differently from an ordinary expert commentator? Why?</li>
+        <li>Which of Keynes's two predictions, abundance or leisure, do you think A.I. is more likely to affect?</li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>A visual companion to the New York Times Opinion video article "What Would John Maynard Keynes Say About A.I.? The Keynes Bot Told Us." (Sept. 30, 2026) by Markus Brunnermeier, with video by Sarah Kramer and Mehron Abdi. Summaries here are paraphrased; consult the original article and video for the full conversation. The "Who is making the argument?" and "What the article does not say" sections are analytical commentary added for this guide.</p>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var tabs = document.querySelectorAll('.tabs [role="tab"]');
+    tabs.forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        tabs.forEach(function (t) {
+          var sel = t === tab;
+          t.setAttribute('aria-selected', sel ? 'true' : 'false');
+          document.getElementById(t.getAttribute('aria-controls')).hidden = !sel;
+        });
+      });
+      tab.addEventListener('keydown', function (e) {
+        if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+        var arr = Array.prototype.slice.call(tabs);
+        var i = arr.indexOf(tab);
+        var next = arr[(i + (e.key === 'ArrowRight' ? 1 : arr.length - 1)) % arr.length];
+        next.focus(); next.click();
+      });
+    });
+  })();
+</script>
+</body>
+</html>

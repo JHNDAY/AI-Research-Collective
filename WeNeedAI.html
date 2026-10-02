@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Six Charts That Show Just How Much We Need A.I. — A Visual Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#14213d;
+    --navy-2:#24365e;
+    --gold:#b8892b;
+    --gold-soft:#e9d9ae;
+    --cream:#f6f0e0;
+    --paper:#fbf7ea;
+    --ink:#1b1b22;
+    --muted:#5b5f6e;
+    --rust:#8c3b2a;
+    --serif:'Playfair Display', Georgia, 'Times New Roman', serif;
+    --mono:'Courier Prime', 'Courier New', monospace;
+  }
+  *{box-sizing:border-box}
+  html{font-size:18px;scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+  body{margin:0;background:var(--cream);color:var(--ink);font-family:Georgia,'Times New Roman',serif;line-height:1.6}
+  a{color:var(--navy-2)}
+  a:focus-visible,button:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+
+  .wrap{max-width:1040px;margin:0 auto;padding:0 24px}
+
+  /* Masthead */
+  header.mast{background:var(--navy);color:var(--cream);border-bottom:6px double var(--gold)}
+  .mast .wrap{padding-top:36px;padding-bottom:40px}
+  .mast .dateline{font-family:var(--mono);font-size:.85rem;color:var(--gold-soft);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;border-bottom:1px solid var(--navy-2);padding-bottom:10px;margin-bottom:28px}
+  .mast h1{font-family:var(--serif);font-weight:900;font-size:clamp(2.2rem,6vw,4.1rem);line-height:1.08;margin:0 0 18px;letter-spacing:-.01em}
+  .mast .deck{font-family:var(--serif);font-style:italic;font-weight:500;font-size:1.3rem;color:var(--gold-soft);max-width:44ch;margin:0}
+  .mast .byline{font-family:var(--mono);font-size:.9rem;margin-top:24px;color:var(--cream)}
+  .mast .byline a{color:var(--gold-soft);text-decoration:underline;text-underline-offset:3px}
+  .mast .byline a:hover{color:#fff}
+
+  /* Thesis */
+  .thesis{background:var(--paper);border-bottom:1px solid var(--gold-soft)}
+  .thesis .wrap{padding-top:44px;padding-bottom:44px;display:grid;grid-template-columns:1.1fr 1fr;gap:40px;align-items:center}
+  .thesis p.lead{font-family:var(--serif);font-size:1.5rem;line-height:1.4;margin:0}
+  .thesis p.lead em{color:var(--rust)}
+  .formula{display:flex;align-items:stretch;justify-content:center;gap:10px;flex-wrap:wrap}
+  .formula .box{border:2px solid var(--navy);background:var(--cream);padding:16px 18px;text-align:center;min-width:130px}
+  .formula .box b{display:block;font-family:var(--serif);font-size:1.15rem;color:var(--navy)}
+  .formula .box span{font-size:.85rem;color:var(--muted)}
+  .formula .op{align-self:center;font-family:var(--serif);font-size:2rem;color:var(--gold)}
+  .formula .result{background:var(--navy);border-color:var(--navy)}
+  .formula .result b{color:var(--gold-soft)}
+  .formula .result span{color:var(--cream)}
+  .formula-note{grid-column:1/-1;font-size:.95rem;color:var(--muted);margin:0;border-top:1px solid var(--gold-soft);padding-top:14px}
+
+  section{padding:56px 0;border-bottom:1px solid var(--gold-soft)}
+  section h2{font-family:var(--serif);font-weight:900;font-size:clamp(1.7rem,3.6vw,2.4rem);line-height:1.15;margin:0 0 8px;color:var(--navy)}
+  section .sub{font-size:1.05rem;color:var(--muted);margin:0 0 30px;max-width:62ch}
+
+  /* Timeline */
+  .timeline{position:relative;margin:10px 0 0;padding:0;list-style:none}
+  .timeline::before{content:"";position:absolute;left:0;right:0;top:22px;height:3px;background:var(--navy)}
+  .timeline{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+  .timeline li{position:relative;padding-top:48px}
+  .timeline li::before{content:"";position:absolute;top:14px;left:0;width:18px;height:18px;border-radius:50%;background:var(--cream);border:4px solid var(--navy)}
+  .timeline li.slow::before{border-color:var(--rust)}
+  .timeline li.fast::before{background:var(--gold);border-color:var(--navy)}
+  .timeline .when{font-family:var(--mono);font-weight:700;font-size:.95rem;color:var(--navy)}
+  .timeline .what{font-size:.92rem;line-height:1.4;margin-top:4px}
+  .legend{display:flex;gap:22px;flex-wrap:wrap;font-size:.9rem;color:var(--muted);margin-top:26px}
+  .legend i{display:inline-block;width:14px;height:14px;border-radius:50%;margin-right:7px;vertical-align:-2px;border:3px solid var(--navy)}
+
+  /* Callout for article charts */
+  .chartnote{background:var(--paper);border-left:6px solid var(--gold);padding:18px 22px;margin-top:30px}
+  .chartnote h3{font-family:var(--serif);font-size:1.15rem;margin:0 0 6px;color:var(--navy)}
+  .chartnote p{margin:0;font-size:1rem}
+  .chartnote .src{font-family:var(--mono);font-size:.8rem;color:var(--muted);margin-top:8px;display:block}
+
+  /* Cards: AI in action */
+  .trio{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .stat{background:var(--paper);border-top:5px solid var(--navy);padding:22px}
+  .stat .co{font-family:var(--mono);font-weight:700;color:var(--gold);font-size:.95rem}
+  .stat .big{font-family:var(--serif);font-weight:900;font-size:2.6rem;line-height:1.05;color:var(--navy);margin:8px 0 6px}
+  .stat p{margin:0;font-size:.98rem}
+
+  /* Bars */
+  .barchart{background:var(--paper);padding:26px;border:1px solid var(--gold-soft)}
+  .barchart h3{font-family:var(--serif);font-size:1.25rem;margin:0 0 4px;color:var(--navy)}
+  .barchart .cap{font-size:.95rem;color:var(--muted);margin:0 0 20px}
+  .row{display:grid;grid-template-columns:200px 1fr;gap:14px;align-items:center;margin:12px 0}
+  .row .lab{font-size:.95rem;line-height:1.3}
+  .track{background:var(--cream);height:38px;position:relative}
+  .fill{height:100%;display:flex;align-items:center;justify-content:flex-end;padding-right:10px;font-family:var(--mono);font-weight:700;font-size:.95rem;color:var(--cream);background:var(--navy);width:0;transition:width 1.1s cubic-bezier(.2,.7,.2,1)}
+  .fill.gold{background:var(--gold);color:var(--navy)}
+  .fill.rust{background:var(--rust)}
+  .fill.small{justify-content:flex-start;padding-left:0;padding-right:0}
+  .valout{font-family:var(--mono);font-weight:700;font-size:.95rem;margin-left:10px;color:var(--navy);white-space:nowrap}
+  .barchart .take{margin:18px 0 0;padding-top:14px;border-top:1px solid var(--gold-soft);font-size:1rem}
+
+  .twocol{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+
+  /* Winners / losers */
+  .wl{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+  .wl .col{background:var(--paper);padding:22px;border-top:5px solid var(--navy)}
+  .wl .col.lose{border-top-color:var(--rust)}
+  .wl h3{font-family:var(--serif);margin:0 0 10px;font-size:1.25rem}
+  .wl ul{margin:0;padding-left:20px}
+  .wl li{margin:4px 0}
+
+  /* Policy */
+  .policy{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
+  .pol{background:var(--navy);color:var(--cream);padding:26px}
+  .pol h3{font-family:var(--serif);color:var(--gold-soft);margin:0 0 12px;font-size:1.3rem}
+  .pol ul{margin:0;padding-left:20px}
+  .pol li{margin:6px 0}
+  .pol.alt{background:var(--paper);color:var(--ink);border:2px solid var(--navy)}
+  .pol.alt h3{color:var(--navy)}
+
+  /* Both wrong */
+  .both{display:grid;grid-template-columns:1fr auto 1fr;gap:20px;align-items:stretch}
+  .both .side{padding:22px;border:2px solid var(--navy);background:var(--paper);text-align:center}
+  .both .side b{font-family:var(--serif);font-size:1.2rem;display:block;margin-bottom:6px;color:var(--navy)}
+  .both .mid{align-self:center;font-family:var(--serif);font-weight:900;font-size:1.15rem;color:var(--rust);text-align:center;max-width:12ch}
+  .verdict{font-family:var(--serif);font-size:1.6rem;line-height:1.35;text-align:center;max-width:30ch;margin:34px auto 0;color:var(--navy)}
+
+  footer{background:var(--navy);color:var(--gold-soft);padding:30px 0;font-size:.9rem}
+  footer a{color:var(--gold-soft)}
+  footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+
+  @media (max-width:820px){
+    .thesis .wrap{grid-template-columns:1fr}
+    .timeline{grid-template-columns:1fr;gap:0}
+    .timeline::before{left:8px;right:auto;top:0;bottom:0;width:3px;height:auto}
+    .timeline li{padding:0 0 22px 40px}
+    .timeline li::before{top:2px;left:0}
+    .trio,.twocol,.wl,.policy{grid-template-columns:1fr}
+    .row{grid-template-columns:1fr;gap:4px}
+    .both{grid-template-columns:1fr}
+    .both .mid{max-width:none}
+  }
+</style>
+</head>
+<body>
+
+<header class="mast">
+  <div class="wrap">
+    <div class="dateline"><span>A visual guide to an opinion essay</span><span>Friday, October 2, 2026</span></div>
+    <h1>Six Charts That Show Just How Much We Need A.I.</h1>
+    <p class="deck">Steven Rattner argues that for all the worry, the country should not turn away from the technology that could end half a century of sluggish growth.</p>
+    <div class="byline">By Steven Rattner &middot; <a href="https://www.nytimes.com/2026/09/30/opinion/john-maynard-keynes-ai-economist.html?unlocked_article_code=1.FlE.tEp5.Y7Q9UWmKYwKy&amp;smid=url-share" target="_blank" rel="noopener">Read the original in The New York Times</a></div>
+  </div>
+</header>
+
+<div class="thesis">
+  <div class="wrap">
+    <p class="lead">The walls are closing in on A.I.: data center moratoriums, job fears, safety alarms. The author calls the worries valid, yet says <em>we need A.I. to deliver.</em></p>
+    <div class="formula" role="img" aria-label="Growth equals a larger labor force times output per worker">
+      <div class="box"><b>More workers</b><span>a bigger pie</span></div>
+      <div class="op">&times;</div>
+      <div class="box"><b>More output per worker</b><span>a bigger slice each</span></div>
+      <div class="op">=</div>
+      <div class="box result"><b>Growth</b><span>higher incomes and living standards</span></div>
+    </div>
+    <p class="formula-note">Workers rarely get more productive on their own. Investment and training help, but the essay names technological innovation as the main driver. Higher national income also gives the country room to reduce inequality, hold down debt and fund health care and education.</p>
+  </div>
+</div>
+
+<section id="history">
+  <div class="wrap">
+    <h2>Productivity moves with invention</h2>
+    <p class="sub">The essay traces how living standards stood still for millennia, surged with each wave of innovation, then stalled in the early 1970s.</p>
+    <ol class="timeline">
+      <li class="slow"><div class="when">Before 1500</div><div class="what">Little innovation, little change in living standards.</div></li>
+      <li><div class="when">c. 1500</div><div class="what">Productivity starts to grow as farming modernizes, modestly.</div></li>
+      <li class="fast"><div class="when">Mid-1800s</div><div class="what">Industrial Revolution: mechanized looms and steam power.</div></li>
+      <li class="fast"><div class="when">Late 1800s to 1900s</div><div class="what">Telegraph, telephone, railroads, combustion engine, electricity: a golden age.</div></li>
+      <li class="slow"><div class="when">Early 1970s</div><div class="what">Productivity growth slows and stays depressed for about 50 years.</div></li>
+      <li class="fast"><div class="when">Late 1990s</div><div class="what">The internet boom lifts productivity sharply, after Solow's 1987 quip.</div></li>
+    </ol>
+    <div class="legend">
+      <span><i style="background:var(--rust);border-color:var(--rust)"></i>Stagnant stretch</span>
+      <span><i style="background:var(--gold)"></i>Innovation-driven surge</span>
+    </div>
+
+    <div class="chartnote">
+      <h3>Chart 1 in the essay: productivity growth has been stuck below its postwar pace for 50 years</h3>
+      <p>The Times chart plots U.S. productivity growth from 1950 to the present, with average rates marked for each era. The text of the essay does not include the underlying numbers, so see the original for the figures.</p>
+      <span class="src">Source cited: Bureau of Labor Statistics</span>
+    </div>
+  </div>
+</section>
+
+<section id="examples">
+  <div class="wrap">
+    <h2>It is already working in places</h2>
+    <p class="sub">Three examples the essay offers, and a reminder that effects can take years, even decades, to show up in the economy.</p>
+    <div class="trio">
+      <div class="stat"><div class="co">Siemens</div><div class="big">25%</div><p>less time spent on unplanned machine maintenance, using an A.I. co-pilot that walks technicians through repairs.</p></div>
+      <div class="stat"><div class="co">Kaiser Permanente</div><div class="big">~16,000</div><p>hours of physician documentation time saved by an A.I. note-taking scribe.</p></div>
+      <div class="stat"><div class="co">John Deere</div><div class="big">31 million</div><p>gallons of herbicide mix saved in 2025 by spraying only where cameras detect weeds.</p></div>
+    </div>
+    <p style="margin-top:28px;max-width:66ch">The essay's historical argument: Henry Ford's assembly line let him raise pay to $5 a day while profits still soared, and the Model T got cheaper. Solow said in 1987 that computers showed up everywhere except in the productivity statistics, but productivity then rose in the late 1990s.</p>
+    <div class="barchart" style="margin-top:26px">
+      <h3>Ford's productivity dividend</h3>
+      <p class="cap">Price of a Model T, in dollars</p>
+      <div class="row"><div class="lab">1913 (as high as)</div><div class="track"><div class="fill" data-w="100">$600</div></div></div>
+      <div class="row"><div class="lab">1925</div><div class="track"><div class="fill gold" data-w="43.3">$260</div></div></div>
+      <p class="take">Higher productivity let the price fall by more than half while worker pay rose.</p>
+    </div>
+  </div>
+</section>
+
+<section id="keynes">
+  <div class="wrap">
+    <h2>Working less, earning more</h2>
+    <p class="sub">In 1930 Keynes predicted a 15-hour work week within a century. He missed, but not for the obvious reason.</p>
+    <div class="barchart">
+      <h3>Weekly hours of work</h3>
+      <p class="cap">Hours per week</p>
+      <div class="row"><div class="lab">Keynes's 1930 forecast for today</div><div class="track"><div class="fill gold" data-w="39.2">15</div></div></div>
+      <div class="row"><div class="lab">What Americans could work and still match the 1930 lifestyle</div><div class="track"><div class="fill gold" data-w="18.3">7</div></div></div>
+      <div class="row"><div class="lab">What the average American actually works</div><div class="track"><div class="fill" data-w="100">38.3</div></div></div>
+      <p class="take">Actual hours are down only about 20 percent from 1930. People took much of the gain as bigger incomes, more goods, larger houses and travel, plus more time for leisure and family.</p>
+    </div>
+    <div class="chartnote">
+      <h3>Chart 2 in the essay: &ldquo;Working Less, Earning More&rdquo;</h3>
+      <p>Compares hours worked against inflation-adjusted G.D.P. over time. The essay text does not give the series values.</p>
+      <span class="src">Sources cited: Whaples; Huberman and Minns; Bureau of Labor Statistics; Maddison Project; Bureau of Economic Analysis</span>
+    </div>
+  </div>
+</section>
+
+<section id="jobs">
+  <div class="wrap">
+    <h2>Jobs: some vanish, others appear</h2>
+    <p class="sub">The author's historical claim is that no technological improvement has ultimately destroyed more jobs than it created. He points to his own start on Wall Street in 1982, when spreadsheets were typed by a secretarial pool; the menial work disappeared, yet finance employs far more people today.</p>
+    <div class="wl">
+      <div class="col"><h3>Boosted so far</h3><ul><li>Plumbers</li><li>Electricians</li><li>Data scientists</li><li>Market research analysts</li></ul></div>
+      <div class="col lose"><h3>Losses to come</h3><ul><li>A.I. has so far killed a limited number of jobs</li><li>More losses are probable, with offsetting gains elsewhere</li><li>Telephone operators are the historical parallel</li></ul></div>
+    </div>
+
+    <div class="barchart" style="margin-top:26px">
+      <h3>The farm precedent</h3>
+      <p class="cap">Share of the American work force on the farm</p>
+      <div class="row"><div class="lab">1900</div><div class="track"><div class="fill" data-w="100">41%</div></div></div>
+      <div class="row"><div class="lab">2022</div><div class="track"><div class="fill rust small" data-w="2.9"></div></div><div></div></div>
+      <div class="row" style="margin-top:-8px"><div class="lab"></div><div><span class="valout">1.2%</span></div></div>
+      <p class="take">The transition worked because workers moved to cities and a growing manufacturing sector, with government programs to shore up rural America. The author warns of a possible A.I. &ldquo;rust belt.&rdquo;</p>
+    </div>
+
+    <div class="twocol" style="margin-top:26px">
+      <div class="chartnote" style="margin-top:0">
+        <h3>Chart 3: The Computer Era</h3>
+        <p>Change in U.S. employment by occupation, 1990 to 2025, including computer occupations (developers, programmers, analysts).</p>
+        <span class="src">Sources cited: Census; Bureau of Labor Statistics</span>
+      </div>
+      <div class="chartnote" style="margin-top:0">
+        <h3>Chart 4: A.I.'s early winners and losers</h3>
+        <p>Employment shifts by occupation so far, from Bureau of Labor Statistics data.</p>
+        <span class="src">Source cited: Bureau of Labor Statistics</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="gains">
+  <div class="wrap">
+    <h2>Who has gained, and who should pay</h2>
+    <p class="sub">So far the gains have gone to investors in A.I. companies, not to workers. The essay says the cost of helping displaced workers should fall on A.I.'s beneficiaries.</p>
+    <div class="chartnote" style="margin-top:0;margin-bottom:30px">
+      <h3>Chart 5: Workers' slice shrinks, profits' slice grows</h3>
+      <p>Wages and corporate profits through the second quarter of 2026.</p>
+      <span class="src">Source cited: Bureau of Economic Analysis</span>
+    </div>
+    <div class="policy">
+      <div class="pol">
+        <h3>Help for workers</h3>
+        <ul>
+          <li>Retraining and education subsidies for younger workers</li>
+          <li>A stronger safety net for older workers, possibly wage insurance for those displaced</li>
+          <li>Securing the solvency of Social Security and Medicare</li>
+        </ul>
+      </div>
+      <div class="pol alt">
+        <h3>Who pays</h3>
+        <ul>
+          <li>Consider a &ldquo;token tax&rdquo; on A.I. usage</li>
+          <li>Curb the generous tax benefits for A.I. capital spending</li>
+          <li>End state sales and property tax exemptions for data centers</li>
+          <li>Edge the corporate tax rate back toward 35 percent</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="safety">
+  <div class="wrap">
+    <h2>Safety: manageable, not eliminated</h2>
+    <p class="sub">The author compares A.I. to other powerful technologies that nations have regulated safely, including food, medicine, aviation and nuclear energy. He recalls growing up with air raid drills and films like Fail Safe.</p>
+    <div class="policy">
+      <div class="pol alt">
+        <h3>What he proposes</h3>
+        <ul>
+          <li>Government testing of new A.I. products before deployment</li>
+          <li>Consider mandating kill switches against models that go rogue</li>
+          <li>International cooperation, especially with China</li>
+        </ul>
+      </div>
+      <div class="pol">
+        <h3>Why it is harder than nuclear control</h3>
+        <ul>
+          <li>A.I. technology crosses borders more easily</li>
+          <li>But powerful models need chips and data centers, so the U.S. lead in the build-out is an asset for keeping A.I. under control</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="both" style="margin-top:40px">
+      <div class="side"><b>&ldquo;Stop A.I. development&rdquo;</b>Wrong, says the author</div>
+      <div class="mid">Both camps</div>
+      <div class="side"><b>&ldquo;No regulation needed&rdquo;</b>Wrong, says the author</div>
+    </div>
+    <p class="verdict">The risks will never be eliminated, but they should be manageable, and the payoff could be immense.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>Visual summary of &ldquo;Six Charts That Show Just How Much We Need A.I.&rdquo; by Steven Rattner, The New York Times, Oct. 2, 2026.</span>
+    <span>Figures on this page come from the article text. The six original charts are described, not reproduced.</span>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    var fills = document.querySelectorAll('.fill[data-w]');
+    function run(el){ el.style.width = el.getAttribute('data-w') + '%'; }
+    if(!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+      fills.forEach(run); return;
+    }
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if(e.isIntersecting){ run(e.target); io.unobserve(e.target); } });
+    },{threshold:.4});
+    fills.forEach(function(f){ io.observe(f); });
+  })();
+</script>
+</body>
+</html>
