@@ -439,9 +439,7 @@
     /* ── About / Brand section ── */
     .brand-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: repeat(2, auto);
-      grid-auto-flow: column; /* pairs stack vertically: each column is a pair */
+      grid-template-columns: repeat(2, 1fr); /* two columns, three rows; each row is a pair */
       gap: 20px;
     }
     .brand-card {
@@ -466,11 +464,11 @@
     }
     @media (max-width:860px) {
       .two-col { grid-template-columns: 1fr; }
-      .brand-grid { grid-template-columns: 1fr 1fr; grid-template-rows: none; grid-auto-flow: row; }
+      .brand-grid { grid-template-columns: 1fr 1fr; }
     }
     @media (max-width:560px) {
       .masthead-title { font-size: 4.2rem; }
-      .brand-grid { grid-template-columns: 1fr; grid-template-rows: none; grid-auto-flow: row; }
+      .brand-grid { grid-template-columns: 1fr; }
       .brand-wide { grid-column: auto; }
     }
 
