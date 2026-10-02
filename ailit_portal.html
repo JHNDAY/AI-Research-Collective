@@ -440,6 +440,8 @@
     .brand-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(2, auto);
+      grid-auto-flow: column; /* pairs stack vertically: each column is a pair */
       gap: 20px;
     }
     .brand-card {
@@ -464,11 +466,11 @@
     }
     @media (max-width:860px) {
       .two-col { grid-template-columns: 1fr; }
-      .brand-grid { grid-template-columns: 1fr 1fr; }
+      .brand-grid { grid-template-columns: 1fr 1fr; grid-template-rows: none; grid-auto-flow: row; }
     }
     @media (max-width:560px) {
       .masthead-title { font-size: 4.2rem; }
-      .brand-grid { grid-template-columns: 1fr; }
+      .brand-grid { grid-template-columns: 1fr; grid-template-rows: none; grid-auto-flow: row; }
       .brand-wide { grid-column: auto; }
     }
 
@@ -741,24 +743,24 @@
         <p>Understanding how AI works: what it is, how it thinks, its real strengths, and its genuine limitations.</p>
       </div>
       <div class="brand-card">
-        <h3>💻 Digital Fluency</h3>
-        <p>Navigating browser interfaces with ease and confidence — the foundation everything else rests on.</p>
+        <h3>Balance Organic and Digital Intelligence</h3>
+        <p>AI accelerates the work, but judgment, curiosity, and interpretation remain irreducibly human — the liberal arts as the mind's own intelligence.</p>
       </div>
       <div class="brand-card">
         <h3>💬 Conversational Skill</h3>
         <p>Learning to dialogue with AI iteratively — prompting well, following threads, and building deeper understanding.</p>
       </div>
       <div class="brand-card">
-        <h3>Learn by Doing</h3>
-        <p>Every session includes a hands-on element — working with AI tools directly, not just discussing them from a distance.</p>
-      </div>
-      <div class="brand-card">
         <h3>Immersive Reading</h3>
         <p>Close reading with AI as an active interlocutor — from Shakespeare to news analysis — is a core SIG practice.</p>
       </div>
       <div class="brand-card">
-        <h3>Balance Organic and Digital Intelligence</h3>
-        <p>AI accelerates the work, but judgment, curiosity, and interpretation remain irreducibly human — the liberal arts as the mind's own intelligence.</p>
+        <h3>💻 Digital Fluency</h3>
+        <p>Navigating browser interfaces with ease and confidence — the foundation everything else rests on.</p>
+      </div>
+      <div class="brand-card">
+        <h3>Learn by Doing</h3>
+        <p>Every session includes a hands-on element — working with AI tools directly, not just discussing them from a distance.</p>
       </div>
     </div>
   </div>
