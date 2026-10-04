@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Look to Yesteryear</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: #2c3e50;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        h2 {
+            font-size: 1.8em;
+            color: #667eea;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 16px 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 1.05em;
+            font-weight: 600;
+            width: 100%;
+            text-align: left;
+            transition: all 0.3s;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+        
+        .dropdown-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            margin-bottom: 20px;
+        }
+        
+        .dropdown-content.expanded {
+            max-height: 2000px;
+        }
+        
+        .dropdown-inner {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .link-button {
+            padding: 15px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+        
+        .link-button:hover {
+            transform: translateY(-2px);
+        }
+        
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+        
+        .image-card {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .image-container {
+            width: 100%;
+            height: 400px;
+            overflow: auto;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .image-container img {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            padding: 20px;
+        }
+        
+        .image-caption {
+            padding: 20px;
+            background: white;
+            border-top: 1px solid #ecf0f1;
+            font-weight: 600;
+            font-size: 1.1em;
+            color: #667eea;
+        }
+        
+        .image-caption-sub {
+            font-size: 0.85em;
+            font-weight: 400;
+            color: #764ba2;
+        }
+        
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>A Look to Yesteryear</h1>
+        </header>
+        
+        <div class="content">
+            <button onclick="toggleDropdown1()">AI Basics</button>
+            
+            <div id="dropdownContent1" class="dropdown-content">
+                <div class="dropdown-inner">
+                    <a href="https://jhnday.github.io/AI-Research-Collective/transduction_interactive_tokenizer" target="_blank" class="link-button">Digital Language</a>
+                    <a href="https://jhnday.github.io/AI-Research-Collective/Digital_vs_Organic_Intelligence" target="_blank" class="link-button">Digital Vs. Organic Intelligence</a>
+                </div>
+            </div>
+            
+            <button onclick="toggleDropdown2()">The Popular Press and Technology</button>
+            
+            <div id="dropdownContent2" class="dropdown-content">
+                <div class="image-grid">
+                    <div class="image-card">
+                        <div class="image-container">
+                            <img src="https://jhnday.github.io/AI-Research-Collective/perceptron full.jpg" alt="Behold The Perceptron">
+                        </div>
+                        <div class="image-caption">Behold The Perceptron<br><span class="image-caption-sub">Das Blinken Lights Bedazzle</span></div>
+                    </div>
+                    <div class="image-card">
+                        <div class="image-container">
+                            <img src="https://jhnday.github.io/AI-Research-Collective/NYT Article.jpg" alt="New York Times 1958">
+                        </div>
+                        <div class="image-caption">New York Times 1958<br><span class="image-caption-sub">Speculation's Finest Hour</span></div>
+                    </div>
+                </div>
+                
+
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function toggleDropdown1() {
+            const dropdown = document.getElementById('dropdownContent1');
+            dropdown.classList.toggle('expanded');
+        }
+        
+        function toggleDropdown2() {
+            const dropdown = document.getElementById('dropdownContent2');
+            dropdown.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html>
