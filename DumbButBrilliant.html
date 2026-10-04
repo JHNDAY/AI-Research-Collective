@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dumb but Brilliant: Bits, Speed, and Scale</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#14233c;
+  --navy-soft:#2a4166;
+  --gold:#b8892b;
+  --gold-text:#85600f;
+  --gold-tint:#f1dfae;
+  --cream:#f7f1e1;
+  --paper:#fffaf0;
+  --ink:#1b2433;
+  --muted:#4d5a70;
+  --serif:'Playfair Display',Georgia,'Times New Roman',serif;
+  --mono:'Courier Prime','Courier New',Courier,monospace;
+}
+*{box-sizing:border-box}
+html{font-size:100%}
+body{
+  margin:0;background:var(--cream);color:var(--ink);
+  font-family:var(--serif);font-size:1.15rem;line-height:1.65;
+}
+.wrap{max-width:1040px;margin:0 auto;padding:0 1.25rem 4rem}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+
+/* masthead */
+.masthead{padding:2.5rem 0 1.5rem;border-bottom:6px double var(--navy);margin-bottom:2.5rem}
+.masthead h1{font-weight:900;font-size:clamp(2rem,5vw,3.4rem);line-height:1.1;margin:0 0 1rem;color:var(--navy);letter-spacing:-0.01em}
+.masthead .deck{font-style:italic;font-size:1.3rem;color:var(--muted);max-width:44rem;margin:0}
+
+h2{font-weight:900;font-size:clamp(1.7rem,3.6vw,2.4rem);line-height:1.15;margin:3.5rem 0 .75rem;color:var(--navy);border-top:3px solid var(--navy);padding-top:1rem}
+h3{font-weight:700;font-size:1.45rem;margin:0 0 .4rem;color:var(--navy)}
+p{margin:0 0 1rem}
+.lede{font-size:1.25rem;max-width:46rem}
+.lede strong{color:var(--gold-text)}
+
+/* panels */
+.panel{background:var(--paper);border:1px solid var(--navy);border-top:5px solid var(--navy);padding:1.4rem 1.5rem 1.6rem;margin:1.6rem 0}
+.panel > .intro{max-width:44rem;color:var(--muted);margin-bottom:1.2rem}
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr);gap:2rem;align-items:start}
+.side-title{font-weight:700;font-size:1rem;color:var(--gold-text);margin:0 0 .5rem;border-bottom:1px solid var(--gold);padding-bottom:.25rem}
+.arrowcol{position:relative}
+label{display:block;font-weight:700;margin-bottom:.35rem}
+input[type=text]{
+  font-family:var(--mono);font-size:1.5rem;width:100%;max-width:18rem;padding:.4rem .6rem;
+  border:2px solid var(--navy);background:#fff;color:var(--ink);
+}
+.hint{color:var(--muted);font-size:1rem;margin:.5rem 0 0}
+
+/* word characters */
+.wrow{display:flex;flex-wrap:wrap;gap:.5rem}
+.wchar{border:1px solid var(--navy);background:#fff;text-align:center;padding:.35rem .45rem;min-width:5.4rem}
+.wchar .glyph{font-family:var(--mono);font-weight:700;font-size:1.7rem;line-height:1.2;color:var(--navy);min-height:2rem}
+.wchar .code{font-family:var(--mono);font-size:1rem;color:var(--gold-text);border-top:1px solid var(--gold);margin-top:.2rem;padding-top:.15rem}
+.bitstr{font-family:var(--mono);font-size:1rem;letter-spacing:.04em;margin-top:.15rem;color:var(--ink)}
+.bitstr .b{display:inline-block;padding:0 .02em}
+.bitstr .hl{background:var(--gold-tint);outline:1px solid var(--gold)}
+.bitstr .chg{font-weight:700;color:#fff;background:var(--navy)}
+.legend{font-size:1rem;color:var(--muted);margin:0 0 .7rem}
+
+/* bit buttons */
+.bitrow{display:flex;gap:.4rem;flex-wrap:wrap}
+.bitcell{text-align:center}
+.place{font-family:var(--mono);font-size:1rem;color:var(--gold-text);margin-bottom:.2rem}
+.bitbtn{
+  width:3.1rem;height:3.4rem;font-family:var(--mono);font-size:1.7rem;font-weight:700;cursor:pointer;
+  border:2px solid var(--navy);background:var(--paper);color:var(--navy);padding:0;
+}
+.bitbtn.on{background:var(--navy);color:var(--gold-tint)}
+.sumline{font-family:var(--mono);font-size:1.15rem;margin:1rem 0 .2rem;min-height:1.7rem}
+.bigdec{font-weight:900;font-size:3rem;line-height:1;color:var(--navy)}
+.btnrow{display:flex;gap:.6rem;flex-wrap:wrap;margin:.9rem 0 0}
+.btn{
+  font-family:var(--serif);font-size:1.05rem;font-weight:700;padding:.5rem 1rem;cursor:pointer;
+  border:2px solid var(--navy);background:var(--navy);color:var(--cream);
+}
+.btn.alt{background:var(--paper);color:var(--navy)}
+.btn:hover{background:var(--navy-soft);color:#fff}
+.btn.alt:hover{background:var(--gold-tint);color:var(--navy)}
+
+/* pixel grid */
+.imgwrap{display:flex;gap:1.5rem;flex-wrap:wrap;align-items:flex-start}
+.pixgrid{display:grid;grid-template-columns:repeat(8,34px);grid-auto-rows:34px;gap:2px;background:var(--navy);padding:2px;width:max-content}
+.pix{border:0;padding:0;margin:0;background:var(--paper);cursor:pointer;width:34px;height:34px}
+.pix.on{background:var(--navy)}
+.pix:hover{background:var(--gold-tint)}
+.pix.on:hover{background:var(--navy-soft)}
+.pixrows{display:grid;grid-auto-rows:34px;gap:2px;padding:2px 0;font-family:var(--mono);font-size:1.05rem}
+.pixrow{display:flex;align-items:center;gap:.8rem;height:34px}
+.pixrow .bin{letter-spacing:.12em;color:var(--ink)}
+.pixrow .dec{color:var(--gold-text);min-width:4.5rem}
+
+/* speed bars */
+.scalebox{margin:.4rem 0 1.4rem}
+input[type=range]{width:100%;max-width:34rem;accent-color:var(--navy);height:2rem}
+.scalelabel{font-family:var(--mono);font-size:1.2rem;font-weight:700;color:var(--navy);margin:.2rem 0 0}
+.srow{display:grid;grid-template-columns:minmax(0,13rem) minmax(0,1fr) minmax(0,11rem);gap:1rem;align-items:center;padding:.55rem 0;border-top:1px solid #d8cdb0}
+.srow:first-child{border-top:0}
+.sname{font-weight:700;line-height:1.3}
+.sname small{display:block;font-weight:400;font-size:.95rem;color:var(--muted)}
+.track{background:#ece3cb;height:1.5rem;position:relative}
+.fill{background:var(--navy);height:100%;width:2%;transition:width .35s ease}
+.srow:nth-child(1) .fill{background:var(--gold)}
+.stime{font-family:var(--mono);font-weight:700;font-size:1.05rem;color:var(--navy)}
+.summary{background:var(--navy);color:var(--cream);padding:1rem 1.2rem;margin:1.2rem 0 .2rem}
+.summary p{margin:0}
+.fine{font-size:.95rem;color:var(--muted);margin:.8rem 0 0}
+
+/* storage ladder */
+.ladder{margin-top:.6rem}
+.lrow{display:grid;grid-template-columns:7rem minmax(0,1fr) minmax(0,15rem);gap:1rem;align-items:center;padding:.5rem 0;border-top:1px solid #d8cdb0}
+.lrow:first-child{border-top:0}
+.lunit{font-family:var(--mono);font-weight:700;color:var(--navy)}
+.lbar{background:var(--gold);height:1.3rem}
+.ldesc{font-size:1rem;line-height:1.35}
+
+/* closing */
+.closing{background:var(--navy);color:var(--cream);padding:2rem 1.8rem;margin-top:3.5rem;border-top:6px double var(--gold)}
+.closing h2{color:var(--cream);border:0;margin:0 0 1rem;padding:0}
+.closing ol{margin:0 0 1rem;padding-left:1.4rem;font-size:1.25rem}
+.closing li{margin-bottom:.4rem}
+.closing p{margin:0;font-style:italic;color:var(--gold-tint);font-size:1.2rem}
+
+@media (max-width:820px){
+  body{font-size:1.05rem}
+  .split{grid-template-columns:1fr;gap:1.3rem}
+  .srow{grid-template-columns:1fr;gap:.35rem}
+  .lrow{grid-template-columns:5rem minmax(0,1fr);}
+  .lrow .ldesc{grid-column:1 / -1}
+  .pixgrid{grid-template-columns:repeat(8,30px);grid-auto-rows:30px}
+  .pix{width:30px;height:30px}
+  .pixrows{grid-auto-rows:30px}
+  .pixrow{height:30px}
+  .bitbtn{width:2.6rem;height:3rem}
+}
+@media (prefers-reduced-motion:reduce){
+  .fill{transition:none}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <h1>Dumb but Brilliant: Bits, Speed, and Scale</h1>
+  <p class="deck">Two ideas explain how a machine that understands nothing can appear to understand a great deal.</p>
+</header>
+
+<main>
+
+<!-- ============ PART ONE ============ -->
+<section aria-labelledby="dumb">
+  <h2 id="dumb" style="margin-top:0;border-top:0;padding-top:0">Bits: breaking information into atoms</h2>
+  <p class="lede">Break the object of study into <strong>atomistic descriptions</strong>. Words, numbers, and images all become patterns of 0s and 1s. Then implement processes that can understand and operate at that level of description.</p>
+  <p>Try each one below. Whatever you type or click is what the machine actually holds.</p>
+
+  <!-- WORDS -->
+  <div class="panel">
+    <h3>Words become numbers</h3>
+    <p class="intro">Every character is assigned a number, and every number is stored as eight bits.</p>
+    <div class="split">
+      <div>
+        <p class="side-title">What we see</p>
+        <label for="wordInput">Type a short word (up to 8 characters)</label>
+        <input type="text" id="wordInput" value="Cat" maxlength="8" autocomplete="off" spellcheck="false">
+        <p class="hint">Plain keyboard characters work best.</p>
+      </div>
+      <div>
+        <p class="side-title">What the machine holds</p>
+        <p class="legend">In each box: the character, its number, and its eight bits.</p>
+        <div class="wrow" id="wordOut" aria-live="polite"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NUMBERS -->
+  <div class="panel">
+    <h3>Numbers become switches</h3>
+    <p class="intro">Eight switches, each worth twice the one to its right. Switch a bit on and its value is added to the total.</p>
+    <div class="split">
+      <div>
+        <p class="side-title">What we see</p>
+        <div class="bigdec" id="numDec" aria-live="polite">73</div>
+        <div class="btnrow">
+          <button type="button" class="btn" id="numAdd">Add 1</button>
+          <button type="button" class="btn alt" id="numReset">Reset to 0</button>
+        </div>
+        <p class="hint">After 255, the count wraps around to 0. Eight bits cannot hold more.</p>
+      </div>
+      <div>
+        <p class="side-title">What the machine holds</p>
+        <div class="bitrow" id="bitRow"></div>
+        <div class="sumline" id="numSum" aria-live="polite"></div>
+        <p class="hint">Click any switch to turn it on or off.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- IMAGES -->
+  <div class="panel">
+    <h3>Images become grids</h3>
+    <p class="intro">A picture is cut into small squares. Each square is on or off. Each row of eight squares is stored as one number.</p>
+    <div class="split">
+      <div>
+        <p class="side-title">What we see</p>
+        <div class="imgwrap">
+          <div class="pixgrid" id="pixGrid" role="group" aria-label="Eight by eight picture. Click squares to switch them on or off."></div>
+        </div>
+        <div class="btnrow">
+          <button type="button" class="btn" data-preset="smile">Smiley</button>
+          <button type="button" class="btn" data-preset="heart">Heart</button>
+          <button type="button" class="btn alt" data-preset="clear">Clear</button>
+        </div>
+        <p class="hint">Click squares to draw your own.</p>
+      </div>
+      <div>
+        <p class="side-title">What the machine holds</p>
+        <div class="pixrows" id="pixRows" aria-live="polite"></div>
+        <p class="hint">Eight numbers describe the whole picture.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- OPERATING ON ATOMS -->
+  <div class="panel">
+    <h3>A process that understands nothing</h3>
+    <p class="intro">Once letters are numbers, a simple rule can work on them. Capital and small letters differ by exactly one bit, the highlighted one. Flip it, and the case changes. The machine never needs to know what a letter is.</p>
+    <div class="split">
+      <div>
+        <p class="side-title">What we see</p>
+        <label for="flipInput">Type a short phrase (up to 10 characters)</label>
+        <input type="text" id="flipInput" value="Information" maxlength="11" autocomplete="off" spellcheck="false">
+        <div class="btnrow">
+          <button type="button" class="btn" id="flipBtn">Flip bit 5 in every letter</button>
+        </div>
+        <p class="sumline" style="margin-top:1rem">Result: <strong id="flipResult"></strong></p>
+        <p class="hint">A quick range check tells the rule which codes are letters. Spaces and punctuation are left alone.</p>
+      </div>
+      <div>
+        <p class="side-title">What the machine holds</p>
+        <div class="wrow" id="flipOut" aria-live="polite"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PART TWO ============ -->
+<section aria-labelledby="speed">
+  <h2 id="speed">Speed and scale: overcoming brute force</h2>
+  <p class="lede">Brute force means checking every item, one after another. The machine does not avoid that work. It makes the work cheap with <strong>speed of computation</strong> and <strong>scale of data storage</strong>.</p>
+
+  <div class="panel">
+    <h3>Speed: how long to check every item once?</h3>
+    <p class="intro">Move the slider to change how much data there is. Each bar shows the time needed at a different speed.</p>
+    <div class="scalebox">
+      <label for="scaleRange">Number of items to check</label>
+      <input type="range" id="scaleRange" min="3" max="15" step="1" value="9">
+      <div class="scalelabel" id="scaleLabel" aria-live="polite"></div>
+    </div>
+    <div id="speedRows"></div>
+    <div class="summary"><p id="speedSummary" aria-live="polite"></p></div>
+    <p class="fine">Bars use a logarithmic scale: each step to the right is a tenfold increase in time. Speeds are rough orders of magnitude, counting one item checked per operation.</p>
+  </div>
+
+  <div class="panel">
+    <h3>Scale: how much can be kept?</h3>
+    <p class="intro">Plain text is small. Storage that holds it keeps growing by a factor of a thousand at each step.</p>
+    <div class="ladder">
+      <div class="lrow"><div class="lunit">Kilobyte</div><div><div class="lbar" style="width:6%"></div></div><div class="ldesc">About half a page of text</div></div>
+      <div class="lrow"><div class="lunit">Megabyte</div><div><div class="lbar" style="width:22%"></div></div><div class="ldesc">About one novel</div></div>
+      <div class="lrow"><div class="lunit">Gigabyte</div><div><div class="lbar" style="width:40%"></div></div><div class="ldesc">About a thousand novels</div></div>
+      <div class="lrow"><div class="lunit">Terabyte</div><div><div class="lbar" style="width:60%"></div></div><div class="ldesc">About a million novels</div></div>
+      <div class="lrow"><div class="lunit">Petabyte</div><div><div class="lbar" style="width:82%"></div></div><div class="ldesc">About a billion novels</div></div>
+    </div>
+    <p class="fine">Approximate, for plain text only. Bar lengths are illustrative, not to scale.</p>
+  </div>
+</section>
+
+<section class="closing" aria-labelledby="together">
+  <h2 id="together">Putting the two ideas together</h2>
+  <ol>
+    <li>Break the object of study into atoms: 0s and 1s.</li>
+    <li>Build simple processes that operate on those atoms.</li>
+    <li>Run them at great speed, over a great deal of stored data.</li>
+  </ol>
+  <p>Simple steps, repeated enormously fast across enormous stores, can look like understanding.</p>
+</section>
+
+</main>
+</div>
+
+<script>
+(function(){
+  var $ = function(s){ return document.querySelector(s); };
+  var pad8 = function(n){ return n.toString(2).padStart(8,'0'); };
+  function el(tag, cls, txt){
+    var e = document.createElement(tag);
+    if(cls) e.className = cls;
+    if(txt !== undefined) e.textContent = txt;
+    return e;
+  }
+  function cleanText(v, max){
+    var out = '';
+    for(var i=0;i<v.length;i++){
+      var k = v.charCodeAt(i);
+      if(k>=32 && k<127) out += v.charAt(i);
+    }
+    return out.slice(0,max);
+  }
+
+  /* ---------- WORDS ---------- */
+  var wordInput = $('#wordInput'), wordOut = $('#wordOut');
+  function renderWords(){
+    var t = cleanText(wordInput.value, 8);
+    if(wordInput.value !== t) wordInput.value = t;
+    wordOut.replaceChildren();
+    if(!t){ wordOut.appendChild(el('p','hint','Type a word to see its numbers.')); return; }
+    for(var i=0;i<t.length;i++){
+      var ch = t.charAt(i), k = t.charCodeAt(i);
+      var col = el('div','wchar');
+      col.appendChild(el('div','glyph', ch===' ' ? 'space' : ch));
+      col.appendChild(el('div','code', String(k)));
+      col.appendChild(el('div','bitstr', pad8(k)));
+      wordOut.appendChild(col);
+    }
+  }
+  wordInput.addEventListener('input', renderWords);
+  renderWords();
+
+  /* ---------- NUMBERS ---------- */
+  var numVal = 73;
+  var bitRow = $('#bitRow');
+  var bitBtns = [];
+  for(var i=0;i<8;i++){
+    (function(i){
+      var place = 1 << (7-i);
+      var cell = el('div','bitcell');
+      cell.appendChild(el('div','place', String(place)));
+      var b = el('button','bitbtn','0');
+      b.type = 'button';
+      b.setAttribute('aria-label','Switch worth ' + place);
+      b.addEventListener('click', function(){ numVal ^= place; updateNum(); });
+      cell.appendChild(b);
+      bitRow.appendChild(cell);
+      bitBtns.push(b);
+    })(i);
+  }
+  function updateNum(){
+    var parts = [];
+    for(var i=0;i<8;i++){
+      var place = 1 << (7-i);
+      var on = (numVal & place) !== 0;
+      bitBtns[i].textContent = on ? '1' : '0';
+      bitBtns[i].classList.toggle('on', on);
+      bitBtns[i].setAttribute('aria-pressed', on ? 'true' : 'false');
+      if(on) parts.push(place);
+    }
+    $('#numSum').textContent = (parts.length ? parts.join(' + ') : '0') + ' = ' + numVal;
+    $('#numDec').textContent = numVal;
+  }
+  $('#numAdd').addEventListener('click', function(){ numVal = (numVal + 1) % 256; updateNum(); });
+  $('#numReset').addEventListener('click', function(){ numVal = 0; updateNum(); });
+  updateNum();
+
+  /* ---------- IMAGES ---------- */
+  var presets = {
+    smile: ['00111100','01000010','10100101','10000001','10100101','10011001','01000010','00111100'],
+    heart: ['01100110','11111111','11111111','11111111','01111110','00111100','00011000','00000000'],
+    clear: ['00000000','00000000','00000000','00000000','00000000','00000000','00000000','00000000']
+  };
+  var img = [];
+  for(var p=0;p<64;p++) img.push(0);
+  var grid = $('#pixGrid'), rowsBox = $('#pixRows');
+  var pixBtns = [], rowBins = [], rowDecs = [];
+  for(var n=0;n<64;n++){
+    (function(n){
+      var b = el('button','pix');
+      b.type = 'button';
+      b.setAttribute('aria-label','Row ' + (Math.floor(n/8)+1) + ', column ' + (n%8+1));
+      b.addEventListener('click', function(){ img[n] ^= 1; updateImg(); });
+      grid.appendChild(b);
+      pixBtns.push(b);
+    })(n);
+  }
+  for(var r=0;r<8;r++){
+    var row = el('div','pixrow');
+    var bin = el('span','bin','00000000');
+    var dec = el('span','dec','= 0');
+    row.appendChild(bin); row.appendChild(dec);
+    rowsBox.appendChild(row);
+    rowBins.push(bin); rowDecs.push(dec);
+  }
+  function updateImg(){
+    for(var i=0;i<64;i++){
+      pixBtns[i].classList.toggle('on', !!img[i]);
+      pixBtns[i].setAttribute('aria-pressed', img[i] ? 'true' : 'false');
+    }
+    for(var r=0;r<8;r++){
+      var s = img.slice(r*8, r*8+8).join('');
+      rowBins[r].textContent = s;
+      rowDecs[r].textContent = '= ' + parseInt(s,2);
+    }
+  }
+  function loadPreset(name){
+    var rows = presets[name];
+    for(var r=0;r<8;r++) for(var c=0;c<8;c++) img[r*8+c] = rows[r].charAt(c) === '1' ? 1 : 0;
+    updateImg();
+  }
+  var presetBtns = document.querySelectorAll('[data-preset]');
+  for(var q=0;q<presetBtns.length;q++){
+    presetBtns[q].addEventListener('click', function(e){ loadPreset(e.currentTarget.getAttribute('data-preset')); });
+  }
+  loadPreset('smile');
+
+  /* ---------- BIT FLIP ---------- */
+  var flipInput = $('#flipInput'), flipOut = $('#flipOut'), flipBtn = $('#flipBtn');
+  var flipped = false;
+  function isLetter(k){ return (k>=65 && k<=90) || (k>=97 && k<=122); }
+  function renderFlip(){
+    var t = cleanText(flipInput.value, 11);
+    if(flipInput.value !== t) flipInput.value = t;
+    flipOut.replaceChildren();
+    var result = '';
+    for(var i=0;i<t.length;i++){
+      var k = t.charCodeAt(i);
+      var letter = isLetter(k);
+      var nk = (flipped && letter) ? (k ^ 32) : k;
+      var ch = String.fromCharCode(nk);
+      result += ch;
+      var col = el('div','wchar');
+      col.appendChild(el('div','glyph', ch===' ' ? 'space' : ch));
+      col.appendChild(el('div','code', String(nk)));
+      var bits = el('div','bitstr');
+      var s = pad8(nk);
+      for(var j=0;j<8;j++){
+        var cls = 'b';
+        if(j===2) cls += (flipped && letter) ? ' hl chg' : ' hl';
+        bits.appendChild(el('span', cls, s.charAt(j)));
+      }
+      col.appendChild(bits);
+      flipOut.appendChild(col);
+    }
+    $('#flipResult').textContent = result || 'nothing typed';
+    flipBtn.textContent = flipped ? 'Flip bit 5 back' : 'Flip bit 5 in every letter';
+  }
+  flipInput.addEventListener('input', renderFlip);
+  flipBtn.addEventListener('click', function(){ flipped = !flipped; renderFlip(); });
+  renderFlip();
+
+  /* ---------- SPEED ---------- */
+  var speeds = [
+    { name:'A person reading records', note:'about 1 per second', rate:1 },
+    { name:'A 1950s computer', note:'about 5,000 per second', rate:5e3 },
+    { name:'One modern processor core', note:'about a billion per second', rate:1e9 },
+    { name:'A modern graphics processor', note:'about ten trillion per second', rate:1e13 }
+  ];
+  var scaleNames = {
+    3:'a thousand',4:'ten thousand',5:'a hundred thousand',6:'a million',7:'ten million',8:'a hundred million',
+    9:'a billion',10:'ten billion',11:'a hundred billion',12:'a trillion',13:'ten trillion',14:'a hundred trillion',15:'a quadrillion'
+  };
+  var Y = 31557600;
+  function n2(x){
+    return x >= 10 ? String(Math.round(x)) : String(Math.round(x*10)/10);
+  }
+  function unit(x, name){
+    var s = n2(x);
+    return s + ' ' + name + (s === '1' ? '' : 's');
+  }
+  function fmtTime(t){
+    if(t < 1e-6) return 'under a microsecond';
+    if(t < 1e-3) return unit(t*1e6,'microsecond');
+    if(t < 1)    return unit(t*1e3,'millisecond');
+    if(t < 60)   return unit(t,'second');
+    if(t < 3600) return unit(t/60,'minute');
+    if(t < 86400) return unit(t/3600,'hour');
+    if(t < Y)    return unit(t/86400,'day');
+    var y = t / Y;
+    if(y < 1000) return unit(y,'year');
+    if(y < 1e6)  return n2(y/1e3) + ' thousand years';
+    if(y < 1e9)  return n2(y/1e6) + ' million years';
+    return n2(y/1e9) + ' billion years';
+  }
+  var speedRows = $('#speedRows'), fills = [], times = [];
+  speeds.forEach(function(s){
+    var row = el('div','srow');
+    var nm = el('div','sname', s.name);
+    nm.appendChild(el('small',null,s.note));
+    var track = el('div','track');
+    var fill = el('div','fill');
+    track.appendChild(fill);
+    var tm = el('div','stime','');
+    row.appendChild(nm); row.appendChild(track); row.appendChild(tm);
+    speedRows.appendChild(row);
+    fills.push(fill); times.push(tm);
+  });
+  var range = $('#scaleRange');
+  function updateScale(){
+    var e = parseInt(range.value,10);
+    var n = Math.pow(10,e);
+    $('#scaleLabel').textContent = n.toLocaleString('en-US') + ' items (' + scaleNames[e] + ')';
+    var ts = [];
+    speeds.forEach(function(s,i){
+      var t = n / s.rate;
+      ts.push(t);
+      var w = (Math.log10(t) + 10) / 26 * 100;
+      w = Math.max(1.5, Math.min(100, w));
+      fills[i].style.width = w + '%';
+      times[i].textContent = fmtTime(t);
+    });
+    $('#speedSummary').textContent = 'At ' + scaleNames[e] + ' items, a person would need ' + fmtTime(ts[0]) +
+      '. A modern graphics processor would need ' + fmtTime(ts[3]) + '.';
+  }
+  range.addEventListener('input', updateScale);
+  updateScale();
+})();
+</script>
+</body>
+</html>
