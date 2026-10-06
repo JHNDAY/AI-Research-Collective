@@ -112,6 +112,10 @@
             margin-bottom: 20px;
         }
         
+        .image-grid-single {
+            grid-template-columns: 1fr;
+        }
+        
         .image-card {
             border-radius: 8px;
             overflow: hidden;
@@ -174,6 +178,14 @@
             <button onclick="toggleDropdown2()">The Perceptron - 1958 Model of AI</button>
             
             <div id="dropdownContent2" class="dropdown-content">
+                <div class="image-grid image-grid-single">
+                    <div class="image-card">
+                        <div class="image-container">
+                            <img src="https://jhnday.github.io/AI-Research-Collective/NYT Article.jpg" alt="New York Times 1958">
+                        </div>
+                        <div class="image-caption">New York Times 1958<br><span class="image-caption-sub">Speculation's Finest Hour</span></div>
+                    </div>
+                </div>
                 <div class="image-grid">
                     <div class="image-card">
                         <div class="image-container">
@@ -183,13 +195,11 @@
                     </div>
                     <div class="image-card">
                         <div class="image-container">
-                            <img src="https://jhnday.github.io/AI-Research-Collective/NYT Article.jpg" alt="New York Times 1958">
+                            <img src="https://jhnday.github.io/AI-Research-Collective/Runits.jpeg" alt="Perceptron Output">
                         </div>
-                        <div class="image-caption">New York Times 1958<br><span class="image-caption-sub">Speculation's Finest Hour</span></div>
+                        <div class="image-caption">Perceptron Output</div>
                     </div>
                 </div>
-                
-
             </div>
         </div>
     </div>
