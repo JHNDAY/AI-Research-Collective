@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The LCTG Dispatch — October 7, 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#14254a; --navy-2:#1f3768; --gold:#b8892b; --gold-lt:#d9b56a;
+    --cream:#f6f0e1; --paper:#fbf7ec; --ink:#1c1a17; --muted:#5e5747; --rule:#2a2620;
+    --heat-1:#e7d9b3; --heat-2:#d9b56a; --heat-3:#c4892f; --heat-4:#a65a24; --heat-5:#7e2a1a;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:#e9e1cc;color:var(--ink);font-family:'Libre Baskerville',Georgia,serif;font-size:15px;line-height:1.55;padding:24px 16px}
+  .sheet{max-width:1240px;margin:0 auto;background:var(--paper);padding:28px 36px 40px;box-shadow:0 2px 24px rgba(20,37,74,.18);border:1px solid #d6caa9}
+
+  /* Masthead */
+  .ears{display:flex;justify-content:space-between;align-items:flex-end;font-family:'Courier Prime',monospace;font-size:12px;color:var(--muted);gap:16px}
+  .ear{border:1px solid var(--rule);padding:6px 10px;max-width:230px;line-height:1.35}
+  .ear b{color:var(--navy)}
+  .flag{text-align:center;font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(40px,7.5vw,88px);letter-spacing:-1px;color:var(--navy);line-height:1;margin:6px 0 2px}
+  .flag span{color:var(--gold)}
+  .motto{text-align:center;font-family:'Playfair Display',serif;font-style:italic;color:var(--muted);font-size:14px;margin-bottom:10px}
+  .dateline{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;border-top:3px double var(--rule);border-bottom:3px double var(--rule);padding:6px 0;font-family:'Courier Prime',monospace;font-size:12.5px;text-transform:uppercase;letter-spacing:.06em}
+
+  /* Lead */
+  .lead{display:grid;grid-template-columns:2fr 1fr;gap:28px;margin-top:22px;padding-bottom:22px;border-bottom:1px solid var(--rule)}
+  .kicker{font-family:'Courier Prime',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:700}
+  h1{font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(30px,4.4vw,52px);line-height:1.04;margin:6px 0 10px;color:var(--navy)}
+  .deck{font-family:'Playfair Display',serif;font-style:italic;font-size:19px;color:var(--muted);margin:0 0 14px;line-height:1.35}
+  .byline{font-family:'Courier Prime',monospace;font-size:12px;color:var(--muted);border-top:1px solid #cdbf9c;border-bottom:1px solid #cdbf9c;padding:4px 0;margin-bottom:14px}
+  .cols2{column-count:2;column-gap:26px;column-rule:1px solid #d8ccab}
+  .cols3{column-count:3;column-gap:24px;column-rule:1px solid #d8ccab}
+  .cols2 p,.cols3 p{margin:0 0 10px;text-align:justify;hyphens:auto}
+  .dropcap::first-letter{float:left;font-family:'Playfair Display',serif;font-weight:900;font-size:62px;line-height:.85;padding:6px 8px 0 0;color:var(--navy)}
+
+  /* Heat index sidebar */
+  .sidebar{background:var(--cream);border:1px solid var(--rule);padding:14px 16px}
+  .sidebar h3{font-family:'Playfair Display',serif;font-size:21px;margin:0 0 2px;color:var(--navy)}
+  .sidebar .sub{font-family:'Courier Prime',monospace;font-size:11.5px;color:var(--muted);margin-bottom:10px}
+  .heat-row{display:grid;grid-template-columns:1fr 92px;align-items:center;gap:8px;padding:5px 0;border-bottom:1px dotted #bfb08a;font-size:13.5px}
+  .heat-row:last-child{border-bottom:0}
+  .heat-row a{color:var(--ink);text-decoration:none}
+  .heat-row a:hover{color:var(--gold)}
+  .flames{display:flex;gap:3px;justify-content:flex-end}
+  .flames i{width:14px;height:14px;border-radius:2px;background:#e3dac2;display:block}
+  .flames i.on{background:var(--heat-3)}
+  .flames.h5 i.on{background:var(--heat-5)}
+  .flames.h4 i.on{background:var(--heat-4)}
+
+  /* Timeline */
+  .timeline-wrap{margin:22px 0 6px}
+  .section-label{font-family:'Courier Prime',monospace;font-size:12px;letter-spacing:.16em;text-transform:uppercase;text-align:center;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:4px 0;margin:0 0 12px;color:var(--navy);font-weight:700}
+  .timeline{display:flex;height:46px;border:1px solid var(--rule);background:#fff}
+  .seg{position:relative;border-right:1px solid var(--paper);display:flex;align-items:center;justify-content:center;font-family:'Courier Prime',monospace;font-size:10.5px;color:#fff;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;padding:0 3px;cursor:default}
+  .seg.p{background:var(--navy-2)}
+  .seg.d1{background:var(--heat-1);color:var(--ink)}
+  .seg.d2{background:var(--heat-2);color:var(--ink)}
+  .seg.d3{background:var(--heat-3)}
+  .seg.d4{background:var(--heat-4)}
+  .seg.d5{background:var(--heat-5)}
+  .tl-axis{display:flex;justify-content:space-between;font-family:'Courier Prime',monospace;font-size:11px;color:var(--muted);margin-top:3px}
+  .legend{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;font-family:'Courier Prime',monospace;font-size:11.5px;color:var(--muted);margin-top:8px}
+  .legend span{display:inline-flex;align-items:center;gap:5px}
+  .legend b{width:14px;height:10px;display:inline-block}
+
+  /* Story grid */
+  .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:0;margin-top:20px;border-top:3px double var(--rule)}
+  .story{padding:16px 16px 18px;border-right:1px solid #cdbf9c;border-bottom:1px solid #cdbf9c}
+  .span-8{grid-column:span 8}.span-4{grid-column:span 4}.span-6{grid-column:span 6}.span-12{grid-column:span 12}
+  .story h2{font-family:'Playfair Display',serif;font-weight:700;font-size:26px;line-height:1.1;margin:4px 0 6px;color:var(--navy)}
+  .story h2.big{font-size:34px;font-weight:900}
+  .story .dek{font-family:'Playfair Display',serif;font-style:italic;color:var(--muted);margin:0 0 10px;font-size:15.5px}
+  .story p{margin:0 0 9px;text-align:justify;hyphens:auto}
+  .meta{display:flex;justify-content:space-between;align-items:center;font-family:'Courier Prime',monospace;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+  .meta .flames i{width:11px;height:11px}
+  .pull{font-family:'Playfair Display',serif;font-style:italic;font-size:20px;line-height:1.3;color:var(--navy);border-top:2px solid var(--gold);border-bottom:2px solid var(--gold);padding:10px 4px;margin:12px 0;text-align:center;break-inside:avoid}
+  .pull small{display:block;font-family:'Courier Prime',monospace;font-style:normal;font-size:11px;color:var(--muted);margin-top:6px;letter-spacing:.06em;text-transform:uppercase}
+  .voices{margin:10px 0 0;padding:0;list-style:none;border-top:1px dotted #b9aa80}
+  .voices li{padding:6px 0;border-bottom:1px dotted #b9aa80;font-size:13.5px;break-inside:avoid}
+  .voices b{font-family:'Courier Prime',monospace;font-size:12px;color:var(--gold);text-transform:uppercase;letter-spacing:.05em}
+  .box{background:var(--cream);border:1px solid var(--rule);padding:12px 14px;margin:10px 0;break-inside:avoid}
+  .box h4{font-family:'Courier Prime',monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 6px;color:var(--navy)}
+  .box ul{margin:0;padding-left:18px}.box li{margin-bottom:4px;font-size:13.5px}
+
+  /* Stat bars */
+  .stat{display:grid;grid-template-columns:110px 1fr 44px;align-items:center;gap:8px;font-family:'Courier Prime',monospace;font-size:12px;margin:5px 0}
+  .bar{height:12px;background:#e3dac2;border:1px solid #bfb08a;position:relative}
+  .bar > div{height:100%;background:var(--navy-2)}
+
+  /* Contrast table */
+  table.versus{width:100%;border-collapse:collapse;font-size:13.5px;margin:8px 0}
+  .versus th{font-family:'Playfair Display',serif;font-size:15px;background:var(--navy);color:var(--cream);padding:6px 8px;text-align:left}
+  .versus td{padding:6px 8px;border-bottom:1px solid #d8ccab;vertical-align:top}
+  .versus tr:nth-child(even) td{background:#f3ecd9}
+
+  /* Bottom bulletin */
+  .bulletin{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:3px double var(--rule);margin-top:0}
+  .bulletin > div{padding:14px 16px;border-right:1px solid #cdbf9c}
+  .bulletin > div:last-child{border-right:0}
+  .bulletin h3{font-family:'Playfair Display',serif;font-size:19px;margin:2px 0 6px;color:var(--navy)}
+  .bulletin p,.bulletin li{font-size:13.5px}
+  .bulletin ul{padding-left:18px;margin:4px 0}
+  footer{margin-top:18px;border-top:1px solid var(--rule);padding-top:8px;font-family:'Courier Prime',monospace;font-size:11.5px;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+
+  @media (max-width:900px){
+    .sheet{padding:18px 16px 28px}
+    .lead{grid-template-columns:1fr}
+    .cols3{column-count:2}
+    .span-8,.span-4,.span-6{grid-column:span 12}
+    .story{border-right:0}
+    .bulletin{grid-template-columns:1fr}
+    .bulletin > div{border-right:0;border-bottom:1px solid #cdbf9c}
+    .ears .ear:last-child{display:none}
+  }
+  @media (max-width:600px){
+    .cols2,.cols3{column-count:1}
+    .ears{display:none}
+    .seg{font-size:0}
+    .stat{grid-template-columns:90px 1fr 40px}
+  }
+  @media print{
+    body{background:#fff;padding:0}
+    .sheet{box-shadow:none;border:0;max-width:none}
+    .story,.box,.pull{break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <!-- MASTHEAD -->
+  <div class="ears">
+    <div class="ear"><b>Today's Speaker:</b> John Day on the hardware behind the AI boom</div>
+    <div class="ear" style="text-align:right"><b>Weather in the Room:</b> Warm, with scattered tangents and a strong front of debate after the 60-minute mark</div>
+  </div>
+  <div class="flag">The LCTG <span>Dispatch</span></div>
+  <div class="motto">“The discussion is the heart and soul of what this group should be about.”</div>
+  <div class="dateline">
+    <span>Vol. XXVI · Session Recap</span>
+    <span>Tuesday, October 7, 2026</span>
+    <span>Learning in Community Through Groups</span>
+    <span>~108 Minutes on Zoom</span>
+  </div>
+
+  <!-- LEAD -->
+  <section class="lead">
+    <div>
+      <div class="kicker">Front Page · The Big Picture</div>
+      <h1>Talk on AI Chips Sparks a Room-Wide Debate on Hype, Truth, and What College Is For</h1>
+      <p class="deck">A presentation on GPUs, memory, and data centers lit several fuses — and the group happily followed each one wherever it led.</p>
+      <div class="byline">SESSION SUMMARY · PRESENTER: JOHN DAY · TOPIC: AI HARDWARE IN CONTEXT</div>
+      <div class="cols2">
+        <p class="dropcap">John Day set out to explain the hardware surge behind artificial intelligence — Nvidia GPUs, high-bandwidth memory, custom inference chips, edge processors, and the testing gear firms like local Teradyne can't build fast enough. To frame it, he opened with a contrast he calls <em>digital versus organic intelligence</em>: AI is, at bottom, bit flipping against a vast database of numbers, while human minds can step into undefined territory the way Planck and Maxwell did.</p>
+        <p>That framing set the tone. Almost every slide drew questions, and several turned into extended exchanges. A 1958 <em>New York Times</em> story promising a "thinking" Perceptron prompted the sharpest discussion of today's hype cycle, which wandered — productively — through nuclear power, Three Mile Island, and public opinion.</p>
+        <p>The longest stretch of the session had nothing to do with chips at all. A remark about teaching science and critical thinking opened a twenty-minute conversation on higher education, liberal arts, the Brandeis Plan, and a job market described as "no hire, no fire."</p>
+        <p>Organizers closed by noting that the conversation after the presentation is exactly what the group exists for — and several members volunteered future "cooking show" demos of building things with AI.</p>
+      </div>
+    </div>
+
+    <aside class="sidebar">
+      <h3>The Conversation Heat Index</h3>
+      <div class="sub">How much discussion each topic generated (1–5)</div>
+      <div class="heat-row"><a href="#education">Education, jobs &amp; critical thinking</a><div class="flames h5"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></div></div>
+      <div class="heat-row"><a href="#hype">Perceptron hype → nuclear analogy</a><div class="flames h4"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div></div>
+      <div class="heat-row"><a href="#sources">Can you trust AI's sources?</a><div class="flames h4"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div></div>
+      <div class="heat-row"><a href="#edge">Edge AI &amp; the "PC movie"</a><div class="flames h4"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div></div>
+      <div class="heat-row"><a href="#tools">Building with AI: decks &amp; a Tesla app</a><div class="flames h4"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div></div>
+      <div class="heat-row"><a href="#nvidia">Gamers built Nvidia; Intel fell off</a><div class="flames"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div></div>
+      <div class="heat-row"><a href="#digital">Digital vs. organic &amp; RAG</a><div class="flames"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div></div>
+      <div class="heat-row"><a href="#money">Who pays? Pricing &amp; energy</a><div class="flames"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div></div>
+      <div class="heat-row"><a href="#nvidia">"Dumb but brilliant" computing</a><div class="flames"><i class="on"></i><i></i><i></i><i></i><i></i></div></div>
+    </aside>
+  </section>
+
+  <!-- TIMELINE -->
+  <div class="timeline-wrap">
+    <div class="section-label">How the Session Unfolded — Minute by Minute</div>
+    <div class="timeline">
+      <div class="seg p"  style="flex:4"  title="0–4 Opening &amp; tokens demo">Intro</div>
+      <div class="seg d3" style="flex:9"  title="4–13 Digital vs organic; RAG question">Digital/RAG</div>
+      <div class="seg d2" style="flex:7"  title="13–20 The 1958 Perceptron">Perceptron</div>
+      <div class="seg d3" style="flex:5"  title="20–25 Nvidia &amp; the gamers">Gamers</div>
+      <div class="seg p"  style="flex:4"  title="25–29 Dumb but brilliant">Bits</div>
+      <div class="seg d4" style="flex:5"  title="29–34 Edge AI, PC parallel, comparative advantage">Edge AI</div>
+      <div class="seg d3" style="flex:4"  title="34–38 Pricing and subscriptions">$</div>
+      <div class="seg d2" style="flex:3"  title="38–41 Intel &amp; Chip War">Intel</div>
+      <div class="seg d4" style="flex:7"  title="41–48 Source reliability">Sources</div>
+      <div class="seg d3" style="flex:7"  title="48–55 Training vs inference; phone vs PC">Inference</div>
+      <div class="seg d2" style="flex:3"  title="55–58 Data centers in Texas">DCs</div>
+      <div class="seg d4" style="flex:8"  title="58–66 Hype cycle, nuclear power">Hype/Nuclear</div>
+      <div class="seg d5" style="flex:22" title="66–88 Education, liberal arts, jobs">Education &amp; Jobs</div>
+      <div class="seg d2" style="flex:2"  title="87–89 Energy scaling">⚡</div>
+      <div class="seg d4" style="flex:17" title="89–106 Presentation tools; Tesla app">Building with AI</div>
+      <div class="seg d2" style="flex:2"  title="106–108 Minsky &amp; Papert">MIT</div>
+    </div>
+    <div class="tl-axis"><span>0:00</span><span>0:30</span><span>1:00</span><span>1:30</span><span>1:48</span></div>
+    <div class="legend">
+      <span><b style="background:var(--navy-2)"></b>Mostly presentation</span>
+      <span><b style="background:var(--heat-2)"></b>Some discussion</span>
+      <span><b style="background:var(--heat-3)"></b>Lively</span>
+      <span><b style="background:var(--heat-4)"></b>Heated</span>
+      <span><b style="background:var(--heat-5)"></b>Took over the room</span>
+    </div>
+  </div>
+
+  <!-- STORIES -->
+  <div class="grid">
+
+    <!-- EDUCATION (lead story) -->
+    <article class="story span-8" id="education">
+      <div class="meta"><span>Minutes 64–88 · The Longest Thread</span><div class="flames h5"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></div></div>
+      <h2 class="big">What Is College For? An Aside on Critical Thinking Becomes the Session's Main Event</h2>
+      <p class="dek">From the Perceptron's press coverage to the Brandeis Plan, members debated whether schools still produce discerning thinkers — and whether degrees still lead to jobs.</p>
+      <div class="cols2">
+        <p>John pulled the thread: if the press could oversell the Perceptron in 1958, shouldn't schools give students enough science to judge today's AI headlines? One member countered that knowledge has exploded while schooling still ends at seventeen — how do you fit 2026's science into the same twelve years?</p>
+        <p>Others pushed back: the purpose of education was never facts but the ability to assess information for a lifetime. Seth cited what he sees as decades of evidence that the system is falling short on exactly that.</p>
+        <p>John then introduced the <strong>Brandeis Plan</strong>: pair a liberal arts degree with micro-certifications in areas like accounting or organizational design. His rationale — reported anecdotally from firms like Google — is that people trained to read and compare texts know <em>what questions to ask</em> an AI.</p>
+        <div class="pull">“If you put somebody who has read Gibbon in front of it, they're going to ask questions.”<small>John Day, on liberal arts and AI</small></div>
+        <p>Dan Silber, via chat, noted his father's old line that a college diploma had become proof of a high-school education. Others argued degrees work as a hiring filter — a "badge" that's legally safer than other screens.</p>
+        <p>Seth, drawing on interviewing at a major tech firm, disagreed: there, the degree opened no doors; the interview decided everything, and self-taught coders often outperformed graduates. How much a degree counts, he argued, rises and falls with labor demand.</p>
+        <p>An economics-minded member tied it to the current <strong>"no hire, no fire"</strong> economy: uncertainty freezes hiring, yet a true standout still gets a fast offer — which may explain why CS starting salaries stay high even as graduates struggle.</p>
+      </div>
+    </article>
+
+    <aside class="story span-4">
+      <div class="meta"><span>By the Numbers</span><span>Shared by Seth</span></div>
+      <h2>Recent Grads in College-Level Jobs</h2>
+      <p class="dek" style="margin-bottom:6px">2024 survey he cited during the discussion</p>
+      <div class="stat"><span>Within 1 year</span><div class="bar"><div style="width:48%"></div></div><span>48%</span></div>
+      <div class="stat"><span>Within 5 years</span><div class="bar"><div style="width:55%"></div></div><span>55%</span></div>
+      <div class="stat"><span>Within 10 years</span><div class="bar"><div style="width:55%"></div></div><span>55%</span></div>
+      <p style="margin-top:10px;font-size:13.5px">Seth said he had three offers as a new EE grad; another member recalled graduating in 1969, when "programmer" wasn't yet a job title.</p>
+      <div class="box">
+        <h4>Positions Staked Out</h4>
+        <ul>
+          <li><b>Education's goal</b> is lifelong critical thinking, not job training.</li>
+          <li><b>Families</b> paying steep tuition reasonably expect jobs.</li>
+          <li><b>Trades</b> may now outpace many degree paths.</li>
+          <li><b>Degrees</b> as filters vs. merit-based interviews.</li>
+        </ul>
+      </div>
+      <div class="pull" style="font-size:17px">“If you graduate college, you can steal the whole railroad.”<small>Theodore Roosevelt, as quoted by a member</small></div>
+    </aside>
+
+    <!-- HYPE -->
+    <article class="story span-6" id="hype">
+      <div class="meta"><span>Minutes 13–20 &amp; 58–66</span><div class="flames h4"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div></div>
+      <h2>1958's "Thinking Machine" Prompts a Hard Look at Today's Hype</h2>
+      <p class="dek">The Navy's Perceptron was promised to read, write, and even be conscious. Seventy years on, has anything changed?</p>
+      <p>John walked through the Perceptron — a 20×20 grid of photocells, 512 "association units," and an 8-bit output now sitting in the Smithsonian — and showed an image Gemini generated to visualize its circuitry. (Someone spotted "a bad solder joint.")</p>
+      <p>Asked how today's hype compares, the room split on terms rather than substance: the <strong>hardware</strong> is unrecognizably better, but the <strong>hype</strong> is the same — present capabilities blended with promised ones. Fusion, perpetually "five years away," was the comparison of choice.</p>
+      <p>The talk then turned to nuclear power: how accidents, media coverage, and a Hollywood film turned public opinion, and whether shutting plants down helped or hurt the climate. Google's reported investment in restarting nuclear plants came up as a sign of the pendulum swinging back.</p>
+      <ul class="voices">
+        <li><b>Skeptic:</b> news cycles — like last week's "AI will kill us all" — are a poor measure of anything.</li>
+        <li><b>Optimist:</b> AI is at the bottom of the curve, as early PCs were.</li>
+        <li><b>Realist:</b> what the U.S. and Europe do matters less as India, China, and Africa set energy demand.</li>
+      </ul>
+    </article>
+
+    <!-- SOURCES -->
+    <article class="story span-6" id="sources">
+      <div class="meta"><span>Minutes 41–48</span><div class="flames h4"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div></div>
+      <h2>"Most of Which Are Fictional" — A Joke Opens a Serious Debate on AI Citations</h2>
+      <p class="dek">John's RAG-built presentation came with a long list of sources. The group wanted to know how far to trust them.</p>
+      <p>Members drew a useful distinction between two kinds of reliability:</p>
+      <table class="versus">
+        <tr><th>Level 1: Does it exist?</th><th>Level 2: Is it right?</th></tr>
+        <tr><td>Does the link resolve, or is it a 404? Ask the model to verify — it often catches its own fakes.</td><td>Even a real source can rest on weak foundations. The error cascades — same as for a human researcher.</td></tr>
+      </table>
+      <p>One member described asking an AI about a Brandeis course and receiving a polished citation to a paper by the instructor — complete with page numbers — in a journal that doesn't exist. Another warned that falsehoods can be seeded across the web through search-engine manipulation, so they look corroborated within days.</p>
+      <div class="pull" style="font-size:18px">“Without human oversight, AI can be a lot of trouble.” — “Nothing's changed. Garbage in, garbage out.”<small>An exchange between members</small></div>
+      <p>John's takeaway: once filtered, AI's real value is surfacing things that are relevant to what you know but hadn't considered. The room firmly rejected the idea that it can replace three years of PhD work in twenty minutes.</p>
+    </article>
+
+    <!-- EDGE -->
+    <article class="story span-8" id="edge">
+      <div class="meta"><span>Minutes 29–34 &amp; 48–55</span><div class="flames h4"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div></div>
+      <h2>"We've Seen This Movie Before": Edge AI as the Next Personal-Computer Moment</h2>
+      <p class="dek">John's slide on AI chips in phones prompted Peter's comparison to the shift from timeshare mainframes to PCs — and the group built on it.</p>
+      <div class="cols3">
+        <p>John described the TPU in his Pixel 11 Pro: a small on-device model handles what it can, and an agent reaches out to the cloud (with a RAG search) when the answer is incomplete.</p>
+        <p>Peter reframed this as <strong>distributed processing</strong> — the device pre-processes the problem so what's "thrown over the fence" to the data center is smaller and easier. Another member invoked Ricardo's <strong>law of comparative advantage</strong>: let each tier do what it does relatively best.</p>
+        <p>Others added that massive parallelism is what makes any of this work, and that a local model is also a privacy feature. John's preferred summary: the edge chip gives a <em>first-order approximation</em> — a framing every former scientist in the room recognized.</p>
+        <p>A practical question followed: can a home PC with an Nvidia graphics card do the same? Not quite, members said — consumer GPUs are smaller cousins of data-center parts. Apple silicon, with memory and specialized neural cores packed onto one chip, came up as a different route to the same goal.</p>
+        <p>John also explained why <strong>context</strong> in a prompt matters: a detailed prompt defines a point in a high-dimensional "word space," and results can be measured for how closely they converge on it.</p>
+        <div class="box"><h4>Where the Energy Goes</h4><ul><li>Training: ~10–20%</li><li>Inference (everyday use): ~80–90%</li></ul><p style="font-size:12.5px;margin:6px 0 0">Figures from John's slides; he called the inference-heavy split "healthy."</p></div>
+      </div>
+    </article>
+
+    <aside class="story span-4" id="money">
+      <div class="meta"><span>Minutes 34–38 &amp; 55–58, 87–88</span><div class="flames"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div></div>
+      <h2>Who's Paying for All This?</h2>
+      <p>Carl Lazarus asked why anyone should care whether work runs in the cloud or locally when cloud AI is free or cheap. The pricing must change eventually, he suggested.</p>
+      <div class="pull" style="font-size:17px">“I guess they gave out cigarettes at playgrounds.”<small>A member's reply</small></div>
+      <p>Others noted the market runs on investor money, where faster spending looks like winning. On the training-cost slide ($10–100 million), the answer to "who pays?" was blunt: investors, and eventually all of us — with one member arguing the AI boom is pushing Treasury yields up.</p>
+      <p>Why so many data centers in Texas? Cheap power and tax breaks, not wages. Near the end, Seth suggested power costs may climb steeply rather than linearly as AI scales — and was promptly nominated to present on it.</p>
+    </aside>
+
+    <!-- NVIDIA -->
+    <article class="story span-6" id="nvidia">
+      <div class="meta"><span>Minutes 20–29 &amp; 38–41</span><div class="flames"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div></div>
+      <h2>Thank the Kid in the Basement: How Gamers Built the AI Industry</h2>
+      <p>A member reminded everyone that Nvidia spent roughly fifteen years selling to gamers before AI was taken seriously — and crypto miners came next. Don added a historical rhyme: digital radiology rode on gamers' demand for high-pixel monitors in just the same way.</p>
+      <p>That led to the question of Intel. Members suggested it optimized the market it dominated, lost ground on chip design, and missed what Nvidia saw. Chris Miller's <em>Chip War</em> was recommended for the full story.</p>
+      <p>John's "dumb but brilliant" slide — computing as brute-force bit flipping made powerful by speed and scale, with the LLM as the "Rosetta Stone" that gives the bits meaning — was mostly received quietly, but it set up the parallelism discussion that followed.</p>
+    </article>
+
+    <!-- DIGITAL -->
+    <article class="story span-6" id="digital">
+      <div class="meta"><span>Minutes 4–13</span><div class="flames"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div></div>
+      <h2>Is AI Only as Good as What It Was Trained On?</h2>
+      <p>John's opening claim — AI excels at "regular science" but not paradigm shifts like Planck's quantum hypothesis — drew an immediate challenge: did that apply only to off-the-shelf chatbots, or to specialized industry models too?</p>
+      <p>The group settled on a shared formulation: AI is bounded by what people have written down and fed into it — though proprietary training can push those bounds well beyond public knowledge. John stayed skeptical that today's systems genuinely "think," while calling them remarkable.</p>
+      <p>Harry Forsdick then asked where knowledge actually lives in a model. John's answer introduced <strong>RAG</strong> (retrieval-augmented generation) — the model looks things up instead of relying on statistical memory — and noted his own presentation was built that way.</p>
+    </article>
+
+    <!-- TOOLS -->
+    <article class="story span-12" id="tools">
+      <div class="meta"><span>Minutes 89–106 · After the Bell</span><div class="flames h4"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div></div>
+      <h2 class="big">The Unplanned Encore: Members Swap Stories of Building Things with AI</h2>
+      <p class="dek">Seth admired John's zoomable, single-document presentation, and the room shifted to how everyone is actually using these tools.</p>
+      <div class="cols3">
+        <p><strong>Live preview vs. download loops.</strong> Peter has built a GPS-spoofing talk with Perplexity, which returns a PowerPoint file. John described Claude's side-panel artifact, which updates as you ask for changes. Seth summed up the difference: one requires a download-review-regenerate cycle; the other is a live preview. Peter noted he used Perplexity partly because Claude's free tier kept hitting usage limits.</p>
+        <p><strong>No design by committee.</strong> John stressed that visual work requires looking at intermediate drafts yourself — asking the AI "how does it look?" misses the point, because taste is personal.</p>
+        <p><strong>The Tesla reminder app.</strong> Peter described having Claude write a Python script that checks his Tesla's charge state through its API and, at 8:30 p.m., pushes a reminder to his iPhone via the free <em>ntfy</em> service if the car isn't plugged in — timed for Eversource's overnight-charging rebate. He requested a testing mode, branch-by-branch debugging, and a separate credentials file. Six to eight hours of clock time; he can't name a single character of the code — and it works.</p>
+        <div class="box"><h4>Requested Future Sessions</h4><ul><li>A joint John &amp; Peter session on building presentations with AI</li><li>"Cooking-show" live builds — Harry plans a real-time app demo</li><li>Seth's idea: an app that scrapes the group's agenda and launches Zoom</li><li>Seth (drafted): AI scaling &amp; energy costs</li></ul></div>
+        <p><strong>A historical coda.</strong> Harry previewed an email on how Minsky and Papert's influence at MIT sidelined neural networks for years, until Hinton's persistence — and enough computing horsepower, as with AlexNet on Nvidia cards — let deep learning take off.</p>
+      </div>
+    </article>
+  </div>
+
+  <!-- BULLETIN -->
+  <div class="bulletin">
+    <div>
+      <div class="kicker">Takeaways</div>
+      <h3>Five Ideas Worth Keeping</h3>
+      <ul>
+        <li>AI is "bit flipping plus meaning" — the LLM is the Rosetta Stone.</li>
+        <li>Hype cycles repeat even when the technology doesn't.</li>
+        <li>Verify citations at two levels: existence and soundness.</li>
+        <li>Edge AI is a first-order approximation, refined in the cloud.</li>
+        <li>Asking good questions may matter more than writing code.</li>
+      </ul>
+    </div>
+    <div>
+      <div class="kicker">Coming Up</div>
+      <h3>Next Week: October 14</h3>
+      <p>Jack Murkowski on Schrödinger's field equation — his view that inside the hydrogen atom there are no particles, only fields. The group is back in the in-person room; bring friends.</p>
+      <p style="font-style:italic;color:var(--muted)">Whether the cat attends depends on when you look.</p>
+    </div>
+    <div>
+      <div class="kicker">Overheard</div>
+      <h3>Quips of the Day</h3>
+      <ul>
+        <li>“Spelling doesn't count.”</li>
+        <li>“Why do we call this a phone?”</li>
+        <li>A robot surgeon cartoon: “You're absolutely right — your appendix is on the right.”</li>
+        <li>An EV reminder that leaves “enough time to get sober and plug the car in.”</li>
+      </ul>
+    </div>
+  </div>
+
+  <footer>
+    <span>Compiled from the Zoom transcript of the LCTG session, October 7, 2026</span>
+    <span>Heat ratings reflect length and number of participants in each exchange</span>
+  </footer>
+</div>
+</body>
+</html>
