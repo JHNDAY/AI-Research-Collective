@@ -336,6 +336,25 @@
             color: var(--navy);
         }
 
+        header .back-to-nav {
+            background-color: transparent;
+            color: var(--gold);
+            border: 1px solid rgba(212, 165, 116, 0.5);
+            padding: 0.3rem 0.9rem;
+            font-size: 0.8rem;
+            font-weight: 400;
+            margin-top: 0.5rem;
+            opacity: 0.8;
+        }
+
+        header .back-to-nav:hover,
+        header .back-to-nav:focus-visible {
+            background-color: transparent;
+            color: var(--cream);
+            border-color: var(--gold);
+            opacity: 1;
+        }
+
         body.topic-view .toc {
             display: none;
         }
@@ -427,7 +446,7 @@
     <header>
         <h1>Lies, Damned Lies, and Large Language Models</h1>
         <p class="subtitle">AI Concepts and Controversies Through the Lens of Metaphor</p>
-        <p class="timing">⏱️ 44 minutes content + 16 minutes Q&A = 60 minutes total</p>
+        <button class="back-to-nav" id="backToNavBtn">&larr; Contents</button>
     </header>
 
     <div class="container">
@@ -833,8 +852,6 @@
             </div>
 
         </section>
-
-        <button class="back-to-nav" id="backToNavBtn">&larr; Return to Navigation</button>
 
     </div>
 
