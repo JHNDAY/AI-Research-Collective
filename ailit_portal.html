@@ -439,7 +439,7 @@
     /* ── About / Brand section ── */
     .brand-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr); /* two columns, three rows; each row is a pair */
+      grid-template-columns: repeat(3, 1fr);
       gap: 20px;
     }
     .brand-card {
@@ -564,12 +564,16 @@
       <!-- Session Theme: full width -->
       <div class="card" style="grid-column:1/-1;">
         <div class="card-title">
-          <span class="date-badge">Oct 2, 2026</span>
+          <span class="date-badge">Oct 30, 2026</span>
           Session Theme
         </div>
         <div style="padding:4px 0 8px;">
-          <div style="font-family:'Oswald',sans-serif;font-size:1rem;letter-spacing:.05em;color:#E8B84B;font-weight:600;margin:6px 0 2px;">Fall Reboot of AILit Sig</div>
-          <p style="font-size:.9rem;color:rgba(255,255,255,.75);margin:0;font-style:italic;">Focus on Prompting</p>
+          <p style="font-size:1.15rem;font-weight:700;background:var(--gold-bright);color:var(--navy);display:inline-block;padding:4px 12px;border-radius:3px;margin:6px 0 8px;">Continue with Prompting</p>
+          <ul style="font-size:.88rem;color:rgba(255,255,255,.7);margin:4px 0 0;padding-left:18px;line-height:1.8;">
+            <li>Review the basics</li>
+            <li>Review and discuss member contributions</li>
+            <li>Review <em>The Human Measure of AI</em></li>
+          </ul>
         </div>
       </div>
 
@@ -603,6 +607,23 @@
       </div>
     </div>
 
+    <!-- MEMBER CONTRIBUTIONS -->
+    <div style="margin-top:32px;">
+      <div class="section-label">From the Group</div>
+      <div class="section-title">🤝 Member Contributions</div>
+      <div class="card gold-top" style="background:var(--navy);color:#fff;">
+        <div class="card-title" style="color:#fff;">Evolution : Helaine Silverman</div>
+        <div class="links col">
+          <a href="https://jhnday.github.io/AILit/HumanEvolution.html" class="link-btn" target="_blank" rel="noopener">Evolution Organized</a>
+          <p style="font-size:.82rem;color:rgba(255,255,255,.65);margin:2px 0 10px;">A structured overview of the Homo species — who they were, when they lived, and how they relate to us.</p>
+          <a href="https://drive.google.com/file/d/1_Gkeo7f3lnY9ioBaWFsIbwzpuxTW6Drc/view" class="link-btn" target="_blank" rel="noopener">Homo Erectus Defined</a>
+          <p style="font-size:.82rem;color:rgba(255,255,255,.65);margin:2px 0 10px;">A short guide clarifying how Homo erectus and Homo sapiens differ — cousins in the same genus, not parent and child.</p>
+          <a href="https://jhnday.github.io/AILit/HumanEvolConverse.html" class="link-btn" target="_blank" rel="noopener">Claude Conversation</a>
+          <p style="font-size:.82rem;color:rgba(255,255,255,.65);margin:2px 0 10px;">The conversation that created the outputs in this section.</p>
+        </div>
+      </div>
+    </div>
+
     <!-- FOR YOUR CONSIDERATION -->
     <div style="margin-top:32px;">
       <div class="section-label">Curated Resources</div>
@@ -621,8 +642,6 @@
             <a href="https://90f5b62a.streak-link.com/C82CboEiotIaS9IVsAVenb0y/https%3A%2F%2Fjhnday.github.io%2FAI-Research-Collective%2Fai-jobs-oped-visual" class="link-btn" target="_blank" rel="noopener">AI and the Future of Work</a>
             <a href="https://jhnday.github.io/AILit/brandeis-combined" class="link-btn" target="_blank" rel="noopener">📋 The Brandeis Plan</a>
             <a href="https://jhnday.github.io/CrntEvnts/ai-threat.html" class="link-btn" target="_blank" rel="noopener">⚠️ Assessing the AI Threat</a>
-            <a href="https://jhnday.github.io/AI-Research-Collective/WeNeedAI.html" class="link-btn" target="_blank" rel="noopener">Ratnner on Why We Need AI</a>
-            <a href="https://jhnday.github.io/AI-Research-Collective/keynes-bot-visualized.html" class="link-btn" target="_blank" rel="noopener">John Maynard Keynes Belated Comments on AI</a>
           </div>
         </div>
       </div>
@@ -645,35 +664,6 @@
   <!-- ── SESSION SUMMARY ── -->
   <div class="section-divider">
     <hr><div class="lozenge">Session Summary</div><hr>
-  </div>
-
-  <div class="section-block fade-in-2">
-    <div class="section-label">After the Meeting</div>
-    <div class="section-title"><span class="emoji">📝</span>Session Summary Oct 2026 - June 2027</div>
-
-    <!-- New session summaries go here, newest first -->
-    <div class="summary-section">
-      <div class="summary-meta">
-        <span class="summary-meta-item"><strong>Date:</strong> Oct 2, 2026</span>
-        <span class="summary-meta-sep">·</span>
-        <span class="summary-meta-item"><strong>Format:</strong> Zoom</span>
-        <span class="summary-meta-sep">·</span>
-        <span class="summary-meta-item"><strong>Facilitator:</strong> John Day</span>
-      </div>
-
-      <div class="agenda-sublabel" style="margin-top:16px;">Discussion Topics</div>
-      <ul style="padding-left:18px;line-height:1.9;margin-bottom:16px;">
-        <li><strong>Fall Reboot of AILit Sig</strong> — Refocusing the group for the new season, with an emphasis on prompting.</li>
-        <li>Foundations of AI Conversation and the Bifocal View: how AI reads your words as fragments, not meaning</li>
-        <li>Narrating a Prompt: turning your own words into a prompt, with Narrative Examples from SIG members</li>
-      </ul>
-
-      <div class="summary-links">
-        <a href="https://brandeis.zoom.us/rec/share/ruZrTLUoDJJ0SGW3MJyM6Oyk5TvVa0DHWY8b0vmzuR8_IVFnDhd3uu_0Bkqw0_Ec.O0qJ64bEv7MMUve2?startTime=1790960164000" class="sum-link" target="_blank" rel="noopener">🎥 Zoom</a>
-        <a href="https://jhnday.github.io/AI-Research-Collective/ALitOct0226.html" class="sum-link" target="_blank" rel="noopener">📊 Session Visualization</a>
-        <a href="https://jhnday.github.io/AI-Research-Collective/organic-digital-intelligence.html" class="sum-link" target="_blank" rel="noopener">📋 Class Example : Digital &amp; Organic Intelligence</a>
-      </div>
-    </div>
   </div>
 
   <div class="section-block fade-in-2">
@@ -772,24 +762,24 @@
         <p>Understanding how AI works: what it is, how it thinks, its real strengths, and its genuine limitations.</p>
       </div>
       <div class="brand-card">
-        <h3>Balance Organic and Digital Intelligence</h3>
-        <p>AI accelerates the work, but judgment, curiosity, and interpretation remain irreducibly human — the liberal arts as the mind's own intelligence.</p>
-      </div>
-      <div class="brand-card">
         <h3>💻 Digital Fluency</h3>
         <p>Navigating browser interfaces with ease and confidence — the foundation everything else rests on.</p>
-      </div>
-      <div class="brand-card">
-        <h3>Learn by Doing</h3>
-        <p>Every session includes a hands-on element — working with AI tools directly, not just discussing them from a distance.</p>
       </div>
       <div class="brand-card">
         <h3>💬 Conversational Skill</h3>
         <p>Learning to dialogue with AI iteratively — prompting well, following threads, and building deeper understanding.</p>
       </div>
       <div class="brand-card">
+        <h3>Learn by Doing</h3>
+        <p>Every session includes a hands-on element — working with AI tools directly, not just discussing them from a distance.</p>
+      </div>
+      <div class="brand-card">
         <h3>Immersive Reading</h3>
         <p>Close reading with AI as an active interlocutor — from Shakespeare to news analysis — is a core SIG practice.</p>
+      </div>
+      <div class="brand-card">
+        <h3>Balance Organic and Digital Intelligence</h3>
+        <p>AI accelerates the work, but judgment, curiosity, and interpretation remain irreducibly human — the liberal arts as the mind's own intelligence.</p>
       </div>
     </div>
   </div>
