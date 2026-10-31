@@ -82,7 +82,7 @@ section{display:flex;flex-direction:column;gap:16px}
   <section>
     <span class="eyebrow">Step one · The tokenizer</span>
     <h2>A dictionary lookup that ignores the sentence</h2>
-    <p>The tokenizer chops text into pieces and looks each piece up in a fixed vocabulary. It never reads ahead or behind. In both sentences, “animal” comes after a space, so it becomes the same piece, <code style="font-family:var(--mono)">" animal"</code>, with the same ID number.</p>
+    <p>The tokenizer chops text into pieces and looks each piece up in a fixed vocabulary. It works only on the characters and has no sense of meaning. In both sentences, “animal” comes after a space, so it becomes the same piece, <code style="font-family:var(--mono)">" animal"</code>, with the same ID number.</p>
 
     <div class="sent">
       <span class="sent-label">Sentence A</span>
@@ -102,7 +102,7 @@ section{display:flex;flex-direction:column;gap:16px}
   <section>
     <span class="eyebrow">What can change the token</span>
     <h2>Only the word’s own surface</h2>
-    <p>The neighbors never matter. The only things that change the token are the surface details of the word itself.</p>
+    <p>What the neighboring words mean never matters. The only things that change the token are the surface details of the word itself, plus one exception covered in the next section.</p>
 
     <div class="fig" role="img" aria-label="Diagram: five ways of writing animal and the tokens each becomes. Space-animal becomes token 4512. Animal with no space, at the start of a line, becomes a different token. Capital Animal becomes another different token. Animal followed by a comma splits into animal plus a comma token. Animal apostrophe s splits into animal plus apostrophe-s.">
       <svg viewBox="0 0 640 360" xmlns="http://www.w3.org/2000/svg">
@@ -188,6 +188,44 @@ section{display:flex;flex-direction:column;gap:16px}
       <div class="case"><h3>Capitals</h3><p><code>"Animal"</code> and <code>"animal"</code> can be different tokens.</p></div>
       <div class="case"><h3>Attached marks</h3><p>In <code>"animal,"</code> or <code>"animal’s"</code> the punctuation can change how the text is split.</p></div>
     </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">The exception · Multi-word tokens</span>
+    <h2>When a word is welded to its neighbor</h2>
+    <p>A token can be a single letter, part of a word, a whole word, or in some tokenizers a frequent phrase. If a phrase like “ world politics” were stored as one vocabulary entry, the word “world” would disappear into that larger token whenever “politics” comes right after it. This is the example reported for one sentence:</p>
+
+    <div class="fig" role="img" aria-label="Diagram: in durable world order, world is its own token, reported as 197, followed by a separate order token. In rules of world politics, world and politics are reported to merge into a single token, 45902.">
+      <svg viewBox="0 0 640 230" xmlns="http://www.w3.org/2000/svg">
+        <text class="lab" x="20" y="24">“…durable world order…”</text>
+        <rect x="20" y="38" width="110" height="34" rx="6" fill="var(--chip)"/>
+        <text x="75" y="60" text-anchor="middle" style="font-family:var(--mono);font-size:14px;fill:var(--fg)">␣durable</text>
+        <rect x="138" y="38" width="130" height="34" rx="6" fill="var(--accent)"/>
+        <text x="203" y="60" text-anchor="middle" style="font-family:var(--mono);font-size:14px;fill:var(--bg)">␣world #197</text>
+        <rect x="276" y="38" width="100" height="34" rx="6" fill="var(--chip)"/>
+        <text x="326" y="60" text-anchor="middle" style="font-family:var(--mono);font-size:14px;fill:var(--fg)">␣order</text>
+        <text class="m" x="392" y="60">“world” stands alone</text>
+
+        <text class="lab" x="20" y="124">“…rules of world politics”</text>
+        <rect x="20" y="138" width="90" height="34" rx="6" fill="var(--chip)"/>
+        <text x="65" y="160" text-anchor="middle" style="font-family:var(--mono);font-size:14px;fill:var(--fg)">␣rules</text>
+        <rect x="118" y="138" width="60" height="34" rx="6" fill="var(--chip)"/>
+        <text x="148" y="160" text-anchor="middle" style="font-family:var(--mono);font-size:14px;fill:var(--fg)">␣of</text>
+        <rect x="186" y="138" width="230" height="34" rx="6" fill="var(--surface)" stroke="var(--door)" stroke-width="2.5"/>
+        <text x="301" y="160" text-anchor="middle" style="font-family:var(--mono);font-size:14px;fill:var(--fg)">␣world politics #45902</text>
+        <text class="m" x="430" y="160">two words, one token</text>
+
+        <text class="m" x="20" y="208">IDs 197 and 45902 are as reported by another AI and have not been verified.</text>
+      </svg>
+    </div>
+
+    <div class="cases">
+      <div class="case"><h3>What holds up</h3><p>Phrase-level tokens are real in some tokenizers. Common pairs like “New York” can earn one slot, which saves space and speeds up reading and writing.</p></div>
+      <div class="case"><h3>What to doubt</h3><p>Anthropic has not published Claude’s vocabulary, so the claim that Claude merges “ world politics” into token 45902 can’t be confirmed. Most widely documented tokenizers split at spaces first and never merge across words.</p></div>
+      <div class="case"><h3>A small correction</h3><p>The tokenizer doesn’t “read ahead” the way a person does. It applies a fixed list of merge rules to the characters. If a merge for “ world politics” exists, it fires every time those exact characters appear.</p></div>
+    </div>
+
+    <p>Even with phrase tokens, the main lesson stands. The tokenizer responds to <em>exact characters next to the word</em>, never to what the sentence means. In your two “animal” sentences, “ animal roamed” and “ animal came” are not stored phrases, so “animal” gets the same token in both.</p>
   </section>
 
   <section>
