@@ -63,6 +63,18 @@ select { font-family: var(--sans); font-size: 15px; color: var(--ink); backgroun
 .bubble-num { font-family: var(--mono); font-size: 12px; font-weight: 700; fill: var(--navy); text-anchor: middle; pointer-events: none; }
 .tip { position: absolute; pointer-events: none; background: #fff; border: 1px solid var(--navy); box-shadow: 0 3px 10px rgba(0,0,0,.15); padding: 6px 10px; font-size: 14px; white-space: nowrap; z-index: 2; }
 .tip span { color: var(--muted); font-size: 13px; }
+.val { pointer-events: none; }
+.brush .overlay { cursor: crosshair; }
+.brush .selection { fill: var(--gold); fill-opacity: .12; stroke: var(--navy); stroke-dasharray: 3 3; }
+.pop { position: relative; margin-top: 10px; background: #fff; border: 1px solid var(--navy); box-shadow: 0 6px 18px rgba(0,0,0,.18); font-size: 14px; }
+.pop-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 6px 6px 6px 10px; background: var(--navy); color: var(--paper); font-family: var(--mono); font-size: 13px; }
+.pop-head span { opacity: .8; }
+.pop-x { font-size: 18px; line-height: 1; background: none; border: 0; color: var(--paper); cursor: pointer; padding: 0 6px; }
+.pop-body { max-height: 260px; overflow: auto; padding: 4px 10px 8px; }
+.pop table { width: 100%; border-collapse: collapse; }
+.pop th { text-align: left; font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); padding: 5px 6px 4px 0; position: sticky; top: 0; background: #fff; }
+.pop td { padding: 3px 6px 3px 0; border-top: 1px solid var(--rule); vertical-align: top; }
+.pop td:last-child, .pop th:last-child { white-space: nowrap; }
 .loclist { list-style: none; margin: 12px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
 .loclist li { display: inline-flex; }
 .loclist button { font-family: var(--sans); font-size: 14px; background: #fff; border: 1px solid var(--rule); color: var(--ink); padding: 3px 10px; cursor: pointer; }
@@ -113,7 +125,7 @@ footer { margin-top: 28px; border-top: 1px solid var(--rule); padding-top: 10px;
     <div class="head">
       <div>
         <h2>Views over time</h2>
-        <p class="hint">Point at the line to see a count. Weeks run Monday to Sunday.</p>
+        <p class="hint">Click points to list their views (click again to unselect), or drag a box around several. Hold Shift while dragging to add to the selection; click empty space to clear. Weeks run Monday to Sunday.</p>
       </div>
       <div class="seg" id="grain" role="group" aria-label="Group views by">
         <button type="button" data-grain="day" aria-pressed="true">By day</button>
@@ -155,6 +167,7 @@ const STATES = {"type":"FeatureCollection","features":[{"type":"Feature","proper
 
 const S = {viz: '', loc: '', window: 'all', exclude: [], grain: 'day', mapView: 'us'};
 let VIEWS = [];
+const SEL = new Set();
 const n0 = d3.format(',');
 const fmt = d3.utcFormat('%Y-%m-%d');
 const where = new Map(COORDS.map((c) => [c.location, c]));
@@ -322,24 +335,79 @@ function renderTrend() {
     .call((g) => g.selectAll('.tick line').remove());
   svg.append('path').datum(data).attr('fill', 'none').style('stroke', 'var(--navy)').attr('stroke-width', 2.2)
     .attr('d', d3.line((r) => x(r.date), (r) => y(r.views)));
+  const key = (r) => fmt(r.date);
+  if (window.vtSelGrain !== S.grain) { SEL.clear(); window.vtSelGrain = S.grain; }
+  const toggle = (r) => { if (SEL.has(key(r))) SEL.delete(key(r)); else SEL.add(key(r)); renderTrend(); };
+  const baseR = (o) => (SEL.has(key(o)) ? 7 : 4);
+  const brushG = svg.append('g').attr('class', 'brush');
   const dots = svg.append('g').selectAll('circle').data(data).join('circle')
-    .attr('cx', (r) => x(r.date)).attr('cy', (r) => y(r.views)).attr('r', 4)
-    .style('fill', (r) => (r.partial ? 'var(--paper)' : 'var(--gold)')).style('stroke', 'var(--navy)').attr('stroke-width', 1.4);
+    .attr('cx', (r) => x(r.date)).attr('cy', (r) => y(r.views)).attr('r', baseR)
+    .style('fill', (r) => (SEL.size && !SEL.has(key(r)) ? 'var(--rule)' : (r.partial ? 'var(--paper)' : 'var(--gold)')))
+    .style('stroke', 'var(--navy)').attr('stroke-width', (r) => (SEL.has(key(r)) ? 2.5 : 1.4))
+    .style('pointer-events', 'none');
   if ((w - ml - mr) / Math.max(1, data.length - 1) >= 20) {
     svg.append('g').selectAll('text').data(data.filter((r) => r.views > 0)).join('text').attr('class', 'val')
       .attr('x', (r) => x(r.date)).attr('y', (r) => y(r.views) - 9).attr('text-anchor', 'middle').text((r) => r.views);
   }
   const tip = tipFor(el), bis = d3.bisector((r) => r.date).center;
-  svg.append('rect').attr('x', ml).attr('y', 0).attr('width', w - ml - mr).attr('height', h - mb).attr('fill', 'transparent')
-    .on('pointermove', (ev) => {
-      const r = data[bis(data, x.invert(d3.pointer(ev)[0]))];
-      dots.attr('r', (o) => (o === r ? 7 : 4));
-      const when = weekly
-        ? `Week of ${d3.utcFormat('%b %-d')(r.date)}–${d3.utcFormat('%b %-d')(d3.utcDay.offset(r.date, 6))}${r.partial ? ' (partial week)' : ''}`
-        : d3.utcFormat('%a, %b %-d')(r.date);
-      tip.show(`${r.views} view${r.views === 1 ? '' : 's'}`, when, x(r.date), y(r.views));
-    })
-    .on('pointerleave', () => { dots.attr('r', 4); tip.hide(); });
+  const showTip = (r) => {
+    dots.attr('r', (o) => (o === r ? 7.5 : baseR(o)));
+    const when = weekly
+      ? `Week of ${d3.utcFormat('%b %-d')(r.date)}–${d3.utcFormat('%b %-d')(d3.utcDay.offset(r.date, 6))}${r.partial ? ' (partial week)' : ''}`
+      : d3.utcFormat('%a, %b %-d')(r.date);
+    tip.show(`${r.views} view${r.views === 1 ? '' : 's'}`, when, x(r.date), y(r.views));
+  };
+  const hideTip = () => { dots.attr('r', baseR); tip.hide(); };
+  const brush = d3.brush().keyModifiers(false).extent([[ml, 0], [w - mr, h - mb]])
+    .on('start', hideTip)
+    .on('end', (ev) => {
+      if (!ev.sourceEvent) return;
+      const se = ev.sourceEvent, add = !!(se.shiftKey || se.metaKey || se.ctrlKey);
+      if (!ev.selection) { if (!add && SEL.size) { SEL.clear(); setTimeout(renderTrend, 0); } return; }
+      const [[x0, y0], [x1, y1]] = ev.selection;
+      if (!add) SEL.clear();
+      data.forEach((r) => { const px = x(r.date), py = y(r.views); if (r.views > 0 && px >= x0 - 4 && px <= x1 + 4 && py >= y0 - 4 && py <= y1 + 4) SEL.add(key(r)); });
+      setTimeout(renderTrend, 0);
+    });
+  brushG.call(brush);
+  brushG.on('pointermove.tip', (ev) => { if (ev.buttons) return; showTip(data[bis(data, x.invert(d3.pointer(ev, svg.node())[0]))]); })
+    .on('pointerleave.tip', hideTip);
+  svg.append('g').selectAll('circle').data(data.filter((r) => r.views > 0)).join('circle')
+    .attr('class', 'hit').attr('cx', (r) => x(r.date)).attr('cy', (r) => y(r.views)).attr('r', 11)
+    .attr('fill', 'transparent').style('cursor', 'pointer').attr('tabindex', 0).attr('role', 'button')
+    .attr('aria-pressed', (r) => String(SEL.has(key(r))))
+    .attr('aria-label', (r) => `${r.views} views, ${d3.utcFormat(weekly ? 'week of %b %-d' : '%b %-d')(r.date)}`)
+    .on('pointermove', (ev, r) => showTip(r)).on('pointerleave', hideTip)
+    .on('click', (ev, r) => toggle(r))
+    .on('keydown', (ev, r) => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); toggle(r); } });
+  if (SEL.size) {
+    const weekOf = (dt) => fmt(d3.utcMonday.floor(new Date(dt + 'T00:00:00Z')));
+    const rows = filtered().filter((r) => r.date && SEL.has(weekly ? weekOf(r.date) : r.date))
+      .sort((a, b) => d3.ascending(a.date, b.date) || d3.ascending(a.viz, b.viz) || d3.ascending(labelOf(a.location), labelOf(b.location)));
+    const pop = document.createElement('div'); pop.className = 'pop';
+    pop.setAttribute('role', 'dialog'); pop.setAttribute('aria-label', 'Views in the selected points');
+    const head = document.createElement('div'); head.className = 'pop-head';
+    const title = document.createElement('div');
+    const t = document.createElement('b'); t.textContent = `${rows.length} view${rows.length === 1 ? '' : 's'}`;
+    const sub = document.createElement('span'); sub.textContent = ` · ${SEL.size} ${weekly ? 'week' : 'day'}${SEL.size === 1 ? '' : 's'} selected`;
+    title.append(t, sub);
+    const close = document.createElement('button'); close.type = 'button'; close.className = 'pop-x'; close.textContent = '×';
+    close.setAttribute('aria-label', 'Clear selection');
+    close.onclick = () => { SEL.clear(); renderTrend(); };
+    head.append(title, close);
+    const body = document.createElement('div'); body.className = 'pop-body';
+    if (rows.length) {
+      const table = document.createElement('table');
+      const hr = table.createTHead().insertRow();
+      ['Page', 'Location', 'Date'].forEach((h2) => { const th = document.createElement('th'); th.textContent = h2; hr.append(th); });
+      const tb = table.createTBody();
+      rows.forEach((r) => { const row = tb.insertRow(); [r.viz, labelOf(r.location), d3.utcFormat('%b %-d, %Y')(new Date(r.date + 'T00:00:00Z'))].forEach((v) => { row.insertCell().textContent = v; }); });
+      body.append(table);
+    } else body.textContent = 'No views in the selection with these filters.';
+    pop.append(head, body);
+    el.appendChild(pop);
+  }
+  document.onkeydown = (ev) => { if (ev.key === 'Escape' && SEL.size) { SEL.clear(); renderTrend(); } };
 }
 
 /* ---------- bars ---------- */
