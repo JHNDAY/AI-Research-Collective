@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Human Measure of AI — Session Summary, November 20, 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#14254a;
+    --navy-soft:#2c3e66;
+    --gold:#b8892b;
+    --gold-soft:#e6d3a3;
+    --cream:#f7f1e3;
+    --paper:#fbf7ec;
+    --ink:#1d1d1d;
+    --rule:#14254a;
+  }
+  *{box-sizing:border-box}
+  html{font-size:18px}
+  body{
+    margin:0;background:#e9e1cc;color:var(--ink);
+    font-family:"Libre Baskerville",Georgia,serif;line-height:1.6;
+  }
+  .sheet{
+    max-width:1280px;margin:24px auto;background:var(--paper);
+    padding:28px 40px 48px;box-shadow:0 2px 18px rgba(20,37,74,.18);
+    border:1px solid #d8ccab;
+  }
+  /* ---------- Masthead ---------- */
+  .ears{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;
+    font-family:"Courier Prime",monospace;font-size:.72rem;color:var(--navy-soft);text-transform:uppercase;letter-spacing:.06em}
+  .ear{border:1px solid var(--navy);padding:6px 10px;max-width:230px;line-height:1.35}
+  .nameplate{text-align:center;margin:6px 0 4px}
+  .nameplate h1{
+    font-family:"Playfair Display",serif;font-weight:900;color:var(--navy);
+    font-size:clamp(2.4rem,6.2vw,4.8rem);line-height:1;margin:0;letter-spacing:-.01em
+  }
+  .nameplate .motto{font-family:"Playfair Display",serif;font-style:italic;color:var(--gold);font-size:1.05rem;margin-top:6px}
+  .dateline{
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+    border-top:3px double var(--rule);border-bottom:3px double var(--rule);
+    padding:6px 2px;margin:12px 0 22px;
+    font-family:"Courier Prime",monospace;font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;color:var(--navy)
+  }
+  /* ---------- Headlines ---------- */
+  .lead-head{text-align:center;margin-bottom:6px}
+  .kicker{font-family:"Courier Prime",monospace;text-transform:uppercase;letter-spacing:.14em;font-size:.75rem;color:var(--gold);font-weight:700}
+  .lead-head h2{font-family:"Playfair Display",serif;font-weight:900;font-size:clamp(1.8rem,4vw,3rem);line-height:1.08;color:var(--navy);margin:6px 0}
+  .deck{font-family:"Playfair Display",serif;font-style:italic;font-size:1.2rem;color:var(--navy-soft);max-width:900px;margin:0 auto 14px;text-align:center}
+  .byline{text-align:center;font-family:"Courier Prime",monospace;font-size:.75rem;text-transform:uppercase;letter-spacing:.1em;color:#555;margin-bottom:18px}
+  h3{font-family:"Playfair Display",serif;font-weight:700;color:var(--navy);font-size:1.35rem;line-height:1.2;margin:0 0 6px}
+  h4{font-family:"Playfair Display",serif;font-weight:700;color:var(--navy);font-size:1.05rem;margin:14px 0 4px}
+  .section-banner{
+    display:flex;align-items:center;gap:14px;margin:30px 0 16px;
+  }
+  .section-banner::before,.section-banner::after{content:"";flex:1;border-top:2px solid var(--navy)}
+  .section-banner span{
+    font-family:"Playfair Display",serif;font-weight:900;font-size:1.55rem;color:var(--navy);
+    text-transform:uppercase;letter-spacing:.08em;white-space:nowrap
+  }
+  /* ---------- Columns ---------- */
+  .cols-3{column-count:3;column-gap:34px;column-rule:1px solid #c9bb93}
+  .cols-2{column-count:2;column-gap:34px;column-rule:1px solid #c9bb93}
+  .cols-3 p,.cols-2 p{margin:0 0 .8em;text-align:justify;hyphens:auto}
+  .avoid{break-inside:avoid}
+  .dropcap::first-letter{
+    float:left;font-family:"Playfair Display",serif;font-weight:900;color:var(--navy);
+    font-size:3.6rem;line-height:.85;padding:6px 8px 0 0
+  }
+  .pull{
+    break-inside:avoid;border-top:3px solid var(--gold);border-bottom:3px solid var(--gold);
+    margin:12px 0 16px;padding:10px 4px;text-align:center;
+    font-family:"Playfair Display",serif;font-style:italic;font-size:1.25rem;line-height:1.35;color:var(--navy)
+  }
+  .pull cite{display:block;font-style:normal;font-family:"Courier Prime",monospace;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:#666;margin-top:6px}
+  /* ---------- Four-part grid ---------- */
+  .parts{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:2px solid var(--navy);border-bottom:2px solid var(--navy)}
+  .part{padding:14px 16px;border-right:1px solid #c9bb93}
+  .part:last-child{border-right:none}
+  .part .num{font-family:"Playfair Display",serif;font-weight:900;font-size:2.2rem;color:var(--gold);line-height:1}
+  .part h3{font-size:1.15rem}
+  .part ul{margin:6px 0 0;padding-left:1.1em;font-size:.88rem}
+  .part li{margin-bottom:5px}
+  .part li b{color:var(--navy)}
+  /* ---------- Q&A ---------- */
+  .qa{break-inside:avoid;margin:0 0 16px;padding-bottom:12px;border-bottom:1px dotted #a99c78}
+  .qa .who{font-family:"Courier Prime",monospace;font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--gold);font-weight:700}
+  .qa .time{color:#777;font-weight:400}
+  .qa .q{font-family:"Playfair Display",serif;font-weight:700;color:var(--navy);font-size:1.05rem;line-height:1.3;margin:3px 0 5px}
+  .qa .a{font-size:.9rem;margin:0;text-align:left}
+  .qa .a::before{content:"Response — ";font-family:"Courier Prime",monospace;font-size:.72rem;text-transform:uppercase;color:var(--navy-soft);font-weight:700}
+  /* ---------- Boxes ---------- */
+  .box{break-inside:avoid;background:var(--cream);border:1px solid var(--navy);padding:14px 16px;margin:0 0 16px}
+  .box.navy{background:var(--navy);color:var(--cream);border-color:var(--navy)}
+  .box.navy h3,.box.navy h4{color:var(--gold-soft)}
+  .box ul{margin:6px 0 0;padding-left:1.1em;font-size:.9rem}
+  .box li{margin-bottom:6px}
+  .grid-2{display:grid;grid-template-columns:1.6fr 1fr;gap:30px}
+  .voice{break-inside:avoid;margin-bottom:14px}
+  .voice .name{font-family:"Playfair Display",serif;font-weight:900;color:var(--navy);font-size:1.05rem}
+  .voice .stance{font-family:"Courier Prime",monospace;font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:var(--gold);margin-left:6px}
+  .voice p{font-size:.9rem;margin:3px 0 0}
+  .note{font-family:"Courier Prime",monospace;font-size:.72rem;color:#666;line-height:1.45}
+  footer{margin-top:30px;border-top:3px double var(--rule);padding-top:10px;
+    font-family:"Courier Prime",monospace;font-size:.72rem;color:#555;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+  @media (max-width:1000px){
+    .cols-3{column-count:2}
+    .parts{grid-template-columns:repeat(2,1fr)}
+    .part:nth-child(2){border-right:none}
+    .part:nth-child(-n+2){border-bottom:1px solid #c9bb93}
+    .grid-2{grid-template-columns:1fr}
+  }
+  @media (max-width:680px){
+    html{font-size:17px}
+    .sheet{padding:18px 16px 30px;margin:0}
+    .cols-3,.cols-2{column-count:1}
+    .parts{grid-template-columns:1fr}
+    .part{border-right:none;border-bottom:1px solid #c9bb93}
+    .ears{flex-direction:column}
+    .ear{max-width:none}
+  }
+  @media print{
+    body{background:#fff}
+    .sheet{box-shadow:none;border:none;margin:0;max-width:none}
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <!-- MASTHEAD -->
+  <div class="ears">
+    <div class="ear">First Audience Edition<br>Preview of a Spring Course</div>
+    <div class="ear" style="text-align:right">Via Zoom · 6 Attendees<br>Approx. 97 Minutes of Talk &amp; Discussion</div>
+  </div>
+  <div class="nameplate">
+    <h1>The Human Measure</h1>
+    <div class="motto">“AI only exists in conversation with humans.”</div>
+  </div>
+  <div class="dateline">
+    <span>Friday, November 20, 2026</span>
+    <span>BOLLI · AI Literacy</span>
+    <span>Session Summary</span>
+  </div>
+
+  <!-- LEAD -->
+  <div class="lead-head">
+    <div class="kicker">Lead Story · The Basics of AI Explained in Metaphors</div>
+    <h2>Metaphors Meet Their First Audience — and Push Back</h2>
+  </div>
+  <p class="deck">John Day previews his talk on what AI is and how it works, built on four quadrants and a gallery of AI-made images from Leonardo to Disney. The audience answers with questions on originality, emotion, minority views and the off switch.</p>
+  <div class="byline">Presenter: John Day &nbsp;·&nbsp; Attendees: Henry · Jenny Fariborz · Kenneth Jacobs · Klavdia · John &amp; Cheryl (shared connection)</div>
+
+  <div class="cols-3">
+    <p class="dropcap">John Day opened by telling the group they were his first audience for this talk and asking for their help. He would explain AI through metaphors and everyday images instead of technical terms and diagrams, and he wanted to hear both which images clicked and which fell flat. The talk is a preview of a course he has already submitted for next spring. That course will go deeper into each concept, look at live online examples and, most importantly, put the tools in participants' hands, because “the best way to understand AI is to use it.”</p>
+    <p>The framework rests on Leonardo da Vinci's <em>Vitruvian Man</em>, recast as the “Vitruvian being.” His outstretched arms touch both a square (the earthly world) and a circle (the cosmos). In John's reading, the human stands for organic, physical knowledge, and the circle can stand for AI: not a divine source but an all-encompassing compendium of knowledge extracted into large language models. Using AI well, he argued, is a modern attempt at <em>squaring the circle</em>, reconciling what we know through our bodies and lives with what digital intelligence offers.</p>
+    <div class="pull">“Machine capability is just dead weight without the human to guide it.”<cite>— John Day, Part 1</cite></div>
+    <p>Four parts followed: what humans do with AI, what AI does to humans, AI's relation to the physical world, and the human source material every model is built on. A recurring theme ran through all four, a distinction between <strong>organic intelligence</strong> (in our heads) and <strong>digital intelligence</strong> (on chips). John held that only the first is capable of paradigm-breaking intuitive leaps, such as Einstein on time or Planck on the quantum. That claim drew the liveliest debate of the session.</p>
+    <p>The talk closed with a synthesis. In Part 1 you command; in Part 2 you are influenced by what AI reflects back; in Part 3 AI represents the world but cannot inhabit it, so humans remain the only agents of change; in Part 4 AI retells centuries of human stories with new speed and versatility. “Understand that,” John said, “and you understand both its powers and its limits. That clarity is power.”</p>
+    <p>He also put up a slate of open questions for future discussion: whether AI understands or only mimics, how to write better prompts, why AI gives wrong answers so confidently (“the confident illusion”), how its thinking differs from ours, who holds the balance of agency, and how worried we should be. His own answer to the last: the main danger is not AI agents banding together to take over the world but misuse of AI by bad actors.</p>
+  </div>
+
+  <!-- TOPICS -->
+  <div class="section-banner"><span>Topics Covered</span></div>
+
+  <div class="parts">
+    <div class="part">
+      <div class="num">I</div>
+      <h3>What Humans Do with AI</h3>
+      <div class="note">Shaping the boundaries: commanding the model to see, think, enact</div>
+      <ul>
+        <li><b>The Empty Chair.</b> A model full of weights sits dormant until a person prompts it; the human stays in command.</li>
+        <li><b>Servant Spirits.</b> Shakespeare's Puck (Oberon) and Ariel (Prospero) stand for AI's speed in carrying out a master's commands; Puck's repeated circuits of the Earth are successive, ever-tighter passes.</li>
+        <li><b>From the Universe to a Grain of Sand.</b> “Word space” is a vortex of connections. Each layer of prompt context (simple → specific → audience, analogy, length, format) narrows the search. John cited a reduction by a factor of about 15 million and tied it to RAG.</li>
+        <li><b>The Exoskeleton.</b> AI is a limb you wear, not a replacement. It does nothing until you move first.</li>
+        <li><b>The Rosetta Stone.</b> Like Champollion checking line by line, the user must assess every output.</li>
+        <li><b>Proust's Madeleine.</b> AI surfaces “lost” memories and half-formed ideas, and also brings in new cross-domain connections. Three dimensions: <em>recovery, generation, augmentation</em>.</li>
+      </ul>
+    </div>
+    <div class="part">
+      <div class="num">II</div>
+      <h3>What AI Does to Humans</h3>
+      <div class="note">The reflecting mirror</div>
+      <ul>
+        <li><b>The Two Sides.</b> Lived, embodied meaning on the left; decontextualized data and statistical modeling on the right.</li>
+        <li><b>The Mirror.</b> AI has no autonomous self. “You guide it, but it absorbs you.” It hands back a rearranged reflection as if it were original.</li>
+        <li><b>The Parasite.</b> If AI-generated text feeds future training data, quality degrades toward a mathematical limit. Constant human context is needed.</li>
+        <li><b>The High-Tech Toaster.</b> A deliberate put-in-its-place image: a mechanical contrivance with astounding capabilities when used correctly.</li>
+        <li><b>The Weather Vane.</b> Your prompt is the wind. AI has no compass of its own and can simply confirm what you already believe. (A nod to Dylan.)</li>
+        <li><b>The Dummy.</b> Without a human driving the prompt, the AI is inert.</li>
+      </ul>
+    </div>
+    <div class="part">
+      <div class="num">III</div>
+      <h3>AI &amp; the Physical World</h3>
+      <div class="note">Representation versus reality</div>
+      <ul>
+        <li><b>Embodiment vs. Simulation.</b> Humans evolved through sensation and adaptation; AI comes from cycles of software and hardware development. AI can <em>represent</em> the world in infinite detail but cannot <em>inhabit</em> it. Turing's pragmatic test was acknowledged.</li>
+        <li><b>The Astronomer.</b> “Knowing about” vs. “knowing by doing.”</li>
+        <li><b>The Historian.</b> History's purpose (not repeating mistakes, building a more humane society) depends on experience. Feeding AI output back in as historical input is risky.</li>
+        <li><b>Radio Without a Body.</b> Fluency about experiences AI never had. John's examples: the 1975 World Series and Carlton Fisk's home run, which he saw in person, and the moon landing.</li>
+        <li><b>“This Just In.”</b> A reporter's handwritten account handed to the broadcaster stands for RAG. The result is a <em>grafted answer</em>, part human root and part AI.</li>
+        <li><b>Photocopy of a Photocopy.</b> The knowledge tree fed by both human and generated sources.</li>
+      </ul>
+    </div>
+    <div class="part">
+      <div class="num">IV</div>
+      <h3>The Source Material</h3>
+      <div class="note">The human stories we already knew</div>
+      <ul>
+        <li><b>The Literary Canon.</b> No AI without Gibbon, Ovid, Plato and centuries of human narrative. The output is derivative: a reconstructed past.</li>
+        <li><b>A Second Gutenberg Moment.</b> John read Faulkner's <em>As I Lay Dying</em> with AI's help and says he would not have persevered without it.</li>
+        <li><b>The Creation.</b> The Sistine Chapel reoriented: from human to artificial. Human intelligence gives AI its meaning.</li>
+        <li><b>Pygmalion.</b> The “Pygmalion trap” of projecting inner life onto what we made.</li>
+        <li><b>Frankenstein.</b> Responsibility begins with the making; it doesn't end there.</li>
+        <li><b>The Library of Babel.</b> The card catalog and the term paper, done in the blink of an eye.</li>
+        <li><b>The Wizard of Oz.</b> Nothing intelligent behind the curtain, but real opacity: companies don't disclose their training data, so missing voices go unseen.</li>
+        <li><b>The Sorcerer's Apprentice.</b> Unconstrained agents that keep going. (John referenced a recent Hugging Face controversy.)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- QUESTIONS -->
+  <div class="section-banner"><span>Questions from the Floor</span></div>
+
+  <div class="cols-3">
+    <div class="qa">
+      <div class="who">John C. <span class="time">· 22:11 · Overview</span></div>
+      <div class="q">When AI reflects us back, how much of it is really us, and how much is us plus the source material?</div>
+      <p class="a">Both. But prompts can bias AI into telling you what you already believe. AI has no sense of what it is saying; it works by statistical inference and always sounds convincing, which is not the same as being true or pointing to the right next step.</p>
+    </div>
+    <div class="qa">
+      <div class="who">Kenneth Jacobs <span class="time">· 26:36 · Vitruvian Being</span></div>
+      <div class="q">Given AI's recent advances in mathematics, won't it eventually create math humans can't understand and surpass us?</div>
+      <p class="a">AI will make great gains in established fields where data is abundant; AlphaFold's 2024 Nobel is an example. But John is skeptical it can make paradigm-shifting intuitive leaps like Einstein's relativity or Planck's quantum hypothesis. That is the line between organic and digital intelligence.</p>
+    </div>
+    <div class="qa">
+      <div class="who">Kenneth Jacobs <span class="time">· 38:42 · Grain of Sand</span></div>
+      <div class="q">A nitpick: a more detailed prompt gives a more <em>precise</em>, reproducible answer, not necessarily a more <em>reliable</em> one. You still don't know if it's true.</div>
+      <p class="a">Agreed fully. A convincing answer isn't necessarily a correct one; the user must be the judge.</p>
+    </div>
+    <div class="qa">
+      <div class="who">Henry <span class="time">· 52:47 · The Mirror</span></div>
+      <div class="q">Isn't connecting two disparate domains, say politics and novels, a form of originality? AI seems well suited to it, maybe better than us.</div>
+      <p class="a">Agreed that pattern recognition is one of AI's greatest strengths and far exceeds human capability in many areas, such as finding software bugs. But those connections are drawn from an existing corpus. Truly unprecedented ideas remain, in John's view, beyond its reach.</p>
+    </div>
+    <div class="qa">
+      <div class="who">Henry <span class="time">· 57:38 · Originality, cont'd</span></div>
+      <div class="q">The Go-playing AI learned from the rules through reinforcement learning, not past games, and found moves experts had never seen. Isn't that original?</div>
+      <p class="a">A valid point. John proposed splitting originality into two kinds: <em>digital originality</em> of that sort and <em>human originality</em>, without which AI would not exist. He invited Henry to continue the debate at the monthly AILit SIG.</p>
+    </div>
+    <div class="qa">
+      <div class="who">Kenneth Jacobs <span class="time">· 62:22 · Weather Vane</span></div>
+      <div class="q">I write open-ended prompts and often ask AI to critique my prompt first. In what circumstances would I still be steering it toward an answer?</div>
+      <p class="a">You may not be aware of it, which is why disciplined review matters. John described the prompt-assessment loop he developed for the AILit SIG (write a prompt, have AI assess it, refine) and noted that Ken's own self-discipline is organic intelligence at work. AI is fluent but unaware of your biases.</p>
+    </div>
+    <div class="qa">
+      <div class="who">John C. <span class="time">· 69:18 · Physical World</span></div>
+      <div class="q">What's missing is the emotion attached to physical experience. How do we account for that, especially when psychiatry is exploring AI that claims to detect emotion?</div>
+      <p class="a">Not obviously a tractable problem. AI can find patterns in what clinicians have written about patient responses, but the way physical experience fundamentally shapes how we see the world simply isn't part of how AI operates.</p>
+    </div>
+    <div class="qa">
+      <div class="who">Cheryl <span class="time">· 78:45 · Servant Spirits</span></div>
+      <div class="q">I worry about the servant rising up against the master.</div>
+      <p class="a">John said he isn't particularly concerned and deferred to the Sorcerer's Apprentice slide: unconstrained agents doing exactly what they were told is a safeguarding problem. Misuse by bad actors is the bigger worry.</p>
+    </div>
+    <div class="qa">
+      <div class="who">Kenneth Jacobs <span class="time">· 81:55 · Source Material</span></div>
+      <div class="q">If I ask about the Gettysburg Address in its historical context, I assume AI isn't making things up. Why would mixing AI language with human sources make the human part less reliable?</div>
+      <p class="a">It potentially could, but not necessarily. Pointed at a defined text, AI is anchored and does an excellent job of summarizing or comparing (for example, Lincoln's speeches). Just keep in mind what AI is and watch for an incomplete picture. Ken added that it still gives him a fuller picture than he could build alone.</p>
+    </div>
+    <div class="qa">
+      <div class="who">John C. <span class="time">· 87:09 · The Creation</span></div>
+      <div class="q">Valuable insights often come from minority reports. How does AI discern which minority views are truly important?</div>
+      <p class="a">That's a value judgment, and AI doesn't do it well beyond counting citations. Citing the Milgram experiment, John argued that a dissenting voice helping people out of bad decisions is intrinsically human. “That's why we're not obsolete.”</p>
+    </div>
+    <div class="qa">
+      <div class="who">John C. <span class="time">· 97:15 · Balance of Agency</span></div>
+      <div class="q">If there's no way of turning off the machine, where is the balance of agency?</div>
+      <p class="a">A practical problem that can be addressed: design systems with a kill switch. It costs more, but it should be a condition for AI labs to pursue their research.</p>
+    </div>
+    <div class="qa">
+      <div class="who">Henry <span class="time">· 99:28 · Closing</span></div>
+      <div class="q">Did you have AI make all these illustrations?</div>
+      <p class="a">Yes, in close collaboration. John used Claude for prompting and for defining each slide's concept, and Gemini for all the images, because Claude doesn't do images well.</p>
+    </div>
+  </div>
+
+  <!-- VOICES + NOTES -->
+  <div class="section-banner"><span>Closing Round</span></div>
+
+  <div class="grid-2">
+    <div>
+      <h3 style="margin-bottom:12px">What the Audience Said</h3>
+      <div class="cols-2">
+        <div class="voice"><span class="name">Henry</span><span class="stance">Engaged · wants more depth</span>
+          <p>Found it very helpful but “a lot for one presentation.” The Sorcerer's Apprentice alone could fill a class. He liked “the confident illusion”: AI always has a poker face, with none of the cues we use to tell when a human is deceiving us. He was impressed by the slides' originality and urged a clear lens on AI and the workforce, citing MIT labor-economics studies.</p></div>
+        <div class="voice"><span class="name">Jenny Fariborz</span><span class="stance">Fundamental disagreement</span>
+          <p>Drawing on 42 years as a software engineer, she argued for serious regulation. AI is already in the physical world (weapons, missiles, surgical robots), we don't understand how this most complex of systems works, and a kill switch is not easy to build. She saw the talk as reassuring people rather than urging action, and said she disagrees “with the tone rather than the content.” She also objected that we keep giving the interesting work (art, music, poetry) to machines and the grunt work to people.</p></div>
+        <div class="voice"><span class="name">Kenneth Jacobs</span><span class="stance">Enjoyed it · concerned about the future</span>
+          <p>Wowed by the cartoons. A second nitpick: AI doesn't lack an <em>opinion</em> so much as a <em>prejudice</em>; it might weigh <em>Mein Kampf</em> the same as the Bible. He proposed an editorial cartoon, “The Final Turing Test”: St. Peter at the pearly gates, secretly wired to a computer, asked whether there is any hope for humanity.</p></div>
+        <div class="voice"><span class="name">Klavdia</span><span class="stance">Apprehensive</span>
+          <p>Agreed with Cheryl's worry about the servant rising against the master: “I think it's a huge unknown.”</p></div>
+        <div class="voice"><span class="name">John C.</span><span class="stance">Suspicious but learning</span>
+          <p>Recalled the ending of <em>The President's Analyst</em>. Suspicious of what AI leaves out and can't do, he takes these courses because “we can't change or protect ourselves unless we understand what is taking place,” and to stay in the game rather than feel overwhelmed.</p></div>
+      </div>
+      <div class="box" style="margin-top:6px">
+        <h4 style="margin-top:0">John Day's Responses &amp; Close</h4>
+        <ul>
+          <li>To Jenny: He likened today's AI concerns to the 1960s–70s decision to keep ICBM launches under human judgment rather than computers.</li>
+          <li>His emphasis reflects BOLLI's interests (literature, history, psychology), not AI in the broad universe.</li>
+          <li>Job displacement is real and “some of it's gonna be pretty brutal,” but technology has always unseated occupations. Whether creative destruction makes up for it is an open question.</li>
+          <li>He promised a synthesis and the Zoom recording link to attendees.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div>
+      <div class="box navy">
+        <h3>Notes for the Next Version</h3>
+        <div class="note" style="color:var(--gold-soft);margin-bottom:8px">Calibration feedback from this first audience</div>
+        <ul>
+          <li><b>Word choice:</b> “reliable” → <em>precise / reproducible</em> (Ken).</li>
+          <li><b>Word choice:</b> “AI has no opinion” → consider <em>no prejudice</em> or <em>no fixed view</em>, and reconcile it with the bias discussion later (Ken, Jenny).</li>
+          <li><b>The 15-million-to-1 table:</b> restate it as the energy each prompt level uses, in kilowatt-hours, for more punch (Jenny).</li>
+          <li><b>Internal consistency:</b> “you're in control” early vs. the Sorcerer's Apprentice late; “no bias” early vs. bias at the end (Jenny).</li>
+          <li><b>Tone:</b> some hear reassurance where they want urgency about regulation and risk (Jenny, Klavdia, Ken).</li>
+          <li><b>Scope:</b> too much for one sitting; well suited to a multi-session course (Henry).</li>
+          <li><b>Add a lens on:</b> AI and the workforce (Henry); digital vs. human originality (Henry's Go example); emotion and embodiment (John C.).</li>
+          <li><b>Landed well:</b> the illustrations, the Proust madeleine, the confident illusion, the Sorcerer's Apprentice.</li>
+        </ul>
+      </div>
+      <div class="box">
+        <h4 style="margin-top:0">Before the Bell</h4>
+        <p style="font-size:.88rem;margin:0">In pre-talk conversation, John C. raised the data-center debate and described a Utah company that sat down with city leaders first and went on to fund schools and the hospital, with a goal of returning more water to the environment within ten years than it uses. John Day agreed that residents' needs should come first and called that partnership model the right approach.</p>
+      </div>
+      <div class="box">
+        <h4 style="margin-top:0">Overheard at Sign-Off</h4>
+        <p style="font-size:.88rem;margin:0">John C. suggested inviting the Pope to a future meeting, given his interest in AI and personhood. “Just call him Joe.” Henry added: mention the Chicago White Sox and he'll come.</p>
+      </div>
+      <p class="note">Editor's note: the shared Zoom connection labeled “JOHNCOWL” was used by both John and Cheryl. Questions are attributed by context; Cheryl is named where the presenter addressed her directly. Timestamps are approximate.</p>
+    </div>
+  </div>
+
+  <footer>
+    <span>The Human Measure · Session Summary · November 20, 2026</span>
+    <span>BOLLI AI Literacy · Prepared from the Zoom transcript</span>
+  </footer>
+</div>
+<!-- VIZ-TRACKING:START -->
+<script>
+(function () {
+  var ENDPOINT = 'https://script.google.com/macros/s/AKfycbyCgndleqbDkjn1CWYFXflq0fegQRHkHE1S7gmlvnny8lA_rGsWZEqtz4shNoJ1ZanI6A/exec';
+  if (location.protocol === 'file:') return;
+  function send(where) {
+    try {
+      fetch(ENDPOINT, {
+        method: 'POST', mode: 'no-cors', keepalive: true,
+        body: new URLSearchParams({ viz: document.title || location.pathname, location: where })
+      }).catch(function () {});
+    } catch (e) {}
+  }
+  function fallback() {
+    try { return Intl.DateTimeFormat().resolvedOptions().timeZone || 'Unknown'; } catch (e) { return 'Unknown'; }
+  }
+  fetch('https://ipapi.co/json/')
+    .then(function (r) { return r.json(); })
+    .then(function (d) {
+      var place = [d.city, d.region, d.country_name].filter(Boolean).join(', ');
+      send(place || fallback());
+    })
+    .catch(function () { send(fallback()); });
+})();
+</script>
+<!-- VIZ-TRACKING:END -->
+</body>
+</html>
