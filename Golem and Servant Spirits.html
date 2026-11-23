@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Golem and Servant Spirits</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Courier+Prime:wght@400;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>
+/* VOICE  everyday learning: a thoughtful broadsheet essay for BOLLI readers, calm and literate
+   IDEA   a broadsheet front page and its inside spreads, in John's navy, gold and cream
+   PICTURE a sky-to-clay band: Ariel (air), Puck (sprite), Golem (earth) on one line, mapped to kinds of AI
+   COLOUR cream paper, navy ink and masthead, gold rules, clay red for the Golem
+   TYPE   Playfair Display headlines, Source Serif 4 body, Courier Prime for small labels
+   LAYOUT masthead, the spectrum picture full width, sticky section links, then ruled sections in two columns that stack under 760px */
+:root{color-scheme:light dark;
+--bg:light-dark(#f4ecd8,#0e1626);--paper:light-dark(#fbf7ec,#15213a);
+--ink:light-dark(#1b2a4a,#efe6cf);--soft:light-dark(#4f5872,#b8b2a0);
+--navy:light-dark(#1b2a4a,#0a1222);--gold:light-dark(#9c7a22,#e0b44a);
+--clay:light-dark(#9a3f22,#e88a62);--sky:light-dark(#3f78a8,#8fc4ec);
+--hair:light-dark(#cdbf9c,#2e3d5a)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html{scroll-padding-top:64px}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 "Source Serif 4",Georgia,serif;overflow-x:clip}
+h1,h2,h3{font-family:"Playfair Display",Georgia,serif;line-height:1.08;letter-spacing:-.01em;text-wrap:balance;margin:0}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:max(4vw,16px)}
+.mono{font-family:"Courier Prime","Courier New",monospace}
+.mast{background:var(--navy);color:#f4ecd8;border-bottom:6px double var(--gold)}
+.mast .wrap{padding-block:clamp(22px,3.5vw,42px)}
+.ears{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 20px;font-size:14px;color:#d9cfb4;border-bottom:1px solid #6b7795;padding-bottom:8px}
+.mast h1{font-size:clamp(34px,5.4vw,58px);font-weight:900;padding:16px 0 10px}
+.dek{font-size:clamp(17px,1.8vw,20px);max-width:62ch;color:#e9e0c8;margin:0}
+nav.links{background:var(--paper);border-bottom:2px solid var(--ink)}
+nav.links .wrap{padding-block:clamp(22px,3vw,40px)}
+nav.links h2{font-size:clamp(26px,3vw,34px);margin-bottom:4px}
+nav.links .sub{margin-bottom:18px}
+.menu{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:14px;list-style:none;margin:0;padding:0}
+.menu a{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:4px 14px;align-items:center;min-height:44px;height:100%;padding:16px 18px;background:var(--bg);border:1px solid var(--hair);border-left:5px solid var(--gold);border-radius:4px;color:var(--ink);text-decoration:none}
+.menu a:hover,.menu a:focus-visible{border-color:var(--ink);border-left-color:var(--gold);background:var(--paper);outline:none}
+.menu a:focus-visible{box-shadow:0 0 0 3px var(--gold)}
+.menu .n{grid-row:span 2;font:900 30px "Playfair Display",serif;color:var(--gold);line-height:1}
+.menu b{font:700 20px "Playfair Display",serif}
+.menu span.d{grid-column:2;font-size:15px;color:var(--soft);line-height:1.4}
+.menu .go{grid-row:1/3;grid-column:3;font:700 22px "Courier Prime",monospace;color:var(--gold)}
+.bar{display:none;position:sticky;top:0;z-index:5;background:var(--navy);color:#f4ecd8;border-bottom:3px solid var(--gold)}
+.bar .wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 12px;padding-block:6px}
+.bar a,.foot-nav a{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;font:700 15px "Courier Prime",monospace;color:#f4ecd8;text-decoration:none;border-radius:3px}
+.bar a:hover,.bar a:focus-visible{background:#2c3e63;outline:none}
+.bar .where{font:400 14px "Courier Prime",monospace;color:#d9cfb4}
+.bar .pn{display:flex;gap:4px}
+.foot-nav{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;margin-top:32px;padding-top:16px;border-top:2px solid var(--ink)}
+.foot-nav a{background:var(--navy);border:1px solid var(--gold)}
+.foot-nav a:hover,.foot-nav a:focus-visible{background:#2c3e63;outline:none}
+.foot-nav a[hidden]{display:none}
+body.drill nav.links{display:none}
+body.drill .bar{display:block}
+main>section{display:none}
+main>section.show{display:block;border-bottom:0}
+@media(prefers-reduced-motion:no-preference){main>section.show{animation:rise .3s ease-out}@keyframes rise{from{opacity:0;transform:translateY(8px)}}}
+.band{padding-block:clamp(28px,4vw,56px);border-bottom:1px solid var(--hair)}
+.band h2{font-size:clamp(28px,3.6vw,40px);margin-bottom:6px}
+.sub{color:var(--soft);margin:0 0 22px;max-width:70ch}
+/* spectrum picture */
+.spec{background:linear-gradient(180deg,light-dark(#dbe8f2,#13233c) 0%,var(--paper) 55%,light-dark(#ead3bf,#2a1a14) 100%);border:1px solid var(--hair);border-radius:4px;padding:clamp(16px,3vw,32px)}
+.track{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(10px,2vw,28px);position:relative}
+.track::before{content:"";position:absolute;left:8%;right:8%;top:88px;height:4px;background:linear-gradient(90deg,var(--sky),var(--gold),var(--clay));border-radius:2px}
+.st{position:relative;text-align:center}
+.st svg{width:176px;max-width:100%;height:176px;display:block;margin:0 auto;position:relative}
+.st h3{font-size:clamp(24px,2.6vw,32px);margin-top:6px}
+.st .el{font-size:14px;color:var(--soft)}
+.st .ai{display:inline-block;margin-top:10px;font-size:15px;font-weight:600;padding:6px 12px;border-radius:3px;color:#fbf7ec}
+.st p{font-size:16px;margin:10px 0 0;color:var(--ink)}
+.axis{display:flex;justify-content:space-between;gap:10px;margin-top:20px;font-size:14px;color:var(--soft);border-top:1px solid var(--hair);padding-top:10px}
+@media(max-width:620px){.track{grid-template-columns:1fr}.track::before{display:none}.st{display:grid;grid-template-columns:96px minmax(0,1fr);text-align:left;gap:0 14px;align-items:start;border-top:1px solid var(--hair);padding-top:12px}.st svg{width:96px;height:96px;grid-row:span 4}.st .ai{justify-self:start}}
+/* glance */
+.glance{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+@media(max-width:620px){.glance{grid-template-columns:1fr}}
+.card{display:flex;flex-direction:column;gap:10px}
+.card p{flex:1}
+.more{align-self:flex-start;min-height:44px;padding:0 16px;font:700 15px "Courier Prime",monospace;color:#f4ecd8;background:var(--navy);border:1px solid var(--gold);border-radius:3px;cursor:pointer}
+.more:hover,.more:focus-visible{background:#2c3e63;outline:none;box-shadow:0 0 0 3px var(--gold)}
+dialog#pop{width:min(760px,calc(100vw - 32px));max-height:calc(100dvh - 48px);padding:0;border:0;border-top:6px double var(--gold);border-radius:4px;background:var(--paper);color:var(--ink);box-shadow:0 20px 60px rgba(10,18,34,.45)}
+dialog#pop::backdrop{background:rgba(10,18,34,.6)}
+.pop-head{position:sticky;top:0;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:18px 20px 12px;background:var(--paper);border-bottom:1px solid var(--hair)}
+.pop-head h2{font-size:clamp(24px,3vw,32px)}
+.pop-from{font:400 14px "Courier Prime",monospace;color:var(--soft);margin-top:4px}
+.x{flex:none;width:44px;height:44px;font:700 26px/1 Georgia,serif;color:var(--ink);background:transparent;border:1px solid var(--hair);border-radius:3px;cursor:pointer}
+.x:hover,.x:focus-visible{background:var(--hair);outline:none}
+.pop-body{padding:16px 20px 4px}
+.pop-body .pt{margin-bottom:18px}
+.pop-foot{display:flex;justify-content:flex-end;padding:8px 20px 20px}
+.card{background:var(--paper);border:1px solid var(--hair);border-radius:4px;padding:18px 20px}
+.card h3{font-size:21px;margin-bottom:6px}
+.card p{margin:0;font-size:16px}
+.card a{color:var(--gold);font-weight:600}
+/* concordance */
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;background:var(--paper);font-size:16px}
+th,td{text-align:left;vertical-align:top;padding:12px 14px;border-bottom:1px solid var(--hair)}
+th{font-family:"Playfair Display",serif;font-size:17px;border-bottom:2px solid var(--ink)}
+td:first-child{font-weight:600;white-space:nowrap}
+.tag{display:inline-block;font:700 13px "Courier Prime",monospace;padding:2px 8px;border-radius:3px;color:#fbf7ec;white-space:nowrap}
+.agree{background:#3d6b4a}.pull{background:var(--clay)}
+@media(max-width:600px){table{font-size:14px}td:first-child{white-space:normal}.stack thead{display:none}.stack tr{display:grid;padding-block:10px;border-bottom:1px solid var(--hair)}.stack td{display:flex;flex-direction:column;border:0;padding:3px 10px}.stack td::before{content:attr(data-l);font:700 12px "Courier Prime",monospace;color:var(--soft)}}
+/* essay sections */
+.cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 40px}
+.pt{border-top:3px solid var(--ink);padding-top:12px}
+.pt h3{font-size:22px;margin-bottom:8px}
+.pt p{margin:0 0 10px}
+blockquote{margin:12px 0;padding:10px 16px;border-left:4px solid var(--gold);background:var(--paper);font-style:italic}
+blockquote cite{display:block;font:normal 14px "Courier Prime",monospace;color:var(--soft);margin-top:4px}
+@media(max-width:760px){.cols{grid-template-columns:1fr}}
+/* servants table colours */
+.c-air{color:var(--sky)}.c-gold{color:var(--gold)}.c-clay{color:var(--clay)}
+.lens{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-bottom:28px}
+.lens>div{background:var(--paper);border:1px solid var(--hair);border-radius:4px;padding:18px 20px}
+.lens h3{font-size:22px;margin-bottom:6px}
+.lens .k{font:700 14px "Courier Prime",monospace;color:var(--soft);margin-bottom:6px}
+.lens .chosen{border-top:5px solid var(--sky)}
+.lens .wider{border-top:5px solid var(--clay)}
+.motto{margin:26px 0;padding:18px 22px;background:var(--navy);color:#f4ecd8;border-radius:4px;font:400 clamp(19px,2.2vw,24px)/1.45 "Playfair Display",serif}
+.motto span{display:block}
+.opts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.opts>div{background:var(--paper);border:1px solid var(--hair);border-left:5px solid var(--gold);border-radius:4px;padding:16px 18px}
+.opts h3{font-size:20px;margin-bottom:4px}
+.opts .use{font:700 14px "Courier Prime",monospace;color:var(--gold);margin-bottom:8px}
+.opts p{margin:0 0 8px;font-size:16px}
+.opts blockquote{font-size:16px;margin:8px 0 0}
+@media(max-width:900px){.opts{grid-template-columns:1fr}}
+@media(max-width:700px){.lens{grid-template-columns:1fr}}
+.ideas{counter-reset:i;list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:18px}
+.ideas li{background:var(--navy);color:#f4ecd8;border-radius:4px;padding:18px 20px;border-bottom:4px solid var(--gold)}
+.ideas li b{display:block;font:700 20px "Playfair Display",serif;margin-bottom:6px;color:#fff}
+footer{background:var(--navy);color:#cfc5a9;font-size:14px}
+footer .wrap{padding-block:22px;display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between}
+@media(prefers-reduced-motion:no-preference){.st svg .float{animation:fl 5s ease-in-out infinite}@keyframes fl{50%{transform:translateY(-6px)}}}
+</style>
+</head>
+<body>
+
+<header class="mast">
+  <div class="wrap">
+    <div class="ears mono"><span>AI Literacy SIG · BOLLI</span><span>November 23, 2026</span></div>
+    <h1>The Golem and the Human Measure of AI</h1>
+    <p class="dek">How Henry's course readings on the Golem (Norbert Wiener's <i>God &amp; Golem, Inc.</i> and Avery Slater's essay on reinforcement learning) meet John's talk, and how Shakespeare's servant spirits fit between them.</p>
+  </div>
+</header>
+
+<nav class="links" id="menu" aria-label="Sections">
+  <div class="wrap">
+    <h2>Choose a section</h2>
+    <p class="sub">Each opens its full details. Use "Back to navigation" at any time to return here.</p>
+    <ol class="menu">
+      <li><a href="#spectrum"><span class="n">1</span><b>The spectrum</b><span class="d">Ariel, Puck and the Golem on one line, matched to kinds of AI</span><span class="go" aria-hidden="true">→</span></a></li>
+      <li><a href="#glance"><span class="n">2</span><b>At a glance</b><span class="d">The four main findings</span><span class="go" aria-hidden="true">→</span></a></li>
+      <li><a href="#map"><span class="n">3</span><b>Metaphor map</b><span class="d">Each talk metaphor beside its counterpart in Henry's readings</span><span class="go" aria-hidden="true">→</span></a></li>
+      <li><a href="#agree"><span class="n">4</span><b>Where they agree</b><span class="d">Control, feedback, judgment and the creator's duty</span><span class="go" aria-hidden="true">→</span></a></li>
+      <li><a href="#apart"><span class="n">5</span><b>Where they part</b><span class="d">Precise commands, body and voice, two kinds of machine</span><span class="go" aria-hidden="true">→</span></a></li>
+      <li><a href="#servants"><span class="n">6</span><b>Ariel, Puck, Golem</b><span class="d">Origin, element, inner life and how each one fails</span><span class="go" aria-hidden="true">→</span></a></li>
+      <li><a href="#strain"><span class="n">7</span><b>Command or errand?</b><span class="d">Where the Servant Spirit metaphor strains, and three ways to handle it</span><span class="go" aria-hidden="true">→</span></a></li>
+      <li><a href="#ideas"><span class="n">8</span><b>For the talk</b><span class="d">Five ideas for "The Human Measure of AI"</span><span class="go" aria-hidden="true">→</span></a></li>
+    </ol>
+  </div>
+</nav>
+
+<div class="bar" aria-label="Section navigation">
+  <div class="wrap">
+    <a href="#menu" class="back">← Back to navigation</a>
+    <span class="where" id="where"></span>
+    <span class="pn"><a href="#" id="prevTop" aria-label="Previous section">‹ Prev</a><a href="#" id="nextTop" aria-label="Next section">Next ›</a></span>
+  </div>
+</div>
+
+<main>
+<section class="band" id="spectrum">
+  <div class="wrap">
+    <h2>Three servants, three kinds of obedience</h2>
+    <p class="sub">The talk looks mostly at AI that talks, and Henry's course at machines that act. Shakespeare's spirits and the clay Golem lie on one line that runs from understanding what you meant to doing only what you said.</p>
+    <div class="spec">
+      <div class="track">
+        <div class="st">
+          <svg viewBox="0 0 176 176" aria-hidden="true"><g class="float">
+            <circle cx="88" cy="88" r="62" fill="var(--paper)" stroke="var(--sky)" stroke-width="3"/>
+            <path d="M44 92c18-22 42-22 58-8s34 10 34-6" fill="none" stroke="var(--sky)" stroke-width="5" stroke-linecap="round"/>
+            <path d="M52 112c16-12 34-12 48-2s26 6 28-4" fill="none" stroke="var(--sky)" stroke-width="3.5" stroke-linecap="round" opacity=".7"/>
+            <path d="M60 70c12-10 26-10 36-2" fill="none" stroke="var(--sky)" stroke-width="3" stroke-linecap="round" opacity=".5"/></g></svg>
+          <h3 class="c-air">Ariel</h3>
+          <div class="el mono">Air · <i>The Tempest</i></div>
+          <span class="ai" style="background:var(--sky)">The chatbot</span>
+          <p>Understands what you meant. Bodiless, articulate, even nudges Prospero toward mercy.</p>
+        </div>
+        <div class="st">
+          <svg viewBox="0 0 176 176" aria-hidden="true"><g class="float">
+            <circle cx="88" cy="88" r="62" fill="var(--paper)" stroke="var(--gold)" stroke-width="3"/>
+            <path d="M104 52a40 40 0 1 0 14 66 32 32 0 1 1-14-66z" fill="var(--gold)"/>
+            <circle cx="120" cy="62" r="4" fill="var(--gold)"/><circle cx="132" cy="84" r="3" fill="var(--gold)"/><circle cx="58" cy="54" r="3" fill="var(--gold)"/>
+            <path d="M44 128l10-6 4 10" fill="none" stroke="var(--gold)" stroke-width="3" stroke-linecap="round"/></g></svg>
+          <h3 class="c-gold">Puck</h3>
+          <div class="el mono">Sprite · <i>A Midsummer Night's Dream</i></div>
+          <span class="ai" style="background:var(--gold)">The confident error</span>
+          <p>Understands the words but not the intent, and anoints the wrong Athenian.</p>
+        </div>
+        <div class="st">
+          <svg viewBox="0 0 176 176" aria-hidden="true">
+            <circle cx="88" cy="88" r="62" fill="var(--paper)" stroke="var(--clay)" stroke-width="3"/>
+            <rect x="66" y="46" width="44" height="40" rx="10" fill="var(--clay)"/>
+            <text x="88" y="72" text-anchor="middle" font-size="15" font-family="serif" fill="#fbf7ec">אמת</text>
+            <path d="M58 92h60l6 40H52z" fill="var(--clay)"/>
+            <rect x="60" y="132" width="20" height="10" fill="var(--clay)"/><rect x="96" y="132" width="20" height="10" fill="var(--clay)"/>
+          </svg>
+          <h3 class="c-clay">The Golem</h3>
+          <div class="el mono">Earth · Prague legend</div>
+          <span class="ai" style="background:var(--clay)">The autonomous agent</span>
+          <p>Strength without judgment. Literal-minded, and keeps going after its maker stops watching.</p>
+        </div>
+      </div>
+      <div class="axis mono"><span>← grasps intent · speaks · no body</span><span>follows the letter · acts · all body →</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="glance">
+  <div class="wrap">
+    <h2>At a glance</h2>
+    <p class="sub">Four findings from comparing the talk with Henry's readings.</p>
+    <div class="glance">
+      <div class="card"><h3>Same warning, told twice</h3><p>The talk's Sorcerer's Apprentice and Wiener's Monkey's Paw both say magic grants what you asked for, not what you meant.</p><button type="button" class="more" data-pts="pt-apprentice" data-from="4 · Where they agree">Read the details</button></div>
+      <div class="card"><h3>Keep a human in the loop</h3><p>The Exoskeleton and Wiener's feedback passage agree: danger begins when people stop steering.</p><button type="button" class="more" data-pts="pt-exo pt-hammock" data-from="4 · Where they agree">Read the details</button></div>
+      <div class="card"><h3>Different machines</h3><p>John's mirror fits language models trained on human text. Henry's AlphaGo fits self-taught reinforcement learners.</p><button type="button" class="more" data-pts="pt-two pt-gap" data-from="5 · Where they part">Read the details</button></div>
+      <div class="card"><h3>Precision is not control</h3><p>"Constraint is power" works for Ariel. With a Golem, even a precise command may not be enough.</p><button type="button" class="more" data-pts="pt-precise pt-puck" data-from="5 · Where they part and 6 · Ariel, Puck, Golem">Read the details</button></div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="map">
+  <div class="wrap">
+    <h2>Metaphor map: talk and readings side by side</h2>
+    <p class="sub">Each row pairs a metaphor from "The Human Measure of AI" with its counterpart in Henry's Golem material.</p>
+    <div class="scroll">
+    <table class="stack">
+      <thead><tr><th>Talk metaphor</th><th>Henry's readings</th><th>Relation</th><th>The shared or contested point</th></tr></thead>
+      <tbody>
+        <tr><td data-l="Talk metaphor">Sorcerer's Apprentice</td><td data-l="Henry's readings">Monkey's Paw; Prague Golem</td><td data-l="Relation"><span class="tag agree">Agree</span></td><td data-l="Point">Literal-minded magic: the servant obeys past the point its master can manage.</td></tr>
+        <tr><td data-l="Talk metaphor">Exoskeleton</td><td data-l="Henry's readings">Wiener on feedback</td><td data-l="Relation"><span class="tag agree">Agree</span></td><td data-l="Point">Feedback must "go through us"; keep a handle to take back control.</td></tr>
+        <tr><td data-l="Talk metaphor">Rosetta Stone</td><td data-l="Henry's readings">Wiener's "hammock"</td><td data-l="Relation"><span class="tag agree">Agree</span></td><td data-l="Point">AI demands more human judgment, not less.</td></tr>
+        <tr><td data-l="Talk metaphor">Weathervane</td><td data-l="Henry's readings">Goal-seeking machine</td><td data-l="Relation"><span class="tag agree">Agree</span></td><td data-l="Point">It seeks no goals of its own; direction comes from us.</td></tr>
+        <tr><td data-l="Talk metaphor">Frankenstein; Michelangelo</td><td data-l="Henry's readings">God &amp; Golem</td><td data-l="Relation"><span class="tag agree">Agree</span></td><td data-l="Point">The creator's duty begins when the making ends.</td></tr>
+        <tr><td data-l="Talk metaphor">Servant Spirit (Prospero)</td><td data-l="Henry's readings">Wiener on foresight</td><td data-l="Relation"><span class="tag pull">Tension</span></td><td data-l="Point">Precise command gives control, or only a more literal genie?</td></tr>
+        <tr><td data-l="Talk metaphor">Radio Without a Body</td><td data-l="Henry's readings">Talmud's mute golem</td><td data-l="Relation"><span class="tag pull">Inverse</span></td><td data-l="Point">AI is voice without body; the golem is body without voice.</td></tr>
+        <tr><td data-l="Talk metaphor">Mirror; Ventriloquist; Shadow</td><td data-l="Henry's readings">Slater on reinforcement learning</td><td data-l="Relation"><span class="tag pull">Tension</span></td><td data-l="Point">Derivative of human text, or capable of strategies no one foresaw?</td></tr>
+        <tr><td data-l="Talk metaphor">Wizard of Oz</td><td data-l="Henry's readings">Automation as "magic"</td><td data-l="Relation"><span class="tag pull">Different aim</span></td><td data-l="Point">Disenchant to reduce fear, or keep the legend to keep a healthy fear.</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="agree">
+  <div class="wrap">
+    <h2>Where they say the same thing</h2>
+    <p class="sub">On control, feedback and responsibility, the talk and the readings line up closely.</p>
+    <div class="cols">
+      <div class="pt" id="pt-apprentice"><h3>The apprentice and the Monkey's Paw</h3>
+        <p>The talk's broom "does exactly what it was told," and the risk is not malice but not understanding what we asked for. Wiener says the same of the Monkey's Paw:</p>
+        <blockquote>the operation of magic is singularly literal-minded<cite>Wiener, God &amp; Golem, Inc.</cite></blockquote>
+        <p>Wiener also used the Sorcerer's Apprentice in his 1960 <i>Science</i> article on automation. Rabbi Loew's Golem runs amok when he forgets to deactivate it before the Sabbath. All three are servants that keep working after the master stops watching.</p></div>
+      <div class="pt" id="pt-exo"><h3>The Exoskeleton and feedback</h3>
+        <p>The talk says AI "does nothing until you move first" and pulls you off course if you stop guiding it. Wiener says we reach goals by checking progress as we go, with the feedback passing through us so we can turn back in time. He wanted a handle to take over control. In both, the danger is taking the human out of the loop.</p></div>
+      <div class="pt" id="pt-hammock"><h3>No hammock</h3>
+        <p>Wiener says the future won't be a comfortable hammock served by robot slaves. The talk says AI "extends what you can do. It does not do it for you," and its Rosetta Stone makes the reader do the checking.</p></div>
+      <div class="pt"><h3>Weathervane and goals</h3>
+        <p>The vane has "no compass of its own." Wiener warns that a goal-seeking machine won't seek our goals unless we design it to. Either way, direction comes from us.</p></div>
+      <div class="pt"><h3>Creators and creations</h3>
+        <p>Frankenstein's lesson in the talk, that responsibility begins when the making ends, is the Golem's lesson. "God &amp; Golem" also echoes the Michelangelo image, and Pygmalion and the Golem both shape lifeless matter into a being.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="apart">
+  <div class="wrap">
+    <h2>Where they part, and why it matters</h2>
+    <p class="sub">The disagreements show what the Friday discussion about AI originality was really about.</p>
+    <div class="cols">
+      <div class="pt" id="pt-precise"><h3>Precise commands</h3>
+        <p>Part 1 says "Constraint is power." Wiener would call a precise command the trap: the machine takes your words literally, and you can't foresee every step it will take. Prospero succeeds because Ariel understands him. A golem doesn't.</p></div>
+      <div class="pt"><h3>Body and voice reversed</h3>
+        <p>In the Talmud (Sanhedrin 65b), Rava creates a man and sends him to Rabbi Zeira. It cannot answer when spoken to, so Zeira returns it to dust: the earliest failed Turing test. The talk's Radio is all voice and no body. The golem fear fully returns only when AI can act, which is why the apprentice slide reads "For Agentic AI."</p></div>
+      <div class="pt" id="pt-two"><h3>Two kinds of machine</h3>
+        <p>Henry's AlphaGo point is Slater's thesis: reinforcement learning finds strategies its makers never imagined. The talk's Mirror, Dummy and Shadow describe language models learning from human text. AlphaGo Zero taught itself through self-play and never saw a human game.</p></div>
+      <div class="pt" id="pt-gap"><h3>The gap is closing</h3>
+        <p>Language models are now also trained with reinforcement learning, bringing Wiener's literal-minded genie into the mirror. Researchers call it "reward hacking": the Monkey's Paw in practice. Wiener's machine pursues victory by the rules and nothing else. It can be new without being committed to anything, which may sharpen the organic-vs-digital argument.</p></div>
+      <div class="pt"><h3>Disenchant or keep the fear?</h3>
+        <p>The Wizard of Oz slide takes the magic away. Wiener and Henry's course call automation "magic" on purpose. One shows the machinery to calm fear; the other keeps a healthy fear alive. A session that does both is stronger than either.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="servants">
+  <div class="wrap">
+    <h2>Ariel, Puck and the Golem compared</h2>
+    <p class="sub">All three obey commands given in words, and in two stories the master finally lays down his power. They differ in how they understand those words.</p>
+    <div class="scroll">
+    <table class="stack">
+      <thead><tr><th></th><th class="c-air">Ariel</th><th class="c-gold">Puck</th><th class="c-clay">Golem</th></tr></thead>
+      <tbody>
+        <tr><td data-l="">Origin</td><td data-l="Ariel">Freed by Prospero from Sycorax's pine; serves to earn freedom</td><td data-l="Puck">Oberon's servant</td><td data-l="Golem">Made from clay by its master</td></tr>
+        <tr><td data-l="">Brought to life by</td><td data-l="Ariel">Prospero's books and commands</td><td data-l="Puck">Oberon's spoken orders</td><td data-l="Golem"><i>emet</i> ("truth") on its brow, or a holy Name</td></tr>
+        <tr><td data-l="">Element</td><td data-l="Ariel">Air, no body</td><td data-l="Puck">A quick sprite</td><td data-l="Golem">Earth: heavy and physical</td></tr>
+        <tr><td data-l="">Inner life</td><td data-l="Ariel">Wants and feelings ("Is there more toil?")</td><td data-l="Puck">Mischief; enjoys the chaos</td><td data-l="Golem">Usually no speech, will or wishes</td></tr>
+        <tr><td data-l="">How it fails</td><td data-l="Ariel">Rarely; grasps the intent</td><td data-l="Puck">Follows a vague order to the letter</td><td data-l="Golem">Literal; runs on when unsupervised</td></tr>
+        <tr><td data-l="">Ending</td><td data-l="Ariel">Prospero drowns his book and frees him</td><td data-l="Puck">Asks the audience's pardon</td><td data-l="Golem"><i>emet</i> becomes <i>met</i> ("dead"); clay stored in the Old-New Synagogue attic</td></tr>
+        <tr><td data-l="">AI today</td><td data-l="Ariel">The chatbot that infers what you meant</td><td data-l="Puck">The confident wrong answer</td><td data-l="Golem">The agent pursuing a fixed goal</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="cols" style="margin-top:28px">
+      <div class="pt"><h3>Ariel unsettles Part 2</h3>
+        <p>In Act 5, Ariel says his own heart would soften toward the prisoners, "were I human," and Prospero chooses mercy. The servant gives the master a moral nudge. That fits the "Mirror with no opinions" poorly and is close to what today's chatbots are trained to do.</p></div>
+      <div class="pt" id="pt-puck"><h3>Puck is the comic Monkey's Paw</h3>
+        <p>Oberon says Puck will know the man "by the Athenian garments he hath on." Puck anoints the wrong Athenian and defends himself by the description. He understood the words, not the intent: Wiener's literal-minded magic in a comedy.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="strain">
+  <div class="wrap">
+    <h2>Where the Servant Spirit strains: the command and the errand</h2>
+    <p class="sub">Ariel and Puck were chosen for the magical moment of response: the master speaks and the spirit answers at once. In the plays, the answer to a command is usually an errand. Shakespeare's spirits are agents, and the talk borrows only the moment of reply.</p>
+    <div class="lens">
+      <div class="chosen"><div class="k">The lens the talk chose</div><h3>The command and the reply</h3>
+        <p>Prospero commands and Ariel answers instantly, almost by magic. This fits prompting well: a precise command produces a precise result, and the master stays in charge.</p></div>
+      <div class="wider"><div class="k">The larger context in the plays</div><h3>The errand that follows</h3>
+        <p>Ariel raises the tempest, wrecks the ship and leads the castaways around the island. Puck goes off alone to anoint sleepers' eyes. The reply to a command is action in the world, which does not fit a simple chatbox.</p></div>
+    </div>
+    <div class="scroll">
+    <table class="stack">
+      <thead><tr><th></th><th class="c-air">Ariel</th><th class="c-gold">Puck</th><th class="c-clay">Golem</th></tr></thead>
+      <tbody>
+        <tr><td data-l="">Responds to command</td><td data-l="Ariel">Instantly, grasping the intent</td><td data-l="Puck">Instantly, grasping the words</td><td data-l="Golem">Mutely, by the letter</td></tr>
+        <tr><td data-l="">Errands</td><td data-l="Ariel">Tempest, shipwreck, leading the castaways</td><td data-l="Puck">Anointing eyes, misleading the lovers</td><td data-l="Golem">Guarding, hauling, labouring</td></tr>
+        <tr><td data-l="">Reports back?</td><td data-l="Ariel">After every task, and asks what next</td><td data-l="Puck">Only afterward; the error is found too late</td><td data-l="Golem">Never; it cannot speak</td></tr>
+        <tr><td data-l="">Human in the loop</td><td data-l="Ariel">Yes, at each step</td><td data-l="Puck">Only at the end</td><td data-l="Golem">No, until the Name is pulled</td></tr>
+        <tr><td data-l="">AI counterpart</td><td data-l="Ariel">The assistant that shows its work and waits</td><td data-l="Puck">The agent sent on an errand without a checkpoint</td><td data-l="Golem">The fully autonomous agent</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="motto"><span>Ariel answers to you.</span><span>Puck answers to you afterward.</span><span>The Golem answers to no one.</span></div>
+    <p class="sub">The dividing line is not information versus action, since all three act. It is conversation versus autonomy: how many steps a servant takes before checking back with its master. That is also the safety question for today's AI agents, and the chatbox itself is changing. Chatbots now search the web, run code and fill in forms while you wait.</p>
+    <h2 style="font-size:clamp(24px,3vw,32px);margin:28px 0 14px">Three ways to handle the strain</h2>
+    <div class="opts">
+      <div><h3>1. Keep it narrow and say so</h3><div class="use">Best for the talk</div>
+        <p>Use only the command and the reply, and name the limit. One line in the Servant Spirit end note links Part 1 to Part 4:</p>
+        <blockquote>We borrow Prospero's command, not Ariel's errands. For a servant that acts on its own, see the Golem.</blockquote></div>
+      <div><h3>2. Treat the misfit as foresight</h3><div class="use">A framing for the course</div>
+        <p>The spirits' errands show where chatbots are heading. Ariel stands for the whole path from answering a question to running an errand. The Golem is where that path ends, with no master watching.</p></div>
+      <div><h3>3. Make it a discussion question</h3><div class="use">Best for the five-week course</div>
+        <p>Let the group find where the metaphor breaks:</p>
+        <blockquote>Ariel answers Prospero instantly, and he also raises storms. Which part of Ariel is today's AI?</blockquote>
+        <p>It leads straight into Wiener and Henry's Golem.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="ideas">
+  <div class="wrap">
+    <h2>Ideas for "The Human Measure of AI"</h2>
+    <p class="sub">Keep "Constraint is power," and add Wiener's warning beside it: a precise command works well on an Ariel, is essential with a Puck, and may not be enough with a Golem.</p>
+    <ol class="ideas">
+      <li><b>Add the Golem to Part 4</b>Place it between Frankenstein (the creator's duty) and the Sorcerer's Apprentice (agents) as the story of control. Credit it to Henry.</li>
+      <li><b>Pair the Monkey's Paw with the apprentice</b>It is Wiener's own allusion and ties the literary frame to the founder of cybernetics.</li>
+      <li><b>Show the servant spectrum</b>Ariel → Puck → Golem gives learners one picture of chatbot, confident error and autonomous agent.</li>
+      <li><b>Ask the Prospero question</b>"Does a precise command give you control, or just a more literal genie?"</li>
+      <li><b>Invite Henry to present</b>His Golem material would make a strong AILit SIG session.</li>
+    </ol>
+  </div>
+</section>
+</main>
+
+<dialog id="pop" aria-labelledby="popTitle">
+  <div class="pop-head"><div><h2 id="popTitle"></h2><div class="pop-from" id="popFrom"></div></div><button type="button" class="x" id="popX" aria-label="Close">×</button></div>
+  <div class="pop-body" id="popBody"></div>
+  <div class="pop-foot"><button type="button" class="more" id="popClose">Close and return to At a glance</button></div>
+</dialog>
+
+<footer><div class="wrap"><span>Sources: John Day, "The Human Measure of AI"; Henry Morris, course readings on Wiener's <i>God &amp; Golem, Inc.</i> (1964) and Avery Slater, "The Golem and the Game of Automation" (2021).</span><span class="mono">BOLLI · AILit SIG</span></div></footer>
+
+<script>
+{
+  const links=[...document.querySelectorAll('.menu a')];
+  const ids=links.map(a=>a.getAttribute('href').slice(1));
+  const names=links.map(a=>a.querySelector('b').textContent);
+  const secs=ids.map(id=>document.getElementById(id));
+  const where=document.getElementById('where');
+  const pT=document.getElementById('prevTop'),nT=document.getElementById('nextTop');
+  secs.forEach((s,i)=>{
+    const w=s.querySelector('.wrap');
+    const f=document.createElement('div');f.className='foot-nav';
+    f.innerHTML='<a href="#menu">↑ Back to navigation</a>'+
+      (i>0?'<a href="#'+ids[i-1]+'">‹ '+names[i-1]+'</a>':'')+
+      (i<ids.length-1?'<a href="#'+ids[i+1]+'">'+names[i+1]+' ›</a>':'');
+    w.appendChild(f);
+  });
+  const show=(home)=>{
+    const h=home?'':location.hash.slice(1);
+    const i=ids.indexOf(h);
+    secs.forEach((s,j)=>s.classList.toggle('show',i===j));
+    document.body.classList.toggle('drill',i>=0);
+    if(i>=0){
+      where.textContent='Section '+(i+1)+' of '+ids.length+': '+names[i];
+      pT.style.visibility=i>0?'visible':'hidden';pT.href='#'+(ids[i-1]||'');
+      nT.style.visibility=i<ids.length-1?'visible':'hidden';nT.href='#'+(ids[i+1]||'');
+      window.scrollTo(0,0);
+      const h2=secs[i].querySelector('h2');h2.tabIndex=-1;h2.focus({preventScroll:true});
+    }else{
+      const m=document.getElementById('menu');
+      if(h==='menu'){m.scrollIntoView();}
+    }
+  };
+  const pop=document.getElementById('pop'),pb=document.getElementById('popBody');
+  let opener=null;
+  const closePop=()=>{if(pop.open)pop.close();};
+  document.querySelectorAll('.glance .more').forEach(b=>b.addEventListener('click',()=>{
+    opener=b;
+    document.getElementById('popTitle').textContent=b.closest('.card').querySelector('h3').textContent;
+    document.getElementById('popFrom').textContent='Details from '+b.dataset.from;
+    pb.innerHTML=b.dataset.pts.split(' ').map(id=>{const n=document.getElementById(id).cloneNode(true);n.removeAttribute('id');return n.outerHTML;}).join('');
+    if(pop.showModal)pop.showModal();else pop.setAttribute('open','');
+    pb.scrollTop=0;pop.scrollTop=0;
+    document.getElementById('popX').focus();
+  }));
+  document.getElementById('popX').addEventListener('click',closePop);
+  document.getElementById('popClose').addEventListener('click',closePop);
+  pop.addEventListener('click',e=>{if(e.target===pop)closePop();});
+  pop.addEventListener('close',()=>{if(opener)opener.focus();});
+  pop.style.overflowY='auto';
+  let prev='';
+  window.addEventListener('hashchange',()=>{
+    closePop();
+    const old=prev;prev=location.hash.slice(1);
+    show();
+    if(!ids.includes(prev)&&ids.includes(old)){
+      const a=links[ids.indexOf(old)];if(a)a.focus({preventScroll:false});
+    }
+  });
+  if(location.hash){try{history.replaceState(null,'',location.pathname+location.search);}catch(e){}}
+  prev='';show(true);window.scrollTo(0,0);
+}
+</script>
+<!-- VIZ-TRACKING:START -->
+<script>
+(function () {
+  var ENDPOINT = 'https://script.google.com/macros/s/AKfycbyCgndleqbDkjn1CWYFXflq0fegQRHkHE1S7gmlvnny8lA_rGsWZEqtz4shNoJ1ZanI6A/exec';
+  if (location.protocol === 'file:') return;
+  function send(where) {
+    try {
+      fetch(ENDPOINT, {
+        method: 'POST', mode: 'no-cors', keepalive: true,
+        body: new URLSearchParams({ viz: document.title || location.pathname, location: where })
+      }).catch(function () {});
+    } catch (e) {}
+  }
+  function fallback() {
+    try { return Intl.DateTimeFormat().resolvedOptions().timeZone || 'Unknown'; } catch (e) { return 'Unknown'; }
+  }
+  fetch('https://ipapi.co/json/')
+    .then(function (r) { return r.json(); })
+    .then(function (d) {
+      var place = [d.city, d.region, d.country_name].filter(Boolean).join(', ');
+      send(place || fallback());
+    })
+    .catch(function () { send(fallback()); });
+})();
+</script>
+<!-- VIZ-TRACKING:END -->
+</body>
+</html>
