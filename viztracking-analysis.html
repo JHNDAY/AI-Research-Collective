@@ -88,6 +88,9 @@ section h2 { font-size: 18px; font-weight: 600; margin: 0; }
 .pop-head span { color: var(--muted); }
 .pop-x { font: inherit; font-size: 16px; line-height: 1; background: none; border: 0; color: var(--muted); cursor: pointer; padding: 2px 6px; }
 .pop-x:hover { color: var(--fg); }
+.pop-head { flex-wrap: wrap; }
+.pop-ctl { display: flex; flex-wrap: wrap; gap: 6px; margin-left: auto; }
+.pop-ctl .seg button { padding: 4px 10px; }
 .pop-body { max-height: 260px; overflow: auto; padding: 4px 12px 8px; }
 .pop table { width: 100%; border-collapse: collapse; }
 .pop th { text-align: left; font-weight: 600; color: var(--muted); padding: 5px 6px 4px 0; position: sticky; top: 0; background: var(--panel); }
@@ -177,6 +180,7 @@ const NE_LABELS = [
 const S = {viz: [], loc: [], window: 'all', exclude: []};
 let MAPVIEW = 'us';
 const SEL = new Set();
+let POPMODE = 'list', POPBY = 'viz';
 let VIEWS = [];
 const n0 = d3.format(',');
 const fmt = d3.utcFormat('%Y-%m-%d');
@@ -341,7 +345,7 @@ function renderTrend() {
   const el = document.getElementById('c-trend');
   const data = trendData();
   if (!data.length || !d3.sum(data, (r) => r.all)) { emptyMsg(el, VIEWS.length ? 'No views match these filters.' : '—'); return; }
-  const key = (r) => fmt(r.date);
+  const key = (r, s) => `${s}:${fmt(r.date)}`;
   const series = [{k: 'all', label: 'All places', color: 'var(--c1)'}, {k: 'out', label: 'Outside Lexington', color: 'var(--c2)'}];
   const w = Math.max(260, el.clientWidth), h = 270, mt = 34, mb = 30, mr = 16;
   const y = d3.scaleLinear([0, Math.max(1, d3.max(data, (r) => r.all))], [h - mb, mt]).nice();
@@ -367,9 +371,9 @@ function renderTrend() {
     svg.append('path').datum(data).attr('fill', 'none').style('stroke', s.color).attr('stroke-width', 2)
       .attr('d', d3.line((r) => x(r.date), (r) => y(r[s.k])));
     dotSets.push(svg.append('g').selectAll('circle').data(data).join('circle')
-      .attr('cx', (r) => x(r.date)).attr('cy', (r) => y(r[s.k])).attr('r', (r) => (SEL.has(key(r)) ? 6 : 3.5))
-      .style('fill', (r) => (SEL.size && !SEL.has(key(r)) ? 'var(--dim)' : s.color))
-      .style('stroke', (r) => (SEL.has(key(r)) ? 'var(--fg)' : 'none')).attr('stroke-width', 2)
+      .attr('cx', (r) => x(r.date)).attr('cy', (r) => y(r[s.k])).attr('r', (r) => (SEL.has(key(r, s.k)) ? 6 : 3.5))
+      .style('fill', (r) => (SEL.size && !SEL.has(key(r, s.k)) ? 'var(--dim)' : s.color))
+      .style('stroke', (r) => (SEL.has(key(r, s.k)) ? 'var(--fg)' : 'none')).attr('stroke-width', 2)
       .style('pointer-events', 'none'));
     svg.append('rect').attr('x', lx).attr('y', 6).attr('width', 14).attr('height', 3).style('fill', s.color);
     const t = svg.append('text').attr('class', 'leg').attr('x', lx + 20).attr('y', 12).text(s.label);
@@ -380,13 +384,13 @@ function renderTrend() {
       .attr('x', (r) => x(r.date)).attr('y', (r) => y(r.all) - 9).attr('text-anchor', 'middle').text((r) => r.all);
   }
   const tip = tipFor(el), bis = d3.bisector((r) => r.date).center;
-  const baseR = (o) => (SEL.has(key(o)) ? 6 : 3.5);
+  const baseR = (o, s) => (SEL.has(key(o, s)) ? 6 : 3.5);
   const showTip = (r) => {
-    dotSets.forEach((ds) => ds.attr('r', (o) => (o === r ? 7 : baseR(o))));
+    dotSets.forEach((ds, i) => ds.attr('r', (o) => (o === r ? 7 : baseR(o, series[i].k))));
     tip.show(`${r.all} view${r.all === 1 ? '' : 's'} · ${r.out} outside Lexington`, d3.utcFormat('%a, %b %-d')(r.date), x(r.date), y(r.all));
   };
-  const hideTip = () => { dotSets.forEach((ds) => ds.attr('r', baseR)); tip.hide(); };
-  const toggle = (r) => { if (SEL.has(key(r))) SEL.delete(key(r)); else SEL.add(key(r)); renderTrend(); };
+  const hideTip = () => { dotSets.forEach((ds, i) => ds.attr('r', (o) => baseR(o, series[i].k))); tip.hide(); };
+  const toggle = (r, s) => { const k = key(r, s); if (SEL.has(k)) SEL.delete(k); else SEL.add(k); renderTrend(); };
   const brush = d3.brush().keyModifiers(false).extent([[ml, mt - 10], [w - mr, h - mb]])
     .on('start', hideTip)
     .on('end', (ev) => {
@@ -398,37 +402,76 @@ function renderTrend() {
       data.forEach((r) => {
         const px = x(r.date);
         if (r.all <= 0 || px < x0 - 4 || px > x1 + 4) return;
-        if ([y(r.all), y(r.out)].some((py) => py >= y0 - 4 && py <= y1 + 4)) SEL.add(key(r));
+        const inY = (py) => py >= y0 - 4 && py <= y1 + 4;
+        if (inY(y(r.all))) SEL.add(key(r, 'all'));
+        if (r.out > 0 && inY(y(r.out))) SEL.add(key(r, 'out'));
       });
       setTimeout(renderTrend, 0);
     });
   brushG.call(brush);
   brushG.on('pointermove.tip', (ev) => { if (ev.buttons) return; showTip(data[bis(data, x.invert(d3.pointer(ev, svg.node())[0]))]); })
     .on('pointerleave.tip', hideTip);
-  svg.append('g').selectAll('circle').data(data.filter((r) => r.all > 0)).join('circle')
-    .attr('class', 'hit').attr('cx', (r) => x(r.date)).attr('cy', (r) => y(r.all)).attr('r', 11)
-    .attr('fill', 'transparent').style('cursor', 'pointer').attr('tabindex', 0).attr('role', 'button')
-    .attr('aria-pressed', (r) => String(SEL.has(key(r))))
-    .attr('aria-label', (r) => `${r.all} views on ${d3.utcFormat('%b %-d')(r.date)}`)
-    .on('pointermove', (ev, r) => showTip(r)).on('pointerleave', hideTip)
-    .on('click', (ev, r) => toggle(r))
-    .on('keydown', (ev, r) => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); toggle(r); } });
+  series.forEach((s) => {
+    svg.append('g').selectAll('circle').data(data.filter((r) => r[s.k] > 0)).join('circle')
+      .attr('class', 'hit').attr('cx', (r) => x(r.date)).attr('cy', (r) => y(r[s.k])).attr('r', 11)
+      .attr('fill', 'transparent').style('cursor', 'pointer').attr('tabindex', 0).attr('role', 'button')
+      .attr('aria-pressed', (r) => String(SEL.has(key(r, s.k))))
+      .attr('aria-label', (r) => `${s.label}: ${r[s.k]} views on ${d3.utcFormat('%b %-d')(r.date)}`)
+      .on('pointermove', (ev, r) => showTip(r)).on('pointerleave', hideTip)
+      .on('click', (ev, r) => toggle(r, s.k))
+      .on('keydown', (ev, r) => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); toggle(r, s.k); } });
+  });
   if (SEL.size) {
-    const rows = filtered().filter((r) => r.date && SEL.has(r.date))
+    const rows = filtered().filter((r) => r.date && (SEL.has('all:' + r.date) || (!isLex(r) && SEL.has('out:' + r.date))))
       .sort((a, b) => d3.ascending(a.date, b.date) || d3.ascending(a.time || '', b.time || '') || d3.ascending(a.viz, b.viz));
     const pop = document.createElement('div'); pop.className = 'pop';
     pop.setAttribute('role', 'dialog'); pop.setAttribute('aria-label', 'Views on the selected days');
     const head = document.createElement('div'); head.className = 'pop-head';
     const title = document.createElement('div');
     const t = document.createElement('b'); t.textContent = `${rows.length} view${rows.length === 1 ? '' : 's'}`;
-    const sub = document.createElement('span'); sub.textContent = ` · ${SEL.size} day${SEL.size === 1 ? '' : 's'} selected`;
+    const nAll = [...SEL].filter((k) => k.startsWith('all:')).length, nOut = SEL.size - nAll;
+    const sub = document.createElement('span');
+    sub.textContent = ' · ' + [nAll ? `${nAll} day${nAll === 1 ? '' : 's'} (all places)` : '', nOut ? `${nOut} day${nOut === 1 ? '' : 's'} (outside Lexington)` : ''].filter(Boolean).join(', ') + ' selected';
     title.append(t, sub);
     const close = document.createElement('button'); close.type = 'button'; close.className = 'pop-x'; close.textContent = '×';
     close.setAttribute('aria-label', 'Clear selection');
     close.onclick = () => { SEL.clear(); renderTrend(); };
-    head.append(title, close);
+    const seg = (label, opts, cur, set) => {
+      const g = document.createElement('div'); g.className = 'seg'; g.setAttribute('role', 'group'); g.setAttribute('aria-label', label);
+      opts.forEach(([v, txt]) => {
+        const b = document.createElement('button'); b.type = 'button'; b.textContent = txt;
+        b.setAttribute('aria-pressed', String(cur === v));
+        b.onclick = () => { set(v); renderTrend(); };
+        g.append(b);
+      });
+      return g;
+    };
+    const ctl = document.createElement('div'); ctl.className = 'pop-ctl';
+    ctl.append(seg('Show as', [['list', 'List'], ['bar', 'Bar Chart']], POPMODE, (v) => { POPMODE = v; }));
+    if (POPMODE === 'bar') ctl.append(seg('Bars by', [['viz', 'Page'], ['location', 'Locations']], POPBY, (v) => { POPBY = v; }));
+    head.append(title, ctl, close);
     const body = document.createElement('div'); body.className = 'pop-body';
-    if (rows.length) {
+    let after = null;
+    if (rows.length && POPMODE === 'bar') {
+      const keyOf = (r) => (POPBY === 'viz' ? r.viz : labelOf(r.location));
+      const counts = d3.rollups(rows, (v) => v.length, keyOf).map(([k, n]) => ({k, n}))
+        .sort((a, b) => b.n - a.n || d3.ascending(a.k, b.k));
+      const bw = Math.max(200, el.clientWidth - 44), rh = 36;
+      const bx = d3.scaleLinear([0, d3.max(counts, (c) => c.n)], [0, bw - 80]);
+      const bsvg = d3.create('svg').attr('width', bw).attr('height', counts.length * rh + 4).attr('role', 'img')
+        .attr('aria-label', `Bar chart of the selected views by ${POPBY === 'viz' ? 'page' : 'location'}`);
+      const bg = bsvg.selectAll('g').data(counts).join('g').attr('transform', (c, i) => `translate(0,${i * rh + 4})`);
+      bg.append('text').attr('class', 'barlabel').attr('y', 12).text((c) => c.k);
+      bg.append('rect').attr('y', 17).attr('height', 12).attr('rx', 2).attr('width', (c) => Math.max(2, bx(c.n)))
+        .style('fill', POPBY === 'viz' ? 'var(--c1)' : 'var(--c2)');
+      bg.append('text').attr('class', 'val').attr('x', (c) => Math.max(2, bx(c.n)) + 6).attr('y', 28)
+        .text((c) => `${c.n} (${d3.format('.0%')(c.n / rows.length)})`);
+      body.append(bsvg.node());
+      after = () => bsvg.selectAll('.barlabel').each(function () {
+        let s = this.textContent;
+        while (this.getComputedTextLength() > bw && s.length > 6) { s = s.slice(0, -2); this.textContent = s.trimEnd() + '…'; }
+      });
+    } else if (rows.length) {
       const table = document.createElement('table');
       const hr = table.createTHead().insertRow();
       ['Page', 'Location', 'Date', 'Time'].forEach((h2) => { const th = document.createElement('th'); th.textContent = h2; hr.append(th); });
@@ -438,6 +481,7 @@ function renderTrend() {
     } else body.textContent = 'No views on the selected days with these filters.';
     pop.append(head, body);
     el.appendChild(pop);
+    if (after) after();
   }
 }
 
