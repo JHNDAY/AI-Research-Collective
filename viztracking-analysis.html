@@ -17,7 +17,7 @@
 }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--sans); font-size: 15px; line-height: 1.5; }
-.page { max-width: 1000px; margin: 0 auto; padding: 32px 24px 56px; display: grid; gap: 28px; }
+.page { max-width: 1240px; margin: 0 auto; padding: 32px 24px 56px; display: grid; gap: 28px; }
 .masthead { display: grid; gap: 6px; }
 .masthead h1 { font-family: var(--serif); font-weight: 400; font-size: clamp(28px, 4vw, 38px); margin: 0; line-height: 1.15; }
 .dateline { font-size: 12px; color: var(--muted); display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
@@ -59,6 +59,12 @@ section h2 { font-size: 18px; font-weight: 600; margin: 0; }
 .val { fill: var(--fg); font-size: 12px; font-variant-numeric: tabular-nums; pointer-events: none; }
 .leg { fill: var(--fg); font-size: 12px; }
 .barlabel { fill: var(--fg); font-size: 12px; }
+.quad { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 32px 28px; align-items: start; }
+.quad > section { min-width: 0; }
+.quad > #places { order: 1; }
+.quad > #over-time { order: 2; }
+.quad > #pages { order: 3; }
+.quad > #place-list { order: 4; }
 .scrollbox { box-sizing: border-box; min-height: 0; max-height: 428px; overflow-y: auto; overscroll-behavior: contain; scrollbar-gutter: stable; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 6px 12px 0; }
 .scrollbox.more { overflow-y: scroll; }
 .scrollbox::-webkit-scrollbar { width: 10px; }
@@ -118,7 +124,9 @@ footer { border-top: 1px solid var(--line); padding-top: 10px; font-size: 12px; 
     <button type="button" class="btn" id="f-reset" hidden>Clear filters</button>
   </div>
 
+  <div class="quad">
   <section id="over-time">
+    <h2>Views per day</h2>
     <div class="chart" id="c-trend"></div>
   </section>
 
@@ -141,10 +149,15 @@ footer { border-top: 1px solid var(--line); padding-top: 10px; font-size: 12px; 
       </div>
     </div>
     <div class="chart map" id="c-map"></div>
-    <p class="note">Views by place, most first. The box shows the top 10; scroll it to see the rest. Click a place to focus the page on it.</p>
+  </section>
+
+  <section id="place-list">
+    <h2>Views by place, most first</h2>
+    <p class="note">The box shows the top 10; scroll it to see the rest. Click a place to focus the page on it; Ctrl-click (⌘-click on a Mac) to add or remove more places.</p>
     <div class="chart scrollbox" id="c-places" tabindex="0" aria-label="Views by place, scrollable list"></div>
     <p class="count" id="c-places-count"></p>
   </section>
+  </div>
 
   <footer>Data: the VizTracking Google Sheet, published to the web (Google can take a few minutes to publish new rows). Map positions are approximate city centres.</footer>
 </div>
@@ -161,7 +174,7 @@ const NE_LABELS = [
   {text: 'Atlantic Ocean', lon: -70.72, lat: 42.52, sea: true},
 ];
 
-const S = {viz: [], loc: '', window: 'all', exclude: []};
+const S = {viz: [], loc: [], window: 'all', exclude: []};
 let MAPVIEW = 'us';
 const SEL = new Set();
 let VIEWS = [];
@@ -221,9 +234,9 @@ function cutoff() {
   const last = d3.max(VIEWS, (r) => r.date);
   return win && last ? fmt(d3.utcDay.offset(new Date(last + 'T00:00:00Z'), -(win - 1))) : '';
 }
-function filtered({ignoreViz = false} = {}) {
+function filtered({ignoreViz = false, ignoreLoc = false} = {}) {
   const c = cutoff();
-  return VIEWS.filter((r) => (ignoreViz || !S.viz.length || S.viz.includes(r.viz)) && (!S.loc || r.location === S.loc) &&
+  return VIEWS.filter((r) => (ignoreViz || !S.viz.length || S.viz.includes(r.viz)) && (ignoreLoc || !S.loc.length || S.loc.includes(r.location)) &&
     !S.exclude.includes(r.location) && (!c || (r.date && r.date >= c)));
 }
 function setState(patch) { Object.assign(S, patch); render(); }
@@ -262,8 +275,10 @@ function renderControls() {
   fv.replaceChildren(...vopts);
   fv.value = S.viz.length > 1 ? '__multi' : (S.viz.length === 1 && vizCounts.some(([v]) => v === S.viz[0]) ? S.viz[0] : '');
   const fl = document.getElementById('f-loc');
-  fl.replaceChildren(new Option('All locations', ''), ...locCounts.map(([v]) => new Option(labelOf(v), v)));
-  fl.value = locCounts.some(([v]) => v === S.loc) ? S.loc : '';
+  const lopts = [new Option('All locations', ''), ...locCounts.map(([v]) => new Option(labelOf(v), v))];
+  if (S.loc.length > 1) { const m = new Option(`${S.loc.length} locations selected`, '__multi'); m.disabled = true; lopts.splice(1, 0, m); }
+  fl.replaceChildren(...lopts);
+  fl.value = S.loc.length > 1 ? '__multi' : (S.loc.length === 1 && locCounts.some(([v]) => v === S.loc[0]) ? S.loc[0] : '');
   const fe = document.getElementById('f-excl');
   fe.replaceChildren(new Option(S.exclude.length ? 'Exclude another…' : 'Choose a location…', ''),
     ...locCounts.filter(([v]) => !S.exclude.includes(v)).map(([v, n]) => new Option(`${labelOf(v)} (${n})`, v)));
@@ -277,13 +292,13 @@ function renderControls() {
     b.onclick = () => setState({exclude: S.exclude.filter((e) => e !== loc)});
     return b;
   }));
-  document.getElementById('f-reset').hidden = !(S.viz.length || S.loc || S.exclude.length || S.window !== 'all');
+  document.getElementById('f-reset').hidden = !(S.viz.length || S.loc.length || S.exclude.length || S.window !== 'all');
 }
 document.getElementById('f-viz').onchange = (e) => setState({viz: e.target.value ? [e.target.value] : []});
-document.getElementById('f-loc').onchange = (e) => setState({loc: e.target.value});
+document.getElementById('f-loc').onchange = (e) => setState({loc: e.target.value ? [e.target.value] : []});
 document.getElementById('f-window').onchange = (e) => setState({window: e.target.value});
 document.getElementById('f-excl').onchange = (e) => { if (e.target.value) setState({exclude: [...S.exclude, e.target.value]}); };
-document.getElementById('f-reset').onclick = () => setState({viz: [], loc: '', window: 'all', exclude: []});
+document.getElementById('f-reset').onclick = () => setState({viz: [], loc: [], window: 'all', exclude: []});
 document.getElementById('refresh').onclick = load;
 document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape' && SEL.size) { SEL.clear(); renderTrend(); } });
 document.querySelectorAll('#mapview button').forEach((b) => b.onclick = () => {
@@ -466,8 +481,8 @@ function renderBars() {
 }
 
 /* ---------- maps ---------- */
-function locationData() {
-  return d3.rollups(filtered(), (v) => v.length, (r) => r.location).map(([location, views]) => {
+function locationData({ignoreLoc = false} = {}) {
+  return d3.rollups(filtered({ignoreLoc}), (v) => v.length, (r) => r.location).map(([location, views]) => {
     const c = where.get(location);
     return {location, views, label: labelOf(location), lat: c ? c.lat : null, lon: c ? c.lon : null};
   }).sort((a, b) => b.views - a.views || d3.ascending(a.label, b.label));
@@ -515,23 +530,29 @@ function renderPlaces() {
   const el = document.getElementById('c-places');
   if (!VIEWS.length) { emptyMsg(document.getElementById('c-map'), '—'); emptyMsg(el, '—'); return; }
   renderMap('c-map', MAPVIEW, loc);
-  if (!loc.length) { emptyMsg(el, 'No views match these filters.'); return; }
-  const total = d3.sum(loc, (r) => r.views);
+  const list = locationData({ignoreLoc: true});
+  if (!list.length) { emptyMsg(el, 'No views match these filters.'); return; }
+  const total = d3.sum(list, (r) => r.views);
   const w = Math.max(240, el.clientWidth), rowH = 42;
-  const svg = d3.create('svg').attr('width', w).attr('height', loc.length * rowH).attr('role', 'img')
+  const svg = d3.create('svg').attr('width', w).attr('height', list.length * rowH).attr('role', 'img')
     .attr('aria-label', 'Bar chart of views by place, most first');
   el.replaceChildren(svg.node());
-  rowsBox(el, loc.length, rowH, 'places');
-  const x = d3.scaleLinear([0, d3.max(loc, (r) => r.views)], [0, w - 80]);
+  rowsBox(el, list.length, rowH, 'places');
+  const x = d3.scaleLinear([0, d3.max(list, (r) => r.views)], [0, w - 80]);
   const tip = tipFor(el);
-  const pick = (r) => setState({loc: S.loc === r.location ? '' : r.location});
-  const g = svg.selectAll('g').data(loc).join('g').attr('class', 'bar')
+  const pick = (ev, r) => {
+    const add = ev && (ev.ctrlKey || ev.metaKey);
+    setState({loc: add
+      ? (S.loc.includes(r.location) ? S.loc.filter((v) => v !== r.location) : [...S.loc, r.location])
+      : (S.loc.length === 1 && S.loc[0] === r.location ? [] : [r.location])});
+  };
+  const g = svg.selectAll('g').data(list).join('g').attr('class', 'bar')
     .attr('transform', (r, i) => `translate(0,${i * rowH})`).attr('tabindex', 0).attr('role', 'button')
-    .attr('aria-pressed', (r) => String(S.loc === r.location))
+    .attr('aria-pressed', (r) => String(S.loc.includes(r.location)))
     .attr('aria-label', (r) => `${r.label}: ${r.views} views`)
-    .on('click', (ev, r) => pick(r))
-    .on('keydown', (ev, r) => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); pick(r); } })
-    .on('pointermove', (ev, r) => { const [px, py] = d3.pointer(ev, el); tip.show(`${r.views} view${r.views === 1 ? '' : 's'}`, `${d3.format('.0%')(r.views / total)} of views shown`, px + el.scrollLeft, py + el.scrollTop); })
+    .on('click', (ev, r) => pick(ev, r))
+    .on('keydown', (ev, r) => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); pick(ev, r); } })
+    .on('pointermove', (ev, r) => { const [px, py] = d3.pointer(ev, el); tip.show(`${r.views} view${r.views === 1 ? '' : 's'}`, `${d3.format('.0%')(r.views / total)} of views in the list`, px + el.scrollLeft, py + el.scrollTop); })
     .on('pointerleave', () => tip.hide());
   g.append('rect').attr('width', w).attr('height', rowH).attr('fill', 'transparent');
   g.append('text').attr('class', 'barlabel').attr('y', 15).text((r) => r.label + (r.lat == null ? ' (not on map)' : '')).each(function () {
@@ -539,7 +560,7 @@ function renderPlaces() {
     while (this.getComputedTextLength() > w && s.length > 6) { s = s.slice(0, -2); this.textContent = s.trimEnd() + '…'; }
   });
   g.append('rect').attr('y', 22).attr('height', 13).attr('rx', 2).attr('width', (r) => Math.max(2, x(r.views)))
-    .style('fill', (r) => (!S.loc || S.loc === r.location ? 'var(--c1)' : 'var(--dim)'));
+    .style('fill', (r) => (!S.loc.length || S.loc.includes(r.location) ? 'var(--c1)' : 'var(--dim)'));
   g.append('text').attr('class', 'val').attr('x', (r) => Math.max(2, x(r.views)) + 6).attr('y', 34)
     .text((r) => `${r.views} (${d3.format('.0%')(r.views / total)})`);
 }
