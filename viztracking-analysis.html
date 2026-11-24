@@ -368,7 +368,7 @@ function renderTrend() {
   const brushG = svg.append('g').attr('class', 'brush');
   const dotSets = []; let lx = ml;
   series.forEach((s) => {
-    svg.append('path').datum(data).attr('fill', 'none').style('stroke', s.color).attr('stroke-width', 2)
+    svg.append('path').datum(data).attr('fill', 'none').style('stroke', s.color).attr('stroke-width', 2).style('pointer-events', 'none')
       .attr('d', d3.line((r) => x(r.date), (r) => y(r[s.k])));
     dotSets.push(svg.append('g').selectAll('circle').data(data).join('circle')
       .attr('cx', (r) => x(r.date)).attr('cy', (r) => y(r[s.k])).attr('r', (r) => (SEL.has(key(r, s.k)) ? 6 : 3.5))
@@ -396,7 +396,19 @@ function renderTrend() {
     .on('end', (ev) => {
       if (!ev.sourceEvent) return;
       const se = ev.sourceEvent, add = !!(se.shiftKey || se.metaKey || se.ctrlKey);
-      if (!ev.selection) { if (!add && SEL.size) { SEL.clear(); setTimeout(renderTrend, 0); } return; }
+      if (!ev.selection) {
+        /* a click without dragging: pick the nearest point on either line */
+        const [px, py] = d3.pointer(se, svg.node());
+        let best = null, bd = 14;
+        data.forEach((r) => series.forEach((s) => {
+          if (r[s.k] <= 0) return;
+          const d = Math.hypot(x(r.date) - px, y(r[s.k]) - py);
+          if (d < bd) { bd = d; best = [r, s.k]; }
+        }));
+        if (best) { setTimeout(() => toggle(best[0], best[1]), 0); return; }
+        if (!add && SEL.size) { SEL.clear(); setTimeout(renderTrend, 0); }
+        return;
+      }
       const [[x0, y0], [x1, y1]] = ev.selection;
       if (!add) SEL.clear();
       data.forEach((r) => {
@@ -414,7 +426,7 @@ function renderTrend() {
   series.forEach((s) => {
     svg.append('g').selectAll('circle').data(data.filter((r) => r[s.k] > 0)).join('circle')
       .attr('class', 'hit').attr('cx', (r) => x(r.date)).attr('cy', (r) => y(r[s.k])).attr('r', 11)
-      .attr('fill', 'transparent').style('cursor', 'pointer').attr('tabindex', 0).attr('role', 'button')
+      .attr('fill', 'transparent').style('pointer-events', 'none').attr('tabindex', 0).attr('role', 'button')
       .attr('aria-pressed', (r) => String(SEL.has(key(r, s.k))))
       .attr('aria-label', (r) => `${s.label}: ${r[s.k]} views on ${d3.utcFormat('%b %-d')(r.date)}`)
       .on('pointermove', (ev, r) => showTip(r)).on('pointerleave', hideTip)
