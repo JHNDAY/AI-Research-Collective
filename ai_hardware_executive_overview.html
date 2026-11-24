@@ -369,6 +369,54 @@
             th, td { padding: 7px; }
         }
 
+
+        /* ===== NVIDIA HISTORY ===== */
+        .nv-talk { max-width: 1150px; }
+        .nv-kicker { text-align:center; font-family:'Courier Prime','Courier New',monospace; letter-spacing:.14em; text-transform:uppercase; font-size:.9em; color:var(--gold); font-weight:700; }
+        h2.nv-headline { text-align:center; font-size:2.5em; border-top:none; border-bottom:none; margin:6px 0 4px; padding:0; line-height:1.15; }
+        .nv-deck { text-align:center; font-style:italic; font-size:1.2em; color:var(--muted); max-width:820px; margin:0 auto 22px; padding-bottom:16px; border-bottom:4px double var(--navy); }
+        .nv-points { list-style:none; margin:0 0 30px; padding:0; }
+        .nv-points li { display:grid; grid-template-columns:120px 1fr; gap:22px; align-items:baseline; padding:14px 0; border-bottom:1px dotted #b9a97f; font-size:1.2em; line-height:1.5; }
+        .nv-points li:last-child { border-bottom:none; }
+        .nv-yr { font-family:'Playfair Display',Georgia,serif; font-weight:900; font-size:1.45em; color:var(--navy); text-align:right; border-right:3px solid var(--gold); padding-right:16px; }
+        .nv-points strong { font-family:'Playfair Display',Georgia,serif; color:var(--navy); }
+        .nv-figure-wrap { border-top:3px solid var(--navy); border-bottom:3px solid var(--navy); padding:18px 0 14px; margin:10px 0 30px; }
+        .nv-figure-title { text-align:center; font-family:'Playfair Display',Georgia,serif; font-size:1.8em; font-weight:900; color:var(--navy); margin-bottom:8px; }
+        .nv-figure { width:100%; height:auto; display:block; }
+        .nv-figure-cap { font-size:1.1em; line-height:1.6; max-width:900px; margin:14px auto 0; text-align:center; font-style:italic; color:var(--muted); }
+        .nv-questions { background:var(--cream); border-left:5px solid var(--gold); padding:18px 24px; margin-bottom:24px; }
+        .nv-questions-title { font-family:'Playfair Display',Georgia,serif; font-size:1.5em; font-weight:900; color:var(--navy); margin-bottom:8px; }
+        .nv-questions ol { margin-left:24px; font-size:1.15em; line-height:1.7; }
+        .nv-cosmic { position:relative; color:var(--cream); padding:30px 34px 26px; margin:0 0 30px; border-top:4px double var(--gold); border-bottom:4px double var(--gold);
+            background:
+              radial-gradient(1.5px 1.5px at 8% 18%, #fff 50%, transparent 51%),
+              radial-gradient(1px 1px at 22% 72%, #f4ecd8 50%, transparent 51%),
+              radial-gradient(1.5px 1.5px at 37% 30%, #d4b56a 50%, transparent 51%),
+              radial-gradient(1px 1px at 51% 85%, #fff 50%, transparent 51%),
+              radial-gradient(2px 2px at 64% 14%, #f4ecd8 50%, transparent 51%),
+              radial-gradient(1px 1px at 78% 60%, #d4b56a 50%, transparent 51%),
+              radial-gradient(1.5px 1.5px at 91% 26%, #fff 50%, transparent 51%),
+              radial-gradient(1px 1px at 86% 90%, #f4ecd8 50%, transparent 51%),
+              radial-gradient(1px 1px at 4% 88%, #d4b56a 50%, transparent 51%),
+              radial-gradient(ellipse at 70% 0%, #2c3e63 0%, transparent 60%),
+              var(--navy); }
+        .nv-cosmic-kicker { text-align:center; font-family:'Courier Prime','Courier New',monospace; letter-spacing:.16em; text-transform:uppercase; font-size:.85em; color:var(--gold-soft); font-weight:700; }
+        .nv-cosmic-title { text-align:center; font-family:'Playfair Display',Georgia,serif; font-style:italic; font-weight:900; font-size:2.6em; color:var(--cream); margin:4px 0 12px; }
+        .nv-cosmic-lede, .nv-cosmic-close { font-size:1.18em; line-height:1.65; max-width:900px; margin:0 auto 18px; text-align:center; }
+        .nv-cosmic-lede em { color:var(--gold-soft); font-style:normal; font-weight:700; }
+        .nv-cosmic-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:0; margin:0 0 18px; }
+        .nv-cosmic-grid > div { padding:4px 22px; border-right:1px solid rgba(212,181,106,.45); font-size:1.08em; line-height:1.55; }
+        .nv-cosmic-grid > div:last-child { border-right:none; }
+        .nv-cosmic-tag { display:block; font-family:'Playfair Display',Georgia,serif; font-weight:900; font-size:1.2em; color:var(--gold-soft); margin-bottom:4px; }
+        .nv-cosmic-quote { text-align:center; font-family:'Playfair Display',Georgia,serif; font-style:italic; font-size:1.5em; color:var(--cream); margin:8px 0 0; }
+        .nv-cosmic-quote cite { display:block; font-family:'Courier Prime','Courier New',monospace; font-style:normal; font-size:.55em; letter-spacing:.1em; color:var(--gold-soft); margin-top:6px; }
+        @media (max-width: 768px) { .nv-cosmic { padding:22px 16px; } .nv-cosmic-grid > div { border-right:none; padding:8px 0; } }
+        .note a { color:#7a5a14; }
+        @media (max-width: 768px) {
+            .nv-points li { grid-template-columns:64px 1fr; gap:12px; font-size:1.05em; }
+            .nv-yr { font-size:1.1em; padding-right:10px; }
+        }
+
         /* Map styles (retained) */
         .map-wrapper { background: var(--paper); border: 1px solid var(--navy); overflow: hidden; width: 100%; height: 700px; flex: 1; }
         #datacenters-map { width: 100%; height: 100%; }
@@ -398,6 +446,7 @@
             <div style="flex-basis: 100%; height: 0;"></div>
             <button class="toggle-btn active" onclick="showSection('glance', event)">👁️ At a Glance</button>
             <button class="toggle-btn" onclick="showSection('components', event)">🔧 AI Hardware Guide</button>
+            <button class="toggle-btn" onclick="showSection('nvidia', event)">🎮 NVIDIA: Gaming to AI</button>
             <div style="flex-basis: 100%; height: 0;"></div>
             <button class="toggle-btn" onclick="showSection('details', event)">📋 See Details</button>
             <button class="toggle-btn" onclick="showSection('gozinta', event)">🔄 The Gozintas & Gozoutas</button>
@@ -1451,6 +1500,403 @@
         </div>
     </div>
     
+    <!-- ===== NVIDIA HISTORY SECTION ===== -->
+    <div id="nvidia" class="content-section">
+        <div class="container nv-talk">
+            <div class="nv-kicker">Talking Points &middot; Current Events</div>
+            <h2 class="nv-headline">NVIDIA: From Video Games to the Engine of AI</h2>
+            <p class="nv-deck">A graphics-card company for gamers became the world&rsquo;s most valuable company. How did that happen?</p>
+
+            <ol class="nv-points">
+                <li><span class="nv-yr">1993</span><div><strong>It started with games.</strong> Three engineers founded NVIDIA to make 3D video games look real on home PCs.</div></li>
+                <li><span class="nv-yr">1999</span><div><strong>It named the &ldquo;GPU.&rdquo;</strong> A graphics chip does thousands of small calculations at the same time, one for each dot (pixel) on the screen.</div></li>
+                <li><span class="nv-yr">2006</span><div><strong>It made a costly bet.</strong> CUDA software let scientists use those gaming chips for any kind of math. Wall Street doubted it would pay off.</div></li>
+                <li><span class="nv-yr">2012</span><div><strong>AI found the chip.</strong> Researchers trained a breakthrough image-recognition AI (AlexNet) on two ordinary gaming cards. Modern AI took off from there.</div></li>
+                <li><span class="nv-yr">2022</span><div><strong>ChatGPT changed everything.</strong> Demand for NVIDIA&rsquo;s AI chips soared, and data-center sales passed gaming sales for the first time.</div></li>
+                <li><span class="nv-yr">2025</span><div><strong>The first $5 trillion company.</strong> NVIDIA reached that value in October 2025. In 2026 it began shipping Vera Rubin, which it sells as a complete &ldquo;AI factory&rdquo; rather than a single chip.</div></li>
+            </ol>
+
+            <div class="nv-figure-wrap">
+                <div class="nv-figure-title">Why a Gaming Chip Is Good at AI</div>
+<svg class="nv-figure" viewBox="0 0 1100 500" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="nvfigT nvfigD">
+<title id="nvfigT">Same math, same chip: game pixels and neural network weights</title>
+<desc id="nvfigD">On the left, a video game screen is made of pixels, and each pixel color is computed with a small multiply-and-add formula. In the middle, a GPU with thousands of small cores does those calculations all at once. On the right, a neural network: each neuron multiplies its inputs by weights and adds them up, the same kind of calculation.</desc>
+<defs><marker id="nvArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#b8902f"/></marker></defs>
+<text x="190" y="34" text-anchor="middle" font-family="'Courier Prime', 'Courier New', monospace" font-size="15" font-weight="700" letter-spacing="2" fill="#b8902f">1  GAMING</text>
+<text x="190" y="60" text-anchor="middle" font-family="'Playfair Display', Georgia, serif" font-size="21" font-weight="700" fill="#1b2a4a">Color every pixel</text>
+<text x="550" y="34" text-anchor="middle" font-family="'Courier Prime', 'Courier New', monospace" font-size="15" font-weight="700" letter-spacing="2" fill="#b8902f">2  THE SAME CHIP</text>
+<text x="550" y="60" text-anchor="middle" font-family="'Playfair Display', Georgia, serif" font-size="21" font-weight="700" fill="#1b2a4a">A GPU</text>
+<text x="910" y="34" text-anchor="middle" font-family="'Courier Prime', 'Courier New', monospace" font-size="15" font-weight="700" letter-spacing="2" fill="#b8902f">3  ARTIFICIAL INTELLIGENCE</text>
+<text x="910" y="60" text-anchor="middle" font-family="'Playfair Display', Georgia, serif" font-size="21" font-weight="700" fill="#1b2a4a">Weigh every connection</text>
+<rect x="34" y="74" width="312" height="212" fill="#1b2a4a"/>
+<rect x="40" y="80" width="19" height="19" fill="#8fb0d4"/>
+<rect x="60" y="80" width="19" height="19" fill="#8fb0d4"/>
+<rect x="80" y="80" width="19" height="19" fill="#8fb0d4"/>
+<rect x="100" y="80" width="19" height="19" fill="#8fb0d4"/>
+<rect x="120" y="80" width="19" height="19" fill="#8fb0d4"/>
+<rect x="140" y="80" width="19" height="19" fill="#8fb0d4"/>
+<rect x="160" y="80" width="19" height="19" fill="#8fb0d4"/>
+<rect x="180" y="80" width="19" height="19" fill="#8fb0d4"/>
+<rect x="200" y="80" width="19" height="19" fill="#8fb0d4"/>
+<rect x="220" y="80" width="19" height="19" fill="#8fb0d4"/>
+<rect x="240" y="80" width="19" height="19" fill="#8fb0d4"/>
+<rect x="260" y="80" width="19" height="19" fill="#8fb0d4"/>
+<rect x="280" y="80" width="19" height="19" fill="#8fb0d4"/>
+<rect x="300" y="80" width="19" height="19" fill="#8fb0d4"/>
+<rect x="320" y="80" width="19" height="19" fill="#8fb0d4"/>
+<rect x="40" y="100" width="19" height="19" fill="#9db6ce"/>
+<rect x="60" y="100" width="19" height="19" fill="#9db6ce"/>
+<rect x="80" y="100" width="19" height="19" fill="#9db6ce"/>
+<rect x="100" y="100" width="19" height="19" fill="#9db6ce"/>
+<rect x="120" y="100" width="19" height="19" fill="#9db6ce"/>
+<rect x="140" y="100" width="19" height="19" fill="#9db6ce"/>
+<rect x="160" y="100" width="19" height="19" fill="#9db6ce"/>
+<rect x="180" y="100" width="19" height="19" fill="#9db6ce"/>
+<rect x="200" y="100" width="19" height="19" fill="#9db6ce"/>
+<rect x="220" y="100" width="19" height="19" fill="#9db6ce"/>
+<rect x="240" y="100" width="19" height="19" fill="#9db6ce"/>
+<rect x="260" y="100" width="19" height="19" fill="#f7e08a"/>
+<rect x="280" y="100" width="19" height="19" fill="#f7e08a"/>
+<rect x="300" y="100" width="19" height="19" fill="#f7e08a"/>
+<rect x="320" y="100" width="19" height="19" fill="#9db6ce"/>
+<rect x="40" y="120" width="19" height="19" fill="#abbcc7"/>
+<rect x="60" y="120" width="19" height="19" fill="#abbcc7"/>
+<rect x="80" y="120" width="19" height="19" fill="#abbcc7"/>
+<rect x="100" y="120" width="19" height="19" fill="#abbcc7"/>
+<rect x="120" y="120" width="19" height="19" fill="#abbcc7"/>
+<rect x="140" y="120" width="19" height="19" fill="#abbcc7"/>
+<rect x="160" y="120" width="19" height="19" fill="#abbcc7"/>
+<rect x="180" y="120" width="19" height="19" fill="#abbcc7"/>
+<rect x="200" y="120" width="19" height="19" fill="#abbcc7"/>
+<rect x="220" y="120" width="19" height="19" fill="#abbcc7"/>
+<rect x="240" y="120" width="19" height="19" fill="#abbcc7"/>
+<rect x="260" y="120" width="19" height="19" fill="#f7e08a"/>
+<rect x="280" y="120" width="19" height="19" fill="#f7e08a"/>
+<rect x="300" y="120" width="19" height="19" fill="#f7e08a"/>
+<rect x="320" y="120" width="19" height="19" fill="#abbcc7"/>
+<rect x="40" y="140" width="19" height="19" fill="#b9c2c1"/>
+<rect x="60" y="140" width="19" height="19" fill="#b9c2c1"/>
+<rect x="80" y="140" width="19" height="19" fill="#b9c2c1"/>
+<rect x="100" y="140" width="19" height="19" fill="#b9c2c1"/>
+<rect x="120" y="140" width="19" height="19" fill="#eef2f6"/>
+<rect x="140" y="140" width="19" height="19" fill="#b9c2c1"/>
+<rect x="160" y="140" width="19" height="19" fill="#b9c2c1"/>
+<rect x="180" y="140" width="19" height="19" fill="#b9c2c1"/>
+<rect x="200" y="140" width="19" height="19" fill="#b9c2c1"/>
+<rect x="220" y="140" width="19" height="19" fill="#b9c2c1"/>
+<rect x="240" y="140" width="19" height="19" fill="#b9c2c1"/>
+<rect x="260" y="140" width="19" height="19" fill="#b9c2c1"/>
+<rect x="280" y="140" width="19" height="19" fill="#f7e08a"/>
+<rect x="300" y="140" width="19" height="19" fill="#b9c2c1"/>
+<rect x="320" y="140" width="19" height="19" fill="#b9c2c1"/>
+<rect x="40" y="160" width="19" height="19" fill="#c6c7bb"/>
+<rect x="60" y="160" width="19" height="19" fill="#c6c7bb"/>
+<rect x="80" y="160" width="19" height="19" fill="#c6c7bb"/>
+<rect x="100" y="160" width="19" height="19" fill="#eef2f6"/>
+<rect x="120" y="160" width="19" height="19" fill="#5b6b86"/>
+<rect x="140" y="160" width="19" height="19" fill="#eef2f6"/>
+<rect x="160" y="160" width="19" height="19" fill="#c6c7bb"/>
+<rect x="180" y="160" width="19" height="19" fill="#c6c7bb"/>
+<rect x="200" y="160" width="19" height="19" fill="#c6c7bb"/>
+<rect x="220" y="160" width="19" height="19" fill="#c6c7bb"/>
+<rect x="240" y="160" width="19" height="19" fill="#c6c7bb"/>
+<rect x="260" y="160" width="19" height="19" fill="#c6c7bb"/>
+<rect x="280" y="160" width="19" height="19" fill="#c6c7bb"/>
+<rect x="300" y="160" width="19" height="19" fill="#c6c7bb"/>
+<rect x="320" y="160" width="19" height="19" fill="#c6c7bb"/>
+<rect x="40" y="180" width="19" height="19" fill="#d4cdb5"/>
+<rect x="60" y="180" width="19" height="19" fill="#d4cdb5"/>
+<rect x="80" y="180" width="19" height="19" fill="#eef2f6"/>
+<rect x="100" y="180" width="19" height="19" fill="#5b6b86"/>
+<rect x="120" y="180" width="19" height="19" fill="#5b6b86"/>
+<rect x="140" y="180" width="19" height="19" fill="#5b6b86"/>
+<rect x="160" y="180" width="19" height="19" fill="#eef2f6"/>
+<rect x="180" y="180" width="19" height="19" fill="#d4cdb5"/>
+<rect x="200" y="180" width="19" height="19" fill="#d4cdb5"/>
+<rect x="220" y="180" width="19" height="19" fill="#eef2f6"/>
+<rect x="240" y="180" width="19" height="19" fill="#eef2f6"/>
+<rect x="260" y="180" width="19" height="19" fill="#d4cdb5"/>
+<rect x="280" y="180" width="19" height="19" fill="#d4cdb5"/>
+<rect x="300" y="180" width="19" height="19" fill="#d4cdb5"/>
+<rect x="320" y="180" width="19" height="19" fill="#d4cdb5"/>
+<rect x="40" y="200" width="19" height="19" fill="#e2d3ae"/>
+<rect x="60" y="200" width="19" height="19" fill="#e2d3ae"/>
+<rect x="80" y="200" width="19" height="19" fill="#5b6b86"/>
+<rect x="100" y="200" width="19" height="19" fill="#5b6b86"/>
+<rect x="120" y="200" width="19" height="19" fill="#5b6b86"/>
+<rect x="140" y="200" width="19" height="19" fill="#5b6b86"/>
+<rect x="160" y="200" width="19" height="19" fill="#6f7f99"/>
+<rect x="180" y="200" width="19" height="19" fill="#e2d3ae"/>
+<rect x="200" y="200" width="19" height="19" fill="#eef2f6"/>
+<rect x="220" y="200" width="19" height="19" fill="#6f7f99"/>
+<rect x="240" y="200" width="19" height="19" fill="#6f7f99"/>
+<rect x="260" y="200" width="19" height="19" fill="#eef2f6"/>
+<rect x="280" y="200" width="19" height="19" fill="#e2d3ae"/>
+<rect x="300" y="200" width="19" height="19" fill="#3d5a3a"/>
+<rect x="320" y="200" width="19" height="19" fill="#e2d3ae"/>
+<rect x="40" y="220" width="19" height="19" fill="#f0d9a8"/>
+<rect x="60" y="220" width="19" height="19" fill="#eef2f6"/>
+<rect x="80" y="220" width="19" height="19" fill="#5b6b86"/>
+<rect x="100" y="220" width="19" height="19" fill="#5b6b86"/>
+<rect x="120" y="220" width="19" height="19" fill="#5b6b86"/>
+<rect x="140" y="220" width="19" height="19" fill="#5b6b86"/>
+<rect x="160" y="220" width="19" height="19" fill="#6f7f99"/>
+<rect x="180" y="220" width="19" height="19" fill="#eef2f6"/>
+<rect x="200" y="220" width="19" height="19" fill="#6f7f99"/>
+<rect x="220" y="220" width="19" height="19" fill="#6f7f99"/>
+<rect x="240" y="220" width="19" height="19" fill="#6f7f99"/>
+<rect x="260" y="220" width="19" height="19" fill="#6f7f99"/>
+<rect x="280" y="220" width="19" height="19" fill="#eef2f6"/>
+<rect x="300" y="220" width="19" height="19" fill="#3d5a3a"/>
+<rect x="320" y="220" width="19" height="19" fill="#f0d9a8"/>
+<rect x="40" y="240" width="19" height="19" fill="#4f7a3f"/>
+<rect x="60" y="240" width="19" height="19" fill="#4f7a3f"/>
+<rect x="80" y="240" width="19" height="19" fill="#4f7a3f"/>
+<rect x="100" y="240" width="19" height="19" fill="#4f7a3f"/>
+<rect x="120" y="240" width="19" height="19" fill="#4f7a3f"/>
+<rect x="140" y="240" width="19" height="19" fill="#4f7a3f"/>
+<rect x="160" y="240" width="19" height="19" fill="#4f7a3f"/>
+<rect x="180" y="240" width="19" height="19" fill="#4f7a3f"/>
+<rect x="200" y="240" width="19" height="19" fill="#4f7a3f"/>
+<rect x="220" y="240" width="19" height="19" fill="#4f7a3f"/>
+<rect x="240" y="240" width="19" height="19" fill="#4f7a3f"/>
+<rect x="260" y="240" width="19" height="19" fill="#4f7a3f"/>
+<rect x="280" y="240" width="19" height="19" fill="#4f7a3f"/>
+<rect x="300" y="240" width="19" height="19" fill="#6b4a2b"/>
+<rect x="320" y="240" width="19" height="19" fill="#4f7a3f"/>
+<rect x="40" y="260" width="19" height="19" fill="#3d5a3a"/>
+<rect x="60" y="260" width="19" height="19" fill="#3d5a3a"/>
+<rect x="80" y="260" width="19" height="19" fill="#3d5a3a"/>
+<rect x="100" y="260" width="19" height="19" fill="#3d5a3a"/>
+<rect x="120" y="260" width="19" height="19" fill="#3d5a3a"/>
+<rect x="140" y="260" width="19" height="19" fill="#3d5a3a"/>
+<rect x="160" y="260" width="19" height="19" fill="#3d5a3a"/>
+<rect x="180" y="260" width="19" height="19" fill="#3d5a3a"/>
+<rect x="200" y="260" width="19" height="19" fill="#3d5a3a"/>
+<rect x="220" y="260" width="19" height="19" fill="#3d5a3a"/>
+<rect x="240" y="260" width="19" height="19" fill="#3d5a3a"/>
+<rect x="260" y="260" width="19" height="19" fill="#3d5a3a"/>
+<rect x="280" y="260" width="19" height="19" fill="#3d5a3a"/>
+<rect x="300" y="260" width="19" height="19" fill="#3d5a3a"/>
+<rect x="320" y="260" width="19" height="19" fill="#3d5a3a"/>
+<rect x="118" y="158" width="23" height="23" fill="none" stroke="#b8902f" stroke-width="3.5"/>
+<line x1="130.0" y1="182" x2="130.0" y2="318" stroke="#b8902f" stroke-width="2"/>
+<rect x="40" y="318" width="300" height="62" fill="#f4ecd8" stroke="#b8902f" stroke-width="1.5"/>
+<text x="190" y="342" text-anchor="middle" font-family="'Playfair Display', Georgia, serif" font-size="16" font-weight="700" fill="#1b2a4a">one pixel =</text>
+<text x="190" y="366" text-anchor="middle" font-family="'Courier Prime', 'Courier New', monospace" font-size="16" fill="#1b2a4a">light × color + shade</text>
+<text x="190" y="404" text-anchor="middle" font-family="'Courier Prime', 'Courier New', monospace" font-size="13" fill="#5c5546">8.3 million pixels on a 4K screen,</text>
+<text x="190" y="421" text-anchor="middle" font-family="'Courier Prime', 'Courier New', monospace" font-size="13" fill="#5c5546">redrawn 60 times every second</text>
+<rect x="438" y="109" width="12" height="6" fill="#b8902f"/><rect x="650" y="109" width="12" height="6" fill="#b8902f"/>
+<rect x="464" y="83" width="6" height="12" fill="#b8902f"/><rect x="464" y="295" width="6" height="12" fill="#b8902f"/>
+<rect x="438" y="130" width="12" height="6" fill="#b8902f"/><rect x="650" y="130" width="12" height="6" fill="#b8902f"/>
+<rect x="485" y="83" width="6" height="12" fill="#b8902f"/><rect x="485" y="295" width="6" height="12" fill="#b8902f"/>
+<rect x="438" y="151" width="12" height="6" fill="#b8902f"/><rect x="650" y="151" width="12" height="6" fill="#b8902f"/>
+<rect x="506" y="83" width="6" height="12" fill="#b8902f"/><rect x="506" y="295" width="6" height="12" fill="#b8902f"/>
+<rect x="438" y="172" width="12" height="6" fill="#b8902f"/><rect x="650" y="172" width="12" height="6" fill="#b8902f"/>
+<rect x="527" y="83" width="6" height="12" fill="#b8902f"/><rect x="527" y="295" width="6" height="12" fill="#b8902f"/>
+<rect x="438" y="193" width="12" height="6" fill="#b8902f"/><rect x="650" y="193" width="12" height="6" fill="#b8902f"/>
+<rect x="548" y="83" width="6" height="12" fill="#b8902f"/><rect x="548" y="295" width="6" height="12" fill="#b8902f"/>
+<rect x="438" y="214" width="12" height="6" fill="#b8902f"/><rect x="650" y="214" width="12" height="6" fill="#b8902f"/>
+<rect x="569" y="83" width="6" height="12" fill="#b8902f"/><rect x="569" y="295" width="6" height="12" fill="#b8902f"/>
+<rect x="438" y="235" width="12" height="6" fill="#b8902f"/><rect x="650" y="235" width="12" height="6" fill="#b8902f"/>
+<rect x="590" y="83" width="6" height="12" fill="#b8902f"/><rect x="590" y="295" width="6" height="12" fill="#b8902f"/>
+<rect x="438" y="256" width="12" height="6" fill="#b8902f"/><rect x="650" y="256" width="12" height="6" fill="#b8902f"/>
+<rect x="611" y="83" width="6" height="12" fill="#b8902f"/><rect x="611" y="295" width="6" height="12" fill="#b8902f"/>
+<rect x="438" y="277" width="12" height="6" fill="#b8902f"/><rect x="650" y="277" width="12" height="6" fill="#b8902f"/>
+<rect x="632" y="83" width="6" height="12" fill="#b8902f"/><rect x="632" y="295" width="6" height="12" fill="#b8902f"/>
+<rect x="450" y="95" width="200" height="200" fill="#1b2a4a"/>
+<rect x="463.5" y="108.5" width="14.6" height="14.6" fill="#f4ecd8" opacity="0.9"/>
+<rect x="481.1" y="108.5" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="498.7" y="108.5" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="516.3" y="108.5" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="533.9" y="108.5" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="551.5" y="108.5" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="569.1" y="108.5" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="586.7" y="108.5" width="14.6" height="14.6" fill="#f4ecd8" opacity="0.9"/>
+<rect x="604.3" y="108.5" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="621.9" y="108.5" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="463.5" y="126.1" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="481.1" y="126.1" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="498.7" y="126.1" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="516.3" y="126.1" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="533.9" y="126.1" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="551.5" y="126.1" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="569.1" y="126.1" width="14.6" height="14.6" fill="#f4ecd8" opacity="0.9"/>
+<rect x="586.7" y="126.1" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="604.3" y="126.1" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="621.9" y="126.1" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="463.5" y="143.7" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="481.1" y="143.7" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="498.7" y="143.7" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="516.3" y="143.7" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="533.9" y="143.7" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="551.5" y="143.7" width="14.6" height="14.6" fill="#f4ecd8" opacity="0.9"/>
+<rect x="569.1" y="143.7" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="586.7" y="143.7" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="604.3" y="143.7" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="621.9" y="143.7" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="463.5" y="161.3" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="481.1" y="161.3" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="498.7" y="161.3" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="516.3" y="161.3" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="533.9" y="161.3" width="14.6" height="14.6" fill="#f4ecd8" opacity="0.9"/>
+<rect x="551.5" y="161.3" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="569.1" y="161.3" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="586.7" y="161.3" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="604.3" y="161.3" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="621.9" y="161.3" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="463.5" y="178.9" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="481.1" y="178.9" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="498.7" y="178.9" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="516.3" y="178.9" width="14.6" height="14.6" fill="#f4ecd8" opacity="0.9"/>
+<rect x="533.9" y="178.9" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="551.5" y="178.9" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="569.1" y="178.9" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="586.7" y="178.9" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="604.3" y="178.9" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="621.9" y="178.9" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="463.5" y="196.5" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="481.1" y="196.5" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="498.7" y="196.5" width="14.6" height="14.6" fill="#f4ecd8" opacity="0.9"/>
+<rect x="516.3" y="196.5" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="533.9" y="196.5" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="551.5" y="196.5" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="569.1" y="196.5" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="586.7" y="196.5" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="604.3" y="196.5" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="621.9" y="196.5" width="14.6" height="14.6" fill="#f4ecd8" opacity="0.9"/>
+<rect x="463.5" y="214.1" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="481.1" y="214.1" width="14.6" height="14.6" fill="#f4ecd8" opacity="0.9"/>
+<rect x="498.7" y="214.1" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="516.3" y="214.1" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="533.9" y="214.1" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="551.5" y="214.1" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="569.1" y="214.1" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="586.7" y="214.1" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="604.3" y="214.1" width="14.6" height="14.6" fill="#f4ecd8" opacity="0.9"/>
+<rect x="621.9" y="214.1" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="463.5" y="231.7" width="14.6" height="14.6" fill="#f4ecd8" opacity="0.9"/>
+<rect x="481.1" y="231.7" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="498.7" y="231.7" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="516.3" y="231.7" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="533.9" y="231.7" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="551.5" y="231.7" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="569.1" y="231.7" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="586.7" y="231.7" width="14.6" height="14.6" fill="#f4ecd8" opacity="0.9"/>
+<rect x="604.3" y="231.7" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="621.9" y="231.7" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="463.5" y="249.3" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="481.1" y="249.3" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="498.7" y="249.3" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="516.3" y="249.3" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="533.9" y="249.3" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="551.5" y="249.3" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="569.1" y="249.3" width="14.6" height="14.6" fill="#f4ecd8" opacity="0.9"/>
+<rect x="586.7" y="249.3" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="604.3" y="249.3" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="621.9" y="249.3" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="463.5" y="266.9" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="481.1" y="266.9" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="498.7" y="266.9" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="516.3" y="266.9" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="533.9" y="266.9" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="551.5" y="266.9" width="14.6" height="14.6" fill="#f4ecd8" opacity="0.9"/>
+<rect x="569.1" y="266.9" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="586.7" y="266.9" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="604.3" y="266.9" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<rect x="621.9" y="266.9" width="14.6" height="14.6" fill="#d4b56a" opacity="0.9"/>
+<text x="550" y="338" text-anchor="middle" font-family="'Playfair Display', Georgia, serif" font-size="16" font-weight="700" fill="#1b2a4a">thousands of small cores</text>
+<text x="550" y="360" text-anchor="middle" font-family="'Courier Prime', 'Courier New', monospace" font-size="14" fill="#1b2a4a">each does one tiny</text>
+<text x="550" y="378" text-anchor="middle" font-family="'Courier Prime', 'Courier New', monospace" font-size="14" fill="#1b2a4a">multiply-and-add,</text>
+<text x="550" y="396" text-anchor="middle" font-family="'Courier Prime', 'Courier New', monospace" font-size="14" fill="#1b2a4a">all at the same time</text>
+<line x1="350" y1="180" x2="428" y2="180" stroke="#b8902f" stroke-width="3" marker-end="url(#nvArrow)"/>
+<line x1="672" y1="180" x2="750" y2="180" stroke="#b8902f" stroke-width="3" marker-end="url(#nvArrow)"/>
+<text x="389" y="170" text-anchor="middle" font-family="'Courier Prime', 'Courier New', monospace" font-size="11" fill="#5c5546">1999</text>
+<text x="711" y="170" text-anchor="middle" font-family="'Courier Prime', 'Courier New', monospace" font-size="11" fill="#5c5546">2012</text>
+<line x1="790" y1="100" x2="910" y2="125" stroke="#1b2a4a" stroke-opacity="0.22" stroke-width="1.2"/>
+<line x1="790" y1="100" x2="910" y2="225" stroke="#1b2a4a" stroke-opacity="0.22" stroke-width="1.2"/>
+<line x1="790" y1="100" x2="910" y2="275" stroke="#1b2a4a" stroke-opacity="0.22" stroke-width="1.2"/>
+<line x1="790" y1="150" x2="910" y2="125" stroke="#1b2a4a" stroke-opacity="0.22" stroke-width="1.2"/>
+<line x1="790" y1="150" x2="910" y2="225" stroke="#1b2a4a" stroke-opacity="0.22" stroke-width="1.2"/>
+<line x1="790" y1="150" x2="910" y2="275" stroke="#1b2a4a" stroke-opacity="0.22" stroke-width="1.2"/>
+<line x1="790" y1="200" x2="910" y2="125" stroke="#1b2a4a" stroke-opacity="0.22" stroke-width="1.2"/>
+<line x1="790" y1="200" x2="910" y2="225" stroke="#1b2a4a" stroke-opacity="0.22" stroke-width="1.2"/>
+<line x1="790" y1="200" x2="910" y2="275" stroke="#1b2a4a" stroke-opacity="0.22" stroke-width="1.2"/>
+<line x1="790" y1="250" x2="910" y2="125" stroke="#1b2a4a" stroke-opacity="0.22" stroke-width="1.2"/>
+<line x1="790" y1="250" x2="910" y2="225" stroke="#1b2a4a" stroke-opacity="0.22" stroke-width="1.2"/>
+<line x1="790" y1="250" x2="910" y2="275" stroke="#1b2a4a" stroke-opacity="0.22" stroke-width="1.2"/>
+<line x1="790" y1="300" x2="910" y2="125" stroke="#1b2a4a" stroke-opacity="0.22" stroke-width="1.2"/>
+<line x1="790" y1="300" x2="910" y2="225" stroke="#1b2a4a" stroke-opacity="0.22" stroke-width="1.2"/>
+<line x1="790" y1="300" x2="910" y2="275" stroke="#1b2a4a" stroke-opacity="0.22" stroke-width="1.2"/>
+<line x1="910" y1="125" x2="1030" y2="150" stroke="#1b2a4a" stroke-opacity="0.22" stroke-width="1.2"/>
+<line x1="910" y1="125" x2="1030" y2="200" stroke="#1b2a4a" stroke-opacity="0.22" stroke-width="1.2"/>
+<line x1="910" y1="125" x2="1030" y2="250" stroke="#1b2a4a" stroke-opacity="0.22" stroke-width="1.2"/>
+<line x1="910" y1="175" x2="1030" y2="150" stroke="#1b2a4a" stroke-opacity="0.22" stroke-width="1.2"/>
+<line x1="910" y1="175" x2="1030" y2="200" stroke="#1b2a4a" stroke-opacity="0.22" stroke-width="1.2"/>
+<line x1="910" y1="175" x2="1030" y2="250" stroke="#1b2a4a" stroke-opacity="0.22" stroke-width="1.2"/>
+<line x1="910" y1="225" x2="1030" y2="150" stroke="#1b2a4a" stroke-opacity="0.22" stroke-width="1.2"/>
+<line x1="910" y1="225" x2="1030" y2="200" stroke="#1b2a4a" stroke-opacity="0.22" stroke-width="1.2"/>
+<line x1="910" y1="225" x2="1030" y2="250" stroke="#1b2a4a" stroke-opacity="0.22" stroke-width="1.2"/>
+<line x1="910" y1="275" x2="1030" y2="150" stroke="#1b2a4a" stroke-opacity="0.22" stroke-width="1.2"/>
+<line x1="910" y1="275" x2="1030" y2="200" stroke="#1b2a4a" stroke-opacity="0.22" stroke-width="1.2"/>
+<line x1="910" y1="275" x2="1030" y2="250" stroke="#1b2a4a" stroke-opacity="0.22" stroke-width="1.2"/>
+<line x1="790" y1="100" x2="910" y2="175" stroke="#b8902f" stroke-width="2.6"/>
+<line x1="790" y1="150" x2="910" y2="175" stroke="#b8902f" stroke-width="2.6"/>
+<line x1="790" y1="200" x2="910" y2="175" stroke="#b8902f" stroke-width="2.6"/>
+<line x1="790" y1="250" x2="910" y2="175" stroke="#b8902f" stroke-width="2.6"/>
+<line x1="790" y1="300" x2="910" y2="175" stroke="#b8902f" stroke-width="2.6"/>
+<circle cx="790" cy="100" r="12" fill="#fbf7ec" stroke="#1b2a4a" stroke-width="2"/>
+<circle cx="790" cy="150" r="12" fill="#fbf7ec" stroke="#1b2a4a" stroke-width="2"/>
+<circle cx="790" cy="200" r="12" fill="#fbf7ec" stroke="#1b2a4a" stroke-width="2"/>
+<circle cx="790" cy="250" r="12" fill="#fbf7ec" stroke="#1b2a4a" stroke-width="2"/>
+<circle cx="790" cy="300" r="12" fill="#fbf7ec" stroke="#1b2a4a" stroke-width="2"/>
+<circle cx="910" cy="125" r="12" fill="#fbf7ec" stroke="#1b2a4a" stroke-width="2"/>
+<circle cx="910" cy="175" r="15" fill="#b8902f" stroke="#1b2a4a" stroke-width="3"/>
+<circle cx="910" cy="225" r="12" fill="#fbf7ec" stroke="#1b2a4a" stroke-width="2"/>
+<circle cx="910" cy="275" r="12" fill="#fbf7ec" stroke="#1b2a4a" stroke-width="2"/>
+<circle cx="1030" cy="150" r="12" fill="#fbf7ec" stroke="#1b2a4a" stroke-width="2"/>
+<circle cx="1030" cy="200" r="12" fill="#fbf7ec" stroke="#1b2a4a" stroke-width="2"/>
+<circle cx="1030" cy="250" r="12" fill="#fbf7ec" stroke="#1b2a4a" stroke-width="2"/>
+<line x1="910" y1="191" x2="910" y2="318" stroke="#b8902f" stroke-width="2" stroke-dasharray="1 0"/>
+<rect x="760" y="318" width="300" height="62" fill="#f4ecd8" stroke="#b8902f" stroke-width="1.5"/>
+<text x="910" y="342" text-anchor="middle" font-family="'Playfair Display', Georgia, serif" font-size="16" font-weight="700" fill="#1b2a4a">one neuron =</text>
+<text x="910" y="366" text-anchor="middle" font-family="'Courier Prime', 'Courier New', monospace" font-size="16" fill="#1b2a4a">w₁×x₁ + w₂×x₂ + w₃×x₃ …</text>
+<text x="910" y="404" text-anchor="middle" font-family="'Courier Prime', 'Courier New', monospace" font-size="13" fill="#5c5546">billions of weights, worked through</text>
+<text x="910" y="421" text-anchor="middle" font-family="'Courier Prime', 'Courier New', monospace" font-size="13" fill="#5c5546">for every word a chatbot writes</text>
+<rect x="20" y="444" width="1060" height="46" fill="#1b2a4a"/>
+<text x="550" y="474" text-anchor="middle" font-family="'Playfair Display', Georgia, serif" font-size="20" font-weight="700" fill="#f4ecd8">Same math, same chip: <tspan fill="#d4b56a">multiply, add, repeat</tspan>, millions of times at once.</text>
+</svg>
+                <p class="nv-figure-cap">Drawing a game screen means working out millions of pixel colors at once. Running an AI means working out millions of weighted sums at once. Both come down to the same small multiply-and-add step, repeated in parallel, and that is the one thing a GPU was built to do.</p>
+            </div>
+
+            <div class="nv-cosmic">
+                <div class="nv-cosmic-kicker">A Closing Thought</div>
+                <div class="nv-cosmic-title">Cosmic Serendipity</div>
+                <p class="nv-cosmic-lede">No one designed the gaming chip for AI. Two quests with nothing in common, one to make dragons and race cars look real and the other to build machines that learn, turned out to need <em>exactly the same math</em>. Three separate stories had to line up at the same moment:</p>
+                <div class="nv-cosmic-grid">
+                    <div><span class="nv-cosmic-tag">The Chip</span>Twenty years of gamers paid to make parallel processors cheap and powerful.</div>
+                    <div><span class="nv-cosmic-tag">The Data</span>The internet produced millions of labeled photos (ImageNet, 2009) just as researchers needed them.</div>
+                    <div><span class="nv-cosmic-tag">The Idea</span>Neural networks, an idea dating back to the 1950s, finally had hardware fast enough to make them work.</div>
+                </div>
+                <p class="nv-cosmic-close">Luck alone didn&rsquo;t do it. NVIDIA had built CUDA in 2006, years before anyone knew why it would matter, so the door was already open when the moment came.</p>
+                <blockquote class="nv-cosmic-quote">&ldquo;Chance favors only the prepared mind.&rdquo;<cite>&mdash; Louis Pasteur, 1854</cite></blockquote>
+            </div>
+
+            <div class="nv-questions">
+                <div class="nv-questions-title">Questions for the Group</div>
+                <ol>
+                    <li>Cosmic serendipity or careful planning: how much of NVIDIA&rsquo;s rise was luck, and how much was being prepared?</li>
+                    <li>One company supplies most of the world&rsquo;s AI chips. Is that a strength or a risk?</li>
+                    <li>In January 2025 a cheaper Chinese AI model (DeepSeek) briefly wiped roughly $590 billion off NVIDIA&rsquo;s value in one day. Could more efficient AI reduce demand for its chips?</li>
+                </ol>
+            </div>
+
+            <div class="note">
+                <strong>Sources:</strong> NVIDIA newsroom (<a href="https://nvidianews.nvidia.com/news/vera-rubin-full-production-agentic-ai-factory" target="_blank">Vera Rubin, May 2026</a>); <a href="https://www.aol.com/articles/nvidia-becomes-world-first-5-142004467.html" target="_blank">first $5T company, Oct 2025</a>; Krizhevsky, Sutskever &amp; Hinton, AlexNet (2012).
+            </div>
+        </div>
+    </div>
+
     <!-- ===== SOURCES & CITATIONS SECTION ===== -->
     <div id="sources" class="content-section">
         <div class="sources-container">
@@ -2272,9 +2718,7 @@
     <!-- ===== DATA CENTERS SECTION ===== -->
     <script>
         function showSection(section, event) {
-            console.log('showSection called with:', section, 'event:', event);
             if (!event) {
-                console.error('No event object passed');
                 return;
             }
             
@@ -2292,7 +2736,6 @@
             // Add active class to target section
             const targetSection = document.getElementById(section);
             if (targetSection) {
-                console.log('Showing section:', section);
                 targetSection.classList.add('active');
                 targetSection.style.display = 'block';
             }
