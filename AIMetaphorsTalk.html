@@ -411,6 +411,31 @@
         }
         .endnote-pop.movable.dragging { box-shadow: inset 0 0 0 4px #fbf6ea, inset 0 0 0 5px #d4b47c, 0 16px 36px rgba(0,0,0,0.45); }
 
+        /* "But..." caveat boxes and jump links between a claim and its later risk */
+        .but-box {
+            background: #f6e4df;
+            border: 1px solid #9a3b2e;
+            border-left: 5px solid #9a3b2e;
+            border-radius: 6px;
+            padding: 0.8rem 1rem;
+            margin: 0.9rem 0 0.4rem;
+            color: #3b2a26;
+            text-align: left;
+        }
+        .but-box strong:first-child { color: #9a3b2e; }
+        .jump-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 0.6rem; }
+        .jump-pill {
+            font-family: Georgia, 'Times New Roman', serif;
+            font-size: 0.88rem;
+            background: #fffdf7;
+            color: #9a3b2e;
+            border: 1px solid #9a3b2e;
+            border-radius: 999px;
+            padding: 4px 14px;
+            cursor: pointer;
+        }
+        .jump-pill:hover, .jump-pill:focus-visible { background: #9a3b2e; color: #fffdf7; outline: none; }
+
         /* Title image with clickable parts */
         header.hero {
             position: static;
@@ -1095,6 +1120,10 @@
                 <div class="teaching-moment">
                     <strong>Key Point:</strong> AI extends what you can do. It does not do it for you.
                 </div>
+                <div class="but-box">
+                    <strong>But&hellip;</strong> agents change this. Give AI a standing order and walk away, and it keeps acting on its own, like the apprentice's broom.
+                    <div class="jump-row"><button type="button" class="jump-pill" data-topic="panel4" data-step="Apprentice">&rarr; Sorcerer's Apprentice</button></div>
+                </div>
             </div>
 
             <div class="metaphor" data-short="Translator">
@@ -1153,6 +1182,9 @@
                 <div class="key-insight">
                     <strong>Key Tension:</strong> It speaks fluently, but the thinking came from us.
                 </div>
+                <div class="but-box">
+                    <strong>But&hellip;</strong> the mirror isn't flat. It reflects the leanings in what people wrote. It has no opinion of its own, but it does carry their biases.
+                </div>
             </div>
 
             <div class="metaphor" data-short="Parasite">
@@ -1197,6 +1229,9 @@
                 <div class="key-insight">
                     <strong>A Nod to Dylan</strong> (&ldquo;Subterranean Homesick Blues,&rdquo; 1965)<strong>:</strong> No forecaster is needed to read this wind. You are the one blowing it, and the vane simply points where you push.
                 </div>
+                <div class="but-box">
+                    <strong>But&hellip;</strong> a vane can be bent. Trained on what people wrote, AI tilts the way their biases tilt, whatever the wind.
+                </div>
             </div>
 
             <div class="metaphor" data-short="Dummy">
@@ -1236,6 +1271,10 @@
                 </ul>
                 <div class="key-insight">
                     <strong>Distinction:</strong> Knowing <em>about</em> ≠ Knowing <em>by doing</em>.
+                </div>
+                <div class="but-box">
+                    <strong>But&hellip;</strong> the line is blurring. AI-guided machines are beginning to act in the world, and the devices in our hands (GPS, autopilot, autocomplete) increasingly steer our own doing. If the machine guides the hand, whose knowing is it?
+                    <div class="jump-row"><button type="button" class="jump-pill" data-topic="panel4" data-step="Apprentice">&rarr; Sorcerer's Apprentice</button></div>
                 </div>
             </div>
 
@@ -1425,6 +1464,10 @@
                 </ul>
                 <div class="teaching-moment">
                     <strong>For Agentic AI:</strong> "This is the 'watch what you ask for' story. The broom isn't evil. It's doing what it was told. The risk is not malice. The risk is that we don't understand what we asked for."
+                </div>
+                <div class="jump-row">
+                    <button type="button" class="jump-pill" data-topic="panel1" data-step="Exoskeleton">&larr; Back to the Exoskeleton</button>
+                    <button type="button" class="jump-pill" data-topic="panel3" data-step="Astronomer">&larr; Back to the Astronomer</button>
                 </div>
             </div>
 
@@ -1723,6 +1766,19 @@
             const stop = e => { pop.classList.remove('dragging'); try { handle.releasePointerCapture(e.pointerId); } catch (_) {} };
             handle.addEventListener('pointerup', stop);
             handle.addEventListener('pointercancel', stop);
+        });
+
+        // Jump links: go straight to the paired page (claim <-> its later risk)
+        document.querySelectorAll('.jump-pill').forEach(btn => {
+            btn.addEventListener('click', e => {
+                e.stopPropagation();
+                const t = btn.dataset.topic, label = btn.dataset.step;
+                const k = path.findIndex(x => x.id === t && topics[t].steps[x.i].label === label);
+                if (k < 0) return;
+                closeEndnotes();
+                go(k);
+                window.scrollTo({ top: 0 });
+            });
         });
 
         document.getElementById('backToNavBtn').addEventListener('click', returnToNav);
