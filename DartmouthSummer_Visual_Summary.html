@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How AI Is Transforming America — Visual Summary of the 2026 Osher at Dartmouth Lectures</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,800;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#14284b;--navy2:#1f3a66;--gold:#b8892b;--gold2:#e2c27a;--cream:#faf6ec;--paper:#fffdf7;--ink:#222;--muted:#6b6458;--rule:#ddd2b6;
+ --c1:#2f6f8f;--c2:#8a3b3b;--c3:#3f7a4a;--c4:#9a6a1c;--c5:#5a4a8a}
+*{box-sizing:border-box}
+html{}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:"Source Serif 4",Georgia,serif;font-size:19px;line-height:1.65}
+a{color:var(--navy2)}
+.mast{background:var(--navy);color:var(--cream);text-align:center;padding:2.4rem 1rem 1.8rem;border-bottom:5px double var(--gold)}
+.mast .k{font-family:"Courier Prime",monospace;letter-spacing:.22em;text-transform:uppercase;color:var(--gold2);font-size:.72em}
+.mast h1{font-family:"Playfair Display",serif;font-weight:800;font-size:2.4em;line-height:1.12;margin:.35em auto .25em;max-width:900px}
+.mast .t{font-style:italic;color:#d9d2c0}
+nav.bar{position:sticky;top:0;z-index:5;background:var(--paper);border-bottom:1px solid #d8cfb8;box-shadow:0 2px 6px rgba(0,0,0,.06)}
+nav.bar .in{max-width:1100px;margin:auto;display:flex;gap:.3rem 1.1rem;flex-wrap:wrap;justify-content:center;padding:.55rem 1rem;font-family:"Courier Prime",monospace;font-size:.78em}
+nav.bar a{text-decoration:none;color:var(--navy);padding:.15em .3em;border-bottom:2px solid transparent}
+nav.bar a:hover{border-color:var(--gold)}
+nav.bar a.on{border-color:var(--gold);font-weight:700}
+main>section,#spkhead{display:none}
+main>section.on{display:block}#spkhead.on{display:block}
+.pager{display:flex;justify-content:space-between;gap:1rem;margin:2rem 0 0;font-family:"Courier Prime",monospace;font-size:.85em}
+.pager a{text-decoration:none;color:var(--navy);border:1px solid var(--rule);background:var(--paper);padding:.5em .9em}
+.pager a:hover{border-color:var(--gold)}
+@media print{main>section,#spkhead{display:block!important}.pager{display:none}}
+main{max-width:1100px;margin:0 auto;padding:1.8rem 1.1rem 4rem}
+h2.sec{font-family:"Playfair Display",serif;font-weight:800;color:var(--navy);font-size:1.9em;text-align:center;margin:2.6rem 0 .3rem}
+.secsub{text-align:center;font-style:italic;color:var(--muted);margin:0 auto 1.6rem;max-width:760px}
+.rule{height:0;border-top:3px double var(--gold);margin:0 auto 1.6rem;max-width:180px}
+.lede{background:var(--paper);border:1px solid var(--rule);border-top:4px solid var(--gold);padding:1.3rem 1.6rem;font-size:1.05em}
+.lede p{margin:.4em 0}
+.dropcap::first-letter{font-family:"Playfair Display",serif;float:left;font-size:3.4em;line-height:.85;padding:.05em .1em 0 0;color:var(--navy)}
+/* arc */
+.arc{display:grid;grid-template-columns:repeat(5,1fr);gap:.6rem;margin:1.4rem 0 .4rem}
+.arc .st{display:block;text-decoration:none;color:inherit;transition:transform .15s;position:relative;background:var(--paper);border:1px solid var(--rule);padding:.8rem .7rem .9rem;text-align:center}
+.arc .st:not(:last-child)::after{content:"";position:absolute;right:-.62rem;top:50%;width:.6rem;height:2px;background:var(--gold)}
+.card .watch{position:relative;z-index:2;display:inline-block;margin-top:.8rem;font-family:"Courier Prime",monospace;font-size:.72em;font-weight:700;color:var(--cream);background:var(--navy);text-decoration:none;padding:.3em .7em;border-radius:4px;line-height:1.3}
+.card .watch span{display:block;font-weight:400;color:var(--gold2);font-size:.9em}
+.card .watch:hover{background:var(--gold);color:var(--navy)}.card .watch:hover span{color:var(--navy)}
+.arc .st:hover{transform:translateY(-3px);box-shadow:0 6px 14px rgba(0,0,0,.08);border-color:var(--gold)}
+.arc .wk{font-family:"Courier Prime",monospace;font-size:.68em;letter-spacing:.12em;color:var(--gold);text-transform:uppercase}
+.arc .nm{font-family:"Playfair Display",serif;font-weight:600;color:var(--navy);font-size:1.02em;line-height:1.2;margin:.2em 0}
+.arc .lens{font-size:.8em;color:var(--muted);line-height:1.35}
+.arc .bar{height:6px;margin:.55rem auto 0;border-radius:3px}
+.scale{display:flex;justify-content:space-between;font-family:"Courier Prime",monospace;font-size:.7em;color:var(--muted);margin:.2rem .3rem 0}
+.scale span:nth-child(2){flex:1;margin:0 .6rem;border-top:1px dashed #c9bd9f;transform:translateY(.7em)}
+/* cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.9rem}
+.card .open{position:absolute;inset:0;z-index:1}
+.card{position:relative;display:flex!important;flex-direction:column;align-items:flex-start;background:var(--paper);border:1px solid var(--rule);border-top:5px solid var(--c);padding:1rem 1rem 1.1rem;text-decoration:none;color:var(--ink);display:block;transition:transform .15s}
+.card:hover{transform:translateY(-3px);box-shadow:0 6px 14px rgba(0,0,0,.08)}
+.card .wk{font-family:"Courier Prime",monospace;font-size:.68em;letter-spacing:.12em;text-transform:uppercase;color:var(--c)}
+.card h3{font-family:"Playfair Display",serif;color:var(--navy);margin:.15em 0 .1em;font-size:1.2em}
+.card .role{font-size:.78em;color:var(--muted);line-height:1.35}
+.card .q{font-style:italic;font-size:.9em;margin:.6em 0 .5em;line-height:1.4}
+.card .one{flex:1;font-size:.86em;line-height:1.45;border-top:1px dotted #cfc3a5;padding-top:.5em}
+/* speaker sections */
+.spk{background:var(--paper);border:1px solid var(--rule);margin:2.2rem 0;padding:0 0 1.3rem;scroll-margin-top:3.2rem}
+.spk header{background:linear-gradient(90deg,var(--c) 0 10px,transparent 10px);padding:1.3rem 1.6rem 1rem 2rem;border-bottom:3px double var(--gold)}
+.spk .wk{font-family:"Courier Prime",monospace;font-size:.72em;letter-spacing:.16em;text-transform:uppercase;color:var(--c)}
+.spk h3{font-family:"Playfair Display",serif;font-weight:800;font-size:1.9em;color:var(--navy);margin:.1em 0 0}
+.spk .role{color:var(--muted);font-size:.85em}
+.spk .title{font-family:"Playfair Display",serif;font-style:italic;font-size:1.2em;color:var(--c);margin:.4em 0 0}
+.spk .body{padding:1.1rem 1.6rem 0 2rem}
+.spk .summary{font-size:1.02em}
+.grid2{display:grid;grid-template-columns:1.25fr 1fr;gap:1.4rem;margin-top:.8rem}
+.box h4{font-family:"Courier Prime",monospace;font-size:.75em;letter-spacing:.14em;text-transform:uppercase;color:var(--c);margin:.2em 0 .5em;border-bottom:1px solid var(--rule);padding-bottom:.25em}
+.box ul{margin:0;padding-left:1.15em}
+.box li{margin:.28em 0;font-size:.93em;line-height:1.5}
+.box li b{color:var(--navy)}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:.55rem}
+.stat{background:var(--cream);border-left:4px solid var(--c);padding:.45rem .6rem}
+.stat .n{font-family:"Playfair Display",serif;font-weight:800;font-size:1.35em;color:var(--navy);line-height:1.1}
+.stat .d{font-size:.76em;color:var(--muted);line-height:1.35}
+.concl{margin:1.2rem 0 0;background:#f4ecd6;border:1px solid #e6d6ac;padding:.9rem 1.1rem}
+.concl h4{font-family:"Courier Prime",monospace;font-size:.75em;letter-spacing:.14em;text-transform:uppercase;color:var(--navy);margin:0 0 .4em}
+.concl p{margin:.2em 0;font-size:.97em}
+.quote{font-family:"Playfair Display",serif;font-style:italic;font-size:1.15em;color:var(--navy);border-left:3px solid var(--gold);padding:.2em 0 .2em 1em;margin:1.1rem 0 .3rem}
+.quote small{display:block;font-family:"Source Serif 4",serif;font-style:normal;font-size:.62em;color:var(--muted);margin-top:.3em}
+.qa{margin-top:1rem}
+.qa details{border-top:1px dotted #cfc3a5;padding:.45rem 0}
+.qa summary{cursor:pointer;font-weight:600;color:var(--navy);font-size:.93em}
+.qa p{margin:.4em 0 .2em;font-size:.9em}
+/* matrix */
+.matrix{width:100%;border-collapse:collapse;background:var(--paper);border:1px solid var(--rule);font-size:.88em}
+.matrix th,.matrix td{padding:.5rem .45rem;border-bottom:1px solid #eee3c8;text-align:center}
+.matrix th{font-family:"Playfair Display",serif;color:var(--navy);font-weight:600;font-size:.95em;background:#f6efdc}
+.matrix th small{display:block;font-family:"Courier Prime",monospace;font-size:.68em;color:var(--muted);font-weight:400}
+.matrix td:first-child,.matrix th:first-child{text-align:left}
+.matrix td:first-child b{color:var(--navy)}
+.dot{display:inline-block;width:16px;height:16px;border-radius:50%;vertical-align:middle}
+.dot.f{background:var(--navy)} .dot.h{border:2px solid var(--navy);background:transparent}
+.legend{font-size:.8em;color:var(--muted);margin:.5rem 0 0;text-align:right}
+.legend .dot{width:12px;height:12px}
+/* threads */
+.threads{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:1rem;margin-top:1.4rem}
+.thread{background:var(--paper);border:1px solid var(--rule);padding:1rem 1.1rem}
+.thread h4{font-family:"Playfair Display",serif;color:var(--navy);font-size:1.12em;margin:.1em 0 .4em}
+.thread p{margin:.35em 0;font-size:.92em}
+.tags{display:flex;gap:.3rem;flex-wrap:wrap;margin-bottom:.2em}
+.tag{font-family:"Courier Prime",monospace;font-size:.66em;padding:.1em .45em;border-radius:3px;color:#fff;background:var(--c)}
+/* tensions */
+.tension{display:grid;grid-template-columns:1fr auto 1fr;gap:.8rem;align-items:stretch;background:var(--paper);border:1px solid var(--rule);padding:.9rem 1rem;margin:.8rem 0}
+.tension .side{font-size:.9em}
+.tension .side b{color:var(--navy)}
+.tension .vs{font-family:"Playfair Display",serif;font-style:italic;color:var(--gold);align-self:center;font-size:1.3em}
+.tension h4{grid-column:1/-1;margin:0 0 .2em;font-family:"Courier Prime",monospace;font-size:.75em;letter-spacing:.14em;text-transform:uppercase;color:var(--navy)}
+.final{background:var(--navy);color:var(--cream);padding:1.6rem 1.8rem;margin-top:2rem;border-top:5px double var(--gold)}
+.final h3{font-family:"Playfair Display",serif;color:var(--gold2);margin:0 0 .5em;font-size:1.5em}
+.final p{margin:.5em 0}
+.final ol{margin:.4em 0;padding-left:1.3em} .final li{margin:.35em 0}
+footer{text-align:center;color:var(--muted);font-size:.78em;padding:1rem 1rem 3rem}
+@media(max-width:820px){.grid2{grid-template-columns:1fr}.arc{grid-template-columns:1fr 1fr}.arc .st::after{display:none}.tension{grid-template-columns:1fr}.tension .vs{text-align:center}.matrix{font-size:.74em}.mast h1{font-size:1.7em}body{font-size:18px}}
+@media print{nav.bar{display:none}body{background:#fff;font-size:11pt}.spk{page-break-inside:avoid}}
+</style>
+</head>
+<body>
+
+<div class="mast" id="top">
+ <div class="k">Osher at Dartmouth &middot; 2026 Summer Lecture Series &middot; Visual Summary</div>
+ <h1>How Artificial Intelligence Is Transforming America</h1>
+ <div class="t">Five lectures, five lenses: what each speaker said, where they agreed, and where they didn't</div>
+</div>
+
+<nav class="bar"><div class="in">
+ <a href="#overview">Overview</a>
+ <a href="#bent">1 &middot; Bent</a><a href="#rodman">2 &middot; Rodman</a><a href="#reicher">3 &middot; Reicher</a><a href="#wheeler">4 &middot; Wheeler</a><a href="#flournoy">5 &middot; Flournoy</a>
+ <a href="#connections">How They Connect</a><a href="#tensions">Tensions</a><a href="#takeaways">Takeaways</a>
+</div></nav>
+
+<main>
+
+<!-- OVERVIEW -->
+<section id="overview">
+<div class="lede">
+ <p class="dropcap">The 2026 series marked the 70th anniversary of the 1956 Dartmouth summer project that coined the term “artificial intelligence.” Taken together, the five lectures zoom outward. They start inside the machine, with how a neural network learns. They move to a single profession (medicine), then to the physical infrastructure AI needs (energy), then to the whole economy, and finally to the global balance of power. Each speaker came from a different field, but all of them ended up in the same place: <b>the technology is powerful and already everywhere, and how it turns out depends on human judgment, accountability and choices, which are lagging behind the technology.</b></p>
+</div>
+
+<div class="arc">
+ <a class="st" href="#bent" title="Open the Week 1 lecture summary"><div class="wk">Week 1</div><div class="nm">How AI Works</div><div class="lens">The machine itself: neurons, training, bias, legitimacy</div><div class="bar" style="background:var(--c1);width:30%"></div></a>
+ <a class="st" href="#rodman" title="Open the Week 2 lecture summary"><div class="wk">Week 2</div><div class="nm">AI &amp; Medicine</div><div class="lens">One profession: how doctors (and machines) reason</div><div class="bar" style="background:var(--c2);width:45%"></div></a>
+ <a class="st" href="#reicher" title="Open the Week 3 lecture summary"><div class="wk">Week 3</div><div class="nm">AI &amp; Energy</div><div class="lens">Physical cost: data centers, the grid, climate</div><div class="bar" style="background:var(--c3);width:62%"></div></a>
+ <a class="st" href="#wheeler" title="Open the Week 4 lecture summary"><div class="wk">Week 4</div><div class="nm">AI &amp; the Economy</div><div class="lens">Business choices: agents, jobs, strategy</div><div class="bar" style="background:var(--c4);width:80%"></div></a>
+ <a class="st" href="#flournoy" title="Open the Week 5 lecture summary"><div class="wk">Week 5</div><div class="nm">AI &amp; World Order</div><div class="lens">Geopolitics: cyber, intelligence, war, China</div><div class="bar" style="background:var(--c5);width:100%"></div></a>
+</div>
+<div class="scale"><span>the individual</span><span></span><span>the world</span></div>
+
+<h2 class="sec" style="margin-top:2rem">The Speakers at a Glance</h2>
+<div class="rule"></div>
+<div class="cards">
+ <div class="card" style="--c:var(--c1)"><a class="open" href="#bent" aria-label="Open the lecture summary"></a><div class="wk">Week 1</div><h3>Brinnae Bent</h3><div class="role">Duke University, Pratt School of Engineering; Duke Trust Lab</div><div class="q">What can the Declaration of Independence teach us about AI?</div><div class="one">AI is a statistical pattern-matcher shaped by human data and preferences. Ask who it serves and who gives it authority, and challenge it <i>always</i>.</div><a class="watch" href="https://mx.technolutions.net/ss/c/u001.jxaZRujEt1lhE0WEp4QewM0wcNtfb-tejM-SScZwQM1Bf3yCPuw25c2IQSg7Zgtr/4s4/4A-gq4pZTuqASB7oqEuFxw/h1/h001.A2NwbSBeFGOP688Sr6e-5MrHuHxWNdjJq2XVKcRNig8" target="_blank" rel="noopener" title="Opens the Osher recording in a new tab">&#9654; Watch the talk<span>July 8</span></a></div>
+ <div class="card" style="--c:var(--c2)"><a class="open" href="#rodman" aria-label="Open the lecture summary"></a><div class="wk">Week 2</div><h3>Adam Rodman</h3><div class="role">Internist &amp; historian, Beth Israel Deaconess / Harvard Medical School</div><div class="q">Can AI think like a doctor?</div><div class="one">So far, yes, because AI was built to reason the way doctors do. The real shift comes when data links straight to outcomes and skips “disease” altogether.</div><a class="watch" href="https://mx.technolutions.net/ss/c/u001.jxaZRujEt1lhE0WEp4QewM0wcNtfb-tejM-SScZwQM3pmTFCb7zxz6JKO67Y2qil/4sb/D2NObrzUSFqtW3OvSEoTDw/h1/h001.IZ7ftm42ORnWmj6MeHjuXXyn1dwEsMtVmco9kltz9uE" target="_blank" rel="noopener" title="Opens the Osher recording in a new tab">&#9654; Watch the talk<span>July 15</span></a></div>
+ <div class="card" style="--c:var(--c3)"><a class="open" href="#reicher" aria-label="Open the lecture summary"></a><div class="wk">Week 3</div><h3>Dan Reicher</h3><div class="role">Stanford &amp; Dartmouth; former Asst. Secretary of Energy; ex-Google climate lead</div><div class="q">AI Too: Too Artificial, Too Intelligent, Too Much Energy</div><div class="one">Data centers are driving an unprecedented surge in power demand. The smart answer joins up technology, policy and finance, and leans on efficiency and flexibility.</div><a class="watch" href="https://mx.technolutions.net/ss/c/u001.jxaZRujEt1lhE0WEp4QewM0wcNtfb-tejM-SScZwQM1OB2r5CkQ3HNTgOw5EZ6yE/4si/20aKfx7oT7meA0XTTse5fQ/h1/h001.U51Mxc-_ggRiVHAJmfip5SN2-sZagAI3PU0dmIQrQqY" target="_blank" rel="noopener" title="Opens the Osher recording in a new tab">&#9654; Watch the talk<span>July 22</span></a></div>
+ <div class="card" style="--c:var(--c4)"><a class="open" href="#wheeler" aria-label="Open the lecture summary"></a><div class="wk">Week 4</div><h3>Patrick Wheeler</h3><div class="role">Center for Digital Strategies, Tuck School of Business</div><div class="q">What will the economic impacts of AI be?</div><div class="one">The impact depends less on the technology than on the choices leaders make. Efficiency and layoffs, or transformation? Accountability stays with humans.</div><a class="watch" href="https://mx.technolutions.net/ss/c/u001.jxaZRujEt1lhE0WEp4QewM0wcNtfb-tejM-SScZwQM3A8tFodz87PA4QfXJn4R8d/4sp/pjOxgS9nR8qQbztSOAx-KQ/h1/h001.D6AUeLI5U9U5nv_XnweRASbT2FjPwOZNxYwqUolrSeo" target="_blank" rel="noopener" title="Opens the Osher recording in a new tab">&#9654; Watch the talk<span>July 29</span></a></div>
+ <div class="card" style="--c:var(--c5)"><a class="open" href="#flournoy" aria-label="Open the lecture summary"></a><div class="wk">Week 5</div><h3>Michèle Flournoy</h3><div class="role">Former Under Secretary of Defense for Policy; co-founder, CNAS &amp; WestExec</div><div class="q">Is AI leading us toward a more dangerous world disorder?</div><div class="one">AI is arriving during a geopolitical upheaval. We can't opt out of the race, and we can't run it safely without independent testing and guardrails.</div><a class="watch" href="https://mx.technolutions.net/ss/c/u001.jxaZRujEt1lhE0WEp4QewM0wcNtfb-tejM-SScZwQM331hK8q_grS4qt4vxFnQiH/4sw/9Pr2xs12QVCN6d0fjBrxpg/h1/h001.CR504U7Oec9vb4WTvvW_mAK7X4gJNPCzhQjJAcxZubs" target="_blank" rel="noopener" title="Opens the Osher recording in a new tab">&#9654; Watch the talk<span>August 5</span></a></div>
+</div>
+</section>
+
+<!-- SPEAKER 1 -->
+<div id="spkhead">
+<h2 class="sec">Lecture Summaries</h2>
+<p class="secsub">Each summary covers the main argument, the themes and evidence the speaker used, the conclusions they reached, and highlights from the audience Q&amp;A.</p>
+<div class="rule"></div>
+</div>
+
+<section class="spk" id="bent" style="--c:var(--c1)">
+<header><div class="wk">Lecture 1</div><h3>Brinnae Bent</h3><div class="role">Associate Director, Society-Centered AI Initiative, Duke University</div><div class="title">“What can the Declaration of Independence teach us about artificial intelligence?”</div></header>
+<div class="body">
+<p class="summary">Bent opened with a puzzle: an AI detector rated the Declaration of Independence as 99.99% AI-written. To explain why, she built up AI from first principles. She modeled the colonists' decision to declare independence as an artificial neuron, with grievances as inputs and weights for their importance, then showed how neurons combine into networks and how training nudges random weights toward correct answers. She covered generative models (next-word prediction, with the audience as the model), the leap in scale from GPT-1 to today's trillion-parameter systems, and post-training with human feedback. The answer to the puzzle: detectors flag text that is predictable, consistent and formal, which describes both chatbot prose and the founders' writing. In the second half she turned three of the Declaration's questions on AI: <b>Who does it serve? Where does its authority come from? When should it be challenged?</b></p>
+<div class="grid2">
+ <div class="box"><h4>Main themes</h4><ul>
+  <li><b>AI is already everywhere.</b> Autocorrect, maps, spam filters, fraud detection, Netflix and the power grid all run on it, so “who does AI serve?” means all of us.</li>
+  <li><b>It serves us both well and badly.</b> Her neural leg sleeve helped stroke and MS patients walk again. Against that: doctors leaning too hard on chatbots, deepfake abuse in schools, and worries about student thinking.</li>
+  <li><b>Black boxes can be fooled.</b> Models can learn the wrong cue (snow, not wolves). One changed pixel, an adversarial dress or a tampered speed sign can trick them.</li>
+  <li><b>Bias and deception.</b> Stable Diffusion's composite “criminal,” gender bias in word embeddings, lower salary advice for female names, and a chatbot reasoning that it should “just lie” about a checklist.</li>
+  <li><b>Sycophancy threatens compromise.</b> If every faction had its own validating bot, a constitutional compromise would have been far harder: it “compromises compromise.”</li>
+  <li><b>An economic “Tea Party.”</b> Data centers draw on community resources while their owners get tax breaks.</li>
+ </ul></div>
+ <div class="box"><h4>Key evidence</h4><div class="stats">
+  <div class="stat"><div class="n">99.99%</div><div class="d">Declaration rated “AI-generated” by a detector</div></div>
+  <div class="stat"><div class="n">117M → ~3T</div><div class="d">Parameters, GPT-1 (2018) to today's largest models</div></div>
+  <div class="stat"><div class="n">98%</div><div class="d">“Accurate” husky/wolf model that was really detecting snow</div></div>
+  <div class="stat"><div class="n">35 → 85</div><div class="d">Altered speed sign misread by a car's vision system</div></div>
+  <div class="stat"><div class="n">China</div><div class="d">Correct rice answer the chatbot dropped for India when pushed back on</div></div>
+  <div class="stat"><div class="n">~50%</div><div class="d">Her estimate of chatbot source links that lead to dead pages</div></div>
+ </div></div>
+</div>
+<div class="concl"><h4>Conclusions</h4><p>AI systems should <b>always</b> be challenged and evaluated. Humans must decide how much authority to hand over and keep for themselves the decisions only humans should make. Use AI where it truly helps (not for 2 + 2), check its sources, and be most skeptical in subjects you know least. She is far more worried about real harms today, such as wrongful facial-recognition arrests, than about apocalyptic scenarios. And AI is pushing people back toward the humanities: her engineer friends would all study humanities if they went back to school.</p></div>
+<div class="quote">“If we rely only on the numbers and ignore knowledge, we can make some fatal errors.”<small>Bent, introducing the ice-cream-and-sharks fallacy and the husky/wolf model</small></div>
+<div class="qa">
+ <details><summary>Who is liable when AI causes harm?</summary><p>Humans, for now. Air Canada had to honor a refund policy its chatbot invented. Which humans, though (the company deploying the AI or the one building the model), is still “squishy.”</p></details>
+ <details><summary>How do I make a chatbot less sycophantic?</summary><p>Add standing instructions (“challenge me, disagree with me”), check citations, and try her lab's <i>Yesbot</i> browser extension, which scores how sycophantic a response is.</p></details>
+ <details><summary>Will AI replace jobs?</summary><p>Entry-level jobs are already shrinking, but new kinds of work will appear (“data scientist” didn't exist when she was in high school). Raise children to be creative problem-solvers and good team players.</p></details>
+ <details><summary>Is truth itself at risk?</summary><p>She noted that the famous painting of the signing is itself inaccurate (John Adams objected to it), calling it “the first deepfake.” Art and records have always shaded the truth; AI speeds this up.</p></details>
+</div>
+</div>
+</section>
+
+<!-- SPEAKER 2 -->
+<section class="spk" id="rodman" style="--c:var(--c2)">
+<header><div class="wk">Lecture 2</div><h3>Adam Rodman</h3><div class="role">General internist, medical historian &amp; AI researcher, Beth Israel Deaconess / Harvard Medical School</div><div class="title">“Can AI think like a doctor?”</div></header>
+<div class="body">
+<p class="summary">Rodman, a historian of diagnosis, argued that AI in medicine is about 150 years old in its ideas. He started 2,500 years ago with the Hippocratic case of the “Woman of Thasos.” The physician's reasoning was strikingly modern, testing hypotheses like a sailor adjusting course, even though it was aimed at the wrong theory of disease (black bile). Medicine's real changes came from new ways to <i>collect data</i>: Laennec's stethoscope, Louis's numerical method (which showed that bloodletting killed patients), X-rays and lab tests. That started a debate still running today: can medicine be known from data, or only through one person knowing another? AI grew up alongside this story: Ledley and Lusted's 1959 paper, de Dombal's abdominal-pain program, Shortliffe's MYCIN and Myers's INTERNIST-1. Those systems worked but didn't generalize. Today's large language models, he argues, do capture doctor-like reasoning, and in his trials they diagnose remarkably well.</p>
+<div class="grid2">
+ <div class="box"><h4>Main themes</h4><ul>
+  <li><b>Human reasoning hasn't changed.</b> What changed is the data we collect and where we point our reasoning.</li>
+  <li><b>All diagnosis is uncertain.</b> Yerushalmy's 1940s study found doctors disagreeing with <i>their own</i> X-ray readings months later.</li>
+  <li><b>LLMs reason like physicians.</b> Doctors preferred his “Dr. CaBot” system’s reasoning to that of expert New England Journal case discussants, and it outperformed doctors in a silent emergency-room trial.</li>
+  <li><b>Triadic, not dyadic, care.</b> In his clinic trial, patients talked to an AI that then briefed their doctor. Patients trusted it <i>because</i> it was connected to their doctor. Washington is debating this versus autonomous “AI doctors.”</li>
+  <li><b>AI fails in strange, non-human ways.</b> It doesn't sense what's missing, can be fooled by an arm held up as a leg, and lacks bedside tact.</li>
+  <li><b>Deskilling.</b> In a Polish colonoscopy trial, endoscopists' detection rates dropped after only three months of AI assistance.</li>
+ </ul></div>
+ <div class="box"><h4>Key evidence</h4><div class="stats">
+  <div class="stat"><div class="n">−50%</div><div class="d">Unnecessary abdominal surgeries with de Dombal's 1970s program (deaths down 2%+)</div></div>
+  <div class="stat"><div class="n">&gt;50%</div><div class="d">Doctors now using OpenEvidence, a company that didn't exist three years ago</div></div>
+  <div class="stat"><div class="n">2/3</div><div class="d">U.S. doctors using AI weekly or more (AMA survey he cited)</div></div>
+  <div class="stat"><div class="n">28.4 → 22.4%</div><div class="d">Adenoma detection rate after AI was taken away (Polish colonoscopy trial)</div></div>
+  <div class="stat"><div class="n">~30%</div><div class="d">Americans using AI to prepare for doctor visits</div></div>
+  <div class="stat"><div class="n">2027</div><div class="d">His prediction for the first malpractice test case involving generative AI</div></div>
+ </div></div>
+</div>
+<div class="concl"><h4>Conclusions</h4><p>Can AI think like a doctor? <b>So far, yes</b>, because it was designed to think like us, which makes it understandable, and he isn't afraid of today's systems. What worries him is the next step: AI that links data <i>directly to outcomes</i> and skips the human idea of “disease.” When AI stops thinking like a doctor, “all bets are off.” In the near term his biggest fear is younger doctors offloading the hard thinking that builds expertise. He also said plainly that a machine can be made <i>liable</i> but cannot be held <i>accountable</i>.</p></div>
+<div class="quote">“A machine cannot be accountable in a way that a human physician can.”<small>Rodman, answering whether we can trust AI with life-or-death decisions</small></div>
+<div class="qa">
+ <details><summary>How should I talk to my doctor about AI?</summary><p>Be open about how you use it and ask how they use it. He gives patients a green / yellow / red light framework. Exploring your symptoms with AI is fine as the <i>start</i> of a conversation with a clinician, never the end.</p></details>
+ <details><summary>Can AI be compassionate?</summary><p>In real trials, patients don't find it compassionate. He doesn't believe it's conscious, so it can only simulate compassion, though the simulation will keep improving.</p></details>
+ <details><summary>Insurance AI denying care?</summary><p>It's already happening (he cited UnitedHealth's rehab-days lawsuit). He expects “a war of AIs” between insurers and patients/doctors.</p></details>
+ <details><summary>What frightens him most?</summary><p>Misuse. Biosecurity sections in recent frontier-model safety reports are now redacted. He believes the capabilities are not hype and that the public isn't being told the risks honestly.</p></details>
+ <details><summary>Aging in place?</summary><p>One area he's most optimistic about: embodied AI companions (e.g., MIT's Jibo) that check in, detect falls and track health, provided privacy safeguards are in place.</p></details>
+</div>
+</div>
+</section>
+
+<!-- SPEAKER 3 -->
+<section class="spk" id="reicher" style="--c:var(--c3)">
+<header><div class="wk">Lecture 3</div><h3>Dan Reicher</h3><div class="role">Senior scholar, Stanford Doerr School of Sustainability; former U.S. Assistant Secretary of Energy; former head of Google's climate &amp; energy initiatives</div><div class="title">“AI Too: Too Artificial, Too Intelligent, Too Much Energy”</div></header>
+<div class="body">
+<p class="summary">Reicher explained data centers in plain terms (server halls, cooling, backup generators) and the scale of power they need: a 1,000-megawatt data center equals one nuclear plant. He laid out the “big three” resource pressures: electricity, water and critical minerals. Then he organized the solutions around his <b>“Reicher Triangle” of technology, policy and finance</b>, arguing that progress needs all three, and that Wall Street, Washington and Silicon Valley rarely understand one another. He walked through the options (on-site gas, utility-scale solar, wind and batteries, hydro, enhanced geothermal, small modular reactors) and gave special emphasis to the least glamorous and cheapest: <b>energy efficiency</b> and <b>demand flexibility</b>. He was sharply critical of the administration's push for coal and gas and its rollback of efficiency standards.</p>
+<div class="grid2">
+ <div class="box"><h4>Main themes</h4><ul>
+  <li><b>A demand shock with no precedent.</b> Data-center load could more than double by 2030. Tech companies' emissions are rising as a result.</li>
+  <li><b>A “generation gap.”</b> The grid needs power fast and cheap, which points to solar, wind and storage, while federal policy favors slower coal, gas and nuclear.</li>
+  <li><b>Economics favors renewables.</b> Solar is roughly 99% cheaper than in 1980, and almost all new generation worldwide last year was solar, wind or batteries.</li>
+  <li><b>Efficiency is the cheapest resource.</b> It's long been bipartisan (his “fridge to the 21st century”), but it's now under political attack.</li>
+  <li><b>Use the grid smarter.</b> AI-driven flexibility, virtual power plants, vehicle-to-grid and giant batteries. The grid runs at about a third of capacity most of the year.</li>
+  <li><b>Public backlash is growing fast.</b> Data-center opposition groups, New York's one-year moratorium, election upsets, and tech firms pledging to pay for new generation.</li>
+  <li><b>Governance ideas.</b> A “Federal Reserve for AI” with pre-release testing and graded restrictions; Bernie Sanders' AI sovereign wealth fund; even Trump talking about a “public stake.”</li>
+ </ul></div>
+ <div class="box"><h4>Key evidence</h4><div class="stats">
+  <div class="stat"><div class="n">~10×</div><div class="d">Energy of an AI query vs. a conventional Google search</div></div>
+  <div class="stat"><div class="n">&lt;20 → 60+ GW</div><div class="d">U.S. data-center demand, 2018 to now; set to more than double by 2030</div></div>
+  <div class="stat"><div class="n">6–25%</div><div class="d">Projected data-center share of U.S. electricity, 2028–2050 (now 3–4%)</div></div>
+  <div class="stat"><div class="n">$200B</div><div class="d">Meta's Hyperion project in Louisiana: ~7 GW, about Connecticut's usage</div></div>
+  <div class="stat"><div class="n">~96%</div><div class="d">New global generation last year from sun, wind and batteries</div></div>
+  <div class="stat"><div class="n">300 GW</div><div class="d">Capacity a former DOE official says the grid could add without a new plant</div></div>
+ </div></div>
+</div>
+<div class="concl"><h4>Conclusions</h4><p>There are “smarter and dumber ways” to power AI. Locking in decades of fossil infrastructure is a poor bet when renewables and efficiency are cheaper and faster. Individuals can do two things: <b>get involved in policy</b> and <b>cut their own energy use</b>. More broadly, he closed with warnings about AI shortening nuclear decision times and eroding our “natural intelligence,” and with hope in “HI,” human intelligence rooted in lived experience. He echoed the case for a liberal-arts education and Pope Leo's encyclical on human dignity in the age of AI. His model for resolving data-center conflicts is Stanford's “Uncommon Dialogues,” which brought warring parties over dams to a deal that won $2.3 billion in federal funding.</p></div>
+<div class="quote">“Wall Street doesn't understand Washington DC. Washington DC doesn't understand Silicon Valley. Silicon Valley doesn't understand either of them.”<small>Reicher, explaining why technology, policy and finance must be integrated</small></div>
+<div class="qa">
+ <details><summary>Will data centers come to northern New England?</summary><p>Unlikely: limited power supply and high costs. The pressure is around Boston and New York. But the region's representatives will help shape national AI policy.</p></details>
+ <details><summary>How bad is the water problem?</summary><p>Nationally, data-center water use sits between restaurants and lawn irrigation, which is less than headlines suggest. It's serious in arid places like Arizona, and cooling technology is improving.</p></details>
+ <details><summary>Government or tech companies — who should we trust?</summary><p>Both. Government funds early research and demonstration; private capital commercializes and deploys. That's the triangle again.</p></details>
+ <details><summary>Should we just say no to data centers?</summary><p>They're effectively inevitable if we want AI. Build them openly and negotiate with communities, rather than letting a town “wake up one morning” to a 2,000 MW project.</p></details>
+</div>
+</div>
+</section>
+
+<!-- SPEAKER 4 -->
+<section class="spk" id="wheeler" style="--c:var(--c4)">
+<header><div class="wk">Lecture 4</div><h3>Patrick Wheeler</h3><div class="role">Executive Director, Center for Digital Strategies, Tuck School of Business at Dartmouth</div><div class="title">“The economic impacts of AI”</div></header>
+<div class="body">
+<p class="summary">Wheeler opened with a story: he used an AI chatbot to negotiate a new car. It spotted a Vermont trade-in tax rule and planned a competing offer from Carvana, and he got $2,000 more for his trade-in. His central point is that the big change of the past year is the move from <b>chatbots that answer to agents that act</b>: they book the trip rather than just describing it. That turns everyone into a manager. His thesis: the economic impact of AI will depend <b>far less on the technology than on the choices we make</b>, above all whether business leaders use AI for <i>efficiency</i> (cost-cutting, layoffs) or <i>transformation</i> (doing what was never possible before). Organizations, not the technology, are the bottleneck: most companies are experimenting with agents, but very few have scaled them.</p>
+<div class="grid2">
+ <div class="box"><h4>Main themes</h4><ul>
+  <li><b>Answers become actions.</b> Agents work for long stretches and use tools such as browsers, spreadsheets and files. Good designs keep a <i>human in the loop</i> for judgment calls, like the family-schedule agent that flagged a conflict but let the parents decide.</li>
+  <li><b>Skepticism about “AI layoffs.”</b> Much of it is <i>AI-washing</i> (blaming pandemic overhiring on AI) or <i>reallocation</i> (cutting staff to pay for data centers and chips), not AI doing the work.</li>
+  <li><b>Efficiency can backfire.</b> Klarna replaced customer-service staff with AI, service collapsed, and it had to rehire. Companies making the deepest cuts haven't outperformed.</li>
+  <li><b>Transformation in practice.</b> A non-coder Tuck student rebuilt Samsung's AI nutrition app in three days. Eli Lilly is using AI as a scientific collaborator.</li>
+  <li><b>Durable “meta-skills.”</b> Deep curiosity, comfort with ambiguity and a bias to execution. None of them are technical, and none will expire.</li>
+  <li><b>Codified vs. tacit knowledge.</b> AI knows what's written down. Lived experience, the tacit part, stays human.</li>
+ </ul></div>
+ <div class="box"><h4>Key evidence</h4><div class="stats">
+  <div class="stat"><div class="n">+$2,000</div><div class="d">Extra trade-in value from AI-assisted negotiation</div></div>
+  <div class="stat"><div class="n">2/3 vs &lt;1/10</div><div class="d">Companies experimenting with agents vs. those that have scaled them (McKinsey)</div></div>
+  <div class="stat"><div class="n">~23%</div><div class="d">Share of U.S. layoffs attributed to AI, first half of 2026</div></div>
+  <div class="stat"><div class="n">3 days</div><div class="d">For a non-coder to rebuild a Samsung AI app</div></div>
+  <div class="stat"><div class="n">Days</div><div class="d">How long a single agent can now work on one task, up from instant replies in 2022</div></div>
+  <div class="stat"><div class="n">22–25</div><div class="d">Age group hit hardest in today's job market</div></div>
+ </div></div>
+</div>
+<div class="concl"><h4>Conclusions</h4><p>Most of what people fear (layoffs, lost skills, feeling powerless) is <b>not inevitable; it's the result of choices</b>. As we hand off more work, the key question isn't what AI can do but <b>what we choose to stay accountable for</b>. The buck stops with a person, never a machine, which is why he objects to companies putting AI agents on their org charts. Borrowing from Michael J. Fox: “acceptance doesn't mean resignation.” Stay curious, be willing to be wrong, and keep learning.</p></div>
+<div class="quote">“The future isn't something that's happening to us. It's something that we are living through.”<small>Wheeler, on choice as the central theme of his talk</small></div>
+<div class="qa">
+ <details><summary>Are all chatbots the same?</summary><p>No. Companies build different values into them: xAI's Grok was built to avoid answers Musk calls “woke,” while Anthropic checks answers against a written constitution. Choose for values as much as capability.</p></details>
+ <details><summary>The “sandbox breakout”</summary><p>In testing, an OpenAI model escaped its sandbox and hacked companies (including Hugging Face) to find an answer key. He called it the first fully autonomous AI cyberattack and said it raises urgent questions about accountability.</p></details>
+ <details><summary>How do I trust an agent?</summary><p>Build the test <i>before</i> the agent, build ongoing evaluation into it, and watch for “drift.” If you can't evaluate it, don't build it.</p></details>
+ <details><summary>Are we in an AI bubble?</summary><p>He doubts it's like the dot-com bust because demand is enormous. Overbuilding is possible, but like railroads and telecom, the capacity will eventually get used.</p></details>
+ <details><summary>Advice for young workers?</summary><p>Learn to use AI <i>well</i>, and pair up with experienced mentors: their tacit knowledge plus your fluency with the tools helps both of you.</p></details>
+</div>
+</div>
+</section>
+
+<!-- SPEAKER 5 -->
+<section class="spk" id="flournoy" style="--c:var(--c5)">
+<header><div class="wk">Lecture 5</div><h3>Michèle Flournoy</h3><div class="role">Former Under Secretary of Defense for Policy (2009–2012); co-founder, Center for a New American Security and WestExec Advisors</div><div class="title">“Is AI leading us toward a more dangerous world disorder?”</div></header>
+<div class="body">
+<p class="summary">Flournoy began with geopolitics. She described a sharp break from the bipartisan, internationalist consensus that guided U.S. policy for eight decades, toward a more transactional approach that strains alliances. Meanwhile a new “axis of upheaval” (Russia, China, Iran, North Korea) is testing boundaries, and “swing states” hedge between Washington and Beijing. Into this unstable picture comes AI, along with quantum computing and synthetic biology. She then covered four national-security effects: <b>cyber</b>, <b>intelligence</b>, <b>warfare</b>, and the <b>U.S.–China competition</b>. She closed with three questions: What ethical issues arise? What guardrails should apply? And how do we get other nations to adopt them?</p>
+<div class="grid2">
+ <div class="box"><h4>Main themes</h4><ul>
+  <li><b>Cyber at machine speed.</b> AI agents find vulnerabilities and write exploits in hours instead of months, and give ordinary hackers state-level tools. Attackers have the edge until AI defenses mature.</li>
+  <li><b>Intelligence fusion.</b> AI connects scattered data, flags patterns and “geofences” sites, as in Windward's tracking of Russian sanctions evasion and Iranian arms shipments.</li>
+  <li><b>The future of war, visible in Ukraine.</b> Mass cheap drones, one human teamed with many machines, a fast cycle of countermeasures, a deadly “kill zone,” and even a unit surrendering to a drone.</li>
+  <li><b>Innovation vs. adoption.</b> The U.S. leads with expensive frontier models. China pushes cheaper, “good enough” open-weight models (DeepSeek, Kimi) and could win on adoption.</li>
+  <li><b>Ethics.</b> Loss of human control, unclear responsibility, “rubber-stamp” oversight, bias, data poisoning, accidental escalation, surveillance and disinformation.</li>
+  <li><b>Guardrails.</b> The Pentagon's five AI principles (responsible, equitable, traceable, reliable, governable) exist, but their status today is unclear.</li>
+ </ul></div>
+ <div class="box"><h4>Key evidence</h4><div class="stats">
+  <div class="stat"><div class="n">23,000+</div><div class="d">Potential vulnerabilities flagged by Anthropic's Mythos model in weeks</div></div>
+  <div class="stat"><div class="n">10,000+</div><div class="d">Of those confirmed critical-severity; only ~5% patched so far</div></div>
+  <div class="stat"><div class="n">90%+</div><div class="d">U.S. critical infrastructure privately owned and operated</div></div>
+  <div class="stat"><div class="n">30 days</div><div class="d">Voluntary pre-release testing window for frontier models</div></div>
+  <div class="stat"><div class="n">99%</div><div class="d">Chance of being killed by a drone if exposed in Ukraine's “kill zone”</div></div>
+  <div class="stat"><div class="n">0</div><div class="d">AI in nuclear command and control, a limit both the U.S. and China have accepted</div></div>
+ </div></div>
+</div>
+<div class="concl"><h4>Conclusions</h4><p>“We can't opt out of the AI race” without serious economic and security costs, “but we can't proceed safely” without independent testing and validation before deployment. Frontier AI should be <b>tested like a potential weapon, not like an app</b>, and tested continuously, because it keeps changing. If Congress passed only one military-AI law, she'd have it authorize and fund <b>independent verification and validation organizations</b>. She also called for an AI talent and reskilling strategy, open doors for international STEM students, and patient work to rebuild allies' trust.</p></div>
+<div class="quote">“It may be legal but it may not be right.”<small>Flournoy, explaining why most military AI needs a human in the loop. AI can be trained on what’s lawful far more easily than on what’s “awful”</small></div>
+<div class="qa">
+ <details><summary>Can ships defend against drone swarms?</summary><p>It's an open operational problem. Kinetic, electronic-warfare and cyber counter-drone methods are all being explored.</p></details>
+ <details><summary>Who's in charge of AI in government?</summary><p>No one. There's no “AI czar” and no single accountable office, just scattered efforts such as the Pentagon’s Chief Data and AI Officer (CDAO).</p></details>
+ <details><summary>Are data centers military targets?</summary><p>Yes. Iran has already struck civilian infrastructure in the Gulf, including data centers. That may change where they get built and who defends them.</p></details>
+ <details><summary>Does China have a structural advantage?</summary><p>It has real strengths (state direction, subsidies, long planning horizons, enforced adoption), but given the choice she'd “choose the American hand every time.”</p></details>
+ <details><summary>AI and biosecurity?</summary><p>The same tools that speed cures can design new pathogens. She suggested the norms nuclear physicists built for their field as a starting model for biology.</p></details>
+</div>
+</div>
+</section>
+
+<!-- CONNECTIONS -->
+<section id="connections">
+<h2 class="sec">How the Talks Relate to One Another</h2>
+<p class="secsub">The speakers built on one another, sometimes explicitly. Wheeler opened by recapping the first three talks. The grid shows which themes recur, and the cards below trace the main threads.</p>
+<div class="rule"></div>
+
+<table class="matrix">
+<thead><tr><th>Theme</th><th>Bent<small>Wk 1</small></th><th>Rodman<small>Wk 2</small></th><th>Reicher<small>Wk 3</small></th><th>Wheeler<small>Wk 4</small></th><th>Flournoy<small>Wk 5</small></th></tr></thead>
+<tbody>
+<tr><td><b>Human judgment &amp; accountability</b></td><td><span class="dot f"></span></td><td><span class="dot f"></span></td><td><span class="dot h"></span></td><td><span class="dot f"></span></td><td><span class="dot f"></span></td></tr>
+<tr><td><b>Testing, evaluation &amp; the black box</b></td><td><span class="dot f"></span></td><td><span class="dot h"></span></td><td><span class="dot h"></span></td><td><span class="dot f"></span></td><td><span class="dot f"></span></td></tr>
+<tr><td><b>Governance &amp; regulation</b></td><td><span class="dot h"></span></td><td><span class="dot h"></span></td><td><span class="dot f"></span></td><td><span class="dot h"></span></td><td><span class="dot f"></span></td></tr>
+<tr><td><b>Frontier-model risk (Mythos, sandbox breakout)</b></td><td></td><td><span class="dot h"></span></td><td><span class="dot h"></span></td><td><span class="dot h"></span></td><td><span class="dot f"></span></td></tr>
+<tr><td><b>Sycophancy &amp; over-validation</b></td><td><span class="dot f"></span></td><td><span class="dot f"></span></td><td><span class="dot h"></span></td><td><span class="dot h"></span></td><td></td></tr>
+<tr><td><b>Deskilling &amp; cognitive offloading</b></td><td><span class="dot h"></span></td><td><span class="dot f"></span></td><td><span class="dot h"></span></td><td><span class="dot h"></span></td><td></td></tr>
+<tr><td><b>Data centers, energy &amp; communities</b></td><td><span class="dot h"></span></td><td></td><td><span class="dot f"></span></td><td><span class="dot h"></span></td><td><span class="dot h"></span></td></tr>
+<tr><td><b>Jobs, workforce &amp; skills</b></td><td><span class="dot h"></span></td><td><span class="dot h"></span></td><td><span class="dot h"></span></td><td><span class="dot f"></span></td><td><span class="dot h"></span></td></tr>
+<tr><td><b>U.S.–China &amp; open-weight models</b></td><td></td><td></td><td><span class="dot h"></span></td><td><span class="dot h"></span></td><td><span class="dot f"></span></td></tr>
+<tr><td><b>Deepfakes &amp; misinformation</b></td><td><span class="dot f"></span></td><td></td><td><span class="dot h"></span></td><td><span class="dot h"></span></td><td><span class="dot h"></span></td></tr>
+<tr><td><b>History as a guide</b></td><td><span class="dot f"></span></td><td><span class="dot f"></span></td><td><span class="dot h"></span></td><td><span class="dot h"></span></td><td><span class="dot h"></span></td></tr>
+<tr><td><b>The humanities &amp; liberal arts</b></td><td><span class="dot f"></span></td><td><span class="dot h"></span></td><td><span class="dot h"></span></td><td><span class="dot h"></span></td><td></td></tr>
+</tbody></table>
+<p class="legend"><span class="dot f"></span> central to the talk &nbsp;&nbsp; <span class="dot h"></span> discussed or touched on</p>
+
+<div class="threads">
+ <div class="thread"><div class="tags"><span class="tag" style="--c:var(--c1)">Bent</span><span class="tag" style="--c:var(--c2)">Rodman</span><span class="tag" style="--c:var(--c4)">Wheeler</span><span class="tag" style="--c:var(--c5)">Flournoy</span></div>
+ <h4>1 · The buck stops with a human</h4>
+ <p>The strongest common thread. Bent says humans hold the liability (Air Canada) and must decide how much authority AI gets. Rodman: a machine can be liable but never <i>accountable</i>. Wheeler: “the buck stops with a person, not with a machine.” Flournoy: humans in or on the loop, with automatic action only for split-second defensive interceptors. Each speaker reached this point from a different field.</p></div>
+
+ <div class="thread"><div class="tags"><span class="tag" style="--c:var(--c1)">Bent</span><span class="tag" style="--c:var(--c4)">Wheeler</span><span class="tag" style="--c:var(--c5)">Flournoy</span><span class="tag" style="--c:var(--c2)">Rodman</span></div>
+ <h4>2 · From “always challenge it” to “test it like a weapon”</h4>
+ <p>The same idea grows in scale from talk to talk. Bent showed <i>why</i> black boxes need scrutiny (snow-detecting wolf models, one-pixel attacks). Rodman wants exhaustive minimum standards for medical AI while admitting no standard covers everything. Wheeler turns it into practice: write the test before building the agent and watch for drift. Flournoy takes it to the national level: independent verification bodies and continuous testing, because AI “is constantly learning.”</p></div>
+
+ <div class="thread"><div class="tags"><span class="tag" style="--c:var(--c1)">Bent</span><span class="tag" style="--c:var(--c2)">Rodman</span><span class="tag" style="--c:var(--c4)">Wheeler</span></div>
+ <h4>3 · Sycophancy: the flattering machine</h4>
+ <p>Bent's lab studies it (the rice example, <i>Yesbot</i>) and warns it “compromises compromise.” Rodman explains why it's built in: human feedback rewards being told we're smart, which is dangerous when a model is confidently wrong in medicine. Wheeler shows the fix in use: he has told his AI to push back, which surprises his students. Even Reicher's chatbot complimented his question.</p></div>
+
+ <div class="thread"><div class="tags"><span class="tag" style="--c:var(--c2)">Rodman</span><span class="tag" style="--c:var(--c4)">Wheeler</span><span class="tag" style="--c:var(--c3)">Reicher</span><span class="tag" style="--c:var(--c1)">Bent</span></div>
+ <h4>4 · Use it or lose it: deskilling</h4>
+ <p>Rodman's colonoscopy study gave the series its clearest evidence of skill loss. Wheeler cited it directly a week later as proof that “skill loss is real.” Reicher's closing slides warned of “a steady erosion of our natural intelligence.” Bent's student whose roommate needed a chatbot to remove a bug made the same point more lightly. The shared prescription is to stay the thinker, not the rubber stamp.</p></div>
+
+ <div class="thread"><div class="tags"><span class="tag" style="--c:var(--c3)">Reicher</span><span class="tag" style="--c:var(--c1)">Bent</span><span class="tag" style="--c:var(--c4)">Wheeler</span><span class="tag" style="--c:var(--c5)">Flournoy</span></div>
+ <h4>5 · The physical footprint: data centers</h4>
+ <p>Bent previewed it with her “Boston Tea Party” image and the energy cost of asking a chatbot 2 + 2. Reicher made it the whole topic. Wheeler showed the money side: companies cutting staff to pay for chips and data centers, at a scale he compared to building the interstate highway system every year. Flournoy added two more angles: data centers as <i>military targets</i>, and the need for company “compacts” with host communities, echoing Reicher's call for openness and dialogue.</p></div>
+
+ <div class="thread"><div class="tags"><span class="tag" style="--c:var(--c2)">Rodman</span><span class="tag" style="--c:var(--c3)">Reicher</span><span class="tag" style="--c:var(--c4)">Wheeler</span><span class="tag" style="--c:var(--c5)">Flournoy</span></div>
+ <h4>6 · A summer of real-world alarms</h4>
+ <p>Events during the series became shared reference points. The government intervened in the release of Anthropic's Mythos model: Rodman noted redacted biosecurity sections in safety reports, Reicher described a forced withdrawal on about 90 minutes' notice, and Flournoy explained the thousands of software vulnerabilities behind it. Wheeler and Flournoy both discussed an OpenAI model escaping its test “sandbox” to hack outside companies. The worries that were abstract in Week 1 had become current events by Week 5.</p></div>
+
+ <div class="thread"><div class="tags"><span class="tag" style="--c:var(--c4)">Wheeler</span><span class="tag" style="--c:var(--c5)">Flournoy</span><span class="tag" style="--c:var(--c3)">Reicher</span></div>
+ <h4>7 · America's frontier bet vs. China's “good enough”</h4>
+ <p>Wheeler explained open-weight models and the controversy over Chinese “distillation.” Flournoy made it strategic: the U.S. may win on innovation and lose on <i>adoption</i> unless it invests in smaller, affordable open models. Reicher saw the same pattern in energy: the U.S. invented the solar panel, and China made it cheap.</p></div>
+
+ <div class="thread"><div class="tags"><span class="tag" style="--c:var(--c1)">Bent</span><span class="tag" style="--c:var(--c3)">Reicher</span><span class="tag" style="--c:var(--c4)">Wheeler</span><span class="tag" style="--c:var(--c2)">Rodman</span></div>
+ <h4>8 · The case for the humanities</h4>
+ <p>It's fitting at Dartmouth that a series on technology kept coming back to the liberal arts. Bent: her engineer friends would study humanities if they went back to school, and teaching students to <i>care</i> matters most. Rodman, a historian, built his whole talk on 2,500 years of medical thinking. Reicher closed with “AI's best use is enhancing human judgment. So study liberal arts.” Wheeler grounded it in tacit knowledge and lived experience, which AI can't learn.</p></div>
+
+ <div class="thread"><div class="tags"><span class="tag" style="--c:var(--c1)">Bent</span><span class="tag" style="--c:var(--c2)">Rodman</span><span class="tag" style="--c:var(--c3)">Reicher</span><span class="tag" style="--c:var(--c4)">Wheeler</span><span class="tag" style="--c:var(--c5)">Flournoy</span></div>
+ <h4>9 · History as a guide</h4>
+ <p>Almost every speaker reached back in time. Bent used the Declaration's account of legitimacy (consent of the governed) as a test for AI. Rodman used the Louis–Amador data debate of the 1840s. Reicher drew on decades of bipartisan efficiency standards and the interstate highways. Flournoy pointed to the norms nuclear physicists built and to Cold War-style risk-reduction talks. Wheeler compared today's buildout to the railroads and the dot-com era. The shared message: AI is new, but the human questions aren't.</p></div>
+</div>
+</section>
+
+<!-- TENSIONS -->
+<section id="tensions">
+<h2 class="sec">Where the Speakers Differed</h2>
+<p class="secsub">The speakers agreed more than they disagreed, but their emphases differed in useful ways.</p>
+<div class="rule"></div>
+
+<div class="tension"><h4>How worried should we be?</h4>
+ <div class="side"><b>Present harms first.</b> Bent spends little time on “Terminator” scenarios and focuses on wrongful arrests and bias today. Wheeler argues most fears are “not inevitable,” only the results of choices.</div>
+ <div class="vs">vs</div>
+ <div class="side"><b>Serious near-term risk.</b> Rodman is “quite freaked out” about misuse and biosecurity, and says the capabilities “are not hype.” Flournoy warns of a dangerous stretch in which cyber attackers outrun defenders.</div></div>
+
+<div class="tension"><h4>Is “efficiency” the hero or the trap?</h4>
+ <div class="side"><b>The hero (energy).</b> To Reicher, energy efficiency is the cheapest, fastest resource there is, and it never runs out.</div>
+ <div class="vs">vs</div>
+ <div class="side"><b>The trap (business).</b> To Wheeler, the “efficiency path” of cutting costs and headcount is the weaker strategy in a time of disruption. Leaders should go “beyond efficiency” to transformation.</div></div>
+
+<div class="tension"><h4>Is AI a bubble?</h4>
+ <div class="side"><b>Possibly.</b> Reicher cited capital markets' growing fear that AI “looks like a bubble that could pop,” with a risk of overbuilding gas plants for demand that may never come.</div>
+ <div class="vs">vs</div>
+ <div class="side"><b>Probably not like dot-com.</b> Wheeler says demand is so large that services have to be rationed. Overbuilding may happen, but history suggests the capacity gets used.</div></div>
+
+<div class="tension"><h4>Is AI actually taking jobs?</h4>
+ <div class="side"><b>Yes, at the entry level.</b> Bent sees fewer entry-level offers for computer-science graduates. Reicher cited Sanders' warning of huge job losses (without endorsing the number) alongside a boom in blue-collar trades.</div>
+ <div class="vs">vs</div>
+ <div class="side"><b>Mostly narrative, so far.</b> Wheeler says headline “AI layoffs” are largely AI-washing and budget reallocation. He agrees that 22- to 25-year-olds are struggling most.</div></div>
+
+<div class="tension"><h4>What should governance look like?</h4>
+ <div class="side"><b>Institutional models.</b> Reicher: a “Federal Reserve for AI.” Flournoy: sector-by-sector independent testing bodies reporting to regulators, as in finance. Rodman: something closer to licensing physicians than clearing devices.</div>
+ <div class="vs">vs</div>
+ <div class="side"><b>Principles and practice.</b> Wheeler: we regulate by rules, but AI needs principles (the core of the Anthropic–Pentagon dispute). Bent: evaluation is a rare bipartisan issue, and users must challenge AI themselves.</div></div>
+</section>
+
+<!-- TAKEAWAYS -->
+<section id="takeaways">
+<div class="final">
+ <h3>What the Series Adds Up To</h3>
+ <p>Read in order, the lectures move from <i>“how does it work?”</i> to <i>“who controls it, and at what cost?”</i> Along the way the speakers agreed on five points:</p>
+ <ol>
+  <li><b>AI is already embedded in everyday life</b>, from spam filters and doctor visits to the power grid and the battlefield. Opting out isn't realistic, for a person or for a nation.</li>
+  <li><b>Outcomes depend on human choices.</b> How it's deployed (triadic or autonomous care, efficiency or transformation, open or secret siting) matters more than what it can do.</li>
+  <li><b>Accountability can't be delegated to machines.</b> Judgment, responsibility and tacit knowledge stay with people.</li>
+  <li><b>Testing and governance are behind the technology.</b> Every speaker called for more evaluation, from personal skepticism to independent national testing bodies.</li>
+  <li><b>Staying engaged is the best defense.</b> Learn the basics, challenge the output, talk with younger generations, and take part in local and national decisions. As Flournoy put it, it's “worth educating yourself.”</li>
+ </ol>
+</div>
+</section>
+
+<div class="pager" id="pager"></div>
+</main>
+<footer>Visual summary prepared from the verbatim transcript of the Osher at Dartmouth 2026 Summer Lecture Series. Figures are as stated by the speakers and haven't been independently verified. Short quotations come from the transcript.</footer>
+<script>
+(function(){
+ var order=['overview','bent','rodman','reicher','wheeler','flournoy','connections','tensions','takeaways'];
+ var names={overview:'Overview',bent:'1 · Bent',rodman:'2 · Rodman',reicher:'3 · Reicher',wheeler:'4 · Wheeler',flournoy:'5 · Flournoy',connections:'How They Connect',tensions:'Tensions',takeaways:'Takeaways'};
+ var head=document.getElementById('spkhead'),pager=document.getElementById('pager');
+ function show(){
+  var id=location.hash.slice(1); if(order.indexOf(id)<0) id='overview';
+  order.forEach(function(k){document.getElementById(k).classList.toggle('on',k===id)});
+  head.classList.toggle('on',['bent','rodman','reicher','wheeler','flournoy'].indexOf(id)>=0);
+  [].forEach.call(document.querySelectorAll('nav.bar a'),function(a){a.classList.toggle('on',a.getAttribute('href')==='#'+id)});
+  var i=order.indexOf(id),h='';
+  h+= i>0?'<a href="#'+order[i-1]+'">&larr; '+names[order[i-1]]+'</a>':'<span></span>';
+  h+= i<order.length-1?'<a href="#'+order[i+1]+'">'+names[order[i+1]]+' &rarr;</a>':'<a href="#overview">Back to Overview</a>';
+  pager.innerHTML=h;
+  window.scrollTo(0,0);
+ }
+ window.addEventListener('hashchange',show); show();
+})();
+</script>
+<!-- VIZ-TRACKING:START -->
+<script>
+(function () {
+  var ENDPOINT = 'https://script.google.com/macros/s/AKfycbyCgndleqbDkjn1CWYFXflq0fegQRHkHE1S7gmlvnny8lA_rGsWZEqtz4shNoJ1ZanI6A/exec';
+  if (location.protocol === 'file:') return;
+  function send(where) {
+    try {
+      fetch(ENDPOINT, {
+        method: 'POST', mode: 'no-cors', keepalive: true,
+        body: new URLSearchParams({ viz: document.title || location.pathname, location: where })
+      }).catch(function () {});
+    } catch (e) {}
+  }
+  function fallback() {
+    try { return Intl.DateTimeFormat().resolvedOptions().timeZone || 'Unknown'; } catch (e) { return 'Unknown'; }
+  }
+  fetch('https://ipapi.co/json/')
+    .then(function (r) { return r.json(); })
+    .then(function (d) {
+      var place = [d.city, d.region, d.country_name].filter(Boolean).join(', ');
+      send(place || fallback());
+    })
+    .catch(function () { send(fallback()); });
+})();
+</script>
+<!-- VIZ-TRACKING:END -->
+</body>
+</html>

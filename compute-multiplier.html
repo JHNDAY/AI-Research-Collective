@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Compute Multiplier</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Courier+Prime:wght@400;700&family=Source+Serif+4:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#14213d; --navy2:#1f3160; --gold:#c9a227; --gold-soft:#f1e3b0;
+    --cream:#fbf6e9; --paper:#fffdf7; --ink:#1d1d1d; --muted:#5a5a5a; --rule:#d9cfb4;
+    --green:#2f6b3f; --red:#9b2c2c; --amber:#b7791f;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--cream);color:var(--ink);font-family:'Source Serif 4',Georgia,serif;font-size:19px;line-height:1.65}
+  a{color:var(--navy2)}
+  /* masthead */
+  header.mast{background:var(--navy);color:var(--cream);text-align:center;padding:28px 18px 22px;border-bottom:6px double var(--gold)}
+  .mast .kicker{font-family:'Courier Prime',monospace;letter-spacing:.18em;text-transform:uppercase;font-size:13px;color:var(--gold)}
+  .mast h1{font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(32px,6vw,58px);margin:8px 0 6px;line-height:1.08}
+  .mast .dek{font-style:italic;max-width:760px;margin:0 auto;font-size:19px;opacity:.92}
+  .mast .dateline{font-family:'Courier Prime',monospace;font-size:13px;margin-top:12px;opacity:.8}
+  /* nav */
+  nav.toc{position:sticky;top:0;z-index:10;background:var(--paper);border-bottom:2px solid var(--navy);box-shadow:0 2px 6px rgba(0,0,0,.06)}
+  nav.toc ul{list-style:none;margin:0 auto;padding:8px 10px;display:flex;gap:6px;overflow-x:auto;max-width:1100px;scrollbar-width:thin}
+  nav.toc a{display:block;white-space:nowrap;text-decoration:none;font-family:'Courier Prime',monospace;font-size:14px;color:var(--navy);padding:7px 12px;border:1px solid var(--rule);border-radius:3px;background:var(--cream)}
+  nav.toc a:hover,nav.toc a.active{background:var(--navy);color:var(--gold);border-color:var(--navy)}
+  main{max-width:900px;margin:0 auto;padding:10px 20px 60px}
+  section{background:var(--paper);border:1px solid var(--rule);border-top:4px solid var(--navy);padding:26px 30px;margin:28px 0;scroll-margin-top:70px}
+  .secno{font-family:'Courier Prime',monospace;color:var(--gold);font-weight:700;font-size:14px;letter-spacing:.15em}
+  h2{font-family:'Playfair Display',serif;font-size:clamp(26px,4vw,36px);margin:4px 0 14px;color:var(--navy);line-height:1.15}
+  h3{font-family:'Playfair Display',serif;color:var(--navy2);font-size:23px;margin:22px 0 8px}
+  .lede::first-letter{font-family:'Playfair Display',serif;float:left;font-size:68px;line-height:.9;padding:6px 8px 0 0;color:var(--navy)}
+  .summary-box{background:var(--navy);color:var(--cream);padding:20px 24px;border-left:6px solid var(--gold);margin:18px 0}
+  .summary-box h3{color:var(--gold);margin-top:0}
+  .summary-box li{margin:6px 0}
+  /* quote */
+  blockquote.ipo{margin:18px 0;padding:26px 30px 22px;background:var(--gold-soft);border-left:8px solid var(--gold);font-family:'Playfair Display',serif;font-size:clamp(20px,2.6vw,25px);line-height:1.45;color:var(--navy);position:relative}
+  blockquote.ipo::before{content:"\201C";position:absolute;left:8px;top:-18px;font-size:90px;color:var(--gold);opacity:.6}
+  blockquote.ipo cite{display:block;font-family:'Courier Prime',monospace;font-size:14px;font-style:normal;margin-top:12px;color:var(--muted)}
+  /* analogy cards */
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;margin:16px 0}
+  .card{border:1px solid var(--rule);background:var(--cream);padding:16px 18px;border-top:4px solid var(--gold)}
+  .card h4{font-family:'Playfair Display',serif;margin:0 0 6px;color:var(--navy);font-size:20px}
+  .card p{margin:0;font-size:17px}
+  /* bars */
+  .bars{margin:16px 0}
+  .bar-row{display:grid;grid-template-columns:190px 1fr;gap:12px;align-items:center;margin:10px 0}
+  .bar-label{font-size:16px;font-weight:600;color:var(--navy)}
+  .bar-track{background:#eee6cf;height:34px;position:relative;border-radius:2px}
+  .bar-fill{height:100%;display:flex;align-items:center;padding-left:10px;color:#fff;font-family:'Courier Prime',monospace;font-size:15px;font-weight:700;white-space:nowrap;border-radius:2px}
+  .navy{background:var(--navy)} .gold{background:var(--gold);color:var(--navy)!important}
+  .g{background:var(--green)} .a{background:var(--amber)} .r{background:var(--red)}
+  .caption{font-size:15px;color:var(--muted);font-style:italic}
+  /* steps */
+  ol.steps{counter-reset:s;list-style:none;padding:0}
+  ol.steps li{counter-increment:s;position:relative;padding:4px 0 12px 54px}
+  ol.steps li::before{content:counter(s);position:absolute;left:0;top:2px;width:38px;height:38px;border-radius:50%;background:var(--navy);color:var(--gold);font-family:'Playfair Display',serif;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:19px}
+  /* table */
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:16.5px}
+  th{background:var(--navy);color:var(--gold);text-align:left;padding:10px;font-family:'Courier Prime',monospace;font-size:14px;letter-spacing:.05em}
+  td{border-bottom:1px solid var(--rule);padding:10px;vertical-align:top}
+  tr:nth-child(even) td{background:var(--cream)}
+  .tag{display:inline-block;font-family:'Courier Prime',monospace;font-size:12.5px;padding:2px 7px;border-radius:2px;color:#fff;font-weight:700}
+  .note{border:1px dashed var(--amber);background:#fff8e6;padding:14px 18px;font-size:16.5px;margin:16px 0}
+  .verdict{background:var(--navy);color:var(--cream);padding:22px 26px;border:3px double var(--gold);margin-top:18px}
+  .verdict h3{color:var(--gold);margin-top:0}
+  .news-item{border-left:4px solid var(--gold);padding:4px 0 4px 16px;margin:16px 0}
+  .news-item .src{font-family:'Courier Prime',monospace;font-size:13.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+  ol.sources{font-size:16px} ol.sources li{margin:6px 0}
+  .disclosure{font-size:15px;color:var(--muted);border-top:1px solid var(--rule);padding-top:12px;margin-top:18px}
+  /* drilldown panels */
+  body.drill main section{display:none}
+  body.drill main section.shown{display:block;animation:fadein .35s ease}
+  body.drill.showall main section{display:block}
+  @keyframes fadein{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  nav.toc a .num{color:var(--gold);margin-right:5px;font-weight:700}
+  nav.toc a.active .num{color:var(--cream)}
+  nav.toc a.all{border-style:dashed}
+  .crumb{font-family:'Courier Prime',monospace;font-size:13.5px;color:var(--muted);margin:0 0 14px;padding-bottom:10px;border-bottom:1px dotted var(--rule);line-height:1.5}
+  .crumb a{color:var(--navy2)}
+  .pager{display:flex;justify-content:space-between;gap:10px;margin-top:26px;padding-top:16px;border-top:1px solid var(--rule)}
+  .pager a{flex:1;text-decoration:none;border:1px solid var(--navy);padding:10px 14px;color:var(--navy);background:var(--cream);font-size:16px}
+  .pager a:hover{background:var(--navy);color:var(--gold)}
+  .pager a small{display:block;font-family:'Courier Prime',monospace;font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+  .pager a:hover small{color:var(--gold-soft)}
+  .pager .next{text-align:right}
+  body.showall .pager{display:none}
+  .more{font-family:'Courier Prime',monospace;font-size:14px;color:var(--gold)!important;text-decoration:none;white-space:nowrap}
+  .more:hover{text-decoration:underline}
+  footer{text-align:center;font-family:'Courier Prime',monospace;font-size:13px;color:var(--muted);padding:20px}
+  .totop{position:fixed;right:16px;bottom:16px;background:var(--navy);color:var(--gold);border:2px solid var(--gold);width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:22px;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+  @media (max-width:600px){
+    body{font-size:18px}
+    section{padding:20px 18px}
+    .bar-row{grid-template-columns:1fr;gap:4px}
+    table{font-size:15px}
+  }
+</style>
+</head>
+<body>
+
+<header class="mast" id="top">
+  <div class="kicker">Explainer · AI &amp; Energy · Late November 2026</div>
+  <h1>The Compute Multiplier</h1>
+  <p class="dek">An obscure engineering term from Anthropic's IPO filing has rattled AI investors. Here's what it means, how it works, and whether it could shrink AI's growing appetite for electricity.</p>
+  <div class="dateline">Prepared for BOLLI · AI Literacy SIG · November 27, 2026</div>
+</header>
+
+<nav class="toc" aria-label="Sections">
+  <ul>
+    <li><a href="#glance">At a Glance</a></li>
+    <li><a href="#concept">The Concept</a></li>
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#quote">The IPO Quote</a></li>
+    <li><a href="#news">The News</a></li>
+    <li><a href="#energy">Energy Assessment</a></li>
+    <li><a href="#bottom">Bottom Line</a></li>
+    <li><a href="#sources">Sources</a></li>
+    <li><a href="#all" class="all">Show All</a></li>
+  </ul>
+</nav>
+
+<main>
+
+<!-- 1 -->
+<section id="glance">
+  <div class="secno">01 · AT A GLANCE</div>
+  <h2>The Story in Brief</h2>
+  <p class="lede">In mid-November 2026 Anthropic, the company that makes the Claude AI models, went public. In its filing with regulators it described a series of "compute multipliers": improvements in technique that let it get more useful AI work out of the same chips. One analyst said Anthropic had told investors it could earn about <strong>four times</strong> as much revenue from a given amount of computing power as it had previously expected. That raised an awkward question for the AI boom: if AI keeps getting this much more efficient, does the world really need all the data centers, chips and power plants now being built?</p>
+  <div class="summary-box">
+    <h3>Five Things to Know</h3>
+    <ul>
+      <li><strong>It's a ratio, not a machine.</strong> A compute multiplier measures how much less computing a smarter method needs to reach the same result. <a class="more" href="#concept">Details →</a></li>
+      <li><strong>It comes from software.</strong> Better algorithms and training methods, not faster hardware. <a class="more" href="#how">Details →</a></li>
+      <li><strong>Multipliers stack.</strong> Each new trick builds on the earlier ones, so the gains compound. <a class="more" href="#how">Details →</a></li>
+      <li><strong>Markets reacted.</strong> AI-infrastructure stocks and memory-chip prices softened, and investors began questioning trillion-dollar buildout plans. <a class="more" href="#news">Details →</a></li>
+      <li><strong>Energy savings aren't guaranteed.</strong> History suggests cheaper computing tends to get used more (the "Jevons paradox"), which can cancel out the savings. <a class="more" href="#energy">Details →</a></li>
+    </ul>
+  </div>
+</section>
+
+<!-- 2 -->
+<section id="concept">
+  <div class="secno">02 · THE CONCEPT</div>
+  <h2>What Is a Compute Multiplier?</h2>
+  <p>"Compute" is industry shorthand for raw computing work: the trillions of multiplications and additions that chips (mostly GPUs) carry out to train and run an AI model. Compute costs money, takes years of data-center construction to add, and runs on electricity.</p>
+  <p>A <strong>compute multiplier</strong> is an improvement in method that does the same job with less of that work. Anthropic's filing calls these "algorithmic and methodological" improvements in how models are trained and run. If a new technique reaches the same quality with one quarter of the computing, it is a <strong>4× multiplier</strong>: in effect, every chip you own now counts as four.</p>
+  <p>The term isn't new. AI labs have used it internally for years to track progress in efficiency. What's new is that it appeared in a public IPO filing and was tied directly to revenue.</p>
+
+  <h3>Three Everyday Analogies</h3>
+  <div class="cards">
+    <div class="card"><h4>The Better Recipe</h4><p>A baker who finds a technique that uses half the oven time gets a 2× multiplier on the oven. The oven itself is unchanged.</p></div>
+    <div class="card"><h4>The Fuel-Efficient Engine</h4><p>Going from 25 to 50 miles per gallon doubles how far each gallon takes you. You can drive the same distance on half the fuel, or twice as far on the same tank.</p></div>
+    <div class="card"><h4>The Smarter Route</h4><p>A GPS route that skips traffic gets you there with less driving. The car didn't change; how you used it did.</p></div>
+  </div>
+  <p>The fuel analogy holds a key point for the energy section: once driving gets cheaper, people tend to drive more.</p>
+</section>
+
+<!-- 3 -->
+<section id="how">
+  <div class="secno">03 · HOW IT WORKS</div>
+  <h2>The Arithmetic of "Effective Compute"</h2>
+  <p>Anthropic's investor roadshow measures something it calls <strong>total effective compute</strong>: the physical computing capacity it owns, <em>multiplied</em> by all the multipliers it has found (or expects to find).</p>
+  <p style="text-align:center;font-family:'Courier Prime',monospace;font-size:20px;background:var(--cream);padding:14px;border:1px solid var(--rule)">Effective compute = Physical chips × Multiplier₁ × Multiplier₂ × Multiplier₃ …</p>
+
+  <h3>Anthropic's Own Example: A 4× Multiplier</h3>
+  <p>A 4× gain can be spent in either of two ways:</p>
+  <div class="bars">
+    <div class="bar-row"><div class="bar-label">Before (old method)</div><div class="bar-track"><div class="bar-fill navy" style="width:100%">100 units → Model A</div></div></div>
+    <div class="bar-row"><div class="bar-label">Option 1: Save</div><div class="bar-track"><div class="bar-fill g" style="width:25%">25 units</div></div></div>
+    <div class="bar-row"><div class="bar-label">Option 2: Grow</div><div class="bar-track"><div class="bar-fill gold" style="width:100%">100 units → model worth 400</div></div></div>
+  </div>
+  <p class="caption">Option 1 trains the same model on a quarter of the computing. Option 2 uses all 100 units to train a model that used to need 400. For the energy question, everything depends on which option companies pick.</p>
+
+  <h3>Where the Gains Come From</h3>
+  <p>Anthropic doesn't name its specific techniques. Across the industry, the usual sources include:</p>
+  <ol class="steps">
+    <li><strong>Smarter training recipes:</strong> better choices of data, ordering and tuning, so a model learns more per pass.</li>
+    <li><strong>Leaner architectures:</strong> designs that activate only the parts of a model a given question needs, instead of all of it.</li>
+    <li><strong>Cheaper arithmetic:</strong> doing the math with lower-precision numbers where it doesn't hurt accuracy, so each chip does more operations.</li>
+    <li><strong>Faster serving (inference):</strong> tricks that cut the computing per answer when millions of people use the model.</li>
+    <li><strong>AI improving AI:</strong> Anthropic says Claude itself helps its researchers develop better models, and it expects Claude to eventually find multipliers on its own.</li>
+  </ol>
+  <div class="note"><strong>Why "stacking" matters:</strong> multipliers multiply instead of adding. A 2× gain in training, a 2× gain in serving and a 1.5× gain in arithmetic don't add up to 5.5×; they compound to <strong>6×</strong>. That is why a string of modest discoveries can add up to a big change in the economics.</div>
+</section>
+
+<!-- 4 -->
+<section id="quote">
+  <div class="secno">04 · THE IPO QUOTE</div>
+  <h2>In Anthropic's Own Words</h2>
+  <p>The sentence that set off the discussion, from Anthropic's S-1 registration statement:</p>
+  <blockquote class="ipo">
+    Our researchers have delivered meaningful compute multipliers for inference — reducing the compute required to serve a given level of model performance. This allows us to provide greater value for customers and generate greater revenue from our compute base over time.
+    <cite>— Anthropic, S-1 Registration Statement, November 2026 (as quoted by Business Insider, Fast Company and others)</cite>
+  </blockquote>
+  <h3>Reading Between the Lines</h3>
+  <ul>
+    <li><strong>"For inference"</strong>: the gains apply to <em>running</em> models for customers, which happens every day at enormous scale, and not only to the one-time training run.</li>
+    <li><strong>"A given level of model performance"</strong>: the same quality answer for less computing.</li>
+    <li><strong>"Greater revenue from our compute base"</strong>: Anthropic frames the gain as more <em>income</em> per chip, not fewer chips. That framing matters for energy.</li>
+  </ul>
+  <p>The filing adds that customer demand still exceeds Anthropic's available computing capacity. Anthropic has also committed roughly <strong>$900 billion</strong> to future cloud-computing purchases.</p>
+</section>
+
+<!-- 5 -->
+<section id="news">
+  <div class="secno">05 · THE NEWS</div>
+  <h2>What's Been Written Lately</h2>
+
+  <div class="news-item">
+    <div class="src">Business Insider · Nov 25–26</div>
+    <p><strong>"A potentially trillion-dollar question."</strong> Business Insider (Alistair Barr and Joe Ciolli) asked what happens if AI gets so efficient that companies don't need nearly as many data centers, chips and power plants as investors expect. It cited Charles Zvibleman of AlphaSense, who said Anthropic told investors it could get about 4× the revenue per unit of compute that it had previously expected, with more gains anticipated.</p>
+  </div>
+
+  <div class="news-item">
+    <div class="src">Fast Company · Nov 20</div>
+    <p><strong>A strategy to undercut rivals.</strong> Fast Company treated multipliers as a competitive weapon: lower costs per task let Anthropic cut prices. It reported that price cuts and discounts trimmed about $600 million from revenue growth between Q2 and Q3 2026. It also covered "Anthropic Direct," the company's plan to build its own data centers.</p>
+  </div>
+
+  <div class="news-item">
+    <div class="src">Market coverage · Nov 25–26</div>
+    <p><strong>Infrastructure jitters.</strong> Bloomberg data showed benchmark memory-chip prices (NAND flash and DRAM) slipping from their 2026 highs. Analysts warned the timing may be coincidence. One news summary reported Anthropic's own shares falling about 30% from their first-day high. Some investors are reportedly rethinking bets on hardware suppliers.</p>
+  </div>
+
+  <div class="news-item">
+    <div class="src">LessWrong &amp; analyst commentary · mid-Nov</div>
+    <p><strong>Decoding the graph.</strong> A chart of effective compute in Anthropic's roadshow video drew close reading from AI-forecasting communities, who asked how much of the projected growth comes from multipliers Anthropic <em>expects</em> to find rather than ones already found.</p>
+  </div>
+
+  <div class="news-item">
+    <div class="src">Related: TasteVal benchmark · Nov 24</div>
+    <p><strong>The term spreads.</strong> A new research benchmark now scores AI systems themselves by "compute multiplier": how much less experimental computing a model needs than a human expert to reach the same research result. It's a sign the term is becoming a common yardstick.</p>
+  </div>
+</section>
+
+<!-- 6 -->
+<section id="energy">
+  <div class="secno">06 · ENERGY ASSESSMENT</div>
+  <h2>Could Multipliers Cut AI's Electricity Demand?</h2>
+  <p>Electricity is the physical cost underneath "compute." If the same answer takes a quarter of the chip-work, it takes roughly a quarter of the electricity. So in principle multipliers are an energy story as much as a financial one. Whether they actually lower total demand is a different question.</p>
+
+  <h3>The Baseline: Where Demand Is Heading</h3>
+  <table>
+    <tr><th>Measure</th><th>Figure</th><th>Source</th></tr>
+    <tr><td>Data-center electricity growth, 2025</td><td><strong>+17%</strong> (vs. +3% for all electricity)</td><td>IEA, Apr 2026</td></tr>
+    <tr><td>Data-center use, 2025 (approx.)</td><td>~480–500 TWh</td><td>Estimate from IEA data</td></tr>
+    <tr><td>Projected data-center use, 2030</td><td><strong>~1,000 TWh</strong> (a doubling)</td><td>IEA World Energy Outlook 2026, Nov 19</td></tr>
+    <tr><td>AI-specific demand to 2030</td><td>Expected to roughly triple</td><td>IEA, Apr 2026</td></tr>
+    <tr><td>Share of new capacity that is AI</td><td>About three-quarters of ~120 GW</td><td>IEA via The Guardian</td></tr>
+    <tr><td>Big Tech capital spending</td><td>&gt;$400B (2025), up ~75% in 2026</td><td>IEA</td></tr>
+  </table>
+  <p class="caption">For scale: 1,000 TWh is very roughly the annual electricity use of Japan.</p>
+
+  <h3>Scenario Analysis: 2030 Data-Center Demand</h3>
+  <p>To estimate the stakes, assume AI accounts for about <strong>half</strong> of the ~1,000 TWh projected for 2030 (~500 TWh), and that a 4× multiplier spreads across the industry. What happens next depends on how much of the saving gets spent on more AI use:</p>
+  <div class="bars">
+    <div class="bar-row"><div class="bar-label">IEA baseline</div><div class="bar-track"><div class="bar-fill navy" style="width:100%">~1,000 TWh</div></div></div>
+    <div class="bar-row"><div class="bar-label">A · Savings banked</div><div class="bar-track"><div class="bar-fill g" style="width:62.5%">~625 TWh (−375)</div></div></div>
+    <div class="bar-row"><div class="bar-label">B · Half rebound</div><div class="bar-track"><div class="bar-fill a" style="width:75%">~750 TWh (−250)</div></div></div>
+    <div class="bar-row"><div class="bar-label">C · Full rebound</div><div class="bar-track"><div class="bar-fill r" style="width:100%">~1,000+ TWh (±0)</div></div></div>
+  </div>
+  <p class="caption">Illustrative arithmetic only, not a forecast. The scenarios assume the 4× gain applies to all AI workloads, which overstates a gain reported by one company.</p>
+
+  <table>
+    <tr><th>Scenario</th><th>What happens</th><th>Likelihood</th></tr>
+    <tr><td><strong>A · Savings banked</strong></td><td>AI usage grows only as already forecast. A 4× gain cuts AI's energy by 75%, saving ~375 TWh, a bit more than the UK's yearly electricity use.</td><td><span class="tag r">LOW</span></td></tr>
+    <tr><td><strong>B · Half rebound</strong></td><td>Cheaper AI doubles usage, so half the saving gets spent on new uses. Net saving ~250 TWh. Data-center demand still grows, just more slowly.</td><td><span class="tag a">MODERATE</span></td></tr>
+    <tr><td><strong>C · Full rebound (Jevons)</strong></td><td>Cheaper AI unlocks entirely new uses (AI agents running all day, video generation, more powerful models), and usage grows 4× or more. No net saving; demand may even rise.</td><td><span class="tag navy" style="background:var(--navy)">HIGH, near term</span></td></tr>
+  </table>
+
+  <h3>Why Full Savings Are Unlikely</h3>
+  <ul>
+    <li><strong>Anthropic is choosing "grow," not "save."</strong> Its own wording stresses more revenue from the same chips, and it says demand already exceeds its capacity. That is Option 2 from Section 3.</li>
+    <li><strong>The buildout is already committed.</strong> About $900 billion in Anthropic compute contracts and hundreds of billions more across Big Tech will be built and switched on, and data centers that exist get used.</li>
+    <li><strong>The Jevons paradox.</strong> In 1865 the economist William Stanley Jevons noticed that more efficient steam engines <em>increased</em> Britain's coal use. Researchers argue AI behaves the same way: falling prices push businesses toward more compute-hungry designs such as AI agents.</li>
+    <li><strong>Some efficiency is already in the forecasts.</strong> The IEA's projections assume ongoing efficiency gains, so not all of the multiplier is "new" savings against the baseline.</li>
+  </ul>
+
+  <h3>Why the Effect Is Still Real</h3>
+  <ul>
+    <li><strong>It bends the curve.</strong> Even in Scenario B, the same AI services need far fewer new power plants and transmission lines than they otherwise would. That matters while grid connections are a major bottleneck.</li>
+    <li><strong>It eases local pressure.</strong> Fewer or smaller data centers means less strain on communities pushing back over noise, water and rates.</li>
+    <li><strong>Investors may build less.</strong> If capital markets pull back on speculative data centers, as this week's jitters suggest they might, the 2030 baseline itself could come down.</li>
+    <li><strong>Energy per answer falls a lot.</strong> For any single use of AI, the environmental cost drops sharply, even if the total doesn't.</li>
+  </ul>
+
+  <div class="verdict">
+    <h3>Assessment</h3>
+    <p>Compute multipliers will almost certainly <strong>slow the growth</strong> of AI's electricity demand without <strong>reversing</strong> it. A realistic range is that AI-driven data-center demand in 2030 comes in <strong>somewhere between 0% and 25% below</strong> current projections. The upper end requires the gains to spread industry-wide and investors to cut back the buildout. In the near term, the most likely result is the same electricity buying far more AI, rather than the same AI on less electricity. The lasting payoff is a much lower energy cost per task, which could matter a great deal if demand eventually levels off.</p>
+  </div>
+</section>
+
+<!-- 7 -->
+<section id="bottom">
+  <div class="secno">07 · BOTTOM LINE</div>
+  <h2>Questions for Discussion</h2>
+  <ol class="steps">
+    <li>Anthropic's claim of about 4× more revenue per unit of compute reached the press second-hand, through an analyst's post. How much weight should we give efficiency claims in an IPO sales pitch?</li>
+    <li>If efficiency doesn't reduce total energy use, should AI companies be required to pair growth with clean-power purchases or efficiency reporting?</li>
+    <li>Is the market's worry (too many data centers) good news for electricity ratepayers and bad news for investors, or the reverse?</li>
+    <li>When AI helps find its <em>own</em> multipliers, does progress speed up in a way that makes all of these forecasts unreliable?</li>
+  </ol>
+</section>
+
+<!-- 8 -->
+<section id="sources">
+  <div class="secno">08 · SOURCES</div>
+  <h2>Sources &amp; Further Reading</h2>
+  <ol class="sources">
+    <li><a href="https://www.fastcompany.com/91640634/anthropics-ipo-filing-reveals-a-strategy-to-undercut-its-ai-rivals" target="_blank" rel="noopener">Fast Company: Anthropic's IPO filing reveals a strategy to undercut its AI rivals</a></li>
+    <li><a href="https://www.newsbeep.com/824615/" target="_blank" rel="noopener">Anthropic's Efficiency Gains Raise Doubt About the AI Spending Boom (syndicating Business Insider)</a></li>
+    <li><a href="https://digestai.news/story/anthropic-s-compute-multiplier-efficiency-claims-may-be-rattling-ai" target="_blank" rel="noopener">Digest AI: Anthropic's 'compute multiplier' claims may be rattling AI infrastructure investors</a></li>
+    <li><a href="https://tldrdailynews.com/news/business/business/anthropic-efficiency-gains-spark-ai-infrastructure-sell-off-jvbngqmxmh" target="_blank" rel="noopener">tl;dr daily news: Anthropic Efficiency Gains Spark AI Infrastructure Sell-Off</a></li>
+    <li><a href="https://news.sulat.com/2026/11/24/tasteval-astra/" target="_blank" rel="noopener">Sulat: GPT-6.2 Astra scores 4.9x human experts on TasteVal</a></li>
+    <li><a href="https://iea.org/news/data-centre-electricity-use-surged-in-2025-even-with-tightening-bottlenecks-driving-a-scramble-for-solutions" target="_blank" rel="noopener">IEA: Data centre electricity use surged in 2025</a></li>
+    <li><a href="https://fourweekmba.com/ai-iea-data-centres-double-to-1000-twh-by-2030-grids-strain/" target="_blank" rel="noopener">IEA World Energy Outlook 2026 coverage: data centres double to 1,000 TWh by 2030</a></li>
+    <li><a href="https://arxiv.org/html/2601.12339v1" target="_blank" rel="noopener">arXiv: The Structural Jevons Paradox in compute demand</a></li>
+    <li><a href="https://arxiv.org/pdf/2501.16548v1" target="_blank" rel="noopener">arXiv: From Efficiency Gains to Rebound Effects: The Problem of Jevons' Paradox in AI</a></li>
+  </ol>
+  <p class="disclosure"><strong>Disclosure &amp; caveats:</strong> This explainer was researched and written with Claude, an AI model made by Anthropic, the company discussed here. Readers should weigh it accordingly. The energy scenarios are the author's illustrative arithmetic, not forecasts from the IEA or Anthropic. Stock and price figures come from news summaries and change daily. Nothing here is investment advice.</p>
+</section>
+
+</main>
+
+<footer>The Compute Multiplier · AI Literacy SIG · BOLLI · November 2026</footer>
+<a class="totop" href="#top" aria-label="Back to top">↑</a>
+
+<script>
+(function(){
+  document.body.classList.add('drill');
+  const navLinks=[...document.querySelectorAll('nav.toc a')];
+  const sections=[...document.querySelectorAll('main section')];
+  const ids=sections.map(s=>s.id);
+  const titleOf=id=>{const s=document.getElementById(id);return s?s.querySelector('h2').textContent:'';};
+  const labelOf=id=>{const a=navLinks.find(l=>l.getAttribute('href')==='#'+id);return a?a.dataset.label:'';};
+
+  // number the pills
+  navLinks.forEach(a=>{
+    const id=a.getAttribute('href').slice(1);
+    a.dataset.label=a.textContent;
+    const i=ids.indexOf(id);
+    if(i>=0) a.innerHTML='<span class="num">'+String(i+1).padStart(2,'0')+'</span>'+a.textContent;
+  });
+
+  // add breadcrumb + prev/next pager to each section
+  sections.forEach((s,i)=>{
+    const crumb=document.createElement('div');
+    crumb.className='crumb';
+    crumb.innerHTML='<a href="#glance">Home</a> › '+labelOf(s.id)+' &nbsp;·&nbsp; Section '+(i+1)+' of '+sections.length;
+    s.insertBefore(crumb,s.firstChild);
+    const pager=document.createElement('div');
+    pager.className='pager';
+    const prev=ids[i-1], next=ids[i+1];
+    pager.innerHTML=(prev?'<a class="prev" href="#'+prev+'"><small>← Previous</small>'+titleOf(prev)+'</a>':'<span style="flex:1"></span>')+
+                    (next?'<a class="next" href="#'+next+'"><small>Next →</small>'+titleOf(next)+'</a>':'<a class="next" href="#glance"><small>Start over ↺</small>Back to At a Glance</a>');
+    s.appendChild(pager);
+  });
+
+  // pushState fails inside sandboxed previews (about:srcdoc), so guard it
+  function setHash(id){
+    try{ history.pushState(null,'','#'+id); }catch(err){ /* preview sandbox: skip URL update */ }
+  }
+  function currentHash(){
+    try{ return location.hash.slice(1); }catch(err){ return ''; }
+  }
+
+  function show(id,scroll){
+    const all=id==='all';
+    document.body.classList.toggle('showall',all);
+    if(!all && !ids.includes(id)) id='glance';
+    sections.forEach(s=>s.classList.toggle('shown',s.id===id));
+    navLinks.forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+id));
+    const act=document.querySelector('nav.toc a.active');
+    if(act) act.scrollIntoView({block:'nearest',inline:'center'});
+    if(scroll!==false){
+      const nav=document.querySelector('nav.toc');
+      window.scrollTo({top:nav.offsetTop,behavior:'smooth'});
+    }
+  }
+
+  // intercept every in-page link (pills, details links, pager, back-to-top)
+  document.addEventListener('click',e=>{
+    const a=e.target.closest('a[href^="#"]');
+    if(!a) return;
+    const id=a.getAttribute('href').slice(1);
+    if(id==='top'){e.preventDefault();window.scrollTo({top:0,behavior:'smooth'});return;}
+    if(id==='all'||ids.includes(id)){
+      e.preventDefault();
+      setHash(id);
+      show(id);
+    }
+  });
+  window.addEventListener('popstate',()=>show(currentHash()||'glance'));
+
+  // keyboard: left/right arrows move between sections
+  document.addEventListener('keydown',e=>{
+    if(document.body.classList.contains('showall')) return;
+    const cur=ids.findIndex(id=>document.getElementById(id).classList.contains('shown'));
+    let n=null;
+    if(e.key==='ArrowRight'&&cur<ids.length-1) n=ids[cur+1];
+    if(e.key==='ArrowLeft'&&cur>0) n=ids[cur-1];
+    if(n){setHash(n);show(n);}
+  });
+
+  show(currentHash()||'glance',false);
+})();
+</script>
+<!-- VIZ-TRACKING:START -->
+<script>
+(function () {
+  var ENDPOINT = 'https://script.google.com/macros/s/AKfycbyCgndleqbDkjn1CWYFXflq0fegQRHkHE1S7gmlvnny8lA_rGsWZEqtz4shNoJ1ZanI6A/exec';
+  if (location.protocol === 'file:') return;
+  function send(where) {
+    try {
+      fetch(ENDPOINT, {
+        method: 'POST', mode: 'no-cors', keepalive: true,
+        body: new URLSearchParams({ viz: document.title || location.pathname, location: where })
+      }).catch(function () {});
+    } catch (e) {}
+  }
+  function fallback() {
+    try { return Intl.DateTimeFormat().resolvedOptions().timeZone || 'Unknown'; } catch (e) { return 'Unknown'; }
+  }
+  fetch('https://ipapi.co/json/')
+    .then(function (r) { return r.json(); })
+    .then(function (d) {
+      var place = [d.city, d.region, d.country_name].filter(Boolean).join(', ');
+      send(place || fallback());
+    })
+    .catch(function () { send(fallback()); });
+})();
+</script>
+<!-- VIZ-TRACKING:END -->
+</body>
+</html>
